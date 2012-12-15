@@ -23,6 +23,8 @@ slates_SOURCES = \
 	gtkmmbackend.cc \
 	gtkmmbackend.h
 
+slates_CXXFLAGS = -std=c++11 
+
 slates_LDFLAGS = 
 
 slates_LDADD = $(SLATES_LIBS)

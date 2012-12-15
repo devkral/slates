@@ -36,7 +36,7 @@ gtk_slate::gtk_slate(): slategrid()
 {
 	slates_horizontal=1;
 	slates_vertical=1;
-	slategrid.attach(ttz,0,0,1,1);
+	slategrid.attach(ttz,1,1,1,1);
 	ttz.signal_clicked ().connect(sigc::mem_fun(*this,&gtk_slate::leftclick));
 }
 
@@ -59,31 +59,35 @@ void gtk_slate::fill_slate(int height,int width)
 }*/
 
 
-void gtk_slate::split_slate(int height,int width)
+void gtk_slate::split_slate(int hor_parts,int vert_parts)
 {
+	slategrid.set_size_request (slates_horizontal+hor_parts,slates_vertical+vert_parts);
 	//logic: [] begins with 0 we begin with 1/slates_vertical
-	cout << "height" << height << " width " << width << endl;
-	for (int _height=slates_vertical; _height<slates_vertical+height; _height++)
+	cout << "height" << vert_parts << " width " << hor_parts << endl;
+	for (int _height=slates_vertical+1; _height<=slates_vertical+vert_parts; _height++)
 	{
-		cout << "halleluljah _height " << _height << endl;
 		//slategrid.insert_row(_height);
-		for (int counterw=0; counterw<slates_horizontal; counterw++)
+		//slategrid.insert_row(0);
+		for (int counterw=1; counterw<=slates_horizontal; counterw++)
 			{
-				cout << "halleluljah counterw " << counterw << endl;
-				slategrid.attach(ttz,counterw,_height,1,1);
+				cout << "attach to " << counterw << " " << _height << endl;
+				slategrid.attach(ttd,counterw,_height,1,1);
 			}
 	}
-	slates_vertical=height;
-	for (int _width=slates_horizontal; _width<slates_horizontal+width; _width++)
+	slates_vertical+=vert_parts;
+	for (int _width=slates_horizontal+1; _width<=slates_horizontal+hor_parts; _width++)
 	{
 		//slategrid.insert_column(_width);
-		for (int counterh=0; counterh<slates_vertical; counterh++)
+		//slategrid.insert_column(0);
+		for (int counterh=1; counterh<=slates_vertical; counterh++)
 			{
+				cout << "2loopattach to " << _width << " " << counterh << endl;
 				slategrid.attach(ttz,_width,counterh,1,1);
 			}
 	}
-	slates_horizontal=width;
+	slates_horizontal+=vert_parts;
 	show();
+	cout << slates_vertical << endl << slates_horizontal << endl;
 	//fill_slate(height,width);
 }
 
@@ -102,6 +106,7 @@ void gtk_slate::show()
 {
 	//slategrid.show();
 	slategrid.show_all ();
+	slategrid.show_all_children ();
 
 }
 

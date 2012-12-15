@@ -21,7 +21,7 @@
 #include <iostream>
 
 #include "config.h"
-#include "gtkmmbackend.h"
+#include "slates.h"
 
 /**
 #ifdef ENABLE_NLS
@@ -38,12 +38,12 @@ main (int argc, char *argv[])
       "org.slates.mainslate");
 	Gtk::Window window;
 	window.set_title ("slates");
-	gtk_slate tt;
+	//slate tt;
 	Gtk::Button tz;
 	tz.set_label("zz");
 	//Gtk::Grid *t=(tt.return_widget());
-	window.add(*(tt.return_widget()));
-	tt.show();
+	//window.add(*(tt.return_widget()));
+	//tt.show();
 
 	return app->run(window);
 }

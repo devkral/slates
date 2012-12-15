@@ -20,7 +20,6 @@
 #ifndef _GTKBACKEND_H_
 #define _GTKBACKEND_H_
 #include <gtkmm.h>
-#include "slates.h"
 
 class gtk_sys_slate : public Gtk::Button
 {
@@ -33,8 +32,7 @@ private:
 
 };
 
-class gtk_slate : slate
-{
+class gtk_slate {
 public:
 	gtk_slate ();
 	void split_slate(int hight, int width);
@@ -45,6 +43,7 @@ protected:
 private:
 	Gtk::Grid slategrid;
 	gtk_sys_slate ttz;
+		gtk_sys_slate ttd;
 	void fill_slate(int hight, int width);
 	virtual void leftclick();
 };

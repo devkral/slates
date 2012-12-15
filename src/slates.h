@@ -22,26 +22,66 @@
 using namespace std;
 
 
+#ifdef use_gtkmm
+#include "gtkmmbackend.h"
+#endif //use_gtkmm
+
+#ifdef sdl_gtkmm
+
+#endif //sdl_gtkmm
+
+
+
+
+
+class slateobject;
+
 class slate
 {
 public:
 	//unsigned char get_slate_info();
 	//virtual void split_slate(int hight, int width); //
+	bool freeme();
+	slate(int x, int y, slate *controlpointt, bool createslice);
+	slate();
+	~slate();
 	
 protected:
-	int slates_horizontal;
-	int slates_vertical;
+	void freed();
 	int role;
 	//virtual void fill_slate(int hight, int width);
 
 	
 		
-//private:
+private:
+	slateobject *sobject;
+	void new_slate();
+	void freed_slate();
+	void create_row();
+	void create_column ();
+	unsigned int pos_x, pos_y; //begin pos=1
+	slate *left_slate=0, *top_slate=0,*controlpoint=0,*controlnext=0; //if itself controlpoint (x=y) rl diagonal up, controlnext lr diagonal down
+	//void D_tactic;
+	int used_slades; //controlpoints contain the number of used slates in their slice
+	//int slates_horizontal;
+	//int slates_vertical;
 	//unsigned char slate_info; //<private><readonlypublic><readonly><isolated><assoz><mainslate><locked/minimized><?>
 	
 };
 
-
+class slateobject
+{
+	public:
+		slateobject(void *in_object, bool placeholdert);
+		~slateobject();
+		bool is_filled();
+		void set_object(void *in_object);
+		void *get_object();
+		
+	private:
+		void *contained_object;
+		bool placeholder;
+};
 
 
 
