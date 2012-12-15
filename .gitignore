@@ -13,7 +13,7 @@ Makefile.in*
 # needed keep it
 !Makefile.am
 
-
+/mkinstalldirs
 /Debug
 
 /libtool
