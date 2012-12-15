@@ -16,17 +16,13 @@
  * You should have received a copy of the GNU General Public License along
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+/**
 
 #include "gtkmmbackend.h"
 #include <iostream>
 using namespace std;
 
-/**template< class T_CppObject > Glib::RefPtr<T_CppObject>
-transform_to_rptr(const Glib::RefPtr< Glib::Object >& p)
-{
-	return Glib::RefPtr<T_CppObject>::cast_dynamic(p);
-}*/
+
 
 
 
@@ -56,7 +52,7 @@ void gtk_slate::fill_slate(int height,int width)
 
 	
 	
-}*/
+}
 
 
 void gtk_slate::split_slate(int hor_parts,int vert_parts)
@@ -109,5 +105,5 @@ void gtk_slate::show()
 	slategrid.show_all_children ();
 
 }
-
+*/
 

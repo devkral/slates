@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*-  */
 /*
  * slates
- * Copyright (C) 2012 alex <>
+ * Copyright (C) 2012 alex <devkral@web.de>
  * 
  * slates is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -16,39 +16,41 @@
  * You should have received a copy of the GNU General Public License along
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
-#ifndef _GTKBACKEND_H_
-#define _GTKBACKEND_H_
-#include <gtkmm.h>
 
-class gtk_sys_slate : public Gtk::Button
+#include "slateobject.h"
+
+
+//slate_object
+slateobject::slateobject(slate *parentt)
 {
+	parent=parentt;
+}
+slateobject::~slateobject()
+{
+	//delete contained_object;
+	contained_object=0;
 
+}
+int slateobject::detach_parent ()
+{
+	int status=parent->detach_child();
+	if (status==0)
+	{
+		parent=0;
+		return 0;
+	}
+	else
+		return status;
 
-public:
-	gtk_sys_slate();
-	
-private:
+}
 
-};
+void slateobject::set_object(void *in_object)
+{
+	contained_object=in_object;
+}
+void *slateobject::get_object()
+{
+	return contained_object;
+}
 
-class gtk_slate {
-public:
-	gtk_slate ();
-	void split_slate(int hight, int width);
-	Gtk::Grid *return_widget();
-	void show();
-protected:
-	
-private:
-	Gtk::Grid slategrid;
-	gtk_sys_slate ttz;
-		gtk_sys_slate ttd;
-	void fill_slate(int hight, int width);
-	virtual void leftclick();
-};
-
-
-
-#endif // _GTKBACKEND_H_*/
-
+//slate_object END

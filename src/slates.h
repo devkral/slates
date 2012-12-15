@@ -20,7 +20,7 @@
 #ifndef _SLATES_H_
 #define _SLATES_H_
 using namespace std;
-
+//rename to singular
 
 #ifdef use_gtkmm
 #include "gtkmmbackend.h"
@@ -30,67 +30,55 @@ using namespace std;
 
 #endif //sdl_gtkmm
 
-
-
-
+#include "slateobject.h"
+#include "border.h"
 
 class slateobject;
+class border;
+
+struct screenresolution
+{
+	int points_x=-1;
+	int points_y=-1;
+};
+
+struct view
+{
+	int view_begin_x=0;
+	int view_begin_y=0;
+	int x_axis=1;
+	int y_axis=1;
+	int reso_x=-1;
+	int reso_y=-1;
+};
+
 
 class slate
 {
 public:
-	//unsigned char get_slate_info();
-	//virtual void split_slate(int hight, int width); //
-	bool freeme();
-	slate(int x, int y, slate *controlpointt, bool createslice);
-	slate();
-	~slate();
+	virtual bool is_masterslate()=0; //important =0
+	virtual int attach_child(slateobject *tt)=0;
+	virtual int detach_child ()=0;
+	//virtual void draw_slate ()=0;
+	bool is_filled();
+	void show();
+	void hide();
+	bool is_locked();
+	void lock();
+	void unlock();
 	
 protected:
-	void freed();
-	int role;
-	//virtual void fill_slate(int hight, int width);
-
-	
-		
-private:
 	slateobject *sobject;
-	void new_slate();
-	void freed_slate();
-	void create_row();
-	void create_column ();
-	unsigned int pos_x, pos_y; //begin pos=1
-	slate *left_slate=0, *top_slate=0,*controlpoint=0,*controlnext=0; //if itself controlpoint (x=y) rl diagonal up, controlnext lr diagonal down
-	//void D_tactic;
-	int used_slades; //controlpoints contain the number of used slates in their slice
-	//int slates_horizontal;
-	//int slates_vertical;
-	//unsigned char slate_info; //<private><readonlypublic><readonly><isolated><assoz><mainslate><locked/minimized><?>
+	bool is_placeholder=true;
+	border *border_right, *border_bottom;
+	bool lock;
+	int lock_action; //0 hidden 1 readonly 2 disappear on lock
+	int slate_state; //0 normal 1 
+private:
+	
 	
 };
 
-class slateobject
-{
-	public:
-		slateobject(void *in_object, bool placeholdert);
-		~slateobject();
-		bool is_filled();
-		void set_object(void *in_object);
-		void *get_object();
-		
-	private:
-		void *contained_object;
-		bool placeholder;
-};
-
-
-
-class sys_slate
-{
-
-
-
-};
 
 
 #endif // _SLATES_H_

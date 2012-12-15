@@ -21,7 +21,19 @@ slates_SOURCES = \
 	slates.cc \
 	slates.h \
 	gtkmmbackend.cc \
-	gtkmmbackend.h
+	gtkmmbackend.h \
+	viewport.cc \
+	viewport.h \
+	masterslate.cc \
+	masterslate.h \
+	slaveslate.cc \
+	slaveslate.h \
+	slateobject.cc \
+	slateobject.h \
+	border.cc \
+	border.h \
+	widgets.cc \
+	widgets.h
 
 slates_CXXFLAGS = -std=c++11 
 
