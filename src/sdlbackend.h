@@ -1,6 +1,6 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*-  */
 /*
- * main.cc
+ * slates
  * Copyright (C) 2012 alex <devkral@web.de>
  * 
  * slates is free software: you can redistribute it and/or modify it
@@ -17,43 +17,18 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtkmm.h>
-#include <iostream>
+#ifndef _SDLBACKEND_H_
+#define _SDLBACKEND_H_
 
-#include "config.h"
-#include "slates.h"
-
-#ifdef compiled_gtkmm
-#include "gtkmmbackend.h"
-#endif
-
-#ifdef compiled_sdl
-#include "sdlbackend.h"
-#endif
-
-
-/**
-#ifdef ENABLE_NLS
-#  include <libintl.h>
-#endif
-*/
-
-
-   
-int
-main (int argc, char *argv[])
+class sdlbackend
 {
-	Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv,
-      "org.slates.mainslate");
-	Gtk::Window window;
-	window.set_title ("slates");
-	//slate tt;
-	Gtk::Button tz;
-	tz.set_label("zz");
-	//Gtk::Grid *t=(tt.return_widget());
-	//window.add(*(tt.return_widget()));
-	//tt.show();
+public:
 
-	return app->run(window);
-}
+protected:
+
+private:
+
+};
+
+#endif // _SDLBACKEND_H_
 

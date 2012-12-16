@@ -35,11 +35,11 @@ masterslate::masterslate(int _pos_x_y, masterslate *controlpret)
 
 }
 
-masterslate::masterslate(screenresolution *scresot)
+masterslate::masterslate(view_attributes *viewot)
 {
 	controlpre=0;
 	pos_x_y=0;
-	screso =scresot;
+	viewo =viewo;
 }
 
 

@@ -46,11 +46,12 @@ const int fpos_shown_lock=5;
 const int fpos_overlapped=6;
 //const int fpos_??=7; not defined yet
 
+/**
 struct screenresolution
 {
 	int points_x=-1;
 	int points_y=-1;
-};
+};*/
 
 struct view_attributes
 {

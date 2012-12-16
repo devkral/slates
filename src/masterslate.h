@@ -35,7 +35,7 @@ public:
 	void dec_used_slates();
 	bool is_filled(int x=-1, int y=-1); //default return for cur slate
 	masterslate(int _x_y, masterslate *controlpointt);
-	masterslate(screenresolution *scresot);
+	masterslate(view_attributes *viewot);
 	~masterslate();
 	int attach_child(slateobject *tt);
 	int detach_child ();
