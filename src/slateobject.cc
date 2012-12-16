@@ -42,4 +42,12 @@ void *slateobject::get_object()
 	return contained_object;
 }
 
+const view_attributes slateobject::get_viewo()
+{
+	return leftuppercorner->get_viewo();
+
+}
+
+;
+
 //slate_object END

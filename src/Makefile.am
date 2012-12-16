@@ -32,8 +32,8 @@ slates_SOURCES = \
 	border.h \
 	widgets.cc \
 	widgets.h \
-	view.cc \
-	view.h
+	controller.cc \
+	controller.h
 
 slates_CXXFLAGS = -std=c++11 
 

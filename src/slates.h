@@ -36,9 +36,15 @@ using namespace std;
 class slateobject;
 class border;
 
-enum slate_state_flags{
-locked=0,isolated=1,shown=2,readonly=3,placeholder=4,shown_lock=5,overlapped=6
-};
+
+const int fpos_locked=0;
+const int fpos_isolated=1;
+const int fpos_shown=2;
+const int fpos_readonly=3;
+const int fpos_placeholder=4;
+const int fpos_shown_lock=5;
+const int fpos_overlapped=6;
+//const int fpos_??=7; not defined yet
 
 struct screenresolution
 {
@@ -46,7 +52,7 @@ struct screenresolution
 	int points_y=-1;
 };
 
-struct view
+struct view_attributes
 {
 	int view_begin_x=0;
 	int view_begin_y=0;
@@ -78,13 +84,14 @@ public:
 
 	unsigned char get_slate_state();
 	bool get_slate_state_value(unsigned short flag_pos);
+	const view_attributes get_viewo();
 	//slate();
 	
 protected:
 	slateobject *sobject;
 	//bool is_placeholder=true;
 	border *border_right, *border_bottom;
-	view *viewo;
+	view_attributes *viewo; //copy for nonfriends
 	unsigned char slate_state=16;
 	//00000000
 	/**

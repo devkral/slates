@@ -26,6 +26,8 @@ class slate;
  * if slateobject overlapps some other widgets,hide them
  * 
  */
+class view_attributes;
+
 class slateobject
 {
 	public:
@@ -35,6 +37,7 @@ class slateobject
 		void set_object(void *in_object);
 		void *get_object();
 		void draw();
+		const view_attributes get_viewo();
 		
 		int resize(int width, int height);
 		int move(slate *leftuppercornert); //begins with a left upper corner not necessary pos 0

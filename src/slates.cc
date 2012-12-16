@@ -65,5 +65,9 @@ void slate::set_slate_state_value(unsigned short flag_pos,bool flag_value)
 
 }
 
+const view_attributes slate::get_viewo()
+{
+	return *viewo;
 
+}
 

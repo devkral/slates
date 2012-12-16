@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*-  */
 /*
  * slates
- * Copyright (C) 2012 alex <alex@archal>
+ * Copyright (C) 2012 alex <devkral@web.de>
  * 
  * slates is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -17,25 +17,18 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _VIEW_H_
-#define _VIEW_H_
-#include <vector>
-#include <slates.h>
+#ifndef _CONTROLLER_H_
+#define _CONTROLLER_H_
 
-class view
+class controller
 {
 public:
 
-	void refreshscreenreso();
 protected:
 
 private:
-	std::vector <slate> screens;
-	int curscreen;
-	int amount_screens;
-	
 
 };
 
-#endif // _VIEW_H_
+#endif // _CONTROLLER_H_
 
