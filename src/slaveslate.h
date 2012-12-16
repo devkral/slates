@@ -33,6 +33,7 @@ public:
 	int detach_child ();
 	int attach_child (slateobject *tt);
 	void draw_slate ();
+	void overlap(bool overlapped_flag);
 
 protected:
 

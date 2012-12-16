@@ -138,7 +138,7 @@ bool masterslate::freeme()
 int masterslate::detach_child ()
 {
 	sobject=default_object;
-	is_placeholder=true;
+	set_slate_state_value (4,true); //is placeholder
 	dec_used_slates();
 	show();
 }
@@ -146,7 +146,7 @@ int masterslate::detach_child ()
 int masterslate::attach_child(slateobject *tt)
 {
 	sobject=tt;
-	is_placeholder=false;
+	set_slate_state_value (4,false); //is placeholder
 	inc_used_slates();
 	show();
 }
@@ -155,4 +155,20 @@ int masterslate::attach_child(slateobject *tt)
 bool masterslate::is_masterslate ()
 {
 	return true;
+}
+
+void masterslate::overlap(bool overlapped_flag)
+{
+	if (overlapped_flag)
+	{
+		set_slate_state_value(6,true);
+		hide();
+		inc_used_slates(); //an overlapped slate is an used slate
+	}
+	else
+	{
+		set_slate_state_value(6,false);
+		show();
+		dec_used_slates(); //an overlapped slate is an used slate
+	}
 }

@@ -43,6 +43,7 @@ public:
 	void draw_slate ();
 	void lockall();
 	void unlockall();
+	void overlap(bool overlapped_flag);
 	
 protected:
 	int role;
@@ -58,7 +59,6 @@ private:
 	masterslate *controlpre=0,*controlnext=0;
 	int used_slades; //controlpoints contain the number of used slates in their slice
 	//unsigned char slate_info; //<private><readonlypublic><readonly><isolated><assoz><mainslate><locked/minimized><?>
-	view *viewo;
 	slateobject *default_object;
 	screenresolution *screso;
 	friend class slaveslate;

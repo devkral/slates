@@ -21,9 +21,9 @@
 
 
 //slate_object
-slateobject::slateobject(slate *parentt)
+slateobject::slateobject(slate *leftuppercornert)
 {
-	parent=parentt;
+	leftuppercorner=leftuppercornert;
 }
 slateobject::~slateobject()
 {
@@ -31,18 +31,7 @@ slateobject::~slateobject()
 	contained_object=0;
 
 }
-int slateobject::detach_parent ()
-{
-	int status=parent->detach_child();
-	if (status==0)
-	{
-		parent=0;
-		return 0;
-	}
-	else
-		return status;
 
-}
 
 void slateobject::set_object(void *in_object)
 {

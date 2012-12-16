@@ -22,21 +22,29 @@
 #include "slates.h"
 class slate;
 
-
+/**
+ * if slateobject overlapps some other widgets,hide them
+ * 
+ */
 class slateobject
 {
 	public:
-		slateobject(slate *parentt);
+		slateobject(slate *leftuppercornert);
 		~slateobject();
 
 		void set_object(void *in_object);
 		void *get_object();
-		int detach_parent();
 		void draw();
 		
-	private:
+		int resize(int width, int height);
+		int move(slate *leftuppercornert); //begins with a left upper corner not necessary pos 0
+
+		
+	protected:
 		void *contained_object;
-		slate *parent;
+		slate *leftuppercorner;
+		int size_x=1;
+		int size_y=1;
 		
 
 };

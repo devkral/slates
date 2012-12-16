@@ -17,25 +17,7 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _VIEWPORT_H_
-#define _VIEWPORT_H_
-#include <vector>
-#include <slates.h>
+#include "view.h"
 
-class viewport
-{
-public:
 
-	void refreshscreenreso();
-protected:
-
-private:
-	std::vector <slate> screens;
-	int curscreen;
-	int amount_screens;
-	
-
-};
-
-#endif // _VIEWPORT_H_
 

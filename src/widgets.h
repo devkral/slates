@@ -33,11 +33,11 @@ private:
 
 class sys_area : widget
 {
-}
+};
 
 class sys_locked_area : widget
 {
-}
+};
 
 
 

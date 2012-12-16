@@ -24,6 +24,7 @@ slaveslate::slaveslate(int x, int y, masterslate *controlpointt)
 	pos_x=x;
 	pos_y=y;
 	controlpoint=controlpointt;
+	viewo=controlpoint->viewo;
 	
 
 }
@@ -33,7 +34,7 @@ slaveslate::slaveslate(int x, int y, masterslate *controlpointt)
 int slaveslate::detach_child ()
 {
 	sobject=controlpoint->default_object;
-	is_placeholder=true;
+	set_slate_state_value (slate_state_flags(placeholder),true); //is placeholder
 		controlpoint->dec_used_slates();
 	show();
 }
@@ -41,11 +42,25 @@ int slaveslate::detach_child ()
 int slaveslate::attach_child(slateobject *tt)
 {
 	sobject=tt;
-	is_placeholder=false;
+	set_slate_state_value (slate_state_flags(placeholder),false);
 		controlpoint->inc_used_slates();
 }
 
-
+void slaveslate::overlap(bool overlapped_flag)
+{
+	if (overlapped_flag)
+	{
+		set_slate_state_value(6,true);
+		hide();
+		controlpoint->inc_used_slates(); //an overlapped slate is an used slate
+	}
+	else
+	{
+		set_slate_state_value(6,false);
+		show();
+		controlpoint->dec_used_slates(); //an overlapped slate is an used slate
+	}
+}
 
 bool slaveslate::is_masterslate ()
 {

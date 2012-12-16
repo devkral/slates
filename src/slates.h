@@ -36,6 +36,10 @@ using namespace std;
 class slateobject;
 class border;
 
+enum slate_state_flags{
+locked=0,isolated=1,shown=2,readonly=3,placeholder=4,shown_lock=5,overlapped=6
+};
+
 struct screenresolution
 {
 	int points_x=-1;
@@ -50,6 +54,8 @@ struct view
 	int y_axis=1;
 	int reso_x=-1;
 	int reso_y=-1;
+	int psize_slate_x=-1;
+	int psize_slate_y=-1;
 };
 
 
@@ -59,21 +65,46 @@ public:
 	virtual bool is_masterslate()=0; //important =0
 	virtual int attach_child(slateobject *tt)=0;
 	virtual int detach_child ()=0;
+	virtual void overlap(bool overlapped_flag)=0;
+	
 	//virtual void draw_slate ()=0;
-	bool is_filled();
+	
 	void show();
 	void hide();
-	bool is_locked();
+
 	void lock();
 	void unlock();
+
+
+	unsigned char get_slate_state();
+	bool get_slate_state_value(unsigned short flag_pos);
+	//slate();
 	
 protected:
 	slateobject *sobject;
-	bool is_placeholder=true;
+	//bool is_placeholder=true;
 	border *border_right, *border_bottom;
-	bool lock;
-	int lock_action; //0 hidden 1 readonly 2 disappear on lock
-	int slate_state; //0 normal 1 
+	view *viewo;
+	unsigned char slate_state=16;
+	//00000000
+	/**
+	 * (right to left)
+	 * Position: action
+	 * 0: is locked //int 0
+	 * 1: is isolated //int 2 
+	 * 2: is shown //int 4
+	 * 3: is readonly //int 8
+	 * 4: is placeholder // int:16
+	 * 5: is shown on lock //readonly! int 32
+	 * 6: is overlapped // int 64
+	 * 7: ?? //int 128
+	 * 
+	 * */
+	void set_slate_state_value(unsigned short flag_pos,bool flag_value);
+	
+	//bool lock_state;
+	int lock_action; //0 hide 1 readonly 2 disappear on lock
+	//int slate_state; //0 normal 1 isolated
 private:
 	
 	
