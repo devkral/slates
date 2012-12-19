@@ -18,8 +18,8 @@ bin_PROGRAMS = slates
 
 slates_SOURCES = \
 	main.cc \
-	slates.cc \
-	slates.h \
+	slate.cc \
+	slate.h \
 	gtkmmbackend.cc \
 	gtkmmbackend.h \
 	masterslate.cc \

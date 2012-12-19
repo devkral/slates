@@ -19,6 +19,7 @@
 
 #include <iostream>
 #include "masterslate.h"
+#include <assert.h>
 
 using namespace std;
 
@@ -30,7 +31,6 @@ masterslate::masterslate(int _pos_x_y, masterslate *controlpret)
 
 	viewo=controlpre->viewo;
 
-		
 	create_slice();
 
 }
@@ -138,7 +138,7 @@ bool masterslate::freeme()
 int masterslate::detach_child ()
 {
 	sobject=default_object;
-	set_slate_state_value (fpos_placeholder,true); //is placeholder
+	is_assoz=false;
 	dec_used_slates();
 	show();
 }
@@ -146,7 +146,7 @@ int masterslate::detach_child ()
 int masterslate::attach_child(slateobject *tt)
 {
 	sobject=tt;
-	set_slate_state_value (fpos_placeholder,false); //is placeholder
+	is_assoz=true;
 	inc_used_slates();
 	show();
 }
@@ -157,18 +157,68 @@ bool masterslate::is_masterslate ()
 	return true;
 }
 
-void masterslate::overlap(bool overlapped_flag)
+
+
+void masterslate::notify_left_slates (slate_messenger *message)
 {
-	if (overlapped_flag)
+	if (pos_x_y>=message->y_beg && pos_x_y<=message->y_end)
 	{
-		set_slate_state_value(fpos_overlapped,true);
-		hide();
-		inc_used_slates(); //an overlapped slate is an used slate
+		int max_countx=message->x_end;
+		if (pos_x_y<=message->x_end)
+			max_countx=pos_x_y-1;
+		
+		for (int countx=message->x_beg;countx<=max_countx;countx++)
+			left_slates[countx].receive_slate_signal (message->message);
 	}
-	else
+
+}
+
+void masterslate::notify_top_slates (slate_messenger *message)
+{
+	if (pos_x_y>=message->x_beg && pos_x_y<=message->x_end)
+	{	
+		int max_county=message->y_end;
+		if (pos_x_y<=message->y_end)
+			max_county=pos_x_y-1;
+
+		for (int county=message->y_beg;county<=max_county;county++)
+			left_slates[county].receive_slate_signal (message->message);
+	}
+
+}
+
+
+void masterslate::emit_slate_signal(slate_messenger message)
+{
+	if (message.xy_beg==-1)
 	{
-		set_slate_state_value(fpos_overlapped,false);
-		show();
-		dec_used_slates(); //an overlapped slate is an used slate
+		if (message.x_beg<message.y_beg)
+			message.xy_beg=message.x_beg;
+		else
+			message.xy_beg=message.y_beg;
+
+		if (message.x_end<message.y_end)
+			message.xy_end=message.y_end;
+		else
+			message.xy_end=message.x_end;
+		
 	}
+	assert(message.xy_beg>=0);
+	assert(message.xy_end>=0);
+	
+	if (message.xy_beg<pos_x_y)
+		controlpre->emit_slate_signal(message);
+
+	//slates left
+	notify_left_slates (&message);
+	                    
+	if (pos_x_y>=message.x_beg && pos_x_y<=message.x_end && pos_x_y>=message.x_beg && pos_x_y<=message.x_end)
+		receive_slate_signal (message.message);
+		
+	//slates top
+	notify_top_slates (&message);
+
+	if (message.xy_end<pos_x_y)
+		controlnext->emit_slate_signal (message);
+	
 }

@@ -34,35 +34,40 @@ slaveslate::slaveslate(int x, int y, masterslate *controlpointt)
 int slaveslate::detach_child ()
 {
 	sobject=controlpoint->default_object;
-	set_slate_state_value (fpos_placeholder,true); //is placeholder
-		controlpoint->dec_used_slates();
+	is_assoz=false;
+	controlpoint->dec_used_slates();
 	show();
 }
 
 int slaveslate::attach_child(slateobject *tt)
 {
 	sobject=tt;
-	set_slate_state_value (fpos_placeholder,false);
-		controlpoint->inc_used_slates();
+	is_assoz=true;
+	controlpoint->inc_used_slates();
 }
 
-void slaveslate::overlap(bool overlapped_flag)
+void slaveslate::assoz(bool assoz_flag)
 {
-	if (overlapped_flag)
+	if (assoz_flag)
 	{
-		set_slate_state_value(fpos_overlapped,true);
+		is_assoz=true;
 		hide();
-		controlpoint->inc_used_slates(); //an overlapped slate is an used slate
+		controlpoint->inc_used_slates(); //an assoz slate is an used slate
 	}
 	else
 	{
-		set_slate_state_value(fpos_overlapped,false);
+		is_assoz=false;
 		show();
-		controlpoint->dec_used_slates(); //an overlapped slate is an used slate
+		controlpoint->dec_used_slates(); //an assoz slate is an used slate
 	}
 }
 
 bool slaveslate::is_masterslate ()
 {
 	return false;
+}
+
+void slaveslate::emit_slate_signal(slate_messenger message)
+{
+	controlpoint->emit_slate_signal(message);
 }

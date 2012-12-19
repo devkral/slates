@@ -20,7 +20,7 @@
 #ifndef _MASTERSLATE_H_
 #define _MASTERSLATE_H_
 #include <vector>
-#include "slates.h"
+#include "slate.h"
 #include "slaveslate.h"
 class slaveslate;
 class slate;
@@ -43,7 +43,8 @@ public:
 	void draw_slate ();
 	void lockall();
 	void unlockall();
-	void overlap(bool overlapped_flag);
+	void assoz(bool assoz_flag);
+	void emit_slate_signal(slate_messenger message);
 	
 protected:
 	int role;
@@ -60,7 +61,9 @@ private:
 	int used_slades; //controlpoints contain the number of used slates in their slice
 	//unsigned char slate_info; //<private><readonlypublic><readonly><isolated><assoz><mainslate><locked/minimized><?>
 	slateobject *default_object;
-	screenresolution *screso;
+	void notify_left_slates(slate_messenger *message); //should be just executed by emit_slate_signal
+	void notify_top_slates(slate_messenger *message); //should be just executed by emit_slate_signal
+
 	friend class slaveslate;
 	//friend class slateobject;
 };

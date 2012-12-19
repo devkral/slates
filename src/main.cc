@@ -21,7 +21,7 @@
 #include <iostream>
 
 #include "config.h"
-#include "slates.h"
+#include "slate.h"
 
 #ifdef compiled_gtkmm
 #include "gtkmmbackend.h"

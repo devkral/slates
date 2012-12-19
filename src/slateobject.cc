@@ -19,7 +19,8 @@
 
 #include "slateobject.h"
 
-
+#include <iostream>
+using namespace std;
 //slate_object
 slateobject::slateobject(slate *leftuppercornert)
 {
@@ -48,6 +49,27 @@ const view_attributes slateobject::get_viewo()
 
 }
 
-;
+bool slateobject::get_slate_state_value (unsigned short flag_pos)
+{
+	if (flag_pos>7)
+		std::cerr << "Error: accesses value out of range.\n";
+	return 1&slateo_state>>flag_pos;
+}
 
-//slate_object END
+void slateobject::set_slate_state_value(unsigned short flag_pos,bool flag_value)
+{
+	if (flag_pos>7)
+		std::cerr << "Error: tried to set flag out of range.\n";
+	else
+		if (flag_value)
+			slateo_state|1<<flag_pos;
+		else
+			slateo_state=slateo_state&~(1<<flag_pos);
+
+}
+
+/**unsigned char slateobject::get_slate_state()
+{
+	return slate_state;
+
+}*/

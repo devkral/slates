@@ -17,7 +17,7 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "slates.h"
+#include "slate.h"
 using namespace std;
 #include <iostream>
 
@@ -26,48 +26,37 @@ using namespace std;
 
 void slate::show()
 {
-	set_slate_state_value(2,true);
+	sobject->set_slate_state_value(2,true);
 	//draw_slate ();
 	//sobject->draw();
 };
 
 void slate::hide()
 {
-	set_slate_state_value(2,false);
+	sobject->set_slate_state_value(2,false);
 	//draw_slate ();
 	//sobject->draw();
 };
 
 
 
-unsigned char slate::get_slate_state()
-{
-	return slate_state;
 
-}
 
-bool slate::get_slate_state_value (unsigned short flag_pos)
-{
-	if (flag_pos>7)
-		std::cerr << "Error: accesses value out of range.\n";
-	return 1&slate_state>>flag_pos;
-}
 
-void slate::set_slate_state_value(unsigned short flag_pos,bool flag_value)
-{
-	if (flag_pos>7)
-		std::cerr << "Error: tried to set flag out of range.\n";
-	else
-		if (flag_value)
-			slate_state|1<<flag_pos;
-		else
-			slate_state=slate_state&~(1<<flag_pos);
-
-}
 
 const view_attributes slate::get_viewo()
 {
 	return *viewo;
 
 }
+void slate::receive_slate_signal(int number) 
+{
+	switch (number)
+	{
+		case 1: 
+			break;
 
+	}
+
+
+}

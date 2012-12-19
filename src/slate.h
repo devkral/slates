@@ -19,7 +19,7 @@
 
 #ifndef _SLATES_H_
 #define _SLATES_H_
-using namespace std;
+
 //rename to singular
 
 //overlap to close
@@ -30,23 +30,10 @@ using namespace std;
 
 class slateobject;
 class border;
+using namespace std;
 
 
-const int fpos_locked=0;
-const int fpos_isolated=1;
-const int fpos_shown=2;
-const int fpos_readonly=3;
-const int fpos_placeholder=4;
-const int fpos_shown_lock=5;
-const int fpos_overlapped=6;
-//const int fpos_??=7; not defined yet
 
-/**
-struct screenresolution
-{
-	int points_x=-1;
-	int points_y=-1;
-};*/
 
 struct view_attributes
 {
@@ -60,6 +47,24 @@ struct view_attributes
 	int psize_slate_y=-1;
 };
 
+struct slate_messenger
+{
+	slate *caller;
+	int message=-1;
+	int x_beg=-1;
+	int x_end=-1;
+	int y_beg=-1;
+	int y_end=-1;
+
+	//don't set (will be set by emit_slate_signal ())
+	int xy_beg=-1;
+	int xy_end=-1;
+};
+
+enum sigslate{
+destroy,assoz,deassoz,lock,unlock
+};
+
 
 class slate
 {
@@ -67,7 +72,7 @@ public:
 	virtual bool is_masterslate()=0; //important =0
 	virtual int attach_child(slateobject *tt)=0;
 	virtual int detach_child ()=0;
-	virtual void overlap(bool overlapped_flag)=0;
+	virtual void assoz(bool assoz_flag)=0;
 	
 	//virtual void draw_slate ()=0;
 	
@@ -79,8 +84,10 @@ public:
 
 
 	unsigned char get_slate_state();
-	bool get_slate_state_value(unsigned short flag_pos);
+	
 	const view_attributes get_viewo();
+	virtual void emit_slate_signal(slate_messenger message);
+	void receive_slate_signal(int number); 
 	//slate();
 	
 protected:
@@ -88,33 +95,12 @@ protected:
 	//bool is_placeholder=true;
 	border *border_right, *border_bottom;
 	view_attributes *viewo; //copy for nonfriends
-	unsigned char slate_state=16;
-	//00000000
-	/**
-	 * (right to left)
-	 * Position: action
-	 * 0: is locked //int 0
-	 * 1: is isolated //int 2 
-	 * 2: is shown //int 4
-	 * 3: is readonly //int 8
-	 * 4: is placeholder // int:16
-	 * 5: is shown on lock //readonly! int 32
-	 * 6: is overlapped // int 64
-	 * 7: contains sensitive information (hides after a certain amount of inactivity in the slate) (reactivation by click)
-	 * 
-	 * */
-	void set_slate_state_value(unsigned short flag_pos,bool flag_value);
-	
-	//bool lock_state;
-	int lock_action; //0 hide 1 readonly 2 disappear on lock
-	//int slate_state; //0 normal 1 isolated
 
-	void emit_slate_signal_multicast(int number, unsigned int slice_beg_xy=-1, unsigned int slice_end_xy=-1);
-	void emit_slate_signal_s(int number, unsigned int slice_beg, unsigned int slice_end);
+
 	
-	virtual void receive_slate_signal(int number); 
+	bool is_assoz;
+	bool is_drawn;
 private:
-	
 	
 };
 

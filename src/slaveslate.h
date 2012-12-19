@@ -20,7 +20,7 @@
 #ifndef _SLAVESLATE_H_
 #define _SLAVESLATE_H_
 
-#include "slates.h"
+#include "slate.h"
 #include "masterslate.h"
 
 class masterslate;
@@ -33,10 +33,10 @@ public:
 	int detach_child ();
 	int attach_child (slateobject *tt);
 	void draw_slate ();
-	void overlap(bool overlapped_flag);
+	void assoz(bool assoz_flag);
+	void emit_slate_signal(slate_messenger message);
 
 protected:
-
 private:
 	masterslate *controlpoint=0;
 	unsigned int pos_x, pos_y; //begin pos=0

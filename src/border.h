@@ -19,7 +19,7 @@
 
 #ifndef _BORDER_H_
 #define _BORDER_H_
-#include "slates.h"
+#include "slate.h"
 class slate;
 
 class border
