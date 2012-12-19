@@ -22,13 +22,8 @@
 using namespace std;
 //rename to singular
 
-#ifdef use_gtkmm
-#include "gtkmmbackend.h"
-#endif //use_gtkmm
+//overlap to close
 
-#ifdef sdl_gtkmm
-
-#endif //sdl_gtkmm
 
 #include "slateobject.h"
 #include "border.h"
@@ -105,7 +100,7 @@ protected:
 	 * 4: is placeholder // int:16
 	 * 5: is shown on lock //readonly! int 32
 	 * 6: is overlapped // int 64
-	 * 7: ?? //int 128
+	 * 7: contains sensitive information (hides after a certain amount of inactivity in the slate) (reactivation by click)
 	 * 
 	 * */
 	void set_slate_state_value(unsigned short flag_pos,bool flag_value);
@@ -113,6 +108,11 @@ protected:
 	//bool lock_state;
 	int lock_action; //0 hide 1 readonly 2 disappear on lock
 	//int slate_state; //0 normal 1 isolated
+
+	void emit_slate_signal_multicast(int number, unsigned int slice_beg_xy=-1, unsigned int slice_end_xy=-1);
+	void emit_slate_signal_s(int number, unsigned int slice_beg, unsigned int slice_end);
+	
+	virtual void receive_slate_signal(int number); 
 private:
 	
 	

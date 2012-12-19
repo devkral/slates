@@ -30,24 +30,27 @@ class view_attributes;
 
 class slateobject
 {
-	public:
-		slateobject(slate *leftuppercornert);
-		~slateobject();
+public:
+	slateobject(slate *leftuppercornert);
+	~slateobject();
 
-		void set_object(void *in_object);
-		void *get_object();
-		void draw();
-		const view_attributes get_viewo();
+	void set_object(void *in_object);
+	void *get_object();
+	void draw();
+	void destroy();
+	const view_attributes get_viewo();
 		
-		int resize(int width, int height);
-		int move(slate *leftuppercornert); //begins with a left upper corner not necessary pos 0
-
+	int resize(int width, int height);
+	int move(slate *leftuppercornert); //begins with a left upper corner not necessary pos 0
 		
-	protected:
-		void *contained_object;
-		slate *leftuppercorner;
-		int size_x=1;
-		int size_y=1;
+		
+protected:
+	void *contained_object;
+	slate *leftuppercorner;
+	int size_x=1;
+	int size_y=1;
+	//virtual void destroy_child()=0;
+	//vector parents;
 		
 
 };
