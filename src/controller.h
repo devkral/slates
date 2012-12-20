@@ -19,13 +19,13 @@
 
 #ifndef _CONTROLLER_H_
 #define _CONTROLLER_H_
-
+#include <masterslate.h>
 
 
 class controller
 {
 public:
-
+	controller();
 protected:
 
 private:

@@ -21,12 +21,10 @@
 #define _SLATEOBJECT_H_
 #include "slate.h"
 class slate;
-
-/**
- * if slateobject overlapps some other widgets,hide them
- * 
- */
 class view_attributes;
+
+class border;
+
 
 
 const int fpos_locked=0;
@@ -34,6 +32,7 @@ const int fpos_isolated=1;
 const int fpos_shown=2;
 const int fpos_readonly=3;
 const int fpos_shown_lock=4;
+const int fpos_sensitive=5;
 //const int fpos_overlapped=6;
 //const int fpos_??=7; not defined yet
 
@@ -49,8 +48,7 @@ public:
 	void *get_object();
 	void draw();
 	void destroy();
-	void lock();
-	void unlock();
+	void set_slate_state_value(unsigned short flag_pos,bool flag_value);
 	
 	const view_attributes get_viewo();
 		
@@ -61,13 +59,17 @@ public:
 		
 protected:
 	void *contained_object;
+	border *border_right, *border_bottom;
 	slate *leftuppercorner;
 	int size_x=1;
 	int size_y=1;
 	int lock_action; //0 hide 1 readonly 2 disappear on lock
+
+	virtual void draw_default_child(){};
+	virtual void draw_borders(){};
 	//virtual void destroy_child()=0;
 	//vector parents;
-	unsigned char slateo_state=16;
+	unsigned char slateo_state=0;
 	//00000000
 	/**
 	 * (right to left)
@@ -76,13 +78,12 @@ protected:
 	 * 1: is isolated //int 2 
 	 * 2: is shown //int 4
 	 * 3: is readonly //int 8
-	 * 4: is placeholder // int:16
-	 * 5: is shown on lock //readonly! int 32
+	 * 4: is shown on lock //readonly! int 16
+	 * 5: contains sensitive information (hides after a certain amount of inactivity in the slate) (reactivation by click)
 	 * 6: 
-	 * 7: contains sensitive information (hides after a certain amount of inactivity in the slate) (reactivation by click)
-	 * 
+	 * 7: 
 	 * */
-	void set_slate_state_value(unsigned short flag_pos,bool flag_value);
+	
 	friend class slate;
 };
 

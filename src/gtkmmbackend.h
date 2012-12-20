@@ -16,39 +16,25 @@
  * You should have received a copy of the GNU General Public License along
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
-#ifndef _GTKBACKEND_H_
-#define _GTKBACKEND_H_
+
+#ifndef _GTKMMBACKEND_H_
+#define _GTKMMBACKEND_H_
 #include <gtkmm.h>
 
-class gtk_sys_slate : public Gtk::Button
+class gtkmmborder
 {
-
-
-public:
-	gtk_sys_slate();
+	public:
+		gtkmmborder();
 	
-private:
-
 };
 
-class gtk_slate {
-public:
-	gtk_slate ();
-	void split_slate(int hight, int width);
-	Gtk::Grid *return_widget();
-	void show();
-protected:
+class gtkmmcontroller
+{
+	public:
+		gtkmmcontroller();
 	
-private:
-	Gtk::Grid slategrid;
-	gtk_sys_slate ttz;
-		gtk_sys_slate ttd;
-	void fill_slate(int hight, int width);
-	virtual void leftclick();
 };
 
 
-
-#endif // _GTKBACKEND_H_*/
+#endif // _GTKMMBACKEND_H_
 

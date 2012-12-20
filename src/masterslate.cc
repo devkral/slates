@@ -114,7 +114,10 @@ void masterslate::dec_used_slates()
 	}
 		
 	if (controlnext!=0 && controlnext->freeme())
+	{
 		delete controlnext;
+		controlnext=0;
+	}
 }
 void masterslate::create_slice()
 {
@@ -135,21 +138,6 @@ bool masterslate::freeme()
 		return false;
 }
 
-int masterslate::detach_child ()
-{
-	sobject=default_object;
-	is_assoz=false;
-	dec_used_slates();
-	show();
-}
-
-int masterslate::attach_child(slateobject *tt)
-{
-	sobject=tt;
-	is_assoz=true;
-	inc_used_slates();
-	show();
-}
 
 
 bool masterslate::is_masterslate ()

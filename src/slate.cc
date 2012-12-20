@@ -18,27 +18,29 @@
  */
 
 #include "slate.h"
-using namespace std;
 #include <iostream>
 
 
 
+using namespace std;
 
 void slate::show()
 {
+	sobject->draw();
 	sobject->set_slate_state_value(2,true);
-	//draw_slate ();
-	//sobject->draw();
 };
 
 void slate::hide()
 {
+	sobject->draw();
 	sobject->set_slate_state_value(2,false);
-	//draw_slate ();
-	//sobject->draw();
 };
 
-
+void slate::destroy()
+{
+	detach_child ();
+	sobject->set_slate_state_value(2,false);
+};
 
 
 
@@ -53,10 +55,38 @@ void slate::receive_slate_signal(int number)
 {
 	switch (number)
 	{
-		case 1: 
+		case sig_destroy: cout << "Waaargh";
 			break;
-
+		case sig_show: show();
+			break;
+		case sig_hide: hide();
+			break;
+		default: cerr << "Unknown signal\n";
+		break;
 	}
 
 
 }
+
+int slate::detach_child ()
+{
+	//sobject=new default_sobject(this);
+	is_assoz=false;
+	dec_used_slates();
+}
+
+int slate::attach_child(slateobject *tt)
+{
+	if (is_assoz==true)
+	{
+		sobject->destroy();
+		delete sobject;		
+	}
+	sobject=tt;
+	if (is_assoz==false)
+	{
+		is_assoz=true;
+		inc_used_slates();
+	}
+}
+

@@ -33,17 +33,21 @@ public:
 	bool freeme();
 	void inc_used_slates();
 	void dec_used_slates();
-	bool is_filled(int x=-1, int y=-1); //default return for cur slate
+	//bool is_filled(int x=-1, int y=-1); //default return for cur slate
 	masterslate(int _x_y, masterslate *controlpointt);
 	masterslate(view_attributes *viewot);
 	~masterslate();
-	int attach_child(slateobject *tt);
-	int detach_child ();
-	bool is_masterslate ();
+
+	
 	void draw_slate ();
 	void lockall();
 	void unlockall();
-	void assoz(bool assoz_flag);
+
+	
+	int attach_child(slateobject *tt);
+	int detach_child ();
+	bool is_masterslate ();
+	//void assoz(bool assoz_flag);
 	void emit_slate_signal(slate_messenger message);
 	
 protected:

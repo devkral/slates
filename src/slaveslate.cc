@@ -31,21 +31,8 @@ slaveslate::slaveslate(int x, int y, masterslate *controlpointt)
 
 
 
-int slaveslate::detach_child ()
-{
-	sobject=controlpoint->default_object;
-	is_assoz=false;
-	controlpoint->dec_used_slates();
-	show();
-}
 
-int slaveslate::attach_child(slateobject *tt)
-{
-	sobject=tt;
-	is_assoz=true;
-	controlpoint->inc_used_slates();
-}
-
+/**
 void slaveslate::assoz(bool assoz_flag)
 {
 	if (assoz_flag)
@@ -60,7 +47,7 @@ void slaveslate::assoz(bool assoz_flag)
 		show();
 		controlpoint->dec_used_slates(); //an assoz slate is an used slate
 	}
-}
+}*/
 
 bool slaveslate::is_masterslate ()
 {
@@ -70,4 +57,13 @@ bool slaveslate::is_masterslate ()
 void slaveslate::emit_slate_signal(slate_messenger message)
 {
 	controlpoint->emit_slate_signal(message);
+}
+
+void slaveslate::inc_used_slates()
+{
+	controlpoint->inc_used_slates ();
+}
+void slaveslate::dec_used_slates()
+{
+	controlpoint->dec_used_slates ();
 }

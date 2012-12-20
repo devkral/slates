@@ -29,7 +29,8 @@
 #include "border.h"
 
 class slateobject;
-class border;
+
+slateobject default_sobject(slate *j);
 using namespace std;
 
 
@@ -47,9 +48,11 @@ struct view_attributes
 	int psize_slate_y=-1;
 };
 
+
+
 struct slate_messenger
 {
-	slate *caller;
+	slate *caller; //not used yet
 	int message=-1;
 	int x_beg=-1;
 	int x_end=-1;
@@ -61,39 +64,47 @@ struct slate_messenger
 	int xy_end=-1;
 };
 
-enum sigslate{
-destroy,assoz,deassoz,lock,unlock
+struct message_resize : public slate_messenger
+{
+
+
 };
+
+
+const int sig_destroy=1;
+const int sig_show=2;
+const int sig_hide=3;
+const int sig_lock=4;
+const int sig_unlock=5;
+const int sig_sensitive=6;
+const int sig_resize=7;
+const int sig_move=8;
 
 
 class slate
 {
 public:
 	virtual bool is_masterslate()=0; //important =0
-	virtual int attach_child(slateobject *tt)=0;
-	virtual int detach_child ()=0;
-	virtual void assoz(bool assoz_flag)=0;
-	
-	//virtual void draw_slate ()=0;
-	
+	virtual void emit_slate_signal(slate_messenger message)=0;
+	virtual void inc_used_slates()=0;
+	virtual void dec_used_slates()=0;
+		
 	void show();
 	void hide();
-
+	void destroy();
 	void lock();
 	void unlock();
+	void move(int x, int y);
+	void resize(int x_size, int y_size);
+	int attach_child(slateobject *tt);
+	int detach_child ();
 
 
-	unsigned char get_slate_state();
-	
 	const view_attributes get_viewo();
-	virtual void emit_slate_signal(slate_messenger message);
 	void receive_slate_signal(int number); 
-	//slate();
 	
 protected:
 	slateobject *sobject;
-	//bool is_placeholder=true;
-	border *border_right, *border_bottom;
 	view_attributes *viewo; //copy for nonfriends
 
 

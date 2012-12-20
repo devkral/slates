@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
+
 
 #include "gtkmmbackend.h"
 #include <iostream>
@@ -25,8 +25,16 @@ using namespace std;
 
 
 
+gtkmmcontroller::gtkmmcontroller()
+{
 
 
+
+}
+
+
+
+/**
 
 gtk_slate::gtk_slate(): slategrid()
 {

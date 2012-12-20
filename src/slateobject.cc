@@ -21,10 +21,12 @@
 
 #include <iostream>
 using namespace std;
-//slate_object
+
+
 slateobject::slateobject(slate *leftuppercornert)
 {
 	leftuppercorner=leftuppercornert;
+	draw_default_child();
 }
 slateobject::~slateobject()
 {
@@ -33,9 +35,10 @@ slateobject::~slateobject()
 
 }
 
-
 void slateobject::set_object(void *in_object)
 {
+	//delete contained_object;
+
 	contained_object=in_object;
 }
 void *slateobject::get_object()
@@ -67,6 +70,25 @@ void slateobject::set_slate_state_value(unsigned short flag_pos,bool flag_value)
 			slateo_state=slateo_state&~(1<<flag_pos);
 
 }
+void slateobject::draw()
+{
+	//draw_borders ()
+	//draw_child()
+
+}
+
+void slateobject::destroy()
+{
+	delete border_right;
+	border_right=0;
+	delete border_bottom;
+	border_bottom=0;
+	//draw_borders ()
+	//draw_child()
+
+}
+
+;
 
 /**unsigned char slateobject::get_slate_state()
 {
