@@ -17,10 +17,9 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLATES_H_
-#define _SLATES_H_
+#ifndef _SLATE_H_
+#define _SLATE_H_
 
-//rename to singular
 
 //overlap to close
 
@@ -33,7 +32,14 @@ class slateobject;
 slateobject default_sobject(slate *j);
 using namespace std;
 
-
+const int sig_destroy=1;
+const int sig_show=2;
+const int sig_hide=3;
+const int sig_lock=4;
+const int sig_unlock=5;
+const int sig_sensitive=6;
+const int sig_resize=7;
+const int sig_move=8;
 
 
 struct view_attributes
@@ -53,7 +59,7 @@ struct view_attributes
 struct slate_messenger
 {
 	slate *caller; //not used yet
-	int message=-1;
+	virtual int type(){return -1;};
 	int x_beg=-1;
 	int x_end=-1;
 	int y_beg=-1;
@@ -64,21 +70,39 @@ struct slate_messenger
 	int xy_end=-1;
 };
 
-struct message_resize : public slate_messenger
+struct message_destroy : public slate_messenger
 {
-
+	int type()
+	{
+		return sig_destroy;
+	}
+	slateobject *new_child;
 
 };
 
 
-const int sig_destroy=1;
-const int sig_show=2;
-const int sig_hide=3;
-const int sig_lock=4;
-const int sig_unlock=5;
-const int sig_sensitive=6;
-const int sig_resize=7;
-const int sig_move=8;
+struct message_resize : public slate_messenger
+{
+	int type()
+	{
+		return sig_resize;
+	}
+	slateobject *new_child;
+
+};
+
+
+struct message_move : public slate_messenger
+{
+	int type()
+	{
+		return sig_move;
+	}
+	slateobject *new_child;
+
+};
+
+
 
 
 class slate
@@ -101,7 +125,7 @@ public:
 
 
 	const view_attributes get_viewo();
-	void receive_slate_signal(int number); 
+	void receive_slate_signal(slate_messenger *slate_message); //lifetime great enough. At least as long as I don't use threads
 	
 protected:
 	slateobject *sobject;
@@ -117,5 +141,5 @@ private:
 
 
 
-#endif // _SLATES_H_
+#endif // _SLATE_H_
 

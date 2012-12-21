@@ -8,7 +8,9 @@ AM_CPPFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\""$(localedir)"\" \
 	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
 	-DPACKAGE_DATA_DIR=\""$(pkgdatadir)"\" \
-	$(SLATES_CFLAGS)
+	$(SLATES_CFLAGS)\
+	$(GTKMM_CFLAGS) \
+	$(SDL_CFLAGS)
 
 AM_CFLAGS =\
 	 -Wall\
@@ -32,15 +34,17 @@ slates_SOURCES = \
 	border.h \
 	widgets.cc \
 	widgets.h \
-	controller.cc \
-	controller.h \
 	sdlbackend.cc \
-	sdlbackend.h
+	sdlbackend.h \
+	controller.cc \
+	controller.h
 
 slates_CXXFLAGS = -std=c++11 
 
 slates_LDFLAGS = 
 
-slates_LDADD = $(SLATES_LIBS)
+slates_LDADD = $(SLATES_LIBS) \
+	$(GTKMM_LIBS) \
+	$(SDL_LIBS)
 
 

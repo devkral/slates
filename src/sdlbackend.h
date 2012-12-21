@@ -17,18 +17,31 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+#ifndef _CONFIG_H_
+#define _CONFIG_H_
+#include "config.h"
+#endif //_CONFIG_H_
+
+#ifdef COMPILED_WITH_SDL
 #ifndef _SDLBACKEND_H_
 #define _SDLBACKEND_H_
+#include <SDL/SDL.h>
+//#include "sdlbackend.cc"
 
-class sdlbackend
+int sdlmain(int argc, char *argv[]);
+
+class sdlcontroller
 {
 public:
-
+	sdlcontroller(int argc, char *argv[]);
 protected:
 
 private:
 
 };
 
-#endif // _SDLBACKEND_H_
 
+
+#endif // _SDLBACKEND_H_
+#endif //COMPILED_WITH_SDL

@@ -17,19 +17,31 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtkmm.h>
-#include <iostream>
 
+
+#ifndef _CONFIG_H_
+#define _CONFIG_H_
 #include "config.h"
-#include "slate.h"
+#endif //_CONFIG_H_
 
-#ifdef compiled_gtkmm
+
+#include <iostream>
+#ifdef COMPILED_WITH_GTKMM
 #include "gtkmmbackend.h"
 #endif
 
-#ifdef compiled_sdl
+
+#ifdef COMPILED_WITH_SDL
 #include "sdlbackend.h"
 #endif
+
+#define DEFAULT_BACKEND 1
+
+/**
+ * Backends
+ * 1 sdl
+ * 2 gtkmm
+ * /
 
 
 /**
@@ -43,17 +55,22 @@
 int
 main (int argc, char *argv[])
 {
-	Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv,
-      "org.slates.mainslate");
-	Gtk::Window window;
-	window.set_title ("slates");
-	//slate tt;
-	Gtk::Button tz;
-	tz.set_label("zz");
-	//Gtk::Grid *t=(tt.return_widget());
-	//window.add(*(tt.return_widget()));
-	//tt.show();
+	int sel=1; //debug
+	switch (sel)
+	{
+#ifdef COMPILED_WITH_SDL
+		case 1: sdlmain(argc, argv);
+			break;
+#endif
+#ifdef COMPILED_WITH_GTKMM
+		case 2: gtkmmmain(argc, argv);
+			break;
+#endif		
 
-	return app->run(window);
+	}
+	
+
+	
+	
 }
 

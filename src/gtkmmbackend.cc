@@ -18,19 +18,27 @@
  */
 
 
+#ifndef _CONFIG_H_
+#define _CONFIG_H_
+#include "config.h"
+#endif //_CONFIG_H_
+
+
+
+#ifdef COMPILED_WITH_GTKMM
 #include "gtkmmbackend.h"
 #include <iostream>
 using namespace std;
 
 
 
-
+/**
 gtkmmcontroller::gtkmmcontroller()
 {
 
 
 
-}
+}*/
 
 
 
@@ -115,3 +123,19 @@ void gtk_slate::show()
 }
 */
 
+int gtkmmmain(int argc, char *argv[])
+{
+		Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv,
+      "org.slates.mainslate");
+	Gtk::Window window;
+	window.set_title ("slates");
+	//slate tt;
+	Gtk::Button tz;
+	tz.set_label("zz");
+	//Gtk::Grid *t=(tt.return_widget());
+	//window.add(*(tt.return_widget()));
+	//tt.show();
+
+	return app->run(window);
+}
+#endif //COMPILED_WITH_GTKMM

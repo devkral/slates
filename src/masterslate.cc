@@ -156,7 +156,7 @@ void masterslate::notify_left_slates (slate_messenger *message)
 			max_countx=pos_x_y-1;
 		
 		for (int countx=message->x_beg;countx<=max_countx;countx++)
-			left_slates[countx].receive_slate_signal (message->message);
+			left_slates[countx].receive_slate_signal (message);
 	}
 
 }
@@ -170,7 +170,7 @@ void masterslate::notify_top_slates (slate_messenger *message)
 			max_county=pos_x_y-1;
 
 		for (int county=message->y_beg;county<=max_county;county++)
-			left_slates[county].receive_slate_signal (message->message);
+			left_slates[county].receive_slate_signal (message);
 	}
 
 }
@@ -201,7 +201,7 @@ void masterslate::emit_slate_signal(slate_messenger message)
 	notify_left_slates (&message);
 	                    
 	if (pos_x_y>=message.x_beg && pos_x_y<=message.x_end && pos_x_y>=message.x_beg && pos_x_y<=message.x_end)
-		receive_slate_signal (message.message);
+		receive_slate_signal (&message);
 		
 	//slates top
 	notify_top_slates (&message);

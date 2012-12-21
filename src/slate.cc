@@ -51,9 +51,9 @@ const view_attributes slate::get_viewo()
 	return *viewo;
 
 }
-void slate::receive_slate_signal(int number) 
+void slate::receive_slate_signal(slate_messenger *message) 
 {
-	switch (number)
+	switch (message->type())
 	{
 		case sig_destroy: cout << "Waaargh";
 			break;
@@ -61,7 +61,9 @@ void slate::receive_slate_signal(int number)
 			break;
 		case sig_hide: hide();
 			break;
-		default: cerr << "Unknown signal\n";
+		case -1: cerr << "Error: Don't use slate_messenger directly\n";
+			break;
+		default: cerr << "Error: Unknown signal\n";
 		break;
 	}
 

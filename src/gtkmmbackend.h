@@ -17,6 +17,14 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+#ifndef _CONFIG_H_
+#define _CONFIG_H_
+#include "config.h"
+#endif //_CONFIG_H_
+
+
+#ifdef COMPILED_WITH_GTKMM
 #ifndef _GTKMMBACKEND_H_
 #define _GTKMMBACKEND_H_
 #include <gtkmm.h>
@@ -35,6 +43,8 @@ class gtkmmcontroller
 	
 };
 
+int gtkmmmain(int ,char *[]);
+
 
 #endif // _GTKMMBACKEND_H_
-
+#endif // COMPILED_WITH_GTKMM
