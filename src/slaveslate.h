@@ -33,8 +33,6 @@ public:
 	void draw_slate ();
 	void inc_used_slates();
 	void dec_used_slates();
-	int detach_child ();
-	int attach_child (slateobject *tt);
 	//void assoz(bool assoz_flag);
 	void emit_slate_signal(slate_messenger message);
 protected:

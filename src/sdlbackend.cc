@@ -35,12 +35,51 @@
 using namespace std;
 
 
-sdlmslate::sdlmslate() : masterslate(0,0)
+sdlmslate::sdlmslate(view_attributes *viewot) : masterslate(viewot)
 {
 //SDL_SetClipRect();
 
 }
+slaveslate* sdlmslate::give_slave_slate(int x,int y,masterslate *controlpointt)
+{
 
+	return new sdlsslate(x,y,controlpointt);
+}
+
+
+sdlslateobject::sdlslateobject(slate *t) : slateobject(t)
+{
+
+
+}
+
+masterslate* sdlmslate::give_master_slate(int pos_x_y_next, masterslate *controlpointt)
+{
+
+	//return new sdlmslate(pos_x_y_next,controlpointt);
+}
+
+sdlsslate::sdlsslate(int x, int y,masterslate *controlpointt) : slaveslate (x,y,controlpointt)
+{
+
+
+
+
+}
+
+
+//defaultobject
+slateobject *sdlsslate::give_default_slateobject(slate *t)
+{
+	return new sdlslateobject(t);
+}
+
+slateobject *sdlmslate::give_default_slateobject(slate *t)
+{
+	return new sdlslateobject(t);
+}
+
+//defaultobject end
 
 sdlcontroller::sdlcontroller(int argc, char *argv[]) : controller()
 {
@@ -49,7 +88,7 @@ sdlcontroller::sdlcontroller(int argc, char *argv[]) : controller()
 
 	for (int z=0; z==0; z++)
 	{
-		SDL_Surface *tempscreen=SDL_SetVideoMode(widthf, heightf, 24, SDL_HWSURFACE | SDL_DOUBLEBUF);// | SDL_FULLSCREEN);
+		SDL_Surface *tempscreen=SDL_SetVideoMode(widthf, heightf, 24, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_ANYFORMAT);// | SDL_FULLSCREEN);
         if (tempscreen == NULL)
 		{
 		    printf("Can't set video mode: %s\n", SDL_GetError());

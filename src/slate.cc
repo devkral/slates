@@ -72,9 +72,10 @@ void slate::receive_slate_signal(slate_messenger *message)
 
 int slate::detach_child ()
 {
-	//sobject=new default_sobject(this);
+	sobject=give_default_slateobject(this);
 	is_assoz=false;
 	dec_used_slates();
+	return 0;
 }
 
 int slate::attach_child(slateobject *tt)
@@ -90,5 +91,6 @@ int slate::attach_child(slateobject *tt)
 		is_assoz=true;
 		inc_used_slates();
 	}
+	return 0;
 }
 

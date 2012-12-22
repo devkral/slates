@@ -30,6 +30,9 @@ class masterslate: public slate
 public:
 	//unsigned char get_slate_info();
 	//virtual void split_slate(int hight, int width); //
+	
+	virtual slaveslate* give_slave_slate(int x, int y,masterslate *controlpointt)=0;
+	virtual masterslate* give_master_slate(int pos_x_y_next ,masterslate *controlpointt)=0;
 	bool freeme();
 	void inc_used_slates();
 	void dec_used_slates();
@@ -44,8 +47,7 @@ public:
 	void unlockall();
 
 	
-	int attach_child(slateobject *tt);
-	int detach_child ();
+
 	bool is_masterslate ();
 	//void assoz(bool assoz_flag);
 	void emit_slate_signal(slate_messenger message);
@@ -60,7 +62,7 @@ protected:
 private:
 	unsigned int pos_x_y; //begin pos=0
 	void create_slice();
-	vector <slaveslate> left_slates, top_slates;
+	vector <slaveslate*> left_slates, top_slates;
 	masterslate *controlpre=0,*controlnext=0;
 	int used_slades; //controlpoints contain the number of used slates in their slice
 	//unsigned char slate_info; //<private><readonlypublic><readonly><isolated><assoz><mainslate><locked/minimized><?>

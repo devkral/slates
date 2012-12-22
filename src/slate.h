@@ -28,8 +28,9 @@
 #include "border.h"
 
 class slateobject;
+//slateobject::default_sobject(slate *);
 
-slateobject default_sobject(slate *j);
+
 using namespace std;
 
 
@@ -59,7 +60,8 @@ public:
 	virtual void emit_slate_signal(slate_messenger message)=0;
 	virtual void inc_used_slates()=0;
 	virtual void dec_used_slates()=0;
-		
+	virtual slateobject* give_default_slateobject(slate *t)=0;
+	
 	void show();
 	void hide();
 	void destroy();
@@ -67,8 +69,9 @@ public:
 	void unlock();
 	void move(int x, int y);
 	void resize(int x_size, int y_size);
+	
 	int attach_child(slateobject *tt);
-	int detach_child ();
+	int detach_child();
 
 
 	const view_attributes get_viewo();

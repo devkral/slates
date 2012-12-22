@@ -34,10 +34,45 @@
 
 int sdlmain(int argc, char *argv[]);
 
-class sdlmslate : masterslate
+
+
+class sdlslateobject : public slateobject
+{
+	public:
+		sdlslateobject(slate *t);
+
+
+};
+
+
+
+
+
+class sdlsslate : public slaveslate
 {
 public:
-	sdlmslate();
+	sdlsslate(int x, int y,masterslate *controlpointt);
+	//defaultobject
+	slateobject* give_default_slateobject (slate *t);
+	//defaultobject end
+	
+private:
+	sdlslateobject *sdlslateob;
+
+};
+
+
+
+class sdlmslate : public masterslate
+{
+public:
+	sdlmslate(view_attributes *viewot);
+	sdlmslate(int _x_y, masterslate *controlpointt);
+	//defaultobject
+	slateobject* give_default_slateobject (slate *t);
+	//defaultobject end
+	slaveslate* give_slave_slate(int x,int y,masterslate *controlpointt);
+	masterslate* give_master_slate(int pos_x_y_next, masterslate *controlpointt);
 	
 private:
 	SDL_Surface *master;
@@ -45,7 +80,7 @@ private:
 };
 
 
-class sdlcontroller : controller
+class sdlcontroller : public controller
 {
 public:
 	sdlcontroller(int argc, char *argv[]);

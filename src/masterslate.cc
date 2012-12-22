@@ -45,13 +45,15 @@ masterslate::masterslate(view_attributes *viewot)
 
 masterslate::~masterslate()
 {
-	if (!left_slates.empty())
+	while (!left_slates.empty())
 	{
-		left_slates.clear();
+		delete left_slates.back();
+		left_slates.pop_back ();
 	}
-	if (!top_slates.empty())
+	while (!top_slates.empty())
 	{
-		top_slates.clear();
+		delete top_slates.back();
+		top_slates.pop_back ();
 	}
 	if (controlnext!=0)
 	{
@@ -95,10 +97,10 @@ bool masterslate::is_filled(int x=-1,int y=-1)
 void masterslate::inc_used_slates()
 {
 	used_slades++;
-	if (2*pos_x_y+1<=used_slades)
+	if (2*pos_x_y+1<=used_slades) //begins with 0
 	{
 		used_slades++;
-		controlnext=new masterslate(pos_x_y+1,this);
+		controlnext=give_master_slate(pos_x_y+1,this);
 	}
 }
 
@@ -123,8 +125,8 @@ void masterslate::create_slice()
 {
 	for(int it=0;it<pos_x_y;it++)
 	{
-		left_slates.push_back(slaveslate(it,pos_x_y,this));
-		top_slates.push_back(slaveslate(pos_x_y,it,this));
+		left_slates.push_back(give_slave_slate(it,pos_x_y,this));
+		top_slates.push_back(give_slave_slate(pos_x_y,it,this));
 	}
 
 }
@@ -156,7 +158,7 @@ void masterslate::notify_left_slates (slate_messenger *message)
 			max_countx=pos_x_y-1;
 		
 		for (int countx=message->x_beg;countx<=max_countx;countx++)
-			left_slates[countx].receive_slate_signal (message);
+			left_slates[countx]->receive_slate_signal (message);
 	}
 
 }
@@ -170,7 +172,7 @@ void masterslate::notify_top_slates (slate_messenger *message)
 			max_county=pos_x_y-1;
 
 		for (int county=message->y_beg;county<=max_county;county++)
-			left_slates[county].receive_slate_signal (message);
+			left_slates[county]->receive_slate_signal (message);
 	}
 
 }
