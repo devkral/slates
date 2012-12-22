@@ -1,0 +1,14 @@
+TODO:
+implement messaging =>
+implement actual actions (close destroy)
+implement running programs as children  //is there a lib
+implement program selector
+
+Future:
+deco: would be nice to have deco instead of having a spartan interface
+implement gui isolation
+
+
+Rethinking Licence:
+LGPL? BSD?
+or stay
