@@ -23,7 +23,7 @@
 
 //overlap to close
 
-
+#include "messages.h"
 #include "slateobject.h"
 #include "border.h"
 
@@ -32,14 +32,7 @@ class slateobject;
 slateobject default_sobject(slate *j);
 using namespace std;
 
-const int sig_destroy=1;
-const int sig_show=2;
-const int sig_hide=3;
-const int sig_lock=4;
-const int sig_unlock=5;
-const int sig_sensitive=6;
-const int sig_resize=7;
-const int sig_move=8;
+
 
 
 struct view_attributes
@@ -55,52 +48,6 @@ struct view_attributes
 };
 
 
-
-struct slate_messenger
-{
-	slate *caller; //not used yet
-	virtual int type(){return -1;};
-	int x_beg=-1;
-	int x_end=-1;
-	int y_beg=-1;
-	int y_end=-1;
-
-	//don't set (will be set by emit_slate_signal ())
-	int xy_beg=-1;
-	int xy_end=-1;
-};
-
-struct message_destroy : public slate_messenger
-{
-	int type()
-	{
-		return sig_destroy;
-	}
-	slateobject *new_child;
-
-};
-
-
-struct message_resize : public slate_messenger
-{
-	int type()
-	{
-		return sig_resize;
-	}
-	slateobject *new_child;
-
-};
-
-
-struct message_move : public slate_messenger
-{
-	int type()
-	{
-		return sig_move;
-	}
-	slateobject *new_child;
-
-};
 
 
 

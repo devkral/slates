@@ -22,6 +22,10 @@
 #include "config.h"
 #endif //_CONFIG_H_
 
+
+#define widthf sysdisplay->current_w
+#define heightf sysdisplay->current_h
+
 #ifdef COMPILED_WITH_SDL
 #include "sdlbackend.h"
 #include <iostream>
@@ -30,36 +34,89 @@
 #include <SDL/SDL.h>
 using namespace std;
 
+
+sdlmslate::sdlmslate() : masterslate(0,0)
+{
+//SDL_SetClipRect();
+
+}
+
+
+sdlcontroller::sdlcontroller(int argc, char *argv[]) : controller()
+{
+	sysdisplay=SDL_GetVideoInfo();
+
+
+	for (int z=0; z==0; z++)
+	{
+		SDL_Surface *tempscreen=SDL_SetVideoMode(widthf, heightf, 24, SDL_HWSURFACE | SDL_DOUBLEBUF);// | SDL_FULLSCREEN);
+        if (tempscreen == NULL)
+		{
+		    printf("Can't set video mode: %s\n", SDL_GetError());
+    		exit(1);
+		}
+		screens.push_back (tempscreen);
+	}
+	SDL_Rect u;
+	u.x=0;
+	u.y=0;
+	u.h=100;
+	u.w=100;
+	cout << (int)screens.back()->format->BitsPerPixel;
+	SDL_FillRect(screens.back(), &u, 2552552550);
+	while (!done)
+	{
+
+		//SDL_WaitEvent (&event);
+		while(SDL_PollEvent(&event))
+		{
+			switch (event.type)
+			{
+				case SDL_KEYDOWN:
+					done = true;
+					break;
+
+
+				case SDL_QUIT:
+					done = true;
+					break;
+			}
+		}
+	SDL_Flip(screens.back());
+	SDL_Delay(10);
+		 
+	}
+
+}
+sdlcontroller::~sdlcontroller()
+{
+
+	//for (std::vector<SDL_Surface>::iterator it = screens.begin(); it != screens.end(); ++it)
+	while (!screens.empty())
+	{
+		SDL_FreeSurface(screens.back());
+		screens.pop_back();
+
+	}
+}
+
 int sdlmain(int argc, char *argv[])
 {
-	SDL_Surface *screen;
-    SDL_Event event;
-	int done = 0;
-    if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_NOPARACHUTE | SDL_INIT_EVENTTHREAD) == -1) {
-        printf("Can't init SDL:  %s\n", SDL_GetError());
+
+    if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+        cerr << "Can't init SDL:  " << SDL_GetError() << "\n";
         return 1;
     }
-    atexit(SDL_Quit);
-    screen = SDL_SetVideoMode(640, 480, 16, SDL_HWSURFACE | SDL_DOUBLEBUF);
-    if (screen == NULL) {
-        printf("Can't set video mode: %s\n", SDL_GetError());
-        return 1;
-    }   
 
-while (!done)
-{
-	while(SDL_PollEvent(&event))
-	{
-		switch (event.type)
-		{
-			case SDL_QUIT:
-				done = 1;
-				break;
-		}
-	}
-	usleep(100);
-		 
-}
+	
+	//SDL_EnableUNICODE(1);
+    atexit(SDL_Quit);
+
+	
+	sdlcontroller(argc,argv);
+
+	
+
     return 0;
 
 
