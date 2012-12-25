@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*-  */
 /*
  * slates
- * Copyright (C) 2012 alex <alex@archal>
+ * Copyright (C) 2012 alex <devkral@web.de>
  * 
  * slates is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -28,7 +28,6 @@
 #include "border.h"
 
 class slateobject;
-//slateobject::default_sobject(slate *);
 
 
 using namespace std;
@@ -40,12 +39,39 @@ struct view_attributes
 {
 	int view_begin_x=0;
 	int view_begin_y=0;
-	int x_axis=1;
-	int y_axis=1;
+	//int size_view_area=-1; , else diagonal down with size slates
+	int view_x_axis=0; //if 0: adjust automatically (amount_masterslates)
+	int view_y_axis=0; //if 0: adjust automatically (amount_masterslates)
+	int amount_masterslates=1; //if 0 clean exit
 	int reso_x=-1;
 	int reso_y=-1;
+	inline void update_reso_slates()
+	{
+		if(amount_masterslates>0) //division through zero should not occur (but amount can reach zero and in case of errors less)
+		{
+			if (view_x_axis==0)
+			{
+				psize_slate_x=reso_x/amount_masterslates;
+			}
+			else
+			{
+				psize_slate_x=reso_x/view_x_axis;
+			}
+
+			if (view_y_axis==0)
+			{
+				psize_slate_y=reso_y/amount_masterslates;
+			}
+			else
+			{
+				psize_slate_y=reso_y/view_y_axis;
+			}
+		}
+	}
+		
 	int psize_slate_x=-1;
 	int psize_slate_y=-1;
+	void *drawing_area=0;
 };
 
 
@@ -60,7 +86,7 @@ public:
 	virtual void emit_slate_signal(slate_messenger message)=0;
 	virtual void inc_used_slates()=0;
 	virtual void dec_used_slates()=0;
-	virtual slateobject* give_default_slateobject(slate *t)=0;
+	virtual slateobject* give_default_slateobject(slate *leftuppercornert)=0;
 	
 	void show();
 	void hide();

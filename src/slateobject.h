@@ -49,13 +49,13 @@ public:
 	void draw();
 	void destroy();
 	void set_slate_state_value(unsigned short flag_pos,bool flag_value);
+	bool get_slate_state_value(unsigned short flag_pos);
 	
 	const view_attributes get_viewo();
 		
 	int resize(int width, int height);
 	int move(slate *leftuppercornert); //begins with a left upper corner not necessary pos 0
 
-	bool get_slate_state_value(unsigned short flag_pos);
 		
 protected:
 	void *contained_object;

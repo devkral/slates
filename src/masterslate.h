@@ -32,12 +32,13 @@ public:
 	//virtual void split_slate(int hight, int width); //
 	
 	virtual slaveslate* give_slave_slate(int x, int y,masterslate *controlpointt)=0;
-	virtual masterslate* give_master_slate(int pos_x_y_next ,masterslate *controlpointt)=0;
+	virtual masterslate* give_master_slate(int pos_x_y_next ,masterslate *controlpointpret)=0;
 	bool freeme();
 	void inc_used_slates();
 	void dec_used_slates();
+	bool is_beginning_slate();
 	//bool is_filled(int x=-1, int y=-1); //default return for cur slate
-	masterslate(int _x_y, masterslate *controlpointt);
+	masterslate(int _x_y, masterslate *controlpointpret);
 	masterslate(view_attributes *viewot);
 	~masterslate();
 
@@ -66,14 +67,12 @@ private:
 	masterslate *controlpre=0,*controlnext=0;
 	int used_slades; //controlpoints contain the number of used slates in their slice
 	//unsigned char slate_info; //<private><readonlypublic><readonly><isolated><assoz><mainslate><locked/minimized><?>
-	slateobject *default_object;
 	void notify_left_slates(slate_messenger *message); //should be just executed by emit_slate_signal
 	void notify_top_slates(slate_messenger *message); //should be just executed by emit_slate_signal
-
+	
 	friend class slaveslate;
 	//friend class slateobject;
 };
 
 
 #endif // _MASTERSLATE_H_
-

@@ -26,20 +26,19 @@
 #ifdef COMPILED_WITH_SDL
 #ifndef _SDLBACKEND_H_
 #define _SDLBACKEND_H_
-#include <SDL/SDL.h>
+#include "SDL.h"
 #include <vector>
 
 
 #include "controller.h"
 
 int sdlmain(int argc, char *argv[]);
-
-
+class sdlmslate;
 
 class sdlslateobject : public slateobject
 {
 	public:
-		sdlslateobject(slate *t);
+		sdlslateobject(slate *parent);
 
 
 };
@@ -53,11 +52,10 @@ class sdlsslate : public slaveslate
 public:
 	sdlsslate(int x, int y,masterslate *controlpointt);
 	//defaultobject
-	slateobject* give_default_slateobject (slate *t);
+	slateobject* give_default_slateobject (slate *parent);
 	//defaultobject end
 	
 private:
-	sdlslateobject *sdlslateob;
 
 };
 
@@ -68,14 +66,15 @@ class sdlmslate : public masterslate
 public:
 	sdlmslate(view_attributes *viewot);
 	sdlmslate(int _x_y, masterslate *controlpointt);
+	~sdlmslate ();
 	//defaultobject
-	slateobject* give_default_slateobject (slate *t);
+	slateobject* give_default_slateobject (slate *parent);
 	//defaultobject end
 	slaveslate* give_slave_slate(int x,int y,masterslate *controlpointt);
 	masterslate* give_master_slate(int pos_x_y_next, masterslate *controlpointt);
 	
 private:
-	SDL_Surface *master;
+	//friend sdlmslate;
 
 };
 
@@ -85,16 +84,25 @@ class sdlcontroller : public controller
 public:
 	sdlcontroller(int argc, char *argv[]);
 	~sdlcontroller();
+	void drawthread();
 protected:
 
 private:
-	bool done = false;
-	vector<SDL_Surface*> screens;
+	//vector<SDL_Surface*> surfacestoscreens;
     SDL_Event event;
 	const SDL_VideoInfo *sysdisplay;
 };
 
 
+class sdlmcontroller : public mastercontroller
+{
+public:
+	sdlmcontroller();
+	void iodevicethread();
+
+private:
+	bool done = false;
+};
 
 #endif // _SDLBACKEND_H_
 #endif //COMPILED_WITH_SDL

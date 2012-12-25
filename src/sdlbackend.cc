@@ -31,47 +31,78 @@
 #include <iostream>
 //#include <cstdlib>
 #include <unistd.h>
-#include <SDL/SDL.h>
+#include "SDL.h"
 using namespace std;
 
+//slateobject
+
+sdlslateobject::sdlslateobject(slate *leftuppercornert) : slateobject(leftuppercornert)
+{
+	leftuppercorner=leftuppercornert;
+	SDL_Rect u;
+	u.x=0;
+	u.y=0;
+	u.h=100;
+	u.w=100;
+	//cout << (int)screens.back()->format->BitsPerPixel;
+	//SDL_FillRect(screens.back(), &u, 2552552550);
+}
+
+
+//slateobject end
+
+//masterslates
 
 sdlmslate::sdlmslate(view_attributes *viewot) : masterslate(viewot)
 {
-//SDL_SetClipRect();
-
-}
-slaveslate* sdlmslate::give_slave_slate(int x,int y,masterslate *controlpointt)
-{
-
-	return new sdlsslate(x,y,controlpointt);
+	//viewo=viewot;
 }
 
-
-sdlslateobject::sdlslateobject(slate *t) : slateobject(t)
+sdlmslate::sdlmslate(int pos_x_y_next, masterslate *controlpointpret) : masterslate(pos_x_y_next,controlpointpret)
 {
+	
+}
 
+sdlmslate::~sdlmslate ()
+{
+	//~masterslate();
+	if (is_beginning_slate ())
+	{
+		SDL_FreeSurface((SDL_Surface*)viewo->drawing_area);
+		viewo->drawing_area=0;
+		
+		delete viewo;
+		viewo=0;
+	}
 
 }
 
 masterslate* sdlmslate::give_master_slate(int pos_x_y_next, masterslate *controlpointt)
 {
-
-	//return new sdlmslate(pos_x_y_next,controlpointt);
+	return new sdlmslate(pos_x_y_next,controlpointt);
 }
 
-sdlsslate::sdlsslate(int x, int y,masterslate *controlpointt) : slaveslate (x,y,controlpointt)
+
+slaveslate* sdlmslate::give_slave_slate(int x,int y,masterslate *controlpointt)
 {
 
-
-
+	return new sdlsslate(x,y,controlpointt);
+}
+//masterslates end
+//slaveslates
+sdlsslate::sdlsslate(int x, int y,masterslate *controlpointt) : slaveslate (x,y,controlpointt)
+{
+	//screen=controlpointt->screen;
 
 }
+
+//slaveslates end
 
 
 //defaultobject
-slateobject *sdlsslate::give_default_slateobject(slate *t)
+slateobject *sdlsslate::give_default_slateobject(slate *parent)
 {
-	return new sdlslateobject(t);
+	return new sdlslateobject(parent);
 }
 
 slateobject *sdlmslate::give_default_slateobject(slate *t)
@@ -81,28 +112,30 @@ slateobject *sdlmslate::give_default_slateobject(slate *t)
 
 //defaultobject end
 
+
+//sdlcontroller
 sdlcontroller::sdlcontroller(int argc, char *argv[]) : controller()
 {
 	sysdisplay=SDL_GetVideoInfo();
 
-
-	for (int z=0; z==0; z++)
+	SDL_Surface *tempscreen=0;
+	view_attributes *tempattri=0;
+	
+	tempscreen=SDL_SetVideoMode(widthf, heightf, 24, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_ANYFORMAT);// | SDL_FULLSCREEN);
+	if (tempscreen == 0)
 	{
-		SDL_Surface *tempscreen=SDL_SetVideoMode(widthf, heightf, 24, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_ANYFORMAT);// | SDL_FULLSCREEN);
-        if (tempscreen == NULL)
-		{
-		    printf("Can't set video mode: %s\n", SDL_GetError());
-    		exit(1);
-		}
-		screens.push_back (tempscreen);
+	    cerr << "Can't set video mode: " << SDL_GetError() << std::endl;
+		exit(1);
 	}
-	SDL_Rect u;
-	u.x=0;
-	u.y=0;
-	u.h=100;
-	u.w=100;
-	cout << (int)screens.back()->format->BitsPerPixel;
-	SDL_FillRect(screens.back(), &u, 2552552550);
+
+	tempattri=new view_attributes;
+	
+	tempattri->reso_x=widthf;
+	tempattri->reso_y=heightf;
+	tempattri->drawing_area=(void*)tempscreen;
+	screen=new sdlmslate (tempattri);
+
+
 	while (!done)
 	{
 
@@ -121,7 +154,7 @@ sdlcontroller::sdlcontroller(int argc, char *argv[]) : controller()
 					break;
 			}
 		}
-	SDL_Flip(screens.back());
+	//SDL_Flip(screens.back());
 	SDL_Delay(10);
 		 
 	}
@@ -129,15 +162,13 @@ sdlcontroller::sdlcontroller(int argc, char *argv[]) : controller()
 }
 sdlcontroller::~sdlcontroller()
 {
-
-	//for (std::vector<SDL_Surface>::iterator it = screens.begin(); it != screens.end(); ++it)
-	while (!screens.empty())
-	{
-		SDL_FreeSurface(screens.back());
-		screens.pop_back();
-
-	}
+	delete screen;
+	screen=0;
 }
+
+
+//sdlcontroller end
+
 
 int sdlmain(int argc, char *argv[])
 {
@@ -146,18 +177,13 @@ int sdlmain(int argc, char *argv[])
         cerr << "Can't init SDL:  " << SDL_GetError() << "\n";
         return 1;
     }
-
 	
 	//SDL_EnableUNICODE(1);
     atexit(SDL_Quit);
-
-	
-	sdlcontroller(argc,argv);
-
-	
-
+	//try{
+		sdlcontroller(argc,argv);
+	//}
     return 0;
-
-
 }
+
 #endif //COMPILED_WITH_SDL

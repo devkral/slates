@@ -20,17 +20,36 @@
 #ifndef _CONTROLLER_H_
 #define _CONTROLLER_H_
 #include <masterslate.h>
-
+class masterslate;
 
 class controller
 {
 public:
 	controller();
+	~controller();
+	virtual void drawthread();
+	
 protected:
-
+	masterslate *screen;
+	//vector<masterslate*> list_roots; 
 private:
-
+	
 };
+
+class mastercontroller
+{
+public:
+	mastercontroller();
+	~mastercontroller();
+	virtual void iodevicethread()=0;
+	virtual controller* givecontroller()=0;
+	virtual void notify_controller()=0;
+protected:
+	vector<controller*> list_roots;// screens
+	int cur_iodevice=0;
+	
+
+}
 
 #endif // _CONTROLLER_H_
 

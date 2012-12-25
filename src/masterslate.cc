@@ -19,7 +19,7 @@
 
 #include <iostream>
 #include "masterslate.h"
-#include <assert.h>
+#include <cassert>
 
 using namespace std;
 
@@ -30,6 +30,7 @@ masterslate::masterslate(int _pos_x_y, masterslate *controlpret)
 	pos_x_y=_pos_x_y;
 
 	viewo=controlpre->viewo;
+	viewo->amount_masterslates+=1;
 
 	create_slice();
 
@@ -39,7 +40,8 @@ masterslate::masterslate(view_attributes *viewot)
 {
 	controlpre=0;
 	pos_x_y=0;
-	viewo =viewo;
+	viewo=viewot;
+	viewo->update_reso_slates ();
 }
 
 
@@ -60,7 +62,16 @@ masterslate::~masterslate()
 		delete controlnext;
 		controlnext=0;
 	}
+	viewo->amount_masterslates--;
+	viewo->update_reso_slates ();
+}
 
+bool masterslate::is_beginning_slate()
+{
+	if (controlpre==0)  //safe because explicitly set to zero
+		return true;
+	else
+		return false;
 }
 
 /**

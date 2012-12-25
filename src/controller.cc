@@ -21,7 +21,23 @@
 
 controller::controller()
 {
+	drawthread();
+}
 
+
+mastercontroller::notify_controller()
+{
+
+
+
+}
+
+
+notify_controller()
+
+
+mastercontroller::mastercontroller()
+{
 
 }
 

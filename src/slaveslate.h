@@ -36,8 +36,8 @@ public:
 	//void assoz(bool assoz_flag);
 	void emit_slate_signal(slate_messenger message);
 protected:
-private:
 	masterslate *controlpoint=0;
+private:
 	unsigned int pos_x, pos_y; //begin pos=0
 };
 
