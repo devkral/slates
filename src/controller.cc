@@ -19,25 +19,29 @@
 
 #include "controller.h"
 
-controller::controller()
+
+
+void mastercontroller::notify_controller(void *t)
 {
-	drawthread();
+	list_roots[cur_iodevice]->execevent(t);
 }
 
-
-mastercontroller::notify_controller()
+bool mastercontroller::addscreen (void *screen)
 {
-
-
-
+	list_roots.push_back (givecontroller(screen));
 }
 
-
-notify_controller()
-
-
-mastercontroller::mastercontroller()
+bool mastercontroller::removescreen (void *screen)
 {
-
+	bool found=false;
+	for (int count=0; count < list_roots.size(); count++)
+	{
+		if (list_roots[count]->comparescreen(screen)==true)
+		{
+			delete list_roots[count];
+			list_roots.erase(list_roots.begin()+count-1);
+			found=true;
+		}
+	}
+	return found;
 }
-

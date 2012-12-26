@@ -114,7 +114,7 @@ slateobject *sdlmslate::give_default_slateobject(slate *t)
 
 
 //sdlcontroller
-sdlcontroller::sdlcontroller(int argc, char *argv[]) : controller()
+sdlcontroller::sdlcontroller() : controller()
 {
 	sysdisplay=SDL_GetVideoInfo();
 
@@ -128,14 +128,45 @@ sdlcontroller::sdlcontroller(int argc, char *argv[]) : controller()
 		exit(1);
 	}
 
-	tempattri=new view_attributes;
+	viewo=new view_attributes;
 	
-	tempattri->reso_x=widthf;
-	tempattri->reso_y=heightf;
-	tempattri->drawing_area=(void*)tempscreen;
-	screen=new sdlmslate (tempattri);
+	viewo->reso_x=widthf;
+	viewo->reso_y=heightf;
+	viewo->drawing_area=(void*)tempscreen;
+	screen=new sdlmslate (viewo);
+
+}
+sdlcontroller::~sdlcontroller()
+{
+	delete screen;
+	screen=0;
+}
+
+bool sdlcontroller::comparescreen(void * screen)
+{
+}
+void sdlcontroller::execevent(void * event)
+
+{
+}
 
 
+//sdlcontroller end
+
+//sdlmcontroller
+sdlmcontroller::sdlmcontroller()
+{
+	addscreen(0);
+	iodevicethread();
+}
+void sdlcontroller::drawthread()
+{
+	SDL_Flip((SDL_Surface*)viewo->drawing_area);
+
+}
+
+void sdlmcontroller::iodevicethread()
+{
 	while (!done)
 	{
 
@@ -144,6 +175,11 @@ sdlcontroller::sdlcontroller(int argc, char *argv[]) : controller()
 		{
 			switch (event.type)
 			{
+				case SDL_BUTTON_WHEELUP:
+					notify_controller (&event);
+					break;
+
+						
 				case SDL_KEYDOWN:
 					done = true;
 					break;
@@ -158,16 +194,20 @@ sdlcontroller::sdlcontroller(int argc, char *argv[]) : controller()
 	SDL_Delay(10);
 		 
 	}
-
 }
-sdlcontroller::~sdlcontroller()
+
+
+controller* sdlmcontroller::givecontroller(void *display)
 {
-	delete screen;
-	screen=0;
+	return new sdlcontroller ();
 }
 
 
-//sdlcontroller end
+
+
+
+//sdlmcontroller end
+
 
 
 int sdlmain(int argc, char *argv[])
@@ -181,7 +221,7 @@ int sdlmain(int argc, char *argv[])
 	//SDL_EnableUNICODE(1);
     atexit(SDL_Quit);
 	//try{
-		sdlcontroller(argc,argv);
+		sdlmcontroller();
 	//}
     return 0;
 }

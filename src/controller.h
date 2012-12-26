@@ -25,13 +25,15 @@ class masterslate;
 class controller
 {
 public:
-	controller();
-	~controller();
-	virtual void drawthread();
+	//controller();
+	//~controller();
+	virtual void drawthread()=0;
+	virtual void execevent(void *)=0;
+	virtual bool comparescreen(void *t)=0;
 	
 protected:
 	masterslate *screen;
-	//vector<masterslate*> list_roots; 
+	view_attributes *viewo;
 private:
 	
 };
@@ -39,17 +41,22 @@ private:
 class mastercontroller
 {
 public:
-	mastercontroller();
-	~mastercontroller();
+	//mastercontroller();
+	//~mastercontroller();
+	bool addscreen(void *display);
+	bool removescreen(void *display);
+	void notify_controller(void *t);
 	virtual void iodevicethread()=0;
-	virtual controller* givecontroller()=0;
-	virtual void notify_controller()=0;
+	virtual controller* givecontroller(void *screen)=0;
+	
 protected:
 	vector<controller*> list_roots;// screens
+	void set_cur_iodevice(int);
+private:
 	int cur_iodevice=0;
 	
 
-}
+};
 
 #endif // _CONTROLLER_H_
 

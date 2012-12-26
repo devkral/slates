@@ -18,6 +18,10 @@
  */
 
 #include "border.h"
+border::border(int pos, int width, int space, slateobject *parentt)
+{
+	parent=parentt;
 
+}
 
 

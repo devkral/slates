@@ -22,14 +22,18 @@
 #include "slate.h"
 class slate;
 
+const int b_pos_right=0;
+const int b_pos_bottom=1;
+
 class border
 {
 public:
-	border(int _from_x, int _to_x, int _from_y, int _to_y, slate *parent);
+	border(int pos, int width, int space, slateobject *parentt);
 protected:
-
+	
+	int pos, size, space;
+	slateobject *parent;
 private:
-	int from_x, to_x, from_y, to_y;
 };
 
 

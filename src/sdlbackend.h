@@ -82,14 +82,17 @@ private:
 class sdlcontroller : public controller
 {
 public:
-	sdlcontroller(int argc, char *argv[]);
+	sdlcontroller();
 	~sdlcontroller();
+	
 	void drawthread();
+	void execevent(void *);
+	
+	bool comparescreen(void *screen);
 protected:
 
 private:
 	//vector<SDL_Surface*> surfacestoscreens;
-    SDL_Event event;
 	const SDL_VideoInfo *sysdisplay;
 };
 
@@ -99,9 +102,10 @@ class sdlmcontroller : public mastercontroller
 public:
 	sdlmcontroller();
 	void iodevicethread();
-
+	controller* givecontroller(void *);
 private:
 	bool done = false;
+    SDL_Event event;
 };
 
 #endif // _SDLBACKEND_H_
