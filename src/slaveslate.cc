@@ -28,9 +28,10 @@ slaveslate::slaveslate(int x, int y, masterslate *controlpointt)
 	
 
 }
+slaveslate::~slaveslate()
+{
 
-
-
+}
 
 /**
 void slaveslate::assoz(bool assoz_flag)
@@ -66,4 +67,13 @@ void slaveslate::inc_used_slates()
 void slaveslate::dec_used_slates()
 {
 	controlpoint->dec_used_slates ();
+}
+
+int slaveslate::get_x()
+{
+	return pos_x;
+}
+int slaveslate::get_y()
+{
+	return pos_y;
 }

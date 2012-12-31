@@ -22,10 +22,19 @@
 #include "slate.h"
 class slate;
 class view_attributes;
-
+#include "border.h"
 class border;
 
 
+struct intern_units //in intern units sadly not floating point compatible
+{
+	int x;
+	int y;
+	int width_child;
+	int height_child;
+
+
+};
 
 const int fpos_locked=0;
 const int fpos_isolated=1;
@@ -42,12 +51,16 @@ class slateobject
 {
 public:
 	slateobject(slate *leftuppercornert);
-	~slateobject();
+	virtual ~slateobject();
 
+	virtual void draw_child()=0;
+	virtual void destroy_child()=0;
+	virtual void draw_borders()=0;
 	void set_object(void *in_object);
 	void *get_object();
 	void draw();
-	void destroy();
+	//virtual void resize();
+	void resize_diff(int x_points_diff, int y_points_diff,int w_diff, int h_diff);
 	void set_slate_state_value(unsigned short flag_pos,bool flag_value);
 	bool get_slate_state_value(unsigned short flag_pos);
 	
@@ -55,19 +68,18 @@ public:
 		
 	int resize(int width, int height);
 	int move(slate *leftuppercornert); //begins with a left upper corner not necessary pos 0
-
+	
 		
 protected:
 	void *contained_object;
 	border *border_right, *border_bottom;
 	slate *leftuppercorner;
-	int size_x=1;
+	int size_x=1; //normalized units
 	int size_y=1;
 	int lock_action; //0 hide 1 readonly 2 disappear on lock
 
-	virtual void draw_default_child(){};
-	virtual void draw_borders(){};
-	//virtual void destroy_child()=0;
+	virtual void use_default_child()=0;
+	
 	//vector parents;
 	unsigned char slateo_state=0;
 	//00000000
@@ -83,8 +95,11 @@ protected:
 	 * 6: 
 	 * 7: 
 	 * */
-	
+	intern_units intu;
+	view_attributes *viewo;
 	friend class slate;
+	friend class border;
+private:
 };
 
 

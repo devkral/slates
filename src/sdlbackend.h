@@ -28,19 +28,49 @@
 #define _SDLBACKEND_H_
 #include "SDL.h"
 #include <vector>
-
-
 #include "controller.h"
+#include "slate.h"
+#include "masterslate.h"
+#include "slaveslate.h"
+#include "border.h"
+
+
+
+#include <thread>
 
 int sdlmain(int argc, char *argv[]);
 class sdlmslate;
+class slateobject;
+
+
+class sdlborder : public border
+{
+	public:
+		sdlborder(slateobject *parent);
+		~sdlborder();
+		int construct(int x, int y, int weight, int height);
+		
+	private:
+
+		SDL_Surface *sdl_border_surf;
+		SDL_Rect sdl_border_rect;
+
+};
 
 class sdlslateobject : public slateobject
 {
 	public:
 		sdlslateobject(slate *parent);
+		void use_default_child();
+	private:
+		void draw_borders();
+		void draw_child();
+		void destroy_child();
 
-
+		
+		/**int	x_points, y_points;
+		int h_points, w_points;
+		int thickness=1, space=1;*/
 };
 
 
@@ -51,6 +81,7 @@ class sdlsslate : public slaveslate
 {
 public:
 	sdlsslate(int x, int y,masterslate *controlpointt);
+	~sdlsslate();
 	//defaultobject
 	slateobject* give_default_slateobject (slate *parent);
 	//defaultobject end
@@ -94,6 +125,7 @@ protected:
 private:
 	//vector<SDL_Surface*> surfacestoscreens;
 	const SDL_VideoInfo *sysdisplay;
+	thread gthread;
 };
 
 
@@ -101,12 +133,14 @@ class sdlmcontroller : public mastercontroller
 {
 public:
 	sdlmcontroller();
+	~sdlmcontroller();
 	void iodevicethread();
 	controller* givecontroller(void *);
 private:
-	bool done = false;
     SDL_Event event;
 };
+
+
 
 #endif // _SDLBACKEND_H_
 #endif //COMPILED_WITH_SDL

@@ -19,7 +19,17 @@
 
 #include "controller.h"
 
+//controller::controller()
 
+
+
+mastercontroller::mastercontroller()
+{
+}
+
+mastercontroller::~mastercontroller()
+{
+}
 
 void mastercontroller::notify_controller(void *t)
 {

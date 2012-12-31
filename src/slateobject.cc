@@ -20,19 +20,25 @@
 #include "slateobject.h"
 
 #include <iostream>
+#include <cassert>
 using namespace std;
 
 
 slateobject::slateobject(slate *leftuppercornert)
 {
 	leftuppercorner=leftuppercornert;
-	draw_default_child();
+	viewo=leftuppercorner->viewo;
+	intu.x=leftuppercorner->get_x()*(viewo->psize_slate_x);
+	intu.y=leftuppercorner->get_y()*(viewo->psize_slate_y);
+	intu.width_child=(viewo->psize_slate_x)-((viewo->space_border)+(viewo->thickness_border));
+	intu.height_child=(viewo->psize_slate_y)-((viewo->space_border)+(viewo->thickness_border));
+
 }
 slateobject::~slateobject()
 {
-	//delete contained_object;
-	contained_object=0;
-
+	//destroy_child();
+	delete border_right;
+	delete border_bottom;
 }
 
 void slateobject::set_object(void *in_object)
@@ -70,25 +76,27 @@ void slateobject::set_slate_state_value(unsigned short flag_pos,bool flag_value)
 			slateo_state=slateo_state&~(1<<flag_pos);
 
 }
+
 void slateobject::draw()
 {
-	//draw_borders ()
-	//draw_child()
-
+	draw_borders();
+	//draw_child();
 }
 
-void slateobject::destroy()
+
+
+//very powerful tool, don't forget: you can use it for two resize tasks:
+//adapt to new resolution w_diff, h_diff=0 (just enter two parameters)
+//resize slate
+void slateobject::resize_diff(int x_points_diff, int y_points_diff,int w_diff=0, int h_diff=0)
 {
-	delete border_right;
-	border_right=0;
-	delete border_bottom;
-	border_bottom=0;
-	//draw_borders ()
-	//draw_child()
-
+	size_x+=w_diff;
+	size_y+=h_diff;
+	assert (size_x>=0 && size_y>=0);
+	//	cerr << "Error: x or y lower zero\n";
+	intu.width_child+=x_points_diff;
+	intu.height_child+=y_points_diff;
 }
-
-;
 
 /**unsigned char slateobject::get_slate_state()
 {

@@ -19,24 +19,23 @@
 
 #ifndef _BORDER_H_
 #define _BORDER_H_
-#include "slate.h"
-class slate;
 
-const int b_pos_right=0;
-const int b_pos_bottom=1;
+
+#include "slateobject.h"
+class slateobject;
+#include "slate.h"
+class view_attributes;
 
 class border
 {
 public:
-	border(int pos, int width, int space, slateobject *parentt);
+	border(slateobject *parentt);
+	virtual ~border();
+	virtual int construct(int x, int y, int weight, int height)=0;
 protected:
-	
-	int pos, size, space;
-	slateobject *parent;
+		slateobject *parent;
+		view_attributes *viewo;
 private:
 };
 
-
-
 #endif // _BORDER_H_
-

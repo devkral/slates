@@ -47,6 +47,7 @@ masterslate::masterslate(view_attributes *viewot)
 
 masterslate::~masterslate()
 {
+	//~slate();
 	while (!left_slates.empty())
 	{
 		delete left_slates.back();
@@ -139,7 +140,6 @@ void masterslate::create_slice()
 		left_slates.push_back(give_slave_slate(it,pos_x_y,this));
 		top_slates.push_back(give_slave_slate(pos_x_y,it,this));
 	}
-
 }
 
 
@@ -191,6 +191,19 @@ void masterslate::notify_top_slates (slate_messenger *message)
 
 void masterslate::emit_slate_signal(slate_messenger message)
 {
+	if (message.xy_beg==-2)
+	{
+		message.xy_beg=0;
+		message.xy_end=viewo->amount_masterslates-1;
+			
+		message.x_beg=0;
+		message.y_beg=0;
+		message.x_end=viewo->amount_masterslates-1;
+		message.y_end=viewo->amount_masterslates-1;
+		
+	}
+
+
 	if (message.xy_beg==-1)
 	{
 		if (message.x_beg<message.y_beg)
@@ -222,4 +235,14 @@ void masterslate::emit_slate_signal(slate_messenger message)
 	if (message.xy_end<pos_x_y)
 		controlnext->emit_slate_signal (message);
 	
+}
+
+
+int masterslate::get_x()
+{
+	return pos_x_y;
+}
+int masterslate::get_y()
+{
+	return pos_x_y;
 }

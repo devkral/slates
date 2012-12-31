@@ -32,21 +32,78 @@
 //#include <cstdlib>
 #include <unistd.h>
 #include "SDL.h"
+#include <thread>
 using namespace std;
 
+
+
+//sdlborder
+sdlborder::sdlborder(slateobject *parentt) : border(parentt)
+{
+	sdl_border_surf=SDL_GetVideoSurface ();
+
+	uint32_t bcolor=SDL_MapRGBA (((SDL_Surface*)viewo->drawing_area)->format,
+	255,0,0,100);
+	SDL_FillRect (sdl_border_surf,NULL,bcolor);
+}
+sdlborder::~sdlborder()
+{
+	SDL_FreeSurface (sdl_border_surf);
+	//SDL_Free
+}
+
+int sdlborder::construct(int x, int y, int weight, int height)
+{
+	sdl_border_rect.x=x;
+	sdl_border_rect.y=y;
+	sdl_border_rect.w=weight;
+	sdl_border_rect.h=height;
+	SDL_BlitSurface(sdl_border_surf,&sdl_border_rect,(SDL_Surface*)viewo->drawing_area,&sdl_border_rect);
+	return 0;
+}
+
+
+
+
+
+//sdl-border end
 //slateobject
+
 
 sdlslateobject::sdlslateobject(slate *leftuppercornert) : slateobject(leftuppercornert)
 {
-	leftuppercorner=leftuppercornert;
-	SDL_Rect u;
-	u.x=0;
-	u.y=0;
-	u.h=100;
-	u.w=100;
-	//cout << (int)screens.back()->format->BitsPerPixel;
-	//SDL_FillRect(screens.back(), &u, 2552552550);
+	border_right=new sdlborder(this);
+	border_bottom=new sdlborder(this);
+	use_default_child();
 }
+
+void sdlslateobject::use_default_child()
+{
+	
+
+}
+
+
+void sdlslateobject::draw_borders()
+{
+	border_right->construct(0,0,10,10);
+	
+}
+
+
+void sdlslateobject::draw_child()
+{
+
+
+}
+
+void sdlslateobject::destroy_child()
+{
+
+
+}
+
+
 
 
 //slateobject end
@@ -55,12 +112,16 @@ sdlslateobject::sdlslateobject(slate *leftuppercornert) : slateobject(leftupperc
 
 sdlmslate::sdlmslate(view_attributes *viewot) : masterslate(viewot)
 {
-	//viewo=viewot;
+	sobject=new sdlslateobject (this);
+	//DEBUG
+	sobject->draw_borders();
 }
 
 sdlmslate::sdlmslate(int pos_x_y_next, masterslate *controlpointpret) : masterslate(pos_x_y_next,controlpointpret)
 {
-	
+	sobject=new sdlslateobject (this);
+	//DEBUG
+	//sobject->draw();
 }
 
 sdlmslate::~sdlmslate ()
@@ -96,6 +157,11 @@ sdlsslate::sdlsslate(int x, int y,masterslate *controlpointt) : slaveslate (x,y,
 
 }
 
+sdlsslate::~sdlsslate ()
+{
+
+}
+
 //slaveslates end
 
 
@@ -114,7 +180,7 @@ slateobject *sdlmslate::give_default_slateobject(slate *t)
 
 
 //sdlcontroller
-sdlcontroller::sdlcontroller() : controller()
+sdlcontroller::sdlcontroller()// : controller()
 {
 	sysdisplay=SDL_GetVideoInfo();
 
@@ -133,13 +199,17 @@ sdlcontroller::sdlcontroller() : controller()
 	viewo->reso_x=widthf;
 	viewo->reso_y=heightf;
 	viewo->drawing_area=(void*)tempscreen;
-	screen=new sdlmslate (viewo);
+	firstslate=new sdlmslate (viewo);
+	drawthread();
+	//gthread(std::thread(drawthread));
 
 }
 sdlcontroller::~sdlcontroller()
 {
-	delete screen;
-	screen=0;
+	run_graphic_thread=false;
+	gthread.join();
+	delete firstslate;
+	firstslate=0;
 }
 
 bool sdlcontroller::comparescreen(void * screen)
@@ -151,23 +221,34 @@ void sdlcontroller::execevent(void * event)
 }
 
 
+void sdlcontroller::drawthread()
+{
+	while (run_graphic_thread)
+	{
+		SDL_Flip((SDL_Surface*)viewo->drawing_area);
+		SDL_Delay(40);
+		run_graphic_thread=false;
+	}
+}
+
 //sdlcontroller end
 
 //sdlmcontroller
-sdlmcontroller::sdlmcontroller()
+sdlmcontroller::sdlmcontroller() : mastercontroller()
 {
 	addscreen(0);
 	iodevicethread();
 }
-void sdlcontroller::drawthread()
+sdlmcontroller::~sdlmcontroller()
 {
-	SDL_Flip((SDL_Surface*)viewo->drawing_area);
 
 }
 
+
+
 void sdlmcontroller::iodevicethread()
 {
-	while (!done)
+	while (run_io_thread)
 	{
 
 		//SDL_WaitEvent (&event);
@@ -181,17 +262,18 @@ void sdlmcontroller::iodevicethread()
 
 						
 				case SDL_KEYDOWN:
-					done = true;
+					run_io_thread = false;
 					break;
 
 
 				case SDL_QUIT:
-					done = true;
+					run_io_thread = false;
 					break;
 			}
 		}
 	//SDL_Flip(screens.back());
-	SDL_Delay(10);
+//drawthread();
+		SDL_Delay(10);
 		 
 	}
 }

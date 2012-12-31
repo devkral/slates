@@ -18,9 +18,15 @@
  */
 
 #include "border.h"
-border::border(int pos, int width, int space, slateobject *parentt)
+
+
+border::border(slateobject *parentt)
 {
 	parent=parentt;
+	viewo=parent->viewo;
+}
+border::~border()
+{
 
 }
 

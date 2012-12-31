@@ -24,6 +24,12 @@
 
 using namespace std;
 
+slate::~slate()
+{
+
+}
+
+
 void slate::show()
 {
 	sobject->draw();
@@ -55,7 +61,7 @@ void slate::receive_slate_signal(slate_messenger *message)
 {
 	switch (message->type())
 	{
-		case sig_destroy: cout << "Waaargh";
+		case sig_draw: sobject->draw();
 			break;
 		case sig_show: show();
 			break;
@@ -82,7 +88,6 @@ int slate::attach_child(slateobject *tt)
 {
 	if (is_assoz==true)
 	{
-		sobject->destroy();
 		delete sobject;		
 	}
 	sobject=tt;
@@ -93,4 +98,5 @@ int slate::attach_child(slateobject *tt)
 	}
 	return 0;
 }
+
 

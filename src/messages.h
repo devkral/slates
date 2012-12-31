@@ -31,6 +31,7 @@ const int sig_unlock=5;
 const int sig_sensitive=6;
 const int sig_resize=7;
 const int sig_move=8;
+const int sig_draw=9;
 
 
 struct slate_messenger
@@ -53,7 +54,6 @@ struct message_destroy : public slate_messenger
 	{
 		return sig_destroy;
 	}
-	slateobject *new_child;
 
 };
 
@@ -64,7 +64,8 @@ struct message_resize : public slate_messenger
 	{
 		return sig_resize;
 	}
-	slateobject *new_child;
+	int w_new;
+	int h_new;
 
 };
 
@@ -76,6 +77,15 @@ struct message_move : public slate_messenger
 		return sig_move;
 	}
 	slateobject *new_child;
+
+};
+
+struct message_draw : public slate_messenger
+{
+	int type()
+	{
+		return sig_draw;
+	}
 
 };
 

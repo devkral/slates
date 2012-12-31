@@ -25,14 +25,11 @@
 
 #include "messages.h"
 #include "slateobject.h"
-#include "border.h"
 
 class slateobject;
 
 
 using namespace std;
-
-
 
 
 struct view_attributes
@@ -68,15 +65,18 @@ struct view_attributes
 			}
 		}
 	}
-		
+
+
 	int psize_slate_x=-1;
 	int psize_slate_y=-1;
 	void *drawing_area=0;
+
+	//borderarea WARNING: intern units
+	int space_border=1; // 1 = sane default
+	int thickness_border=1;
 };
 
-
-
-
+//FIXME: unit hack, no float units possible
 
 
 class slate
@@ -87,7 +87,8 @@ public:
 	virtual void inc_used_slates()=0;
 	virtual void dec_used_slates()=0;
 	virtual slateobject* give_default_slateobject(slate *leftuppercornert)=0;
-	
+
+	virtual ~slate();
 	void show();
 	void hide();
 	void destroy();
@@ -111,6 +112,9 @@ protected:
 	
 	bool is_assoz;
 	bool is_drawn;
+	virtual int get_x()=0;
+	virtual int get_y()=0;
+	friend class slateobject;
 private:
 	
 };

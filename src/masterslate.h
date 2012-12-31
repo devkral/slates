@@ -40,13 +40,14 @@ public:
 	//bool is_filled(int x=-1, int y=-1); //default return for cur slate
 	masterslate(int _x_y, masterslate *controlpointpret);
 	masterslate(view_attributes *viewot);
-	~masterslate();
-
+	virtual ~masterslate();
+	//~slate();
 	
 	void draw_slate ();
 	void lockall();
 	void unlockall();
-
+	int get_x();
+	int get_y();
 	
 
 	bool is_masterslate ();
@@ -55,13 +56,13 @@ public:
 	
 protected:
 	int role;
+	unsigned int pos_x_y; //begin pos=0
 
 	//virtual void fill_slate(int hight, int width)=0;
 	
 	
 		
 private:
-	unsigned int pos_x_y; //begin pos=0
 	void create_slice();
 	vector <slaveslate*> left_slates, top_slates;
 	masterslate *controlpre=0,*controlnext=0;

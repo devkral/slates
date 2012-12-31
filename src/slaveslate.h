@@ -30,11 +30,16 @@ class slaveslate: public slate
 public:
 	bool is_masterslate ();
 	slaveslate(int x, int y,masterslate *controlpointt);
+	virtual ~slaveslate();
 	void draw_slate ();
 	void inc_used_slates();
 	void dec_used_slates();
 	//void assoz(bool assoz_flag);
 	void emit_slate_signal(slate_messenger message);
+
+	
+	int get_x();
+	int get_y();
 protected:
 	masterslate *controlpoint=0;
 private:

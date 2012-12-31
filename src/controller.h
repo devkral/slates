@@ -32,8 +32,9 @@ public:
 	virtual bool comparescreen(void *t)=0;
 	
 protected:
-	masterslate *screen;
+	masterslate *firstslate;
 	view_attributes *viewo;
+	bool run_graphic_thread=true;
 private:
 	
 };
@@ -41,8 +42,8 @@ private:
 class mastercontroller
 {
 public:
-	//mastercontroller();
-	//~mastercontroller();
+	mastercontroller();
+	virtual ~mastercontroller();
 	bool addscreen(void *display);
 	bool removescreen(void *display);
 	void notify_controller(void *t);
@@ -52,6 +53,7 @@ public:
 protected:
 	vector<controller*> list_roots;// screens
 	void set_cur_iodevice(int);
+	bool run_io_thread=true;
 private:
 	int cur_iodevice=0;
 	
