@@ -1,12 +1,6 @@
 
 
-lib_LTLIBRARIES =  \
-	libgtkmmbackend.la
+##AM_CPPFLAGS = $(GTKMM_CFLAGS) 
 
-libgtkmmbackend_la_SOURCES =  \
-	gtkmmbackend.cc \
-	gtkmmbackend.h
-
-libgtkmmbackend_la_LIBADD = $(GTKMM_LIBS) 
-
-AM_CPPFLAGS = $(GTKMM_CFLAGS) 
+##gtkmmbackend_HEADERS = gtkmmbackend.cc \
+##	gtkmmbackend.h

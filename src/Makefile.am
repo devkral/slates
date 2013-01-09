@@ -35,7 +35,16 @@ slates_SOURCES = \
 	controller.cc \
 	controller.h \
 	messages.cc \
-	messages.h
+	messages.h \
+	sdlbackend/sdlbackend.h \
+	sdlbackend/sdlbackend.cc \
+	gtkmmbackend/gtkmmbackend.h \
+	gtkmmbackend/gtkmmbackend.cc 
+	
+####
+##	sdlbackend \
+##	gtkmmbackend \
+
 
 slates_CXXFLAGS = -std=c++11 
 

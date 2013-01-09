@@ -1,12 +1,6 @@
 
 
-lib_LTLIBRARIES =  \
-	libsdlbackend.la
+##AM_CPPFLAGS = $(SDL_CFLAGS) 
 
-libsdlbackend_la_SOURCES =  \
-	sdlbackend.cc \
-	sdlbackend.h
-
-libsdlbackend_la_LIBADD = $(SDL_LIBS) 
-
-AM_CPPFLAGS = $(SDL_CFLAGS) 
+##sdlbackend_HEADERS = sdlbackend.cc \
+##	sdlbackend.h
