@@ -1,6 +1,8 @@
 /src/cloneme
 
 *.o
+*.la
+*.lo
 *~
 # Ignore all dotfiles...
 .*

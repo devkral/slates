@@ -24,16 +24,18 @@
 #include "config.h"
 #endif //_CONFIG_H_
 
-
 #include <iostream>
+
+//#ifdef terest
 #ifdef COMPILED_WITH_GTKMM
-#include "gtkmmbackend.h"
+#include "gtkmmbackend/gtkmmbackend.h"
 #endif
 
 
 #ifdef COMPILED_WITH_SDL
-#include "sdlbackend.h"
+#include "sdlbackend/sdlbackend.h"
 #endif
+//#endif //test
 
 #define DEFAULT_BACKEND 1
 
@@ -66,7 +68,7 @@ main (int argc, char *argv[])
 		case 2: gtkmmmain(argc, argv);
 			break;
 #endif		
-
+		default: std::cerr << "Error: no backend\n";
 	}
 	
 

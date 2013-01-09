@@ -44,6 +44,8 @@ AC_CONFIG_FILES([
 Makefile
 src/Makefile
 po/Makefile.in
+src/sdlbackend/Makefile
+src/gtkmmbackend/Makefile
 ])
 
 AC_OUTPUT

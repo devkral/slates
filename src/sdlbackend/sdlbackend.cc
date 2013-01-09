@@ -23,10 +23,11 @@
 #endif //_CONFIG_H_
 
 
+#ifdef COMPILED_WITH_SDL
 #define widthf sysdisplay->current_w
 #define heightf sysdisplay->current_h
 
-#ifdef COMPILED_WITH_SDL
+
 #include "sdlbackend.h"
 #include <iostream>
 //#include <cstdlib>
