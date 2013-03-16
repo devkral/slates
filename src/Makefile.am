@@ -2,7 +2,7 @@
 
 ## Created by Anjuta
 
-SUBDIRS = sdlbackend gtkmmbackend oldstuff
+SUBDIRS = sdlbackend gtkmmbackend
 
 AM_CPPFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\""$(localedir)"\" \

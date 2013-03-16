@@ -46,7 +46,6 @@ src/Makefile
 po/Makefile.in
 src/sdlbackend/Makefile
 src/gtkmmbackend/Makefile
-src/oldstuff/Makefile
 ])
 
 AC_OUTPUT
