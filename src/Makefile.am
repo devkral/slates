@@ -2,7 +2,7 @@
 
 ## Created by Anjuta
 
-SUBDIRS = sdlbackend gtkmmbackend
+SUBDIRS = sdlbackend gtkmmbackend oldstuff
 
 AM_CPPFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\""$(localedir)"\" \
@@ -20,26 +20,27 @@ bin_PROGRAMS = slates
 
 slates_SOURCES = \
 	main.cc \
-	slate.cc \
-	slate.h \
-	masterslate.cc \
-	masterslate.h \
-	slaveslate.cc \
-	slaveslate.h \
-	slateobject.cc \
-	slateobject.h \
-	border.cc \
-	border.h \
-	widgets.cc \
-	widgets.h \
-	controller.cc \
-	controller.h \
-	messages.cc \
-	messages.h \
 	sdlbackend/sdlbackend.h \
 	sdlbackend/sdlbackend.cc \
 	gtkmmbackend/gtkmmbackend.h \
-	gtkmmbackend/gtkmmbackend.cc 
+	gtkmmbackend/gtkmmbackend.cc \
+	testbackend/testbackend.h \
+	testbackend/testbackend.cc \
+	master.cc \
+	master.h \
+	viewport.cc \
+	viewport.h \
+	slate.cc \
+	slate.h \
+	slateobject.cc \
+	slateobject.h \
+	windowslateo.cc \
+	windowslateo.h \
+	lockslateo.cc \
+	lockslateo.h \
+	sysslateo.cc \
+	sysslateo.h \
+	constdef.h 
 	
 ####
 ##	sdlbackend \

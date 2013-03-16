@@ -121,7 +121,7 @@ void gtk_slate::show()
 	slategrid.show_all_children ();
 
 }
-*/
+
 
 int gtkmmmain(int argc, char *argv[])
 {
@@ -137,5 +137,5 @@ int gtkmmmain(int argc, char *argv[])
 	//tt.show();
 
 	return app->run(window);
-}
+}*/
 #endif //COMPILED_WITH_GTKMM

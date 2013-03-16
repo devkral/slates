@@ -27,6 +27,8 @@
 #ifdef COMPILED_WITH_GTKMM
 #ifndef _GTKMMBACKEND_H_
 #define _GTKMMBACKEND_H_
+
+/**
 #include <gtkmm.h>
 
 class gtkmmborder
@@ -44,7 +46,7 @@ class gtkmmcontroller
 };
 
 int gtkmmmain(int ,char *[]);
-
+*/
 
 #endif // _GTKMMBACKEND_H_
 #endif // COMPILED_WITH_GTKMM

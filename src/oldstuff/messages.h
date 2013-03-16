@@ -33,6 +33,9 @@ const int sig_resize=7;
 const int sig_move=8;
 const int sig_draw=9;
 
+const int pos_hint_calc=-1;
+const int pos_hint_all=-2;
+
 
 struct slate_messenger
 {

@@ -17,40 +17,10 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLATEOBJECT_H_
-#define _SLATEOBJECT_H_
+#include "lockslateo.h"
 
-//#include "master.h"
-//class master;
-//#include "viewport.h"
-//class viewport;
-#include "slate.h"
-class slate;
-
-#include "constdef.h"
-
-#include <vector>
-using namespace std;
-
-
-
-class slateobject
+const char lockslateo::TYPE()
 {
-public:
-
-	slateobject(slate *parent_slate);
-	virtual ~slateobject();
-	void set_screen_ob(void *screenob);
-	void *get_screen_ob();
-	void set_connectedslates(vector< vector<slate*> > *conslateob);
-	vector< vector<slate*> > *get_connectedslates();
-	virtual const char TYPE()=0;
-protected:
-
-private:
-	vector< vector<slate*> > *connectedslates; //outer vector y inner x
-	void *screen_object=0;
-};
-
-#endif // _SLATEOBJECT_H_
+	return TYPE_lockslate;
+}
 

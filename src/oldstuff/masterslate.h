@@ -70,6 +70,8 @@ private:
 	//unsigned char slate_info; //<private><readonlypublic><readonly><isolated><assoz><mainslate><locked/minimized><?>
 	void notify_left_slates(slate_messenger *message); //should be just executed by emit_slate_signal
 	void notify_top_slates(slate_messenger *message); //should be just executed by emit_slate_signal
+	void message_calc_all(slate_messenger message); 
+	void message_calc_x_y(slate_messenger message);
 	
 	friend class slaveslate;
 	//friend class slateobject;

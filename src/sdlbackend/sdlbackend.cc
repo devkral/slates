@@ -24,6 +24,8 @@
 
 
 #ifdef COMPILED_WITH_SDL
+/**
+
 #define widthf sysdisplay->current_w
 #define heightf sysdisplay->current_h
 
@@ -308,5 +310,5 @@ int sdlmain(int argc, char *argv[])
 	//}
     return 0;
 }
-
+*/
 #endif //COMPILED_WITH_SDL

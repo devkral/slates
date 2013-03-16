@@ -171,6 +171,8 @@ void masterslate::notify_left_slates (slate_messenger *message)
 		for (int countx=message->x_beg;countx<=max_countx;countx++)
 			left_slates[countx]->receive_slate_signal (message);
 	}
+	else
+		std::cerr << "Debug: " << pos_x_y << "is called by notify_left_slates but this invalid\n" ;
 
 }
 
@@ -185,26 +187,40 @@ void masterslate::notify_top_slates (slate_messenger *message)
 		for (int county=message->y_beg;county<=max_county;county++)
 			left_slates[county]->receive_slate_signal (message);
 	}
-
+	else
+		std::cerr << "Debug: " << pos_x_y << "is called by notify_top_slates but this invalid\n" ;
 }
 
 
+void masterslate::message_calc_all(slate_messenger *message)
+{
+		message->xy_beg=0;
+		message->xy_end=viewo->amount_masterslates-1;
+			
+		message->x_beg=0;
+		message->y_beg=0;
+		message->x_end=viewo->amount_masterslates-1;
+		message->y_end=viewo->amount_masterslates-1;
+}
+void message_calc_x_y(slate_messenger message)
+{
+	
+	
+	
+	
+}
+
+
+//improvement: check x_low+y_low less/equal x+y
 void masterslate::emit_slate_signal(slate_messenger message)
 {
-	if (message.xy_beg==-2)
+	if (message.xy_beg==pos_hint_all)
 	{
-		message.xy_beg=0;
-		message.xy_end=viewo->amount_masterslates-1;
-			
-		message.x_beg=0;
-		message.y_beg=0;
-		message.x_end=viewo->amount_masterslates-1;
-		message.y_end=viewo->amount_masterslates-1;
 		
 	}
 
 
-	if (message.xy_beg==-1)
+	if (message.xy_beg==pos_hint_calc)
 	{
 		if (message.x_beg<message.y_beg)
 			message.xy_beg=message.x_beg;

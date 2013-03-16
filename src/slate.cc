@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*-  */
 /*
  * slates
- * Copyright (C) 2012 alex <devkral@web.de>
+ * Copyright (C) 2013 alex <devkral@web.de>
  * 
  * slates is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -18,85 +18,93 @@
  */
 
 #include "slate.h"
-#include <iostream>
 
-
-
-using namespace std;
-
-slate::~slate()
+slate::slate (viewport *parent, long int id,int position_xtemp,int position_ytemp)
 {
-
+	parent_viewport=parent;
+	slateid=id;
+	position_x=position_xtemp;
+	position_y=position_ytemp;
 }
 
 
-void slate::show()
+bool slate::isfilled()
 {
-	sobject->draw();
-	sobject->set_slate_state_value(2,true);
-};
-
-void slate::hide()
-{
-	sobject->draw();
-	sobject->set_slate_state_value(2,false);
-};
-
-void slate::destroy()
-{
-	detach_child ();
-	sobject->set_slate_state_value(2,false);
-};
-
-
-
-
-
-const view_attributes slate::get_viewo()
-{
-	return *viewo;
-
+	return filled;
 }
-void slate::receive_slate_signal(slate_messenger *message) 
+
+master *slate::getmaster()
 {
-	switch (message->type())
+	return parent_viewport->getmaster();
+}
+
+viewport *slate::getviewport()
+{
+	return parent_viewport;
+}
+
+
+void slate::set_screen_ob(void *screenob)
+{
+	child_slateo->set_screen_ob(screenob);
+}
+
+void *slate::get_screen_ob()
+{
+	return child_slateo->get_screen_ob();
+}
+
+void slate::swap_childobject(slateobject ** const child)
+{
+	slateobject *temp=child_slateo;
+	void *temp2=temp->get_screen_ob();
+	
+	child_slateo=*child;
+	*child=temp;
+
+	(*child)->set_screen_ob(child_slateo->get_screen_ob());
+	child_slateo->set_screen_ob(temp2);
+}
+
+slateobject ** const slate::get_childobject()
+{
+	return &child_slateo;
+}
+
+void slate::lock_slate()
+{
+	if (lockstate!=0)
 	{
-		case sig_draw: sobject->draw();
-			break;
-		case sig_show: show();
-			break;
-		case sig_hide: hide();
-			break;
-		case -1: cerr << "Error: Don't use slate_messenger directly\n";
-			break;
-		default: cerr << "Error: Unknown signal\n";
-		break;
+		preserve_after_lock=child_slateo;
+		child_slateo=create_lockobject();
+		lockstate=2;
 	}
-
-
 }
 
-int slate::detach_child ()
+void slate::unlock_slate()
 {
-	sobject=give_default_slateobject(this);
-	is_assoz=false;
-	dec_used_slates();
-	return 0;
+	if (lockstate!=2)
+	{
+		delete child_slateo;
+		child_slateo=preserve_after_lock;
+		lockstate=0;
+	}
 }
 
-int slate::attach_child(slateobject *tt)
+int slate::fillslate(string progname)
 {
-	if (is_assoz==true)
+	if (child_slateo==0 || child_slateo->TYPE()==TYPE_emptyslate)
 	{
-		delete sobject;		
+		create_windowobject(progname);
+		return OP_success;
 	}
-	sobject=tt;
-	if (is_assoz==false)
-	{
-		is_assoz=true;
-		inc_used_slates();
-	}
-	return 0;
+	else
+		return SL_not_empty;
 }
 
 
+void slate::emptyslate()
+{
+	delete child_slateo;
+	child_slateo=create_emptyobject();
+}

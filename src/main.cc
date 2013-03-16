@@ -26,7 +26,7 @@
 
 #include <iostream>
 
-//#ifdef terest
+//#ifdef test
 #ifdef COMPILED_WITH_GTKMM
 #include "gtkmmbackend/gtkmmbackend.h"
 #endif
@@ -37,12 +37,16 @@
 #endif
 //#endif //test
 
+#include "testbackend/testbackend.h"
+
+
 #define DEFAULT_BACKEND 1
 
 /**
  * Backends
  * 1 sdl
  * 2 gtkmm
+ * 3 test
  * /
 
 
@@ -57,17 +61,20 @@
 int
 main (int argc, char *argv[])
 {
-	int sel=1; //debug
+	int sel=3; //debug
 	switch (sel)
 	{
 #ifdef COMPILED_WITH_SDL
-		case 1: sdlmain(argc, argv);
+		case 1: //sdlmain(argc, argv);
 			break;
 #endif
 #ifdef COMPILED_WITH_GTKMM
-		case 2: gtkmmmain(argc, argv);
+		case 2: //gtkmmmain(argc, argv);
 			break;
-#endif		
+#endif	
+		case 3: testmain(argc, argv);
+			break;
+	
 		default: std::cerr << "Error: no backend\n";
 	}
 	

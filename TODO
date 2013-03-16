@@ -1,4 +1,5 @@
 TODO:
+messaging via openmpi??
 implement messaging =>
 implement actual actions (close destroy)
 implement running programs as children  //is there a lib

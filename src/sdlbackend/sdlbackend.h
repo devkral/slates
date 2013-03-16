@@ -28,12 +28,8 @@
 #define _SDLBACKEND_H_
 #include "SDL.h"
 #include <vector>
-#include "controller.h"
-#include "slate.h"
-#include "masterslate.h"
-#include "slaveslate.h"
-#include "border.h"
-
+#include "master.h"
+/**
 
 
 #include <thread>
@@ -70,7 +66,7 @@ class sdlslateobject : public slateobject
 		
 		/**int	x_points, y_points;
 		int h_points, w_points;
-		int thickness=1, space=1;*/
+		int thickness=1, space=1;
 };
 
 
@@ -140,7 +136,7 @@ private:
     SDL_Event event;
 };
 
-
+*/
 
 #endif // _SDLBACKEND_H_
 #endif //COMPILED_WITH_SDL
