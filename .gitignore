@@ -23,6 +23,7 @@ Makefile.in*
 /stamp-h1
 /po/stamp-it
 /po/POTFILES
+/m4
 
 # http://www.gnu.org/software/autoconf
 
