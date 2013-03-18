@@ -1,16 +1,13 @@
-
-
 AM_CPPFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\""$(localedir)"\" \
 	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
 	-DPACKAGE_DATA_DIR=\""$(pkgdatadir)"\" \
-    $(SDL_CFLAGS) \
 	$(SLATES_CFLAGS)
 
-sdlbackend_LIB = sdlown.la
+testbackend_LIB = testown.la
 
-sdlbackend_HEADERS = sdlbackend.cc \
-	sdlbackend.h
+testbackend_HEADERS = testbackend.cc \
+	testbackend.h
 
 
-sdlbackend_LDADD = $(SDL_LIBS)
+testbackend_LDADD = $(SDL_LIBS)

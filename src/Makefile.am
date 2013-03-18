@@ -2,14 +2,12 @@
 
 ## Created by Anjuta
 
-SUBDIRS = sdlbackend gtkmmbackend
+SUBDIRS = sdlbackend gtkmmbackend testbackend
 
 AM_CPPFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\""$(localedir)"\" \
 	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
 	-DPACKAGE_DATA_DIR=\""$(pkgdatadir)"\" \
-    $(GTKMM_CFLAGS) \
-    $(SDL_CFLAGS) \
 	$(SLATES_CFLAGS)
 
 AM_CFLAGS =\
@@ -20,10 +18,6 @@ bin_PROGRAMS = slates
 
 slates_SOURCES = \
 	main.cc \
-	sdlbackend/sdlbackend.h \
-	sdlbackend/sdlbackend.cc \
-	gtkmmbackend/gtkmmbackend.h \
-	gtkmmbackend/gtkmmbackend.cc \
 	testbackend/testbackend.h \
 	testbackend/testbackend.cc \
 	master.cc \
@@ -43,7 +37,19 @@ slates_SOURCES = \
 	constdef.h \
 	emptyslateo.cc \
 	emptyslateo.h 
-	
+
+if GTKMM
+	slates_SOURCES += gtkmmbackend/gtkmmown.la
+endif
+
+if SDL
+	slates_SOURCES += sdlbackend/sdlown.la
+endif
+
+dnl if TEST_BACKEND
+	slates_SOURCES += testbackend/testown.la
+dnl endif
+
 ####
 ##	sdlbackend \
 ##	gtkmmbackend \
