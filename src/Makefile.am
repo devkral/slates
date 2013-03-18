@@ -40,7 +40,9 @@ slates_SOURCES = \
 	lockslateo.h \
 	sysslateo.cc \
 	sysslateo.h \
-	constdef.h 
+	constdef.h \
+	emptyslateo.cc \
+	emptyslateo.h 
 	
 ####
 ##	sdlbackend \

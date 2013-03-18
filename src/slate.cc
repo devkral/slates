@@ -25,6 +25,7 @@ slate::slate (viewport *parent, long int id,int position_xtemp,int position_ytem
 	slateid=id;
 	position_x=position_xtemp;
 	position_y=position_ytemp;
+	slateobject=create_emptyobject();
 }
 
 
