@@ -12,6 +12,7 @@ slatesdoc_DATA = \
 	INSTALL\
 	NEWS
 
+ACLOCAL_AMFLAGS = -I m4
 
 INTLTOOL_FILES = intltool-extract.in \
 	intltool-merge.in \

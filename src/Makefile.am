@@ -2,12 +2,13 @@
 
 ## Created by Anjuta
 
-SUBDIRS = sdlbackend gtkmmbackend testbackend
 
 AM_CPPFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\""$(localedir)"\" \
 	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
 	-DPACKAGE_DATA_DIR=\""$(pkgdatadir)"\" \
+	$(GTKMM_CFLAGS) \
+	$(SDL_CFLAGS) \
 	$(SLATES_CFLAGS)
 
 AM_CFLAGS =\
@@ -38,17 +39,26 @@ slates_SOURCES = \
 	emptyslateo.cc \
 	emptyslateo.h 
 
-if GTKMM
-	slates_SOURCES += gtkmmbackend/gtkmmown.la
-endif
+AC_CHECK_DEFINE(COMPILED_WITH_TESTBACKEND,
+[
+	slates_SOURCES += testbackend/testbackend.cc \
+		testbackend/testbackend.h
+],[1])
+	
 
-if SDL
-	slates_SOURCES += sdlbackend/sdlown.la
-endif
+AC_CHECK_DEFINE(OMPILED_WITH_GTKMM,
+[
+	slates_SOURCES += gtkmmbackend/gtkmmbackend.cc \
+		gtkmmbackend/gtkmmbackend.h
+],[1])
 
-dnl if TEST_BACKEND
-	slates_SOURCES += testbackend/testown.la
-dnl endif
+AC_CHECK_DEFINE(COMPILED_WITH_SDL,
+[
+	slates_SOURCES += sdlbackend/sdlbackend.cc \
+		sdlbackend/sdlbackend.h
+],[1])
+
+
 
 ####
 ##	sdlbackend \
@@ -57,7 +67,8 @@ dnl endif
 
 slates_CXXFLAGS = -std=c++11 
 
-slates_LDADD = $(SLATES_LIBS) \
+slates_LDADD = 
     $(GTKMM_LIBS) \
-    $(SDL_LIBS)
+    $(SDL_LIBS) \
+    $(SLATES_LIBS) 
 
