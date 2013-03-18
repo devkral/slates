@@ -30,7 +30,7 @@ class slateobject;
 class sysslateo: public slateobject 
 {
 public:
-	const char TYPE();
+	char TYPE();
 protected:
 
 private:

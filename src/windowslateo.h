@@ -29,11 +29,11 @@ class slateobject;
 class windowslateo : public slateobject
 {
 public:
-		const char TYPE();
+	char TYPE();
 protected:
 
 private:
-
+	
 };
 
 #endif // _WINDOWSLATEO_H_

@@ -28,7 +28,7 @@ class slateobject;
 class lockslateo: public slateobject 
 {
 public:
-	const char TYPE();
+	char TYPE();
 protected:
 
 private:

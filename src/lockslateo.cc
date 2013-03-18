@@ -19,7 +19,7 @@
 
 #include "lockslateo.h"
 
-const char lockslateo::TYPE()
+char lockslateo::TYPE()
 {
 	return TYPE_lockslate;
 }

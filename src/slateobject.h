@@ -44,7 +44,8 @@ public:
 	void *get_screen_ob();
 	void set_connectedslates(vector< vector<slate*> > *conslateob);
 	vector< vector<slate*> > *get_connectedslates();
-	virtual const char TYPE()=0;
+	virtual char TYPE()=0;
+	virtual void draw()=0;
 protected:
 
 private:

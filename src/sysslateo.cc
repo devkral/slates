@@ -19,7 +19,7 @@
 
 #include "sysslateo.h"
 
-const char sysslateo::TYPE()
+char sysslateo::TYPE()
 {
 	return TYPE_sysslate;
 }

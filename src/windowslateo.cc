@@ -19,7 +19,7 @@
 
 #include "windowslateo.h"
 
-const char windowslateo::TYPE()
+char windowslateo::TYPE()
 {
 	return TYPE_windowslate;
 }
