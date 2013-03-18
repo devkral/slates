@@ -33,18 +33,46 @@ testsl::~testsl()
 
 }
 
+testlockso::testlockso(slate *parent_slate) : lockslateo(parent_slate)
+{
+	cerr << "build lockso\n";
+}
+testlockso::~testlockso()
+{
+	cerr << "destroy lockso\n";
+}
+void testlockso::draw()
+{
+	cout << "Draw\n";
+}
+
+
+testemptyso::testemptyso(slate *parent_slate) : emptyslateo(parent_slate)
+{
+	cerr << "build emptyso\n";
+}
+testemptyso::~testemptyso()
+{
+	cerr << "destroy emptyso\n";
+}
+void testemptyso::draw()
+{
+	cout << "Draw\n";
+}
+
+
 
 slateobject *testsl::create_lockobject()
 {
 	cerr << "Created lockobject\n";
-	return 0;
+	return  new testlockso((slate*)this);
 }
 
 
 slateobject *testsl::create_emptyobject()
 {
 	cerr << "Created emptyobject\n";
-	return 0;
+	return new testemptyso((slate*)this);
 
 }
 
@@ -103,6 +131,11 @@ testmain::testmain(int argc, char* argv[])
 	viewport_pool[0]->addslice();
 	cerr << endl;
 	viewport_pool[0]->addslice();
-	
+	cerr << endl;
+	viewport_pool[0]->removeslice();
+	cerr << endl;
+	viewport_pool[0]->addslice();
+
+	cout << "100: " << calcidslate(100,100) << " 5: " << calcidslate(5,5) << endl;
 
 }

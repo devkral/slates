@@ -39,21 +39,35 @@ class windowslateo;
 class lockslateo;
 #include "sysslateo.h"
 class sysslateo;
+#include "emptyslateo.h"
+class emptyslateo;
+
+
 
 class testso;
 class testsl;
 class testvp;
 class testmain;
 
+class testemptyso;
+
 
 class testlockso : public lockslateo
 {
 public:
-	testlockso();
+	testlockso(slate *parent_slate);
 	~testlockso();
-
+	void draw();
 };
 
+class testemptyso : public emptyslateo
+{
+public:
+	testemptyso(slate *parent_slate);
+	~testemptyso();
+	void draw();
+
+};
 
 class testsl : public slate
 {

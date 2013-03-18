@@ -28,11 +28,13 @@ class slateobject;
 class lockslateo: public slateobject 
 {
 public:
+	lockslateo(slate *parent_slate);
+	~lockslateo();
 	char TYPE();
 protected:
 
 private:
-	virtual void checkpassword()=0;
+	//virtual void checkpassword()=0;
 };
 
 #endif // _LOCKSLATEO_H_

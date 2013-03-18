@@ -28,7 +28,7 @@ class slateobject;
 
 #include "constdef.h"
 
-
+#include <memory>
 #include <string>
 
 using namespace std;
@@ -38,17 +38,20 @@ class slate
 {
 public:
 	slate (viewport *parent, long int id,int position_xtemp,int position_ytemp);
+	~slate();
 	bool isfilled();
 	master *getmaster();
 	viewport *getviewport();
 	void set_screen_ob(void *screenob);
 	void *get_screen_ob();
-	void swap_childobject(slateobject ** const child); //swaps inplace
-	slateobject ** const get_childobject();
+	void swap_childobject(shared_ptr<slateobject> const child); //swaps inplace
+	shared_ptr<slateobject> get_childobject();
 	void lock_slate();
 	void unlock_slate();
 	int fillslate(string progname); //own content
 	void emptyslate(); //reset to default
+	void init_slate();
+	void destroy_slate();
 	
 protected:
 
@@ -59,13 +62,16 @@ private:
 	int position_x;
 	int position_y;
 	viewport *parent_viewport;
-	slateobject *child_slateo=0;
-	slateobject *preserve_after_lock=0;
+	shared_ptr<slateobject> child_slateo;
+	shared_ptr<slateobject> preserve_after_lock;
 
+	void emptyslate_nonunique();
+	
 	virtual slateobject *create_lockobject()=0;
 	virtual slateobject *create_emptyobject()=0;
 	virtual slateobject *create_sysobject()=0;
 	virtual slateobject *create_windowobject(string progname)=0;
+	
 };
 #endif // _SLATE_H_
 

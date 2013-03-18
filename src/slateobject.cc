@@ -32,8 +32,12 @@ slateobject::slateobject(slate *parent_slate)
 
 slateobject::~slateobject()
 {
+	//destroy_so();
 	delete connectedslates;
 }
+
+
+
 void slateobject::set_screen_ob(void *screenob)
 {
 	screen_object=screenob;

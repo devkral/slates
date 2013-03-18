@@ -88,6 +88,7 @@ void viewport::createslate()
 	}
 
 	slate_pool.push_back(create_slate_intern(this,slate_idcount, temp_x, temp_y));
+	slate_pool[slate_idcount]->init_slate();
 	slate_idcount++;
 }
 

@@ -46,11 +46,13 @@ public:
 	vector< vector<slate*> > *get_connectedslates();
 	virtual char TYPE()=0;
 	virtual void draw()=0;
+	
 protected:
 
 private:
 	vector< vector<slate*> > *connectedslates; //outer vector y inner x
 	void *screen_object=0;
+	friend slate;
 };
 
 #endif // _SLATEOBJECT_H_

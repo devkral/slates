@@ -25,9 +25,22 @@ slate::slate (viewport *parent, long int id,int position_xtemp,int position_ytem
 	slateid=id;
 	position_x=position_xtemp;
 	position_y=position_ytemp;
-	slateobject=create_emptyobject();
 }
 
+slate::~slate()
+{
+	destroy_slate();
+}
+
+void slate::init_slate()
+{
+	emptyslate();
+}
+
+void slate::destroy_slate()
+{
+	
+}
 
 bool slate::isfilled()
 {
@@ -55,30 +68,28 @@ void *slate::get_screen_ob()
 	return child_slateo->get_screen_ob();
 }
 
-void slate::swap_childobject(slateobject ** const child)
+void slate::swap_childobject(shared_ptr<slateobject> child)
 {
-	slateobject *temp=child_slateo;
-	void *temp2=temp->get_screen_ob();
-	
-	child_slateo=*child;
-	*child=temp;
-
-	(*child)->set_screen_ob(child_slateo->get_screen_ob());
+	if (child_slateo->TYPE()==TYPE_lockslate)
+		throw ("Error: not implemented yet");
+	void *temp2=child_slateo->get_screen_ob();
+	child_slateo.swap(child);
+	child->set_screen_ob(child_slateo->get_screen_ob());
 	child_slateo->set_screen_ob(temp2);
 }
 
-slateobject ** const slate::get_childobject()
+shared_ptr<slateobject> slate::get_childobject()
 {
-	return &child_slateo;
+	return child_slateo;
 }
 
 void slate::lock_slate()
 {
 	if (lockstate!=0)
 	{
-		preserve_after_lock=child_slateo;
-		child_slateo=create_lockobject();
+		preserve_after_lock.swap(child_slateo);
 		lockstate=2;
+		child_slateo->draw();
 	}
 }
 
@@ -86,17 +97,19 @@ void slate::unlock_slate()
 {
 	if (lockstate!=2)
 	{
-		delete child_slateo;
-		child_slateo=preserve_after_lock;
+		//child_slateo->destroy_so();
+		child_slateo.swap(preserve_after_lock);
 		lockstate=0;
+		child_slateo->draw();
 	}
 }
 
 int slate::fillslate(string progname)
 {
-	if (child_slateo==0 || child_slateo->TYPE()==TYPE_emptyslate)
+	if (child_slateo.use_count()==0 || child_slateo->TYPE()==TYPE_emptyslate)
 	{
-		create_windowobject(progname);
+		child_slateo.reset(create_windowobject(progname));
+		child_slateo->draw();
 		return OP_success;
 	}
 	else
@@ -106,6 +119,29 @@ int slate::fillslate(string progname)
 
 void slate::emptyslate()
 {
-	delete child_slateo;
-	child_slateo=create_emptyobject();
+	if (child_slateo.use_count()==0)
+	{
+		child_slateo.reset(create_emptyobject());
+		child_slateo->draw();
+	}
+	else
+		emptyslate_nonunique();
 }
+
+void slate::emptyslate_nonunique()
+{
+	vector< vector<slate*> > *tempconectedslates=child_slateo->connectedslates;
+	while (tempconectedslates->empty()==false)
+	{
+		while (tempconectedslates->back().empty()==false)
+		{
+			tempconectedslates->back().back()->child_slateo.reset(create_emptyobject());
+			tempconectedslates->back().back()->preserve_after_lock.reset(create_lockobject());
+			tempconectedslates->back().back()->child_slateo->draw();
+			tempconectedslates->back().pop_back();
+		}
+		tempconectedslates->pop_back();
+	}
+}
+
+

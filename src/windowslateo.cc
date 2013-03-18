@@ -24,3 +24,7 @@ char windowslateo::TYPE()
 	return TYPE_windowslate;
 }
 
+void windowslateo::close()
+{
+	;
+}

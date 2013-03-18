@@ -27,6 +27,9 @@ class slateobject;
 class emptyslateo : public slateobject 
 {
 public:
+	emptyslateo(slate *parent_slate);
+	~emptyslateo();
+		
 	char TYPE();
 protected:
 

@@ -30,6 +30,7 @@ class windowslateo : public slateobject
 {
 public:
 	char TYPE();
+	void close();
 protected:
 
 private:

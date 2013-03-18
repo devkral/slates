@@ -19,7 +19,18 @@
 
 #include "emptyslateo.h"
 
-char lockslateo::TYPE()
+emptyslateo::emptyslateo(slate *parent_slate) : slateobject(parent_slate)
+{
+	
+
+}
+
+emptyslateo::~emptyslateo()
+{
+
+}
+
+char emptyslateo::TYPE()
 {
 	return TYPE_emptyslate;
 }

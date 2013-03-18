@@ -19,6 +19,21 @@
 
 #include "lockslateo.h"
 
+lockslateo::lockslateo(slate *parent_slate) : slateobject(parent_slate)
+{
+
+
+}
+
+lockslateo::~lockslateo()
+{
+
+}
+
+
+
+
+
 char lockslateo::TYPE()
 {
 	return TYPE_lockslate;
