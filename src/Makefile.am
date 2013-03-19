@@ -39,35 +39,29 @@ slates_SOURCES = \
 	emptyslateo.cc \
 	emptyslateo.h 
 
-AC_CHECK_DEFINE(COMPILED_WITH_TESTBACKEND,
-[
+
+#why the hell it doesn't work? And who makes such easy tasks so hard? Are GNUs aliens from outer space?
+
+ifdef(`COMPILED_WITH_TESTBACKEND',
 	slates_SOURCES += testbackend/testbackend.cc \
-		testbackend/testbackend.h
-],[1])
+		testbackend/testbackend.h 
+')
 	
 
-AC_CHECK_DEFINE(OMPILED_WITH_GTKMM,
-[
+ifdef(`COMPILED_WITH_GTKMM',
 	slates_SOURCES += gtkmmbackend/gtkmmbackend.cc \
-		gtkmmbackend/gtkmmbackend.h
-],[1])
+		gtkmmbackend/gtkmmbackend.h 
+')
 
-AC_CHECK_DEFINE(COMPILED_WITH_SDL,
-[
+ifdef(`COMPILED_WITH_SDL',
 	slates_SOURCES += sdlbackend/sdlbackend.cc \
-		sdlbackend/sdlbackend.h
-],[1])
-
-
-
-####
-##	sdlbackend \
-##	gtkmmbackend \
+		sdlbackend/sdlbackend.h 
+')
 
 
 slates_CXXFLAGS = -std=c++11 
 
-slates_LDADD = 
+slates_LDADD = \
     $(GTKMM_LIBS) \
     $(SDL_LIBS) \
     $(SLATES_LIBS) 
