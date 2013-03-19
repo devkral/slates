@@ -51,7 +51,7 @@ endif
 
 if IS_COMPILED_WITH_SDL
 slates_SOURCES += sdlbackend/sdlbackend.cc \
-	sdlbackend/sdlbackend.h )
+	sdlbackend/sdlbackend.h
 endif
 
 slates_CXXFLAGS = -std=c++11 
