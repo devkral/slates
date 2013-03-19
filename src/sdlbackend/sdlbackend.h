@@ -23,7 +23,6 @@
 #include "config.h"
 #endif //_CONFIG_H_
 
-#ifdef COMPILED_WITH_SDL
 #ifndef _SDLBACKEND_H_
 #define _SDLBACKEND_H_
 #include "SDL.h"
@@ -139,4 +138,3 @@ private:
 */
 
 #endif // _SDLBACKEND_H_
-#endif //COMPILED_WITH_SDL

@@ -24,7 +24,6 @@
 #endif //_CONFIG_H_
 
 
-#ifdef COMPILED_WITH_GTKMM
 #ifndef _GTKMMBACKEND_H_
 #define _GTKMMBACKEND_H_
 
@@ -49,4 +48,3 @@ int gtkmmmain(int ,char *[]);
 */
 
 #endif // _GTKMMBACKEND_H_
-#endif // COMPILED_WITH_GTKMM
