@@ -32,11 +32,7 @@
 using namespace std;
 
 
-void sdlmain(int argc, char *argv[])
-{
-	cout << "Hello World\n";
-	
-}
+
 
 /**
 
@@ -325,4 +321,19 @@ int sdlmain(int argc, char *argv[])
     return 0;
 }
 */
+
+
+int sdlmain(int argc, char *argv[])
+{
+	try
+	{
+		sdlmaster(argc,argv);
+	}
+	catch (...)
+	{
+		return 1;
+	}
+	return 0;
+}
+
 #endif //COMPILED_WITH_SDL

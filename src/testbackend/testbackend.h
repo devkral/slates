@@ -47,7 +47,7 @@ class emptyslateo;
 class testso;
 class testsl;
 class testvp;
-class testmain;
+class testmaster;
 
 class testemptyso;
 
@@ -98,15 +98,15 @@ private:
 
 
 
-class testmain : public master
+class testmaster : public master
 {
 public:
-	testmain(int argc, char* argv[]);
-	~testmain();
+	testmaster(int argc, char* argv[]);
+	~testmaster();
 
 private:
 	viewport *create_viewport_intern(master *masteridd, int ownidd);
 };
-
+int testmain(int argc ,char *argv[]);
 
 #endif // _TESTBACKEND_H_

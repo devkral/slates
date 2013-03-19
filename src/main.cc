@@ -65,26 +65,23 @@ int
 main (int argc, char *argv[])
 {
 	int sel=3; //debug
+	int returnvalue;
 	switch (sel)
 	{
 #ifdef COMPILED_WITH_SDL
-		case 1: sdlmain(argc, argv);
+		case 1: returnvalue=sdlmain(argc, argv);
 			break;
 #endif
 #ifdef COMPILED_WITH_GTKMM
-		case 2: //gtkmmmain(argc, argv);
+		case 2: returnvalue=gtkmmmain(argc, argv);
 			break;
 #endif	
 #ifdef COMPILED_WITH_TESTBACKEND
-
-		case 3: testmain(argc, argv);
+		case 3: returnvalue=testmain(argc, argv);
 			break;
 #endif	
-		default: std::cerr << "Error: no backend\n";
+		default: std::cerr << "Error: no backend\n"; returnvalue=1;
 	}
-	
-
-	
-	
+	return returnvalue;
 }
 

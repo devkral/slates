@@ -42,9 +42,9 @@ class gtkmmcontroller
 	public:
 		gtkmmcontroller();
 	
-};
+};*/
 
-int gtkmmmain(int ,char *[]);
-*/
+int gtkmmmain(int argc ,char *argv[]);
+
 
 #endif // _GTKMMBACKEND_H_

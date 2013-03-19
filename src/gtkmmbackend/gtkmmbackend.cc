@@ -138,4 +138,19 @@ int gtkmmmain(int argc, char *argv[])
 
 	return app->run(window);
 }*/
+
+int gtkmmmain(int argc, char *argv[])
+{
+	try
+	{
+		gtkmmmaster(argc,argv);
+	}
+	catch (...)
+	{
+		return 1;
+	}
+	return 0;
+}
+
+
 #endif //COMPILED_WITH_GTKMM

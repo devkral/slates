@@ -143,7 +143,7 @@ class sdlmain : public master
 	
 }*/
 
-void sdlmain(int argc, char *argv[]);
+int sdlmain(int argc, char *argv[]);
  
 
 

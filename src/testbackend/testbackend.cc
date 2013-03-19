@@ -111,20 +111,20 @@ slate *testvp::create_slate_intern(viewport *parent, long int id,int position_xt
 }
 
 
-viewport *testmain::create_viewport_intern(master *masteridd, int ownidd)
+viewport *testmaster::create_viewport_intern(master *masteridd, int ownidd)
 {
 	cerr << "created viewport: " << ownidd << endl;
 	return new testvp(masteridd,ownidd);
 }
 
-testmain::~testmain()
+testmaster::~testmaster()
 {
 
 
 }
 
 
-testmain::testmain(int argc, char* argv[])
+testmaster::testmaster(int argc, char* argv[])
 {
 	createviewport();
 	cerr << endl;
@@ -138,4 +138,17 @@ testmain::testmain(int argc, char* argv[])
 
 	cout << "100: " << calcidslate(100,100) << " 5: " << calcidslate(5,5) << endl;
 
+}
+
+int testmain(int argc ,char *argv[])
+{
+	try
+	{
+		testmaster(argc,argv);
+	}
+	catch (...)
+	{
+		return 1;
+	}
+	return 0;
 }
