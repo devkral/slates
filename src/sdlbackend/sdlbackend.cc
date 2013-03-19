@@ -327,10 +327,11 @@ int sdlmain(int argc, char *argv[])
 {
 	try
 	{
-		sdlmaster(argc,argv);
+		//sdlmaster(argc,argv);
 	}
 	catch (...)
 	{
+		cerr << "An Error: happened\n";
 		return 1;
 	}
 	return 0;

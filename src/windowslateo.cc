@@ -19,6 +19,16 @@
 
 #include "windowslateo.h"
 
+windowslateo::windowslateo(slate *parent_slate) : slateobject(parent_slate)
+{
+
+}
+
+windowslateo::~windowslateo()
+{
+
+}
+
 char windowslateo::TYPE()
 {
 	return TYPE_windowslate;

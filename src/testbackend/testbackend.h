@@ -28,74 +28,8 @@
 
 #include "master.h"
 class master;
-#include "viewport.h"
-class viewport;
-#include "slate.h"
-class slate;
-class slateobject;
-#include "windowslateo.h"
-class windowslateo;
-#include "lockslateo.h"
-class lockslateo;
-#include "sysslateo.h"
-class sysslateo;
-#include "emptyslateo.h"
-class emptyslateo;
-
-
-
-class testso;
-class testsl;
-class testvp;
-class testmaster;
-
-class testemptyso;
-
-
-class testlockso : public lockslateo
-{
-public:
-	testlockso(slate *parent_slate);
-	~testlockso();
-	void draw();
-};
-
-class testemptyso : public emptyslateo
-{
-public:
-	testemptyso(slate *parent_slate);
-	~testemptyso();
-	void draw();
-
-};
-
-class testsl : public slate
-{
-public:
-	testsl(viewport *parent, long int id,int position_xtemp,int position_ytemp);
-	~testsl();
-protected:
-	
-private:
-	slateobject *create_lockobject();
-	slateobject *create_emptyobject();
-	slateobject *create_sysobject();
-	slateobject *create_windowobject(string progname);
-};
-
-class testvp : public viewport
-{
-public:
-	testvp(master *masteridd, int ownidd);
-	~testvp();
-	
-protected:
-
-private:
-	slate *create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp);
-
-};
-
+#include "tviewport.h"
+class tviewport;
 
 
 class testmaster : public master
@@ -107,6 +41,7 @@ public:
 private:
 	viewport *create_viewport_intern(master *masteridd, int ownidd);
 };
+
 int testmain(int argc ,char *argv[]);
 
 #endif // _TESTBACKEND_H_

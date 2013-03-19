@@ -82,6 +82,11 @@ main (int argc, char *argv[])
 #endif	
 		default: std::cerr << "Error: no backend\n"; returnvalue=1;
 	}
+
+#ifdef COMPILED_WITH_TESTBACKEND
+		std::cout << "testbackend available\n";
+#endif	
+
 	return returnvalue;
 }
 

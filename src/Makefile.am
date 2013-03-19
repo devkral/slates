@@ -21,6 +21,7 @@ slates_SOURCES = \
 	main.cc \
 	master.cc \
 	master.h \
+	constdef.h \
 	viewport.cc \
 	viewport.h \
 	slate.cc \
@@ -33,7 +34,6 @@ slates_SOURCES = \
 	lockslateo.h \
 	sysslateo.cc \
 	sysslateo.h \
-	constdef.h \
 	emptyslateo.cc \
 	emptyslateo.h 
 
@@ -41,7 +41,19 @@ slates_SOURCES = \
 
 if IS_COMPILED_WITH_TESTBACKEND
 slates_SOURCES += testbackend/testbackend.cc \
-	testbackend/testbackend.h
+	testbackend/testbackend.h \
+	testbackend/tviewport.cc \
+	testbackend/tviewport.h \
+	testbackend/tslate.cc \
+	testbackend/tslate.h \
+	testbackend/twindowslateo.cc \
+	testbackend/twindowslateo.h \
+	testbackend/tlockslateo.cc \
+	testbackend/tlockslateo.h \
+	testbackend/tsysslateo.cc \
+	testbackend/tsysslateo.h \
+	testbackend/temptyslateo.cc \
+	testbackend/temptyslateo.h
 endif
 
 if IS_COMPILED_WITH_GTKMM

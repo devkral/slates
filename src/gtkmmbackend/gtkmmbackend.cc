@@ -143,10 +143,11 @@ int gtkmmmain(int argc, char *argv[])
 {
 	try
 	{
-		gtkmmmaster(argc,argv);
+		cerr << "implemented soon\n";//gtkmmmaster(argc,argv);
 	}
 	catch (...)
 	{
+		cerr << "An Error: happened\n";
 		return 1;
 	}
 	return 0;

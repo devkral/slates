@@ -23,98 +23,11 @@
 
 using namespace std;
 
-testsl::testsl(viewport *parent, long int id,int position_xtemp,int position_ytemp) : slate(parent, id,position_xtemp,position_ytemp)
-{
-
-}
-
-testsl::~testsl()
-{
-
-}
-
-testlockso::testlockso(slate *parent_slate) : lockslateo(parent_slate)
-{
-	cerr << "build lockso\n";
-}
-testlockso::~testlockso()
-{
-	cerr << "destroy lockso\n";
-}
-void testlockso::draw()
-{
-	cout << "Draw\n";
-}
-
-
-testemptyso::testemptyso(slate *parent_slate) : emptyslateo(parent_slate)
-{
-	cerr << "build emptyso\n";
-}
-testemptyso::~testemptyso()
-{
-	cerr << "destroy emptyso\n";
-}
-void testemptyso::draw()
-{
-	cout << "Draw\n";
-}
-
-
-
-slateobject *testsl::create_lockobject()
-{
-	cerr << "Created lockobject\n";
-	return  new testlockso((slate*)this);
-}
-
-
-slateobject *testsl::create_emptyobject()
-{
-	cerr << "Created emptyobject\n";
-	return new testemptyso((slate*)this);
-
-}
-
-slateobject *testsl::create_sysobject()
-{
-	cerr << "Created sysobject\n";
-	return 0;
-
-}
-
-
-slateobject *testsl::create_windowobject(string progname)
-{
-	cerr << "Created windowobject " << progname << endl ;
-	return 0;
-}
-
-
-
-testvp::testvp(master *masteridd, int ownidd): viewport(masteridd,ownidd)
-{
-
-
-}
-
-testvp::~testvp()
-{
-
-
-}
-
-slate *testvp::create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp)
-{
-	cerr << "created slate: " << id << endl;
-	return new testsl(parent,id,position_xtemp,position_ytemp);
-}
 
 
 viewport *testmaster::create_viewport_intern(master *masteridd, int ownidd)
 {
-	cerr << "created viewport: " << ownidd << endl;
-	return new testvp(masteridd,ownidd);
+	return new tviewport(masteridd,ownidd);
 }
 
 testmaster::~testmaster()
@@ -148,6 +61,7 @@ int testmain(int argc ,char *argv[])
 	}
 	catch (...)
 	{
+		cerr << "An Error: happened\n";
 		return 1;
 	}
 	return 0;

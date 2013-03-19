@@ -29,6 +29,8 @@ class slateobject;
 class windowslateo : public slateobject
 {
 public:
+	windowslateo(slate *parent_slate);
+	~windowslateo();
 	char TYPE();
 	void close();
 protected:

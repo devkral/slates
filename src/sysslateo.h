@@ -30,6 +30,8 @@ class slateobject;
 class sysslateo: public slateobject 
 {
 public:
+	sysslateo(slate *parent_slate);
+	~sysslateo();
 	char TYPE();
 protected:
 

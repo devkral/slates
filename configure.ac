@@ -31,22 +31,38 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [GETTEXT package name])
 
 LT_INIT
 
-AM_CONDITIONAL(IS_COMPILED_WITH_TESTBACKEND, [true])
-
-AS_CASE(IS_COMPILED_WITH_TESTBACKEND,
-true, AC_DEFINE([COMPILED_WITH_TESTBACKEND], [1], [ testbackend support: YES ]),
-false, AC_MSG_RESULT( [ testbackend support: NO ]) )
-
-PKG_CHECK_MODULES(GTKMM, [gtkmm-3.0],  AM_CONDITIONAL(IS_COMPILED_WITH_GTKMM, [true]),  AM_CONDITIONAL(IS_COMPILED_WITH_GTKMM, [false]) )
-AS_CASE(IS_COMPILED_WITH_GTKMM,
-true, AC_DEFINE([COMPILED_WITH_GTKMM], [1], [gtkmm support: YES]),
-false, AC_MSG_RESULT( [ gtkmm support: NO ] ) )
+# here: bash except some additions
 
 
-PKG_CHECK_MODULES(SDL, [sdl SDL_image], AM_CONDITIONAL(IS_COMPILED_WITH_SDL, [true]), AM_CONDITIONAL(IS_COMPILED_WITH_SDL, [false]) )
-AS_CASE(IS_COMPILED_WITH_SDL,
-true, AC_DEFINE([COMPILED_WITH_SDL], [1], [sdl support: YES]),
-false, AC_MSG_RESULT([sdl support: NO]))
+buildtestbackend="yes"
+
+if test "x$buildtestbackend" = "xyes" ; then
+	AM_CONDITIONAL(IS_COMPILED_WITH_TESTBACKEND, [true])
+	AC_DEFINE([COMPILED_WITH_TESTBACKEND], [1], [ testbackend support: YES ])
+else
+	AM_CONDITIONAL(IS_COMPILED_WITH_TESTBACKEND, [false])
+	AC_MSG_RESULT( [ testbackend support: NO ])
+fi
+
+PKG_CHECK_MODULES(GTKMM, [gtkmm-3.0],  [buildgtkmmbackend="yes"],  [buildgtkmmbackend="no"] )
+
+if test "x$buildgtkmmbackend" = "xyes" ; then
+	AM_CONDITIONAL(IS_COMPILED_WITH_GTKMM, [true])
+	AC_DEFINE([COMPILED_WITH_GTKMM], [1], [gtkmm support: YES])
+else
+	AM_CONDITIONAL(IS_COMPILED_WITH_GTKMM, [false])
+	AC_MSG_RESULT( [ gtkmm support: NO ] )
+fi
+
+PKG_CHECK_MODULES(SDL, [sdl SDL_image], [buildsdlbackend="yes"] , [buildsdlbackend="no"] )
+
+if test "x$buildsdlbackend" = "xyes" ; then
+	AM_CONDITIONAL(IS_COMPILED_WITH_SDL, [true])
+	AC_DEFINE([COMPILED_WITH_SDL], [1], [sdl support: YES])
+else
+	AM_CONDITIONAL(IS_COMPILED_WITH_SDL, [false])
+	AC_MSG_RESULT([sdl support: NO])
+fi
 
 
 AC_CONFIG_FILES([

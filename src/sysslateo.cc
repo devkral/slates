@@ -19,6 +19,18 @@
 
 #include "sysslateo.h"
 
+sysslateo::sysslateo(slate *parent_slate) : slateobject(parent_slate)
+{
+
+
+}
+
+sysslateo::~sysslateo()
+{
+
+
+}
+
 char sysslateo::TYPE()
 {
 	return TYPE_sysslate;
