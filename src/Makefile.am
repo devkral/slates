@@ -19,8 +19,6 @@ bin_PROGRAMS = slates
 
 slates_SOURCES = \
 	main.cc \
-	testbackend/testbackend.h \
-	testbackend/testbackend.cc \
 	master.cc \
 	master.h \
 	viewport.cc \
@@ -40,24 +38,21 @@ slates_SOURCES = \
 	emptyslateo.h 
 
 
-#why the hell it doesn't work? And who makes such easy tasks so hard? Are GNUs aliens from outer space?
 
-ifdef(`COMPILED_WITH_TESTBACKEND',
-	slates_SOURCES += testbackend/testbackend.cc \
-		testbackend/testbackend.h 
-')
-	
+if IS_COMPILED_WITH_TESTBACKEND
+slates_SOURCES += testbackend/testbackend.cc \
+	testbackend/testbackend.h
+endif
 
-ifdef(`COMPILED_WITH_GTKMM',
-	slates_SOURCES += gtkmmbackend/gtkmmbackend.cc \
-		gtkmmbackend/gtkmmbackend.h 
-')
+if IS_COMPILED_WITH_GTKMM
+slates_SOURCES += gtkmmbackend/gtkmmbackend.cc \
+	gtkmmbackend/gtkmmbackend.h 
+endif
 
-ifdef(`COMPILED_WITH_SDL',
-	slates_SOURCES += sdlbackend/sdlbackend.cc \
-		sdlbackend/sdlbackend.h 
-')
-
+if IS_COMPILED_WITH_SDL
+slates_SOURCES += sdlbackend/sdlbackend.cc \
+	sdlbackend/sdlbackend.h )
+endif
 
 slates_CXXFLAGS = -std=c++11 
 

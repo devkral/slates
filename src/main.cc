@@ -37,7 +37,10 @@
 #endif
 //#endif //test
 
+#ifdef COMPILED_WITH_TESTBACKEND
 #include "testbackend/testbackend.h"
+#endif
+
 
 
 #define DEFAULT_BACKEND 1
@@ -72,9 +75,11 @@ main (int argc, char *argv[])
 		case 2: //gtkmmmain(argc, argv);
 			break;
 #endif	
+#ifdef COMPILED_WITH_TESTBACKEND
+
 		case 3: testmain(argc, argv);
 			break;
-	
+#endif	
 		default: std::cerr << "Error: no backend\n";
 	}
 	
