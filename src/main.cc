@@ -68,7 +68,7 @@ main (int argc, char *argv[])
 	switch (sel)
 	{
 #ifdef COMPILED_WITH_SDL
-		case 1: //sdlmain(argc, argv);
+		case 1: sdlmain(argc, argv);
 			break;
 #endif
 #ifdef COMPILED_WITH_GTKMM

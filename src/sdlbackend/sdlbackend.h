@@ -136,5 +136,15 @@ private:
 };
 
 */
+/**
+class sdlmain : public master
+{
+	sdlmain(int argc, char *argv[]);
+	
+}*/
+
+void sdlmain(int argc, char *argv[]);
+ 
+
 
 #endif // _SDLBACKEND_H_

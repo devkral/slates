@@ -24,6 +24,20 @@
 
 
 #ifdef COMPILED_WITH_SDL
+
+
+#include <iostream>
+
+
+using namespace std;
+
+
+void sdlmain(int argc, char *argv[])
+{
+	cout << "Hello World\n";
+	
+}
+
 /**
 
 #define widthf sysdisplay->current_w
