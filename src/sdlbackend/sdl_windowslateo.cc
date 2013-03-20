@@ -17,24 +17,24 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "twindowslateo.h"
+#include "sdl_windowslateo.h"
 
 #include <iostream>
 
 using namespace std;
 
-twindowslateo::twindowslateo(slate *parent_slate) : windowslateo(parent_slate)
+sdl_windowslateo::sdl_windowslateo(slate *parent_slate) : windowslateo(parent_slate)
 {
-	cerr << "Create twindowslateo\n";
-	screen_object=new tpscreen;
+	cerr << "Create sdl_windowslateo\n";
+	screen_object=new sdlslatecanvas;
 }
 
-twindowslateo::~twindowslateo()
+sdl_windowslateo::~sdl_windowslateo()
 {
-	cerr << "Destroy twindowslateo\n";
+	cerr << "Destroy sdl_windowslateo\n";
 }
 
-void twindowslateo::draw()
+void sdl_windowslateo::draw()
 {
 	if (isdrawn==false)
 	{
@@ -46,7 +46,7 @@ void twindowslateo::draw()
 		cerr << "Update tsysslateo\n";
 	}
 }
-void twindowslateo::hide()
+void sdl_windowslateo::hide()
 {
 	if (isdrawn==true)
 	{
@@ -59,7 +59,7 @@ void twindowslateo::hide()
 	}
 }
 
-void twindowslateo::destroy_screen_ob ()
+void sdl_windowslateo::destroy_screen_ob ()
 {
-	delete to_tps(screen_object);
+	delete to_sdslc(screen_object);
 }

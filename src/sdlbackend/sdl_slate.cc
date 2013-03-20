@@ -17,42 +17,42 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "tslate.h"
+#include "sdl_slate.h"
 
 #include <iostream>
 
 using namespace std;
 
 
-tslate::tslate (viewport *parent, long int id,int position_xtemp,int position_ytemp) : slate(parent, id,position_xtemp,position_ytemp)
+sdl_slate::sdl_slate (viewport *parent, long int id,int position_xtemp,int position_ytemp) : slate(parent, id,position_xtemp,position_ytemp)
 {
-	cerr << "Create tslate\n";
+	cerr << "Create sdl_slate\n";
 }
 
-tslate::~tslate()
+sdl_slate::~sdl_slate()
 {
-	cerr << "Destroy tslate\n";
-}
-
-
-slateobject *tslate::create_lockobject()
-{
-	return new tlockslateo((slate*)this);
+	cerr << "Destroy sdl_slate\n";
 }
 
 
-slateobject *tslate::create_emptyobject()
+slateobject *sdl_slate::create_lockobject()
 {
-	return new temptyslateo ((slate*)this);
-}
-
-slateobject *tslate::create_sysobject()
-{
-	return new tsysslateo ((slate*)this);
+	return new sdl_lockslateo((slate*)this);
 }
 
 
-slateobject *tslate::create_windowobject(string progname)
+slateobject *sdl_slate::create_emptyobject()
 {
-	return new twindowslateo ((slate*)this);
+	return new sdl_emptyslateo ((slate*)this);
+}
+
+slateobject *sdl_slate::create_sysobject()
+{
+	return new sdl_sysslateo ((slate*)this);
+}
+
+
+slateobject *sdl_slate::create_windowobject(string progname)
+{
+	return new sdl_windowslateo ((slate*)this);
 }

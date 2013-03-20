@@ -17,21 +17,21 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEMPTYSLATEO_H_
-#define _TEMPTYSLATEO_H_
+#ifndef _GTKMM_EMPTYSLATEO_H_
+#define _GTKMM_EMPTYSLATEO_H_
 #include "emptyslateo.h"
 class emptyslateo;
-#include "tscreenobject.h"
-class tscreenobject;
+#include "gtkmm_screenobject.h"
+class gtkmm_screenobject;
 
 
 #include "constdef.h"
 
-class temptyslateo : public emptyslateo 
+class gtkmm_emptyslateo : public emptyslateo 
 {
 public:
-	temptyslateo(slate *parent_slate);
-	~temptyslateo();
+	gtkmm_emptyslateo(slate *parent_slate);
+	~gtkmm_emptyslateo();
 	void draw();
 	void hide();
 	void destroy_screen_ob ();

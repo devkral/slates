@@ -27,22 +27,7 @@
 #ifndef _GTKMMBACKEND_H_
 #define _GTKMMBACKEND_H_
 
-/**
-#include <gtkmm.h>
 
-class gtkmmborder
-{
-	public:
-		gtkmmborder();
-	
-};
-
-class gtkmmcontroller
-{
-	public:
-		gtkmmcontroller();
-	
-};*/
 
 int gtkmmmain(int argc ,char *argv[]);
 

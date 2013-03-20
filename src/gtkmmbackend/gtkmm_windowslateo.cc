@@ -17,24 +17,24 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "twindowslateo.h"
+#include "gtkmm_windowslateo.h"
 
 #include <iostream>
 
 using namespace std;
 
-twindowslateo::twindowslateo(slate *parent_slate) : windowslateo(parent_slate)
+gtkmm_windowslateo::gtkmm_windowslateo(slate *parent_slate) : windowslateo(parent_slate)
 {
-	cerr << "Create twindowslateo\n";
-	screen_object=new tpscreen;
+	cerr << "Create gtkmm_windowslateo\n";
+	screen_object=new gtwidget;
 }
 
-twindowslateo::~twindowslateo()
+gtkmm_windowslateo::~gtkmm_windowslateo()
 {
-	cerr << "Destroy twindowslateo\n";
+	cerr << "Destroy gtkmm_windowslateo\n";
 }
 
-void twindowslateo::draw()
+void gtkmm_windowslateo::draw()
 {
 	if (isdrawn==false)
 	{
@@ -46,7 +46,7 @@ void twindowslateo::draw()
 		cerr << "Update tsysslateo\n";
 	}
 }
-void twindowslateo::hide()
+void gtkmm_windowslateo::hide()
 {
 	if (isdrawn==true)
 	{
@@ -59,7 +59,7 @@ void twindowslateo::hide()
 	}
 }
 
-void twindowslateo::destroy_screen_ob ()
+void gtkmm_windowslateo::destroy_screen_ob ()
 {
-	delete to_tps(screen_object);
+	delete to_gtw(screen_object);
 }

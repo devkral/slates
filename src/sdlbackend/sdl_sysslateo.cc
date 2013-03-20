@@ -17,40 +17,41 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "tsysslateo.h"
+#include "sdl_sysslateo.h"
 
 #include <iostream>
 
 using namespace std;
 
-tsysslateo::tsysslateo(slate *parent_slate) : sysslateo(parent_slate)
+sdl_sysslateo::sdl_sysslateo(slate *parent_slate) : sysslateo(parent_slate)
 {
-	cerr << "Create tsysslateo\n";
+	cerr << "Create sdl_sysslateo\n";
+	screen_object=new sdlslatecanvas;
 }
 
-tsysslateo::~tsysslateo()
+sdl_sysslateo::~sdl_sysslateo()
 {
-	cerr << "Destroy tsysslateo\n";
+	cerr << "Destroy sdl_sysslateo\n";
 }
 
-void tsysslateo::draw()
+void sdl_sysslateo::draw()
 {
 	if (isdrawn==false)
 	{
 		isdrawn=true;
-		cerr << "Draw tsysslateo\n";
+		cerr << "Draw sdl_sysslateo\n";
 	}
 	else
 	{
-		cerr << "Update tsysslateo\n";
+		cerr << "Update sdl_sysslateo\n";
 	}
 }
-void tsysslateo::hide()
+void sdl_sysslateo::hide()
 {
 	if (isdrawn==true)
 	{
 		isdrawn=false;
-		cerr << "Hide tsysslateo\n";
+		cerr << "Hide sdl_sysslateo\n";
 	}
 	else
 	{
@@ -58,7 +59,7 @@ void tsysslateo::hide()
 	}
 }
 
-void tsysslateo::destroy_screen_ob ()
+void sdl_sysslateo::destroy_screen_ob ()
 {
-	delete to_tps(screen_object);
+	delete to_sdslc(screen_object);
 }

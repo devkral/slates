@@ -17,18 +17,18 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "tscreenobject.h"
+#include "sdl_screenobject.h"
 
 #include <iostream>
 
 using namespace std;
 
-tviewportscreen *to_tvs(void* in)
+sdlmastercanvas *to_sdmac(void* in)
 {
-	return (tviewportscreen*)in;
+	return (sdlmastercanvas*)in;
 }
 
-tpscreen *to_tps(void* in)
+sdlslatecanvas *to_sdslc(void* in)
 {
-	return (tpscreen*)in;
+	return (sdlslatecanvas*)in;
 }

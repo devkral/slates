@@ -17,22 +17,22 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TWINDOWSLATEO_H_
-#define _TWINDOWSLATEO_H_
+#ifndef _GTKMM_WINDOWSLATEO_H_
+#define _GTKMM_WINDOWSLATEO_H_
 
 #include "windowslateo.h"
 class windowslateo;
-#include "tscreenobject.h"
-class tscreenobject;
+#include "gtkmm_screenobject.h"
+class gtkmm_screenobject;
 
 #include "constdef.h"
 
 
-class twindowslateo : public windowslateo
+class gtkmm_windowslateo : public windowslateo
 {
 public:
-	twindowslateo(slate *parent_slate);
-	~twindowslateo();
+	gtkmm_windowslateo(slate *parent_slate);
+	~gtkmm_windowslateo();
 	void draw();
 	void hide();
 	void destroy_screen_ob ();

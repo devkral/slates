@@ -17,15 +17,15 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TSCREENOBJECT_H_
-#define _TSCREENOBJECT_H_
+#ifndef _GTKMM_SCREENOBJECT_H_
+#define _GTKMM_SCREENOBJECT_H_
 
 #include <iostream>
 using namespace std;
 
 
-typedef struct tviewportscreen_{
-	~tviewportscreen_()
+typedef struct gtwindow_{
+	~gtwindow_()
 	{
 		cerr << "tvs I'm gone\n";
 		delete canvas;
@@ -33,10 +33,10 @@ typedef struct tviewportscreen_{
 	char *canvas;
 	
 	
-}tviewportscreen;
+}gtwindow;
 
-typedef struct tpscreen_{
-	~tpscreen_()
+typedef struct gtwidget_{
+	~gtwidget_()
 	{
 		cerr << "tps I'm gone\n";
 	}
@@ -45,10 +45,10 @@ typedef struct tpscreen_{
 	int w;
 	int h;
 	
-}tpscreen;
+}gtwidget;
 
-extern tviewportscreen *to_tvs(void* in);
-extern tpscreen *to_tps(void* in);
+extern gtwindow *to_gdw(void* in);
+extern gtwidget *to_gtw(void* in);
 
 
 #endif // _TSCREENOBJECT_H_

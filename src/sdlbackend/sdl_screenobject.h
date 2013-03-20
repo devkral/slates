@@ -17,26 +17,25 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TSCREENOBJECT_H_
-#define _TSCREENOBJECT_H_
+#ifndef _SDL_SCREENOBJECT_H_
+#define _SDL_SCREENOBJECT_H_
 
 #include <iostream>
 using namespace std;
 
 
-typedef struct tviewportscreen_{
-	~tviewportscreen_()
+typedef struct sdlmastercanvas_{
+	~sdlmastercanvas_()
 	{
-		cerr << "tvs I'm gone\n";
 		delete canvas;
 	}
 	char *canvas;
 	
 	
-}tviewportscreen;
+}sdlmastercanvas;
 
-typedef struct tpscreen_{
-	~tpscreen_()
+typedef struct sdlslatecanvas_{
+	~sdlslatecanvas_()
 	{
 		cerr << "tps I'm gone\n";
 	}
@@ -45,10 +44,10 @@ typedef struct tpscreen_{
 	int w;
 	int h;
 	
-}tpscreen;
+}sdlslatecanvas;
 
-extern tviewportscreen *to_tvs(void* in);
-extern tpscreen *to_tps(void* in);
+extern sdlmastercanvas *to_sdmac(void* in);
+extern sdlslatecanvas *to_sdslc(void* in);
 
 
 #endif // _TSCREENOBJECT_H_

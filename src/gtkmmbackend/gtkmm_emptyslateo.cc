@@ -17,7 +17,7 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "temptyslateo.h"
+#include "gtkmm_emptyslateo.h"
 
 
 #include <iostream>
@@ -25,34 +25,34 @@
 using namespace std;
 
 
-temptyslateo::temptyslateo(slate *parent_slate) : emptyslateo(parent_slate)
+gtkmm_emptyslateo::gtkmm_emptyslateo(slate *parent_slate) : emptyslateo(parent_slate)
 {
-	cerr << "Create temptyslateo\n";
-	screen_object=new tpscreen;
+	cerr << "Create gtkmm_emptyslateo\n";
+	screen_object=new gtwidget;
 }
 
-temptyslateo::~temptyslateo()
+gtkmm_emptyslateo::~gtkmm_emptyslateo()
 {
-	cerr << "Destroy temptyslateo\n";
+	cerr << "Destroy gtkmm_emptyslateo\n";
 }
-void temptyslateo::draw()
+void gtkmm_emptyslateo::draw()
 {
 	if (isdrawn==false)
 	{
 		isdrawn=true;
-		cerr << "Draw temptyslateo\n";
+		cerr << "Draw gtkmm_emptyslateo\n";
 	}
 	else
 	{
-		cerr << "Update temptyslateo\n";
+		cerr << "Update gtkmm_emptyslateo\n";
 	}
 }
-void temptyslateo::hide()
+void gtkmm_emptyslateo::hide()
 {
 	if (isdrawn==true)
 	{
 		isdrawn=false;
-		cerr << "Hide temptyslateo\n";
+		cerr << "Hide gtkmm_emptyslateo\n";
 	}
 	else
 	{
@@ -60,7 +60,7 @@ void temptyslateo::hide()
 	}
 }
 
-void temptyslateo::destroy_screen_ob ()
+void gtkmm_emptyslateo::destroy_screen_ob ()
 {
-	delete to_tps(screen_object);
+	delete to_gtw(screen_object);
 }

@@ -17,7 +17,7 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "temptyslateo.h"
+#include "sdl_emptyslateo.h"
 
 
 #include <iostream>
@@ -25,34 +25,34 @@
 using namespace std;
 
 
-temptyslateo::temptyslateo(slate *parent_slate) : emptyslateo(parent_slate)
+sdl_emptyslateo::sdl_emptyslateo(slate *parent_slate) : emptyslateo(parent_slate)
 {
-	cerr << "Create temptyslateo\n";
-	screen_object=new tpscreen;
+	cerr << "Create sdl_emptyslateo\n";
+	screen_object=new sdlslatecanvas;
 }
 
-temptyslateo::~temptyslateo()
+sdl_emptyslateo::~sdl_emptyslateo()
 {
-	cerr << "Destroy temptyslateo\n";
+	cerr << "Destroy sdl_emptyslateo\n";
 }
-void temptyslateo::draw()
+void sdl_emptyslateo::draw()
 {
 	if (isdrawn==false)
 	{
 		isdrawn=true;
-		cerr << "Draw temptyslateo\n";
+		cerr << "Draw sdl_emptyslateo\n";
 	}
 	else
 	{
-		cerr << "Update temptyslateo\n";
+		cerr << "Update sdl_emptyslateo\n";
 	}
 }
-void temptyslateo::hide()
+void sdl_emptyslateo::hide()
 {
 	if (isdrawn==true)
 	{
 		isdrawn=false;
-		cerr << "Hide temptyslateo\n";
+		cerr << "Hide sdl_emptyslateo\n";
 	}
 	else
 	{
@@ -60,7 +60,7 @@ void temptyslateo::hide()
 	}
 }
 
-void temptyslateo::destroy_screen_ob ()
+void sdl_emptyslateo::destroy_screen_ob ()
 {
-	delete to_tps(screen_object);
+	delete to_sdslc (screen_object);
 }

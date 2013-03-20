@@ -25,123 +25,23 @@
 
 #ifndef _SDLBACKEND_H_
 #define _SDLBACKEND_H_
+
+#include "sdl_viewport.h"
+class sdl_viewport;
+
 #include "SDL.h"
 #include <vector>
 #include "master.h"
-/**
 
-
-#include <thread>
-
-int sdlmain(int argc, char *argv[]);
-class sdlmslate;
-class slateobject;
-
-
-class sdlborder : public border
-{
-	public:
-		sdlborder(slateobject *parent);
-		~sdlborder();
-		int construct(int x, int y, int weight, int height);
-		
-	private:
-
-		SDL_Surface *sdl_border_surf;
-		SDL_Rect sdl_border_rect;
-
-};
-
-class sdlslateobject : public slateobject
-{
-	public:
-		sdlslateobject(slate *parent);
-		void use_default_child();
-	private:
-		void draw_borders();
-		void draw_child();
-		void destroy_child();
-
-		
-		/**int	x_points, y_points;
-		int h_points, w_points;
-		int thickness=1, space=1;
-};
-
-
-
-
-
-class sdlsslate : public slaveslate
+class sdl_master : public master
 {
 public:
-	sdlsslate(int x, int y,masterslate *controlpointt);
-	~sdlsslate();
-	//defaultobject
-	slateobject* give_default_slateobject (slate *parent);
-	//defaultobject end
-	
-private:
-
-};
-
-
-
-class sdlmslate : public masterslate
-{
-public:
-	sdlmslate(view_attributes *viewot);
-	sdlmslate(int _x_y, masterslate *controlpointt);
-	~sdlmslate ();
-	//defaultobject
-	slateobject* give_default_slateobject (slate *parent);
-	//defaultobject end
-	slaveslate* give_slave_slate(int x,int y,masterslate *controlpointt);
-	masterslate* give_master_slate(int pos_x_y_next, masterslate *controlpointt);
-	
-private:
-	//friend sdlmslate;
-
-};
-
-
-class sdlcontroller : public controller
-{
-public:
-	sdlcontroller();
-	~sdlcontroller();
-	
-	void drawthread();
-	void execevent(void *);
-	
-	bool comparescreen(void *screen);
-protected:
+	sdl_master(int argc, char* argv[]);
+	~sdl_master();
 
 private:
-	//vector<SDL_Surface*> surfacestoscreens;
-	const SDL_VideoInfo *sysdisplay;
-	thread gthread;
+	viewport *create_viewport_intern(master *masteridd, int ownidd);
 };
-
-
-class sdlmcontroller : public mastercontroller
-{
-public:
-	sdlmcontroller();
-	~sdlmcontroller();
-	void iodevicethread();
-	controller* givecontroller(void *);
-private:
-    SDL_Event event;
-};
-
-*/
-/**
-class sdlmain : public master
-{
-	sdlmain(int argc, char *argv[]);
-	
-}*/
 
 int sdlmain(int argc, char *argv[]);
  

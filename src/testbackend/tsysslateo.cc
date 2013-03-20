@@ -26,6 +26,7 @@ using namespace std;
 tsysslateo::tsysslateo(slate *parent_slate) : sysslateo(parent_slate)
 {
 	cerr << "Create tsysslateo\n";
+	screen_object=new tpscreen;
 }
 
 tsysslateo::~tsysslateo()

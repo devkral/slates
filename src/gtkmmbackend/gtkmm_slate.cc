@@ -17,42 +17,42 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "tslate.h"
+#include "gtkmm_slate.h"
 
 #include <iostream>
 
 using namespace std;
 
 
-tslate::tslate (viewport *parent, long int id,int position_xtemp,int position_ytemp) : slate(parent, id,position_xtemp,position_ytemp)
+gtkmm_slate::gtkmm_slate (viewport *parent, long int id,int position_xtemp,int position_ytemp) : slate(parent, id,position_xtemp,position_ytemp)
 {
-	cerr << "Create tslate\n";
+	cerr << "Create gtkmm_slate\n";
 }
 
-tslate::~tslate()
+gtkmm_slate::~gtkmm_slate()
 {
-	cerr << "Destroy tslate\n";
-}
-
-
-slateobject *tslate::create_lockobject()
-{
-	return new tlockslateo((slate*)this);
+	cerr << "Destroy gtkmm_slate\n";
 }
 
 
-slateobject *tslate::create_emptyobject()
+slateobject *gtkmm_slate::create_lockobject()
 {
-	return new temptyslateo ((slate*)this);
-}
-
-slateobject *tslate::create_sysobject()
-{
-	return new tsysslateo ((slate*)this);
+	return new gtkmm_lockslateo((slate*)this);
 }
 
 
-slateobject *tslate::create_windowobject(string progname)
+slateobject *gtkmm_slate::create_emptyobject()
 {
-	return new twindowslateo ((slate*)this);
+	return new gtkmm_emptyslateo ((slate*)this);
+}
+
+slateobject *gtkmm_slate::create_sysobject()
+{
+	return new gtkmm_sysslateo ((slate*)this);
+}
+
+
+slateobject *gtkmm_slate::create_windowobject(string progname)
+{
+	return new gtkmm_windowslateo ((slate*)this);
 }

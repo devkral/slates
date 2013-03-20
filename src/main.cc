@@ -64,7 +64,21 @@
 int
 main (int argc, char *argv[])
 {
-	int sel=3; //debug
+	string testoptions=argv[1];
+	int sel=DEFAULT_BACKEND;
+	if (testoptions=="sdl" || testoptions=="1")
+	{
+		sel=1;
+	}
+	if (testoptions=="gtkmm" || testoptions=="2")
+	{
+		sel=1;
+	}
+	if (testoptions=="test" || testoptions=="3")
+	{
+		sel=1;
+	}
+	
 	int returnvalue;
 	switch (sel)
 	{

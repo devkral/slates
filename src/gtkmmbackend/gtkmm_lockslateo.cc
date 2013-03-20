@@ -17,41 +17,41 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "tlockslateo.h"
+#include "gtkmm_lockslateo.h"
 
 #include <iostream>
 
 using namespace std;
 
-tlockslateo::tlockslateo(slate *parent_slate) : lockslateo(parent_slate)
+gtkmm_lockslateo::gtkmm_lockslateo(slate *parent_slate) : lockslateo(parent_slate)
 {
-	cerr << "Create tlockslateo\n";
-	screen_object=new tpscreen;
+	cerr << "Create gtkmm_lockslateo\n";
+	screen_object=new gtwidget;
 }
 
-tlockslateo::~tlockslateo()
+gtkmm_lockslateo::~gtkmm_lockslateo()
 {
-	cerr << "Destroy tlockslateo\n";
+	cerr << "Destroy gtkmm_lockslateo\n";
 }
 
-void tlockslateo::draw()
+void gtkmm_lockslateo::draw()
 {
 	if (isdrawn==false)
 	{
 		isdrawn=true;
-		cerr << "Draw tlockslateo\n";
+		cerr << "Draw gtkmm_lockslateo\n";
 	}
 	else
 	{
-		cerr << "Update tlockslateo\n";
+		cerr << "Update gtkmm_lockslateo\n";
 	}
 }
-void tlockslateo::hide()
+void gtkmm_lockslateo::hide()
 {
 	if (isdrawn==true)
 	{
 		isdrawn=false;
-		cerr << "Hide tlockslateo\n";
+		cerr << "Hide gtkmm_lockslateo\n";
 	}
 	else
 	{
@@ -59,14 +59,14 @@ void tlockslateo::hide()
 	}
 }
 
-void tlockslateo::unlock()
+void gtkmm_lockslateo::unlock()
 {
 	cerr << "check password\n";
 	(*connectedslates)[0][0]->getmaster()->unlock((char*)"test");
 
 }
 
-void tlockslateo::destroy_screen_ob ()
+void gtkmm_lockslateo::destroy_screen_ob ()
 {
-	delete to_tps(screen_object);
+	delete to_gtw(screen_object);
 }

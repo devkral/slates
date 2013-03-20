@@ -17,41 +17,41 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "tlockslateo.h"
+#include "sdl_lockslateo.h"
 
 #include <iostream>
 
 using namespace std;
 
-tlockslateo::tlockslateo(slate *parent_slate) : lockslateo(parent_slate)
+sdl_lockslateo::sdl_lockslateo(slate *parent_slate) : lockslateo(parent_slate)
 {
-	cerr << "Create tlockslateo\n";
-	screen_object=new tpscreen;
+	cerr << "Create sdl_lockslateo\n";
+	screen_object=new sdlslatecanvas;
 }
 
-tlockslateo::~tlockslateo()
+sdl_lockslateo::~sdl_lockslateo()
 {
-	cerr << "Destroy tlockslateo\n";
+	cerr << "Destroy sdl_lockslateo\n";
 }
 
-void tlockslateo::draw()
+void sdl_lockslateo::draw()
 {
 	if (isdrawn==false)
 	{
 		isdrawn=true;
-		cerr << "Draw tlockslateo\n";
+		cerr << "Draw sdl_lockslateo\n";
 	}
 	else
 	{
-		cerr << "Update tlockslateo\n";
+		cerr << "Update sdl_lockslateo\n";
 	}
 }
-void tlockslateo::hide()
+void sdl_lockslateo::hide()
 {
 	if (isdrawn==true)
 	{
 		isdrawn=false;
-		cerr << "Hide tlockslateo\n";
+		cerr << "Hide sdl_lockslateo\n";
 	}
 	else
 	{
@@ -59,14 +59,14 @@ void tlockslateo::hide()
 	}
 }
 
-void tlockslateo::unlock()
+void sdl_lockslateo::unlock()
 {
 	cerr << "check password\n";
 	(*connectedslates)[0][0]->getmaster()->unlock((char*)"test");
 
 }
 
-void tlockslateo::destroy_screen_ob ()
+void sdl_lockslateo::destroy_screen_ob ()
 {
-	delete to_tps(screen_object);
+	delete to_sdslc (screen_object);
 }

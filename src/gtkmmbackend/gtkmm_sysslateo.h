@@ -17,24 +17,24 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TSYSSLATEO_H_
-#define _TSYSSLATEO_H_
+#ifndef _GTKMM_SYSSLATEO_H_
+#define _GTKMM_SYSSLATEO_H_
 
 #include "sysslateo.h"
 class sysslateo;
-#include "tscreenobject.h"
-class tscreenobject;
+#include "gtkmm_screenobject.h"
+class gtkmm_screenobject;
 
 
 
 #include "constdef.h"
 
 
-class tsysslateo: public sysslateo 
+class gtkmm_sysslateo: public sysslateo 
 {
 public:
-	tsysslateo(slate *parent_slate);
-	~tsysslateo();
+	gtkmm_sysslateo(slate *parent_slate);
+	~gtkmm_sysslateo();
 	void draw();
 	void hide();
 	void destroy_screen_ob ();

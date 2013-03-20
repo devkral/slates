@@ -17,18 +17,18 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "tscreenobject.h"
+#include "gtkmm_screenobject.h"
 
 #include <iostream>
 
 using namespace std;
 
-tviewportscreen *to_tvs(void* in)
+gtwidget *to_gtw(void* in)
 {
-	return (tviewportscreen*)in;
+	return (gtwidget*)in;
 }
 
-tpscreen *to_tps(void* in)
+gtwindow *to_gdw(void* in)
 {
-	return (tpscreen*)in;
+	return (gtwindow*)in;
 }

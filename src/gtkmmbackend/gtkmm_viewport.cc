@@ -17,32 +17,32 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "tviewport.h"
+#include "gtkmm_viewport.h"
 
 #include <iostream>
 
 using namespace std;
 
 
-tviewport::tviewport(master *masteridd, int ownidd) : viewport(masteridd,ownidd)
+gtkmm_viewport::gtkmm_viewport(master *masteridd, int ownidd) : viewport(masteridd,ownidd)
 {
-	cerr << "Create tviewport\n";
-	viewport_screen=new tviewportscreen;
-	to_tvs(viewport_screen)->canvas=(char *)"kjaaio";
+	cerr << "Create gtkmm_viewport\n";
+	viewport_screen=new gtwindow;
+	to_gdw(viewport_screen)->canvas=(char *)"kjaaio";
 }
 
-tviewport::~tviewport()
+gtkmm_viewport::~gtkmm_viewport()
 {
-	cerr << "Destroy tviewport\n";
+	cerr << "Destroy gtkmm_viewport\n";
 }
 
 
-slate *tviewport::create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp)
+slate *gtkmm_viewport::create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp)
 {
-	return new tslate(parent,id,position_xtemp,position_ytemp);
+	return new gtkmm_slate(parent,id,position_xtemp,position_ytemp);
 }
 
-void tviewport::destroy_mscreen_ob()
+void gtkmm_viewport::destroy_mscreen_ob()
 {
-	delete to_tvs(viewport_screen);
+	delete to_gdw(viewport_screen);
 }

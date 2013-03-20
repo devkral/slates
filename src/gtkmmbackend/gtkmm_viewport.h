@@ -17,14 +17,14 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TVIEWPORT_H_
-#define _TVIEWPORT_H_
+#ifndef _GTKMM_VIEWPORT_H_
+#define _GTKMM_VIEWPORT_H_
 #include "viewport.h"
 class viewport;
-#include "tslate.h"
-class tslate;
-#include "tscreenobject.h"
-class tscreenobject;
+#include "gtkmm_slate.h"
+class gtkmm_slate;
+#include "gtkmm_screenobject.h"
+class gtkmm_screenobject;
 
 #include "constdef.h"
 
@@ -33,11 +33,11 @@ class tscreenobject;
 using namespace std;
 
 
-class tviewport : public viewport
+class gtkmm_viewport : public viewport
 {
 public:
-	tviewport(master *masteridd, int ownidd);
-	~tviewport();
+	gtkmm_viewport(master *masteridd, int ownidd);
+	~gtkmm_viewport();
 	slate *create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp);
 protected:
 

@@ -17,20 +17,20 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TSLATE_H_
-#define _TSLATE_H_
+#ifndef _GTKMM_SLATE_H_
+#define _GTKMM_SLATE_H_
 
 #include "slate.h"
 class slate;
 
-#include "temptyslateo.h"
-class temptyslateo;
-#include "tlockslateo.h"
-class tlockslateo;
-#include "tsysslateo.h"
-class tsysslateo;
-#include "twindowslateo.h"
-class twindowslateo;
+#include "gtkmm_emptyslateo.h"
+class gtkmm_emptyslateo;
+#include "gtkmm_lockslateo.h"
+class gtkmm_lockslateo;
+#include "gtkmm_sysslateo.h"
+class gtkmm_sysslateo;
+#include "gtkmm_windowslateo.h"
+class gtkmm_windowslateo;
 
 #include "constdef.h"
 
@@ -38,11 +38,11 @@ class twindowslateo;
 using namespace std;
 
 
-class tslate : public slate
+class gtkmm_slate : public slate
 {
 public:
-	tslate (viewport *parent, long int id,int position_xtemp,int position_ytemp);
-	~tslate();
+	gtkmm_slate (viewport *parent, long int id,int position_xtemp,int position_ytemp);
+	~gtkmm_slate();
 protected:
 
 private:

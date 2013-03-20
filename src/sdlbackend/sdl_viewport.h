@@ -17,14 +17,14 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TVIEWPORT_H_
-#define _TVIEWPORT_H_
+#ifndef _SDL_VIEWPORT_H_
+#define _SDL_VIEWPORT_H_
 #include "viewport.h"
 class viewport;
-#include "tslate.h"
-class tslate;
-#include "tscreenobject.h"
-class tscreenobject;
+#include "sdl_slate.h"
+class sdl_slate;
+#include "sdl_screenobject.h"
+class sdl_screenobject;
 
 #include "constdef.h"
 
@@ -33,11 +33,11 @@ class tscreenobject;
 using namespace std;
 
 
-class tviewport : public viewport
+class sdl_viewport : public viewport
 {
 public:
-	tviewport(master *masteridd, int ownidd);
-	~tviewport();
+	sdl_viewport(master *masteridd, int ownidd);
+	~sdl_viewport();
 	slate *create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp);
 protected:
 

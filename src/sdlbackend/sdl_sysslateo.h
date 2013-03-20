@@ -17,24 +17,24 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TSYSSLATEO_H_
-#define _TSYSSLATEO_H_
+#ifndef _SDL_SYSSLATEO_H_
+#define _SDL_SYSSLATEO_H_
 
 #include "sysslateo.h"
 class sysslateo;
-#include "tscreenobject.h"
-class tscreenobject;
+#include "sdl_screenobject.h"
+class sdl_screenobject;
 
 
 
 #include "constdef.h"
 
 
-class tsysslateo: public sysslateo 
+class sdl_sysslateo: public sysslateo 
 {
 public:
-	tsysslateo(slate *parent_slate);
-	~tsysslateo();
+	sdl_sysslateo(slate *parent_slate);
+	~sdl_sysslateo();
 	void draw();
 	void hide();
 	void destroy_screen_ob ();

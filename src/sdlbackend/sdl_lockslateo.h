@@ -17,21 +17,21 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TLOCKSLATEO_H_
-#define _TLOCKSLATEO_H_
+#ifndef _SDL_LOCKSLATEO_H_
+#define _SDL_LOCKSLATEO_H_
 
 #include "lockslateo.h"
 class lockslateo;
-#include "tscreenobject.h"
-class tscreenobject;
+#include "sdl_screenobject.h"
+class sdl_screenobject;
 
 #include "constdef.h"
 
-class tlockslateo: public lockslateo 
+class sdl_lockslateo: public lockslateo 
 {
 public:
-	tlockslateo(slate *parent_slate);
-	~tlockslateo();
+	sdl_lockslateo(slate *parent_slate);
+	~sdl_lockslateo();
 	void draw();
 	void hide();
 	void destroy_screen_ob ();

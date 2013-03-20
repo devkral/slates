@@ -17,21 +17,21 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TLOCKSLATEO_H_
-#define _TLOCKSLATEO_H_
+#ifndef _GTKMM_LOCKSLATEO_H_
+#define _GTKMM_LOCKSLATEO_H_
 
 #include "lockslateo.h"
 class lockslateo;
-#include "tscreenobject.h"
+#include "gtkmm_screenobject.h"
 class tscreenobject;
 
 #include "constdef.h"
 
-class tlockslateo: public lockslateo 
+class gtkmm_lockslateo: public lockslateo 
 {
 public:
-	tlockslateo(slate *parent_slate);
-	~tlockslateo();
+	gtkmm_lockslateo(slate *parent_slate);
+	~gtkmm_lockslateo();
 	void draw();
 	void hide();
 	void destroy_screen_ob ();
