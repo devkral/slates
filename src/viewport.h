@@ -49,6 +49,8 @@ public:
 	void addslice();
 	int removeslice();
 	int count_filled_slots(int sliceid);
+	void fillslate_intern(long int id); //counter 
+	void emptyslate_intern(long int id); //counter
 
 	master *getmaster();
 protected:
@@ -57,7 +59,7 @@ private:
 	int ownid=0;
 	int slices=0;
 	long int slate_idcount=0;
-	long int amount_filled_slates=0;
+	atomic<long int> amount_filled_slates;
 	long int max_avail_slates=0; //=slice*slice
 	vector< slate* > slate_pool; //leftwing first, then diag then top wing
 	master *mroot;
@@ -75,11 +77,11 @@ private:
 	
 	//autoremove last slice
 		//last slice
-		int last_slate_filled=0;
+		int last_slice_filled=0;
 		long int id_last_beg=0;
 
 		//next to last slice
-		int nto_last_slate_filled=0;
+		int nto_last_slice_filled=0;
 		long int id_nto_last_beg=0;
 	friend master;
 };

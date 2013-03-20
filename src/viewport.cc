@@ -44,6 +44,7 @@ viewport::viewport(master *masteridd, int ownidd)
 {
 	mroot=masteridd;
 	ownid=ownidd;
+	amount_filled_slates=0;
 }
 
 viewport::~viewport()
@@ -115,8 +116,8 @@ void viewport::addslice()
 	slices++;
 	max_avail_slates=slices*slices;
 	cache_last_diag_point_id=slices*slices-slices;
-	nto_last_slate_filled=last_slate_filled;
-	last_slate_filled=0;
+	nto_last_slice_filled=last_slice_filled;
+	last_slice_filled=0;
 	long int count=0;
 	for (count=0;count<slices+slices-1;count++) //=(slices+1)+(slices+1)-1
 		createslate();
@@ -124,7 +125,7 @@ void viewport::addslice()
 
 int viewport::removeslice()
 {
-	if (last_slate_filled>0)
+	if (last_slice_filled>0 || last_slice_filled-(2*slices+1) <= amount_filled_slates)
 		return SL_destroy_failed;
 
 	long int count=0;
@@ -133,8 +134,8 @@ int viewport::removeslice()
 	slices--;
 	max_avail_slates=slices*slices;
 	cache_last_diag_point_id=slices*slices-slices;
-	last_slate_filled=nto_last_slate_filled;
-	nto_last_slate_filled=count_filled_slots(slices-1);
+	last_slice_filled=nto_last_slice_filled;
+	nto_last_slice_filled=count_filled_slots(slices-1);
 	return OP_success;
 }
 master *viewport::getmaster()
@@ -152,4 +153,36 @@ void viewport::unlock_all_intern()
 {
 	for (long int count=0;count<max_avail_slates;count++)
 		(slate_pool[count])->unlock_slate();
+}
+
+
+void viewport::fillslate_intern(long int id)
+{
+	amount_filled_slates++;
+
+	if (id>=id_last_beg)
+		last_slice_filled++;
+	else if (id>=id_nto_last_beg)
+			nto_last_slice_filled++;
+	
+	if (amount_filled_slates>=max_avail_slates)
+	{
+		if (amount_filled_slates>max_avail_slates)
+			cerr << "Debug: amount_filled_slates " << amount_filled_slates-max_avail_slates << "bigger than max_avail_slates" << endl; 
+		addslice();
+	}
+}
+
+void viewport::emptyslate_intern(long int id)
+{
+	amount_filled_slates--;
+	if (id>=id_last_beg)
+	{
+		last_slice_filled--;
+		removeslice();  //has protective routine
+						//here because should be triggered just if the last slice changes
+	}
+	else if (id>=id_nto_last_beg)
+			nto_last_slice_filled--;
+	
 }

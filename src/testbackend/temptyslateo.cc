@@ -7,49 +7,59 @@
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * slates is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MASTER_H_
-#define _MASTER_H_
-#include "viewport.h"
-class viewport;
-//#include "slate.h"
-//class slate;
-//#include "slateobject.h"
-//class slateobject;
+#include "temptyslateo.h"
 
-#include "constdef.h"
 
-#include <vector>
+#include <iostream>
 
 using namespace std;
 
 
-
-class master
+temptyslateo::temptyslateo(slate *parent_slate) : emptyslateo(parent_slate)
 {
-public:
-	virtual ~master();
-	void createviewport();
-	virtual viewport *create_viewport_intern(master *masteridd, int ownidd)=0;
-	void destroyviewport();
-	void swapcontent(int viewportid1, long int slateid1,int viewportid2, long int slateid2);
-	void lock();
-	bool unlock(char *password);
-protected:
-	vector<viewport*> viewport_pool;
-private:
-	void unlock_slates_intern();
-	int viewport_idcount=0;
-};
+	cerr << "Create temptyslateo\n";
+}
 
-#endif // _MASTER_H_
+temptyslateo::~temptyslateo()
+{
+	cerr << "Destroy temptyslateo\n";
+}
+void temptyslateo::draw()
+{
+	if (isdrawn==false)
+	{
+		isdrawn=true;
+		cerr << "Draw temptyslateo\n";
+	}
+	else
+	{
+		cerr << "Update temptyslateo\n";
+	}
+}
+void temptyslateo::hide()
+{
+	if (isdrawn==true)
+	{
+		isdrawn=false;
+		cerr << "Hide temptyslateo\n";
+	}
+	else
+	{
+		cerr << "Do nothing\n";
+	}
+}
 
+void temptyslateo::destroy_screen_ob ()
+{
+	cout << "end\n";
+}

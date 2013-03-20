@@ -19,16 +19,40 @@
 
 #include "master.h"
 
-void master::swapcontent(int viewportid1, long int slateid1,int viewportid2, long int slateid2)
+
+using namespace std;
+
+#ifdef UNIX
+#include <shadow/shadow.h>
+#include <shadow/pwauth.h>
+bool checkpassword(char *password)
 {
-	viewport_pool[viewportid1]->slate_pool[slateid1]->swap_childobject(viewport_pool[viewportid2]->slate_pool[slateid2]->get_childobject());
+	cerr << "password not implemented yet\n";
+	return true;
 }
+#elif WINDOWS
+
+bool checkpassword(char *password)
+{
+	cerr << "password not implemented yet\n";
+	return true;
+}
+#endif
+
+
+
+
 
 
 master::~master()
 {
 	while (viewport_pool.empty()!=true)
 		destroyviewport();
+}
+
+void master::swapcontent(int viewportid1, long int slateid1,int viewportid2, long int slateid2)
+{
+	viewport_pool[viewportid1]->slate_pool[slateid1]->swap_childobject(viewport_pool[viewportid2]->slate_pool[slateid2]);
 }
 
 
@@ -53,14 +77,15 @@ void master::lock ()
 	for (int count=0;count<viewport_idcount;count) //viewport_idcount is one higher than used id
 		viewport_pool[count]->lock_all_intern();
 }
-int master::unlock ()
+bool master::unlock (char *password)
 {
-	if (1)
+	if (checkpassword(password))
 	{
 		unlock_slates_intern();
+		return true;
 	}
 	else
-		return PASSW_wrong;
+		return false;
 }
 
 void master::unlock_slates_intern()

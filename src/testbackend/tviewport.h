@@ -17,39 +17,31 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MASTER_H_
-#define _MASTER_H_
+#ifndef _TVIEWPORT_H_
+#define _TVIEWPORT_H_
 #include "viewport.h"
 class viewport;
-//#include "slate.h"
-//class slate;
-//#include "slateobject.h"
-//class slateobject;
+#include "tslate.h"
+class tslate;
 
 #include "constdef.h"
 
-#include <vector>
+
 
 using namespace std;
 
 
-
-class master
+class tviewport : public viewport
 {
 public:
-	virtual ~master();
-	void createviewport();
-	virtual viewport *create_viewport_intern(master *masteridd, int ownidd)=0;
-	void destroyviewport();
-	void swapcontent(int viewportid1, long int slateid1,int viewportid2, long int slateid2);
-	void lock();
-	bool unlock(char *password);
+	tviewport(master *masteridd, int ownidd);
+	~tviewport();
+	slate *create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp);
 protected:
-	vector<viewport*> viewport_pool;
+
 private:
-	void unlock_slates_intern();
-	int viewport_idcount=0;
+	
 };
 
-#endif // _MASTER_H_
+#endif // _VIEWPORT_H_
 

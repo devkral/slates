@@ -30,28 +30,21 @@ viewport *testmaster::create_viewport_intern(master *masteridd, int ownidd)
 	return new tviewport(masteridd,ownidd);
 }
 
-testmaster::~testmaster()
-{
-
-
-}
-
-
 testmaster::testmaster(int argc, char* argv[])
 {
+	cerr << "Create testmaster\n";
 	createviewport();
-	cerr << endl;
-	viewport_pool[0]->addslice();
-	cerr << endl;
-	viewport_pool[0]->addslice();
-	cerr << endl;
-	viewport_pool[0]->removeslice();
-	cerr << endl;
-	viewport_pool[0]->addslice();
-
-	cout << "100: " << calcidslate(100,100) << " 5: " << calcidslate(5,5) << endl;
-
+	cerr << "\n";
+	viewport_pool[0]->getslate(0,0)->fillsysslate ();
 }
+
+testmaster::~testmaster()
+{
+	cerr << "Destroy testmaster\n";
+}
+
+
+
 
 int testmain(int argc ,char *argv[])
 {
@@ -64,5 +57,7 @@ int testmain(int argc ,char *argv[])
 		cerr << "An Error: happened\n";
 		return 1;
 	}
+	cout << "100: " << calcidslate(100,100) << " 5: " << calcidslate(5,5) << endl;
+
 	return 0;
 }

@@ -22,11 +22,37 @@
 #define OP_success 0
 #define SL_destroy_failed -2
 #define SL_not_empty -3 //used in slate
-#define PASSW_wrong -4
 
 #define TYPE_sysslate 1
 #define TYPE_emptyslate 2
 #define TYPE_lockslate 3
 #define TYPE_windowslate 4
+
+
+#ifdef _WIN64
+#define WINDOWS
+
+#elif _WIN32
+#define WINDOWS
+
+#elif __APPLE__
+#define UNIX
+
+#elif __linux
+#define UNIX
+
+#elif __unix
+#define UNIX
+
+#elif __posix
+#define UNIX
+
+#endif
+
+
+
+
+
+
 
 #endif

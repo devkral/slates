@@ -53,7 +53,9 @@ slates_SOURCES += testbackend/testbackend.cc \
 	testbackend/tsysslateo.cc \
 	testbackend/tsysslateo.h \
 	testbackend/temptyslateo.cc \
-	testbackend/temptyslateo.h
+	testbackend/temptyslateo.h \
+	testbackend/tscreenobject.cc \
+	testbackend/tscreenobject.h
 endif
 
 if IS_COMPILED_WITH_GTKMM

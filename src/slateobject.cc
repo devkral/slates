@@ -25,15 +25,14 @@ using namespace std;
 
 slateobject::slateobject(slate *parent_slate)
 {
-	connectedslates=new vector< vector<slate*> >;
-	(*connectedslates).push_back( vector<slate*>() );
+	connectedslates=make_shared<deque< deque<slate*> > >();
+	(*connectedslates).push_back( deque<slate*>() );
 	(*connectedslates)[0].push_back(parent_slate);
 }
 
 slateobject::~slateobject()
 {
-	//destroy_so();
-	delete connectedslates;
+
 }
 
 
@@ -42,9 +41,53 @@ void slateobject::set_screen_ob(void *screenob)
 {
 	screen_object=screenob;
 }
+void slateobject::swap_screen_ob(shared_ptr<slateobject> swapso)
+{
+	void *temp=screen_object;
+	set_screen_ob(swapso->get_screen_ob());
+	swapso->set_screen_ob(temp);
+}
 
 void *slateobject::get_screen_ob()
 {
 	return screen_object;
 }
 
+
+void slateobject::set_connectedslates(shared_ptr<deque< deque<slate*> > > conslateob)
+{
+	connectedslates=conslateob;
+
+}
+void slateobject::swap_connectedslates(shared_ptr<slateobject> swapso)
+{
+	shared_ptr<deque< deque<slate*> > > tempob=swapso->get_connectedslates();
+	set_connectedslates(swapso->get_connectedslates());
+	swapso->set_connectedslates(tempob);
+}
+
+shared_ptr<deque< deque<slate*> > > slateobject::get_connectedslates()
+{
+	return connectedslates;
+}
+
+void slateobject::move(int x, int y)
+{
+	(*connectedslates)[0][0]->swap_childobject((*connectedslates)[0][0]->getviewport()->getslate (x,y));
+}
+void slateobject::resizeleftuppercorner(int x_delta, int y_delta)
+{
+	//implement in slate
+
+}
+
+void slateobject::resizerightlowercorner(int x_delta, int y_delta)
+{
+	//implement in slate
+
+}
+
+void slateobject::close()
+{
+	(*connectedslates)[0][0]->emptyslate();
+}

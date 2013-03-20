@@ -17,39 +17,41 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MASTER_H_
-#define _MASTER_H_
-#include "viewport.h"
-class viewport;
-//#include "slate.h"
-//class slate;
-//#include "slateobject.h"
-//class slateobject;
+#ifndef _TSLATE_H_
+#define _TSLATE_H_
+
+#include "slate.h"
+class slate;
+
+#include "temptyslateo.h"
+class temptyslateo;
+#include "tlockslateo.h"
+class tlockslateo;
+#include "tsysslateo.h"
+class tsysslateo;
+#include "twindowslateo.h"
+class twindowslateo;
 
 #include "constdef.h"
 
-#include <vector>
 
 using namespace std;
 
 
-
-class master
+class tslate : public slate
 {
 public:
-	virtual ~master();
-	void createviewport();
-	virtual viewport *create_viewport_intern(master *masteridd, int ownidd)=0;
-	void destroyviewport();
-	void swapcontent(int viewportid1, long int slateid1,int viewportid2, long int slateid2);
-	void lock();
-	bool unlock(char *password);
+	tslate (viewport *parent, long int id,int position_xtemp,int position_ytemp);
+	~tslate();
 protected:
-	vector<viewport*> viewport_pool;
-private:
-	void unlock_slates_intern();
-	int viewport_idcount=0;
-};
 
-#endif // _MASTER_H_
+private:
+
+	slateobject *create_lockobject();
+	slateobject *create_emptyobject();
+	slateobject *create_sysobject();
+	slateobject *create_windowobject(string progname);
+	
+};
+#endif // _SLATE_H_
 

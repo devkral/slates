@@ -17,39 +17,42 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MASTER_H_
-#define _MASTER_H_
-#include "viewport.h"
-class viewport;
-//#include "slate.h"
-//class slate;
-//#include "slateobject.h"
-//class slateobject;
+#include "tslate.h"
 
-#include "constdef.h"
-
-#include <vector>
+#include <iostream>
 
 using namespace std;
 
 
-
-class master
+tslate::tslate (viewport *parent, long int id,int position_xtemp,int position_ytemp) : slate(parent, id,position_xtemp,position_ytemp)
 {
-public:
-	virtual ~master();
-	void createviewport();
-	virtual viewport *create_viewport_intern(master *masteridd, int ownidd)=0;
-	void destroyviewport();
-	void swapcontent(int viewportid1, long int slateid1,int viewportid2, long int slateid2);
-	void lock();
-	bool unlock(char *password);
-protected:
-	vector<viewport*> viewport_pool;
-private:
-	void unlock_slates_intern();
-	int viewport_idcount=0;
-};
+	cerr << "Create tslate\n";
+}
 
-#endif // _MASTER_H_
+tslate::~tslate()
+{
+	cerr << "Destroy tslate\n";
+}
 
+
+slateobject *tslate::create_lockobject()
+{
+	return new tlockslateo((slate*)this);
+}
+
+
+slateobject *tslate::create_emptyobject()
+{
+	return new temptyslateo ((slate*)this);
+}
+
+slateobject *tslate::create_sysobject()
+{
+	return new tsysslateo ((slate*)this);
+}
+
+
+slateobject *tslate::create_windowobject(string progname)
+{
+	return new twindowslateo ((slate*)this);
+}
