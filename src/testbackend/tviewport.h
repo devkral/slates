@@ -23,6 +23,8 @@
 class viewport;
 #include "tslate.h"
 class tslate;
+#include "tscreenobject.h"
+class tscreenobject;
 
 #include "constdef.h"
 
@@ -40,7 +42,7 @@ public:
 protected:
 
 private:
-	
+	void destroy_mscreen_ob();
 };
 
 #endif // _VIEWPORT_H_

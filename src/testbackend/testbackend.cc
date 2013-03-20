@@ -18,6 +18,8 @@
  */
 
 #include "testbackend.h"
+#include "tscreenobject.h"
+
 
 #include <iostream>
 
@@ -41,6 +43,8 @@ testmaster::testmaster(int argc, char* argv[])
 testmaster::~testmaster()
 {
 	cerr << "Destroy testmaster\n";
+	while (viewport_pool.empty()!=true)
+		destroyviewport();
 }
 
 

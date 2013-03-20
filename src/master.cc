@@ -23,8 +23,6 @@
 using namespace std;
 
 #ifdef UNIX
-#include <shadow/shadow.h>
-#include <shadow/pwauth.h>
 bool checkpassword(char *password)
 {
 	cerr << "password not implemented yet\n";
@@ -46,8 +44,7 @@ bool checkpassword(char *password)
 
 master::~master()
 {
-	while (viewport_pool.empty()!=true)
-		destroyviewport();
+
 }
 
 void master::swapcontent(int viewportid1, long int slateid1,int viewportid2, long int slateid2)

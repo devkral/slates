@@ -97,7 +97,6 @@ void slate::replace_childobject(slateobject *temp)
 	if (child_slateo.use_count()!=0)
 	{	
 		child_slateo->hide();
-		child_slateo->destroy_screen_ob ();
 	}
 	if(temp!=0)
 	{
@@ -105,7 +104,11 @@ void slate::replace_childobject(slateobject *temp)
 		child_slateo->draw();
 	}
 	else
+	{
+		if (child_slateo.use_count()!=0)
+			child_slateo->destroy_screen_ob ();
 		child_slateo.reset();
+	}
 }
 
 shared_ptr<slateobject> slate::get_childobject()

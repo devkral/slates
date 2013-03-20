@@ -21,6 +21,9 @@
 #define _TEMPTYSLATEO_H_
 #include "emptyslateo.h"
 class emptyslateo;
+#include "tscreenobject.h"
+class tscreenobject;
+
 
 #include "constdef.h"
 

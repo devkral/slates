@@ -22,6 +22,8 @@
 
 #include "lockslateo.h"
 class lockslateo;
+#include "tscreenobject.h"
+class tscreenobject;
 
 #include "constdef.h"
 

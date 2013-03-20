@@ -60,5 +60,5 @@ void tsysslateo::hide()
 
 void tsysslateo::destroy_screen_ob ()
 {
-	cout << "end\n";
+	delete to_tps(screen_object);
 }

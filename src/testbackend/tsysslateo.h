@@ -22,6 +22,8 @@
 
 #include "sysslateo.h"
 class sysslateo;
+#include "tscreenobject.h"
+class tscreenobject;
 
 
 

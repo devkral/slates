@@ -28,6 +28,7 @@ using namespace std;
 temptyslateo::temptyslateo(slate *parent_slate) : emptyslateo(parent_slate)
 {
 	cerr << "Create temptyslateo\n";
+	screen_object=new tpscreen;
 }
 
 temptyslateo::~temptyslateo()
@@ -61,5 +62,5 @@ void temptyslateo::hide()
 
 void temptyslateo::destroy_screen_ob ()
 {
-	cout << "end\n";
+	delete to_tps(screen_object);
 }

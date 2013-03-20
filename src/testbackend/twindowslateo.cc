@@ -26,6 +26,7 @@ using namespace std;
 twindowslateo::twindowslateo(slate *parent_slate) : windowslateo(parent_slate)
 {
 	cerr << "Create twindowslateo\n";
+	screen_object=new tpscreen;
 }
 
 twindowslateo::~twindowslateo()
@@ -60,5 +61,5 @@ void twindowslateo::hide()
 
 void twindowslateo::destroy_screen_ob ()
 {
-	cout << "end\n";
+	delete to_tps(screen_object);
 }

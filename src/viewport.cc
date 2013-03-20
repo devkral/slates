@@ -49,10 +49,15 @@ viewport::viewport(master *masteridd, int ownidd)
 
 viewport::~viewport()
 {
+	
+}
+void viewport::cleanup()
+{
 	while (slate_pool.empty()!=true)
 		destroyslate();
-}
+	destroy_mscreen_ob();
 
+}
 
 slate *viewport::getslate(int x, int y)
 {
@@ -185,4 +190,9 @@ void viewport::emptyslate_intern(long int id)
 	else if (id>=id_nto_last_beg)
 			nto_last_slice_filled--;
 	
+}
+
+void *viewport::get_viewport_screen()
+{
+	return viewport_screen;
 }

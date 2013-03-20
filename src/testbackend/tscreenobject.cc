@@ -22,3 +22,13 @@
 #include <iostream>
 
 using namespace std;
+
+tviewportscreen *to_tvs(void* in)
+{
+	return (tviewportscreen*)in;
+}
+
+tpscreen *to_tps(void* in)
+{
+	return (tpscreen*)in;
+}

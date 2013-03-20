@@ -22,6 +22,8 @@
 
 #include "windowslateo.h"
 class windowslateo;
+#include "tscreenobject.h"
+class tscreenobject;
 
 #include "constdef.h"
 

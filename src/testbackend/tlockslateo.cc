@@ -26,6 +26,7 @@ using namespace std;
 tlockslateo::tlockslateo(slate *parent_slate) : lockslateo(parent_slate)
 {
 	cerr << "Create tlockslateo\n";
+	screen_object=new tpscreen;
 }
 
 tlockslateo::~tlockslateo()
@@ -67,5 +68,5 @@ void tlockslateo::unlock()
 
 void tlockslateo::destroy_screen_ob ()
 {
-	cout << "end\n";
+	delete to_tps(screen_object);
 }

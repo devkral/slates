@@ -20,18 +20,36 @@
 #ifndef _TSCREENOBJECT_H_
 #define _TSCREENOBJECT_H_
 
-typedef struct tmasterscreen_{
-	void *canvas;
+#include <iostream>
+using namespace std;
+
+
+typedef struct tviewportscreen_{
+	~tviewportscreen_()
+	{
+		cerr << "tvs I'm gone\n";
+		delete canvas;
+	}
+	char *canvas;
 	
-}tmasterscreen;
+	
+}tviewportscreen;
 
 typedef struct tpscreen_{
+	~tpscreen_()
+	{
+		cerr << "tps I'm gone\n";
+	}
 	int x;
 	int y;
 	int w;
 	int h;
 	
 }tpscreen;
+
+extern tviewportscreen *to_tvs(void* in);
+extern tpscreen *to_tps(void* in);
+
 
 #endif // _TSCREENOBJECT_H_
 

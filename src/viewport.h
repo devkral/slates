@@ -53,7 +53,12 @@ public:
 	void emptyslate_intern(long int id); //counter
 
 	master *getmaster();
+
+	void *get_viewport_screen();
+	
 protected:
+	//every display a viewport_screen
+	void *viewport_screen=0;
 
 private:
 	int ownid=0;
@@ -64,13 +69,16 @@ private:
 	vector< slate* > slate_pool; //leftwing first, then diag then top wing
 	master *mroot;
 
+	void cleanup();
+	
 	void destroyslate();
 	void createslate();
 	virtual slate *create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp)=0;
 
+	
 	void lock_all_intern();
 	void unlock_all_intern();
-
+	virtual void destroy_mscreen_ob()=0;
 	
 	//cache
 	long int cache_last_diag_point_id=0;
