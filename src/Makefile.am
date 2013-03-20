@@ -59,8 +59,22 @@ slates_SOURCES += testbackend/testbackend.cc \
 endif
 
 if IS_COMPILED_WITH_GTKMM
-slates_SOURCES += gtkmmbackend/gtkmmbackend.cc \
-	gtkmmbackend/gtkmmbackend.h 
+slates_SOURCES +=  gtkmmbackend/gtkmmbackend.cc \
+	gtkmmbackend/gtkmmbackend.h \
+	gtkmmbackend/gtkmm_viewport.cc \
+	gtkmmbackend/gtkmm_viewport.h \
+	gtkmmbackend/gtkmm_slate.cc \
+	gtkmmbackend/gtkmm_slate.h \
+	gtkmmbackend/gtkmm_windowslateo.cc \
+	gtkmmbackend/gtkmm_windowslateo.h \
+	gtkmmbackend/gtkmm_lockslateo.cc \
+	gtkmmbackend/gtkmm_lockslateo.h \
+	gtkmmbackend/gtkmm_sysslateo.cc \
+	gtkmmbackend/gtkmm_sysslateo.h \
+	gtkmmbackend/gtkmm_emptyslateo.cc \
+	gtkmmbackend/gtkmm_emptyslateo.h \
+	gtkmmbackend/gtkmm_screenobject.cc \
+	gtkmmbackend/gtkmm_screenobject.h
 endif
 
 if IS_COMPILED_WITH_SDL
@@ -68,7 +82,7 @@ slates_SOURCES += sdlbackend/sdlbackend.cc \
 	sdlbackend/sdlbackend.h \
 	sdlbackend/sdl_viewport.cc \
 	sdlbackend/sdl_viewport.h \
-	sdlbackend/sdl_tslate.cc \
+	sdlbackend/sdl_slate.cc \
 	sdlbackend/sdl_slate.h \
 	sdlbackend/sdl_windowslateo.cc \
 	sdlbackend/sdl_windowslateo.h \
