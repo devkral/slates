@@ -20,6 +20,7 @@
 #ifndef _SDL_SCREENOBJECT_H_
 #define _SDL_SCREENOBJECT_H_
 
+#include "SDL.h"
 #include <iostream>
 using namespace std;
 
@@ -27,9 +28,9 @@ using namespace std;
 typedef struct sdlmastercanvas_{
 	~sdlmastercanvas_()
 	{
-		delete canvas;
+		SDL_FreeSurface(masterscreen);
 	}
-	char *canvas;
+	SDL_Surface *masterscreen=0;
 	
 	
 }sdlmastercanvas;
@@ -37,12 +38,13 @@ typedef struct sdlmastercanvas_{
 typedef struct sdlslatecanvas_{
 	~sdlslatecanvas_()
 	{
-		cerr << "tps I'm gone\n";
+		SDL_FreeSurface(slatescreen);
 	}
 	int x;
 	int y;
 	int w;
 	int h;
+	SDL_Surface *slatescreen=0;
 	
 }sdlslatecanvas;
 

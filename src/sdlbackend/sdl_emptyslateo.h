@@ -25,6 +25,7 @@ class emptyslateo;
 class sdl_screenobject;
 
 
+
 #include "constdef.h"
 
 class sdl_emptyslateo : public emptyslateo 
@@ -35,10 +36,11 @@ public:
 	void draw();
 	void hide();
 	void destroy_screen_ob ();
+	void graphic();
 protected:
 
 private:
-
+	
 };
 
 #endif // _EMPTYSLATEO_H_

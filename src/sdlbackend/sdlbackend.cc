@@ -27,6 +27,7 @@
 
 
 #include <iostream>
+#include <cstdlib>
 
 
 using namespace std;
@@ -41,17 +42,16 @@ viewport *sdl_master::create_viewport_intern(master *masteridd, int ownidd)
 
 sdl_master::sdl_master(int argc, char* argv[])
 {
-	cerr << "Create testmaster\n";
-	createviewport();
-	cerr << "\n";
-	viewport_pool[0]->getslate(0,0)->fillsysslate ();
+	for (int count=0; count<1; count++) //SDL_GetNumVideoDisplays
+		createviewport();
 }
 
 sdl_master::~sdl_master()
 {
-	cerr << "Destroy testmaster\n";
+	cerr << "Destroy sdlmaster\n";
 	while (viewport_pool.empty()!=true)
 		destroyviewport();
+	SDL_Quit();
 }
 
 
@@ -59,6 +59,10 @@ int sdlmain(int argc, char *argv[])
 {
 	try
 	{
+		if(SDL_Init(SDL_INIT_EVERYTHING) < 0) {
+		    throw (" ");
+		}
+		
 		sdl_master(argc,argv);
 	}
 	catch (...)

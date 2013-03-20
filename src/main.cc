@@ -64,7 +64,9 @@
 int
 main (int argc, char *argv[])
 {
-	string testoptions=argv[1];
+	string testoptions="";
+	if (argc>1)
+		testoptions=argv[1];
 	int sel=DEFAULT_BACKEND;
 	if (testoptions=="sdl" || testoptions=="1")
 	{

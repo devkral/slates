@@ -27,8 +27,7 @@ using namespace std;
 gtkmm_viewport::gtkmm_viewport(master *masteridd, int ownidd) : viewport(masteridd,ownidd)
 {
 	cerr << "Create gtkmm_viewport\n";
-	viewport_screen=new gtwindow;
-	to_gdw(viewport_screen)->canvas=(char *)"kjaaio";
+	create_mscreen_ob();	
 }
 
 gtkmm_viewport::~gtkmm_viewport()
@@ -45,4 +44,9 @@ slate *gtkmm_viewport::create_slate_intern(viewport *parent, long int id,int pos
 void gtkmm_viewport::destroy_mscreen_ob()
 {
 	delete to_gdw(viewport_screen);
+}
+
+void gtkmm_viewport::create_mscreen_ob()
+{
+	viewport_screen=new gtwindow;
 }

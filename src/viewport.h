@@ -79,6 +79,7 @@ private:
 	void lock_all_intern();
 	void unlock_all_intern();
 	virtual void destroy_mscreen_ob()=0;
+	virtual void create_mscreen_ob()=0;
 	
 	//cache
 	long int cache_last_diag_point_id=0;

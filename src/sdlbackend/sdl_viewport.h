@@ -43,6 +43,7 @@ protected:
 
 private:
 	void destroy_mscreen_ob();
+	void create_mscreen_ob ();
 };
 
 #endif // _VIEWPORT_H_

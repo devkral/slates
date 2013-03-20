@@ -19,6 +19,7 @@
 
 #include "sdl_viewport.h"
 
+#include "SDL.h"
 #include <iostream>
 
 using namespace std;
@@ -27,8 +28,11 @@ using namespace std;
 sdl_viewport::sdl_viewport(master *masteridd, int ownidd) : viewport(masteridd,ownidd)
 {
 	cerr << "Create sdl_viewport\n";
-	viewport_screen=new sdlmastercanvas;
-	to_sdmac(viewport_screen)->canvas=(char *)"kjaaio";
+	create_mscreen_ob();
+	if( ( to_sdmac(viewport_screen)->masterscreen  = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF)) == 0) {
+			throw (" ");
+		}
+	SDL_Delay(3000);
 }
 
 sdl_viewport::~sdl_viewport()
@@ -45,4 +49,9 @@ slate *sdl_viewport::create_slate_intern(viewport *parent, long int id,int posit
 void sdl_viewport::destroy_mscreen_ob()
 {
 	delete to_sdmac(viewport_screen);
+}
+
+void sdl_viewport::create_mscreen_ob()
+{
+	viewport_screen=new sdlmastercanvas;
 }

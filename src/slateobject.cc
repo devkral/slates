@@ -32,7 +32,7 @@ slateobject::slateobject(slate *parent_slate)
 
 slateobject::~slateobject()
 {
-
+	graphicthread.join();
 }
 
 

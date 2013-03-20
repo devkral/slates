@@ -29,6 +29,7 @@ class slate;
 
 #include "constdef.h"
 
+#include <thread>
 #include <deque>
 #include <memory>
 using namespace std;
@@ -71,7 +72,9 @@ protected:
 	void *screen_object=0; //reason why here: must grow over slates
 	//not thread safe
 	shared_ptr<deque< deque<slate*> > > connectedslates; //outer vector y inner x
-	friend slate;
+
+	thread graphicthread;
+	friend slate;	
 private:
 };
 

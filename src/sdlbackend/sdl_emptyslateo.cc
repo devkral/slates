@@ -52,12 +52,34 @@ void sdl_emptyslateo::hide()
 	if (isdrawn==true)
 	{
 		isdrawn=false;
-		cerr << "Hide sdl_emptyslateo\n";
 	}
 	else
 	{
 		cerr << "Do nothing\n";
 	}
+}
+
+void sdl_emptyslateo::graphic()
+{
+	SDL_Event event;
+	while(isdrawn==true)
+	{
+		while( SDL_PollEvent( &event ) )
+		{
+			switch( event.type )
+			{
+				case SDL_QUIT: close();
+					break; //SDL_SCANCODE_LALT&
+			
+			}
+		
+			//SDL_BlitSurface(image, NULL, screen, NULL);
+			// den veraenderten Bereich des display-surface auffrischen
+			SDL_Flip(to_sdslc (screen_object)->slatescreen);
+			SDL_Delay(10);
+		}
+	}
+
 }
 
 void sdl_emptyslateo::destroy_screen_ob ()

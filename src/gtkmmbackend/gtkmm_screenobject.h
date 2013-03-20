@@ -28,9 +28,7 @@ typedef struct gtwindow_{
 	~gtwindow_()
 	{
 		cerr << "tvs I'm gone\n";
-		delete canvas;
 	}
-	char *canvas;
 	
 	
 }gtwindow;

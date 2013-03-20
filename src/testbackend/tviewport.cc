@@ -27,7 +27,7 @@ using namespace std;
 tviewport::tviewport(master *masteridd, int ownidd) : viewport(masteridd,ownidd)
 {
 	cerr << "Create tviewport\n";
-	viewport_screen=new tviewportscreen;
+	create_mscreen_ob();
 	to_tvs(viewport_screen)->canvas=(char *)"kjaaio";
 }
 
@@ -40,6 +40,11 @@ tviewport::~tviewport()
 slate *tviewport::create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp)
 {
 	return new tslate(parent,id,position_xtemp,position_ytemp);
+}
+
+void tviewport::create_mscreen_ob()
+{
+	viewport_screen=new tviewportscreen;
 }
 
 void tviewport::destroy_mscreen_ob()
