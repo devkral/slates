@@ -65,7 +65,21 @@ endif
 
 if IS_COMPILED_WITH_SDL
 slates_SOURCES += sdlbackend/sdlbackend.cc \
-	sdlbackend/sdlbackend.h
+	sdlbackend/sdlbackend.h \
+	sdlbackend/sdl_viewport.cc \
+	sdlbackend/sdl_viewport.h \
+	sdlbackend/sdl_tslate.cc \
+	sdlbackend/sdl_slate.h \
+	sdlbackend/sdl_windowslateo.cc \
+	sdlbackend/sdl_windowslateo.h \
+	sdlbackend/sdl_lockslateo.cc \
+	sdlbackend/sdl_lockslateo.h \
+	sdlbackend/sdl_sysslateo.cc \
+	sdlbackend/sdl_sysslateo.h \
+	sdlbackend/sdl_emptyslateo.cc \
+	sdlbackend/sdl_emptyslateo.h \
+	sdlbackend/sdl_screenobject.cc \
+	sdlbackend/sdl_screenobject.h
 endif
 
 slates_CXXFLAGS = -std=c++11 
