@@ -29,7 +29,7 @@ slate::slate (viewport *parent, long int id,int position_xtemp,int position_ytem
 
 slate::~slate()
 {
-	destroy_slate();
+	//cleanup();
 }
 
 void slate::init_slate()
@@ -38,9 +38,15 @@ void slate::init_slate()
 	preserve_after_lock.reset(create_lockobject());
 }
 
+void slate::cleanup()
+{
+	destroy_slate();
+}
+
+
+
 void slate::destroy_slate()
 {
-	child_slateo->hide();
 	replace_childobject(0);
 }
 
@@ -73,10 +79,8 @@ void *slate::get_screen_ob()
 
 void slate::swap_childobject(shared_ptr<slateobject> child, shared_ptr<slateobject> preserved_child)
 {
-
 	child_slateo->hide();
-	
-	
+	preserved_child->hide();
 	void *temp2=child_slateo->get_screen_ob();
 	child_slateo->swap_connectedslates(child);
 	preserve_after_lock->swap_connectedslates(preserved_child);
@@ -84,7 +88,6 @@ void slate::swap_childobject(shared_ptr<slateobject> child, shared_ptr<slateobje
 	child_slateo.swap(child);
 	child->set_screen_ob(child_slateo->get_screen_ob());
 	child_slateo->set_screen_ob(temp2);
-	child_slateo->draw();
 }
 
 void slate::swap_childobject(slate *swapslate)
@@ -96,17 +99,14 @@ void slate::replace_childobject(slateobject *temp)
 {
 	if (child_slateo.use_count()!=0)
 	{	
-		child_slateo->hide();
+		child_slateo->cleanup();
 	}
 	if(temp!=0)
 	{
 		child_slateo.reset(temp);
-		child_slateo->draw();
 	}
 	else
 	{
-		if (child_slateo.use_count()!=0)
-			child_slateo->destroy_screen_ob ();
 		child_slateo.reset();
 	}
 }
@@ -128,7 +128,7 @@ void slate::lock_slate()
 		preserve_after_lock.swap(child_slateo);
 		lockstate=2;
 		preserve_after_lock->hide();
-		child_slateo->draw();
+		draw();
 	}
 }
 
@@ -139,7 +139,7 @@ void slate::unlock_slate()
 		child_slateo.swap(preserve_after_lock);
 		lockstate=0;
 		preserve_after_lock->hide();
-		child_slateo->draw();
+		draw();
 	}
 }
 
@@ -147,8 +147,8 @@ int slate::fillslate(string progname)
 {
 	if (child_slateo.use_count()==0 || child_slateo->TYPE()==TYPE_emptyslate)
 	{
-		child_slateo.reset(create_windowobject(progname));
-		child_slateo->draw();
+		replace_childobject(create_windowobject(progname));
+		draw();
 		parent_viewport->fillslate_intern(slateid);
 		
 		return OP_success;
@@ -160,8 +160,8 @@ int slate::fillsysslate()
 {
 	if (child_slateo.use_count()==0 || child_slateo->TYPE()==TYPE_emptyslate)
 	{
-		child_slateo.reset(create_sysobject());
-		child_slateo->draw();
+		replace_childobject(create_sysobject());
+		draw();
 		parent_viewport->fillslate_intern(slateid);
 		
 		return OP_success;
@@ -190,10 +190,19 @@ void slate::emptyslate_nonunique()
 		while (tempconectedslates->back().empty()==false)
 		{
 			tempconectedslates->back().back()->replace_childobject(create_emptyobject());
+			tempconectedslates->back().back()->draw();
 			tempconectedslates->back().pop_back();
 		}
 		tempconectedslates->pop_back();
 	}
 }
 
+void slate::draw()
+{
+	child_slateo->draw();
+}
+void slate::hide()
+{
+	child_slateo->hide();
+}
 

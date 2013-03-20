@@ -33,8 +33,8 @@ public:
 	gtkmm_emptyslateo(slate *parent_slate);
 	~gtkmm_emptyslateo();
 	void draw();
-	void hide();
-	void destroy_screen_ob ();
+	void cleanup_handler ();
+	void draw_function ();
 protected:
 
 private:

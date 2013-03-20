@@ -56,7 +56,6 @@ void viewport::cleanup()
 	while (slate_pool.empty()!=true)
 		destroyslate();
 	destroy_mscreen_ob();
-
 }
 
 slate *viewport::getslate(int x, int y)
@@ -101,9 +100,10 @@ void viewport::createslate()
 //validate before calling
 void viewport::destroyslate()
 {
+	slate_pool.back()->cleanup();
 	delete slate_pool.back();
 	slate_pool.pop_back();
-	slate_idcount--;
+	slate_idcount--;;
 }
 
 int viewport::count_filled_slots(int sliceid)

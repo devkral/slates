@@ -40,26 +40,20 @@ void twindowslateo::draw()
 	{
 		isdrawn=true;
 		cerr << "Draw tsysslateo\n";
+		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
 	}
 	else
 	{
 		cerr << "Update tsysslateo\n";
 	}
 }
-void twindowslateo::hide()
-{
-	if (isdrawn==true)
-	{
-		isdrawn=false;
-		cerr << "Hide tsysslateo\n";
-	}
-	else
-	{
-		cerr << "Do nothing\n";
-	}
-}
 
-void twindowslateo::destroy_screen_ob ()
+
+void twindowslateo::cleanup_handler ()
 {
 	delete to_tps(screen_object);
+}
+
+void twindowslateo::draw_function ()
+{
 }

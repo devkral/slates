@@ -39,7 +39,8 @@ class slate
 {
 public:
 	slate (viewport *parent, long int id,int position_xtemp,int position_ytemp);
-	~slate();
+	virtual ~slate();
+	void cleanup();
 	bool isfilled();
 	master *getmaster();
 	viewport *getviewport();
@@ -57,6 +58,8 @@ public:
 	void emptyslate(); //reset to default
 	void init_slate();
 	void destroy_slate();
+	void draw();
+	void hide();
 	
 protected:
 	

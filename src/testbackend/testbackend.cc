@@ -43,10 +43,13 @@ testmaster::testmaster(int argc, char* argv[])
 testmaster::~testmaster()
 {
 	cerr << "Destroy testmaster\n";
-	while (viewport_pool.empty()!=true)
-		destroyviewport();
+	cleanup();
 }
+void testmaster::inputhandler_function()
+{
 
+
+}
 
 
 

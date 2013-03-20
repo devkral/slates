@@ -33,56 +33,33 @@ sdl_emptyslateo::sdl_emptyslateo(slate *parent_slate) : emptyslateo(parent_slate
 
 sdl_emptyslateo::~sdl_emptyslateo()
 {
-	cerr << "Destroy sdl_emptyslateo\n";
 }
 void sdl_emptyslateo::draw()
 {
 	if (isdrawn==false)
 	{
 		isdrawn=true;
-		cerr << "Draw sdl_emptyslateo\n";
+		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
 	}
 	else
 	{
 		cerr << "Update sdl_emptyslateo\n";
 	}
 }
-void sdl_emptyslateo::hide()
+
+
+
+
+void sdl_emptyslateo::cleanup_handler ()
 {
-	if (isdrawn==true)
-	{
-		isdrawn=false;
-	}
-	else
-	{
-		cerr << "Do nothing\n";
-	}
+	delete to_sdslc (screen_object);
 }
 
-void sdl_emptyslateo::graphic()
+void sdl_emptyslateo::draw_function ()
 {
 	SDL_Event event;
 	while(isdrawn==true)
 	{
-		while( SDL_PollEvent( &event ) )
-		{
-			switch( event.type )
-			{
-				case SDL_QUIT: close();
-					break; //SDL_SCANCODE_LALT&
-			
-			}
-		
-			//SDL_BlitSurface(image, NULL, screen, NULL);
-			// den veraenderten Bereich des display-surface auffrischen
-			SDL_Flip(to_sdslc (screen_object)->slatescreen);
-			SDL_Delay(10);
-		}
+		SDL_Delay(10000);
 	}
-
-}
-
-void sdl_emptyslateo::destroy_screen_ob ()
-{
-	delete to_sdslc (screen_object);
 }

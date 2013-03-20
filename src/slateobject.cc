@@ -32,7 +32,7 @@ slateobject::slateobject(slate *parent_slate)
 
 slateobject::~slateobject()
 {
-	graphicthread.join();
+	
 }
 
 
@@ -90,4 +90,23 @@ void slateobject::resizerightlowercorner(int x_delta, int y_delta)
 void slateobject::close()
 {
 	(*connectedslates)[0][0]->emptyslate();
+}
+void slateobject::hide()
+{
+	if (isdrawn==true)
+	{
+		isdrawn=false;
+		drawthread.join();
+	}
+}
+void slateobject::cleanup()
+{
+	hide();
+	cleanup_handler();
+}
+
+void kickstarter_drawthread(slateobject *parent)
+{
+	parent->draw_function ();
+
 }

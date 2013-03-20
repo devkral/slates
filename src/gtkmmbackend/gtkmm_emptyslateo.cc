@@ -47,20 +47,12 @@ void gtkmm_emptyslateo::draw()
 		cerr << "Update gtkmm_emptyslateo\n";
 	}
 }
-void gtkmm_emptyslateo::hide()
-{
-	if (isdrawn==true)
-	{
-		isdrawn=false;
-		cerr << "Hide gtkmm_emptyslateo\n";
-	}
-	else
-	{
-		cerr << "Do nothing\n";
-	}
-}
 
-void gtkmm_emptyslateo::destroy_screen_ob ()
+void gtkmm_emptyslateo::cleanup_handler ()
 {
 	delete to_gtw(screen_object);
+}
+
+void gtkmm_emptyslateo::draw_function ()
+{
 }

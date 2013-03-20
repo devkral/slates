@@ -39,25 +39,14 @@ void sdl_lockslateo::draw()
 	if (isdrawn==false)
 	{
 		isdrawn=true;
-		cerr << "Draw sdl_lockslateo\n";
+		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
 	}
 	else
 	{
 		cerr << "Update sdl_lockslateo\n";
 	}
 }
-void sdl_lockslateo::hide()
-{
-	if (isdrawn==true)
-	{
-		isdrawn=false;
-		cerr << "Hide sdl_lockslateo\n";
-	}
-	else
-	{
-		cerr << "Do nothing\n";
-	}
-}
+
 
 void sdl_lockslateo::unlock()
 {
@@ -66,7 +55,11 @@ void sdl_lockslateo::unlock()
 
 }
 
-void sdl_lockslateo::destroy_screen_ob ()
+void sdl_lockslateo::cleanup_handler ()
 {
 	delete to_sdslc (screen_object);
+}
+
+void sdl_lockslateo::draw_function ()
+{
 }

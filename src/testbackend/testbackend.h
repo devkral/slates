@@ -37,6 +37,7 @@ class testmaster : public master
 public:
 	testmaster(int argc, char* argv[]);
 	~testmaster();
+	void inputhandler_function();
 
 private:
 	viewport *create_viewport_intern(master *masteridd, int ownidd);

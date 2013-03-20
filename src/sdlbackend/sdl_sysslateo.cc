@@ -39,27 +39,20 @@ void sdl_sysslateo::draw()
 	if (isdrawn==false)
 	{
 		isdrawn=true;
-		cerr << "Draw sdl_sysslateo\n";
+		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
 	}
 	else
 	{
 		cerr << "Update sdl_sysslateo\n";
 	}
 }
-void sdl_sysslateo::hide()
-{
-	if (isdrawn==true)
-	{
-		isdrawn=false;
-		cerr << "Hide sdl_sysslateo\n";
-	}
-	else
-	{
-		cerr << "Do nothing\n";
-	}
-}
 
-void sdl_sysslateo::destroy_screen_ob ()
+
+void sdl_sysslateo::cleanup_handler ()
 {
 	delete to_sdslc(screen_object);
+}
+
+void sdl_sysslateo::draw_function ()
+{
 }

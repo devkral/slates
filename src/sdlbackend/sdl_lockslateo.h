@@ -33,8 +33,8 @@ public:
 	sdl_lockslateo(slate *parent_slate);
 	~sdl_lockslateo();
 	void draw();
-	void hide();
-	void destroy_screen_ob ();
+	void cleanup_handler ();
+	void draw_function ();
 protected:
 
 private:

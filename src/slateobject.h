@@ -34,7 +34,8 @@ class slate;
 #include <memory>
 using namespace std;
 
-
+class slateobject;
+extern void kickstarter_drawthread(slateobject *parent);
 
 class slateobject
 {
@@ -45,7 +46,7 @@ public:
 	void set_screen_ob(void *screenob);
 	void swap_screen_ob(shared_ptr<slateobject> swapso);
 	void *get_screen_ob();
-	virtual void destroy_screen_ob ()=0;
+	virtual void cleanup_handler ()=0;
 	void set_connectedslates(shared_ptr<deque<deque<slate*> > > conslateob);
 	void swap_connectedslates(shared_ptr<slateobject> swapso);
 	shared_ptr<deque< deque<slate*> > > get_connectedslates();
@@ -59,13 +60,15 @@ public:
 	virtual char TYPE()=0;
 	void close();
 	virtual void draw()=0;
-	virtual void hide()=0;
+	virtual void draw_function()=0; //for kickstarter
+	void hide();
 	/** implementation idea:
-	 * draw() start draw (and input?)thread (especially window) if isdrawn=false 
+	 * draw() start drawthread (especially window) if isdrawn=false 
 			elsewise update static elements
 
-	 * hide() stop threads if isdrawn=true elsewise do nothing
+	 * hide() stop threads if isdrawn=true elsewise do nothing, join drawthread 
 	 */
+	void cleanup();
 	
 protected:
 	bool isdrawn=false;
@@ -73,9 +76,10 @@ protected:
 	//not thread safe
 	shared_ptr<deque< deque<slate*> > > connectedslates; //outer vector y inner x
 
-	thread graphicthread;
+	thread drawthread;
 	friend slate;	
 private:
+	
 };
 
 #endif // _SLATEOBJECT_H_

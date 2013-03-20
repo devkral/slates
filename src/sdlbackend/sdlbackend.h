@@ -38,6 +38,7 @@ class sdl_master : public master
 public:
 	sdl_master(int argc, char* argv[]);
 	~sdl_master();
+	void inputhandler_function();
 
 private:
 	viewport *create_viewport_intern(master *masteridd, int ownidd);

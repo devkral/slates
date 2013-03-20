@@ -46,18 +46,6 @@ void gtkmm_lockslateo::draw()
 		cerr << "Update gtkmm_lockslateo\n";
 	}
 }
-void gtkmm_lockslateo::hide()
-{
-	if (isdrawn==true)
-	{
-		isdrawn=false;
-		cerr << "Hide gtkmm_lockslateo\n";
-	}
-	else
-	{
-		cerr << "Do nothing\n";
-	}
-}
 
 void gtkmm_lockslateo::unlock()
 {
@@ -66,7 +54,10 @@ void gtkmm_lockslateo::unlock()
 
 }
 
-void gtkmm_lockslateo::destroy_screen_ob ()
+void gtkmm_lockslateo::cleanup_handler ()
 {
 	delete to_gtw(screen_object);
+}
+void gtkmm_lockslateo::draw_function ()
+{
 }

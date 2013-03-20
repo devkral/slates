@@ -46,20 +46,12 @@ void gtkmm_sysslateo::draw()
 		cerr << "Update gtkmm_sysslateo\n";
 	}
 }
-void gtkmm_sysslateo::hide()
-{
-	if (isdrawn==true)
-	{
-		isdrawn=false;
-		cerr << "Hide gtkmm_sysslateo\n";
-	}
-	else
-	{
-		cerr << "Do nothing\n";
-	}
-}
 
-void gtkmm_sysslateo::destroy_screen_ob ()
+void gtkmm_sysslateo::cleanup_handler ()
 {
 	delete to_gtw(screen_object);
+}
+
+void gtkmm_sysslateo::draw_function ()
+{
 }

@@ -28,11 +28,38 @@
 
 #include <iostream>
 #include <cstdlib>
-
+#include <thread>
+#include <system_error>
 
 using namespace std;
 
+void sdl_master::inputhandler_function()
+{
+	SDL_Event event;
+	while (handleinput)
+	{
+		while( SDL_PollEvent( &event ) )
+		{
+			switch( event.type )
+			{
+				case SDL_QUIT: handleinput=false;
+					break; //SDL_SCANCODE_LALT&
+			
+			}
+		
+			//SDL_BlitSurface(image, NULL, screen, NULL);
+			// den veraenderten Bereich des display-surface auffrischen
+			
+		}
+		SDL_Delay(10);
+	}
+}
 
+void blub()
+{
+
+
+}
 
 
 viewport *sdl_master::create_viewport_intern(master *masteridd, int ownidd)
@@ -44,13 +71,14 @@ sdl_master::sdl_master(int argc, char* argv[])
 {
 	for (int count=0; count<1; count++) //SDL_GetNumVideoDisplays
 		createviewport();
+	start_handling_input();
+	inputthread.join();
 }
 
 sdl_master::~sdl_master()
 {
 	cerr << "Destroy sdlmaster\n";
-	while (viewport_pool.empty()!=true)
-		destroyviewport();
+	cleanup();
 	SDL_Quit();
 }
 
@@ -64,6 +92,15 @@ int sdlmain(int argc, char *argv[])
 		}
 		
 		sdl_master(argc,argv);
+	}
+	catch (const std::system_error& error)
+	{
+		cerr << "Caught error: " << error.what() << endl;
+	}	
+	catch (char  *errorstring)
+	{
+		cerr << "Caught error:" << errorstring << " happened\n";
+		return 1;
 	}
 	catch (...)
 	{

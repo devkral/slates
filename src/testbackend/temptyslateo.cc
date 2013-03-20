@@ -41,26 +41,20 @@ void temptyslateo::draw()
 	{
 		isdrawn=true;
 		cerr << "Draw temptyslateo\n";
+		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
 	}
 	else
 	{
 		cerr << "Update temptyslateo\n";
 	}
 }
-void temptyslateo::hide()
-{
-	if (isdrawn==true)
-	{
-		isdrawn=false;
-		cerr << "Hide temptyslateo\n";
-	}
-	else
-	{
-		cerr << "Do nothing\n";
-	}
-}
 
-void temptyslateo::destroy_screen_ob ()
+
+void temptyslateo::cleanup_handler ()
 {
 	delete to_tps(screen_object);
+}
+
+void temptyslateo::draw_function ()
+{
 }

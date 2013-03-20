@@ -39,27 +39,21 @@ void sdl_windowslateo::draw()
 	if (isdrawn==false)
 	{
 		isdrawn=true;
-		cerr << "Draw tsysslateo\n";
+		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
 	}
 	else
 	{
 		cerr << "Update tsysslateo\n";
 	}
 }
-void sdl_windowslateo::hide()
-{
-	if (isdrawn==true)
-	{
-		isdrawn=false;
-		cerr << "Hide tsysslateo\n";
-	}
-	else
-	{
-		cerr << "Do nothing\n";
-	}
-}
 
-void sdl_windowslateo::destroy_screen_ob ()
+
+void sdl_windowslateo::cleanup_handler ()
 {
 	delete to_sdslc(screen_object);
+}
+
+
+void sdl_windowslateo::draw_function ()
+{
 }

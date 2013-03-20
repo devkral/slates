@@ -29,6 +29,7 @@ class viewport;
 #include "constdef.h"
 
 #include <vector>
+#include <thread>
 
 using namespace std;
 
@@ -41,15 +42,24 @@ public:
 	void createviewport();
 	virtual viewport *create_viewport_intern(master *masteridd, int ownidd)=0;
 	void destroyviewport();
+	void cleanup();
 	void swapcontent(int viewportid1, long int slateid1,int viewportid2, long int slateid2);
 	void lock();
 	bool unlock(char *password);
+	void start_handling_input();
+	virtual void inputhandler_function()=0;
+	void stop_handling_input();
 protected:
 	vector<viewport*> viewport_pool;
+	thread inputthread;
+	bool handleinput=false;
+	
 private:
 	void unlock_slates_intern();
 	int viewport_idcount=0;
 };
+
+extern void kickstarter_inputthread(master *parent_object);
 
 #endif // _MASTER_H_
 

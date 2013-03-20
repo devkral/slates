@@ -44,7 +44,7 @@ bool checkpassword(char *password)
 
 master::~master()
 {
-
+	stop_handling_input();
 }
 
 void master::swapcontent(int viewportid1, long int slateid1,int viewportid2, long int slateid2)
@@ -64,9 +64,15 @@ void master::createviewport()
 //validate before calling
 void master::destroyviewport()
 {
+	viewport_pool.back()->cleanup();
 	delete viewport_pool.back();
 	viewport_pool.pop_back();
 	viewport_idcount--;
+}
+void master::cleanup()
+{
+	while (viewport_pool.empty()!=true)
+		destroyviewport();
 }
 
 void master::lock ()
@@ -89,4 +95,25 @@ void master::unlock_slates_intern()
 {
 	for (int count=0;count<viewport_idcount;count) //viewport_idcount is one higher than used id
 		viewport_pool[count]->unlock_all_intern();
+}
+
+void master::start_handling_input()
+{
+	handleinput=true;
+	inputthread=thread(kickstarter_inputthread,(master *)this);
+}
+
+void master::stop_handling_input()
+{
+	if (handleinput)
+	{
+		handleinput=false;
+		inputthread.join();
+	}
+}
+
+void kickstarter_inputthread(master *parent_object)
+{
+	parent_object->inputhandler_function();
+
 }

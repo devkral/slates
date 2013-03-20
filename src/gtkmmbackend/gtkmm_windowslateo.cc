@@ -46,20 +46,12 @@ void gtkmm_windowslateo::draw()
 		cerr << "Update tsysslateo\n";
 	}
 }
-void gtkmm_windowslateo::hide()
-{
-	if (isdrawn==true)
-	{
-		isdrawn=false;
-		cerr << "Hide tsysslateo\n";
-	}
-	else
-	{
-		cerr << "Do nothing\n";
-	}
-}
 
-void gtkmm_windowslateo::destroy_screen_ob ()
+
+void gtkmm_windowslateo::cleanup_handler ()
 {
 	delete to_gtw(screen_object);
+}
+void gtkmm_windowslateo::draw_function ()
+{
 }

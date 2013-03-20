@@ -34,8 +34,8 @@ public:
 	sdl_windowslateo(slate *parent_slate);
 	~sdl_windowslateo();
 	void draw();
-	void hide();
-	void destroy_screen_ob ();
+	void cleanup_handler ();
+	void draw_function ();
 protected:
 
 private:

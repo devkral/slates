@@ -34,9 +34,8 @@ public:
 	sdl_emptyslateo(slate *parent_slate);
 	~sdl_emptyslateo();
 	void draw();
-	void hide();
-	void destroy_screen_ob ();
-	void graphic();
+	void cleanup_handler ();
+	void draw_function ();
 protected:
 
 private:

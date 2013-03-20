@@ -40,26 +40,19 @@ void tsysslateo::draw()
 	{
 		isdrawn=true;
 		cerr << "Draw tsysslateo\n";
+		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
 	}
 	else
 	{
 		cerr << "Update tsysslateo\n";
 	}
 }
-void tsysslateo::hide()
-{
-	if (isdrawn==true)
-	{
-		isdrawn=false;
-		cerr << "Hide tsysslateo\n";
-	}
-	else
-	{
-		cerr << "Do nothing\n";
-	}
-}
 
-void tsysslateo::destroy_screen_ob ()
+void tsysslateo::cleanup_handler ()
 {
 	delete to_tps(screen_object);
+}
+
+void tsysslateo::draw_function ()
+{
 }

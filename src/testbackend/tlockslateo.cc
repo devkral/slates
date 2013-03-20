@@ -40,22 +40,11 @@ void tlockslateo::draw()
 	{
 		isdrawn=true;
 		cerr << "Draw tlockslateo\n";
+		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
 	}
 	else
 	{
 		cerr << "Update tlockslateo\n";
-	}
-}
-void tlockslateo::hide()
-{
-	if (isdrawn==true)
-	{
-		isdrawn=false;
-		cerr << "Hide tlockslateo\n";
-	}
-	else
-	{
-		cerr << "Do nothing\n";
 	}
 }
 
@@ -66,7 +55,11 @@ void tlockslateo::unlock()
 
 }
 
-void tlockslateo::destroy_screen_ob ()
+void tlockslateo::cleanup_handler ()
 {
 	delete to_tps(screen_object);
+}
+
+void tlockslateo::draw_function ()
+{
 }

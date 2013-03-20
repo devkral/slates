@@ -36,8 +36,8 @@ public:
 	sdl_sysslateo(slate *parent_slate);
 	~sdl_sysslateo();
 	void draw();
-	void hide();
-	void destroy_screen_ob ();
+	void cleanup_handler ();
+	void draw_function ();
 protected:
 
 private:

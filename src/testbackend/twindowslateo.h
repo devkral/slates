@@ -34,8 +34,8 @@ public:
 	twindowslateo(slate *parent_slate);
 	~twindowslateo();
 	void draw();
-	void hide();
-	void destroy_screen_ob ();
+	void cleanup_handler ();
+	void draw_function ();
 protected:
 
 private:
