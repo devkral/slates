@@ -39,6 +39,7 @@ public:
 	sdl_master(int argc, char* argv[]);
 	~sdl_master();
 	void inputhandler_function();
+	long int id_slate_mouse(int x, int y); 
 
 private:
 	viewport *create_viewport_intern(master *masteridd, int ownidd);

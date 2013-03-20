@@ -54,7 +54,7 @@ else
 	AC_MSG_RESULT( [ gtkmm support: NO ] )
 fi
 
-PKG_CHECK_MODULES(SDL, [sdl SDL_image], [buildsdlbackend="yes"] , [buildsdlbackend="no"] )
+PKG_CHECK_MODULES(SDL, [sdl2 SDL2_image], [buildsdlbackend="yes"] , [buildsdlbackend="no"] )
 
 if test "x$buildsdlbackend" = "xyes" ; then
 	AM_CONDITIONAL(IS_COMPILED_WITH_SDL, [true])

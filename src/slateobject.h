@@ -51,6 +51,9 @@ public:
 	void swap_connectedslates(shared_ptr<slateobject> swapso);
 	shared_ptr<deque< deque<slate*> > > get_connectedslates();
 
+	viewport *getviewport();
+	slate *getfparent();
+	
 	//should be ignored in emptyobject
 	void move(int x, int y); //swaps object
 	void resizeleftuppercorner(int x_delta, int y_delta);

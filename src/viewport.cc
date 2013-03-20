@@ -196,3 +196,8 @@ void *viewport::get_viewport_screen()
 {
 	return viewport_screen;
 }
+
+int viewport::get_id()
+{
+	return ownid;
+}

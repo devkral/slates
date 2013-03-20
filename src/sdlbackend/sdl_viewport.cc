@@ -19,7 +19,6 @@
 
 #include "sdl_viewport.h"
 
-#include "SDL.h"
 #include <iostream>
 
 using namespace std;
@@ -29,15 +28,13 @@ sdl_viewport::sdl_viewport(master *masteridd, int ownidd) : viewport(masteridd,o
 {
 	cerr << "Create sdl_viewport\n";
 	create_mscreen_ob();
-	if( ( to_sdmac(viewport_screen)->masterscreen  = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF)) == 0) {
-			throw (" ");
-		}
-	SDL_Delay(3000);
+	
+	
 }
 
 sdl_viewport::~sdl_viewport()
 {
-	cerr << "Destroy sdl_viewport\n";
+	
 }
 
 
@@ -54,4 +51,8 @@ void sdl_viewport::destroy_mscreen_ob()
 void sdl_viewport::create_mscreen_ob()
 {
 	viewport_screen=new sdlmastercanvas;
+	to_sdmac(viewport_screen)->window=SDL_CreateWindow("SDL_RenderClear", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+	                 512, 512,SDL_WINDOW_SHOWN);
+
+	SDL_GetDisplayBounds(get_id(), to_sdmac(viewport_screen)->dispbounds);
 }

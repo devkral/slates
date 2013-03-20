@@ -55,12 +55,11 @@ void sdl_master::inputhandler_function()
 	}
 }
 
-void blub()
+long int sdl_master::id_slate_mouse(int x, int y)
 {
-
+	
 
 }
-
 
 viewport *sdl_master::create_viewport_intern(master *masteridd, int ownidd)
 {
@@ -69,7 +68,7 @@ viewport *sdl_master::create_viewport_intern(master *masteridd, int ownidd)
 
 sdl_master::sdl_master(int argc, char* argv[])
 {
-	for (int count=0; count<1; count++) //SDL_GetNumVideoDisplays
+	for (int count=0; count<SDL_GetNumVideoDisplays(); count++) //SDL_GetNumVideoDisplays
 		createviewport();
 	start_handling_input();
 	inputthread.join();
@@ -87,8 +86,9 @@ int sdlmain(int argc, char *argv[])
 {
 	try
 	{
-		if(SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-		    throw (" ");
+		if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
+		{
+		    throw ("Error: could not initialize SDL");
 		}
 		
 		sdl_master(argc,argv);

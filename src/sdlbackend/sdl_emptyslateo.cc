@@ -29,6 +29,9 @@ sdl_emptyslateo::sdl_emptyslateo(slate *parent_slate) : emptyslateo(parent_slate
 {
 	cerr << "Create sdl_emptyslateo\n";
 	screen_object=new sdlslatecanvas;
+	to_sdslc(screen_object)->mastercanvas=to_sdmac (getviewport()->get_viewport_screen());
+	to_sdslc(screen_object)->slatescreen=new SDL_Surface();
+	to_sdslc(screen_object)->slatebox=new SDL_Rect();
 }
 
 sdl_emptyslateo::~sdl_emptyslateo()

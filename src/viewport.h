@@ -55,6 +55,7 @@ public:
 	master *getmaster();
 
 	void *get_viewport_screen();
+	int get_id();
 	
 protected:
 	//every display a viewport_screen

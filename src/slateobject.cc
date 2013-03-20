@@ -89,7 +89,7 @@ void slateobject::resizerightlowercorner(int x_delta, int y_delta)
 
 void slateobject::close()
 {
-	(*connectedslates)[0][0]->emptyslate();
+	getfparent()->emptyslate();
 }
 void slateobject::hide()
 {
@@ -105,8 +105,18 @@ void slateobject::cleanup()
 	cleanup_handler();
 }
 
+slate *slateobject::getfparent()
+{
+	return (*connectedslates)[0][0];
+}
+
+viewport *slateobject::getviewport()
+{
+	return getfparent()->getviewport();
+}
+
+
 void kickstarter_drawthread(slateobject *parent)
 {
 	parent->draw_function ();
-
 }

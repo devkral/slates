@@ -49,6 +49,7 @@ public:
 	void start_handling_input();
 	virtual void inputhandler_function()=0;
 	void stop_handling_input();
+
 protected:
 	vector<viewport*> viewport_pool;
 	thread inputthread;
