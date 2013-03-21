@@ -23,10 +23,9 @@
 
 using namespace std;
 
-sdl_sysslateo::sdl_sysslateo(slate *parent_slate) : sysslateo(parent_slate)
+sdl_sysslateo::sdl_sysslateo(slate *parent_slate, void *screenob) : sysslateo(parent_slate,screenob)
 {
 	cerr << "Create sdl_sysslateo\n";
-	screen_object=new sdlslatecanvas;
 }
 
 sdl_sysslateo::~sdl_sysslateo()

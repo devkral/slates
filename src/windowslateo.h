@@ -29,10 +29,9 @@ class slateobject;
 class windowslateo : public slateobject
 {
 public:
-	windowslateo(slate *parent_slate);
+	windowslateo(slate *parent_slate, void *screenob);
 	~windowslateo();
 	char TYPE();
-	void close();
 protected:
 
 private:

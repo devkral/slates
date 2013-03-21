@@ -31,11 +31,12 @@ class tscreenobject;
 class twindowslateo : public windowslateo
 {
 public:
-	twindowslateo(slate *parent_slate);
+	twindowslateo(slate *parent_slate, void *screenob);
 	~twindowslateo();
 	void draw();
 	void cleanup_handler ();
 	void draw_function ();
+	void update_slice_change();
 protected:
 
 private:

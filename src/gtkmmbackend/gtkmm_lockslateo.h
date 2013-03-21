@@ -30,7 +30,7 @@ class tscreenobject;
 class gtkmm_lockslateo: public lockslateo 
 {
 public:
-	gtkmm_lockslateo(slate *parent_slate);
+	gtkmm_lockslateo(slate *parent_slate, void *screenob);
 	~gtkmm_lockslateo();
 	void draw();
 	void hide();

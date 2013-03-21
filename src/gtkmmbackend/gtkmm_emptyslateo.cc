@@ -25,7 +25,7 @@
 using namespace std;
 
 
-gtkmm_emptyslateo::gtkmm_emptyslateo(slate *parent_slate) : emptyslateo(parent_slate)
+gtkmm_emptyslateo::gtkmm_emptyslateo(slate *parent_slate, void *screenob) : emptyslateo(parent_slate,screenob)
 {
 	cerr << "Create gtkmm_emptyslateo\n";
 	screen_object=new gtwidget;

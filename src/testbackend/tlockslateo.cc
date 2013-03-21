@@ -23,7 +23,7 @@
 
 using namespace std;
 
-tlockslateo::tlockslateo(slate *parent_slate) : lockslateo(parent_slate)
+tlockslateo::tlockslateo(slate *parent_slate, void *screenob) : lockslateo(parent_slate,screenob)
 {
 	cerr << "Create tlockslateo\n";
 	screen_object=new tpscreen;

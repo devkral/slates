@@ -28,7 +28,7 @@ class slateobject;
 class lockslateo: public slateobject 
 {
 public:
-	lockslateo(slate *parent_slate);
+	lockslateo(slate *parent_slate, void *screenob);
 	~lockslateo();
 	char TYPE();
 protected:

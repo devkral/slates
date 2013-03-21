@@ -123,6 +123,7 @@ void viewport::addslice()
 	cache_last_diag_point_id=slices*slices-slices;
 	nto_last_slice_filled=last_slice_filled;
 	last_slice_filled=0;
+	update_slice_change();
 	long int count=0;
 	for (count=0;count<slices+slices-1;count++) //=(slices+1)+(slices+1)-1
 		createslate();
@@ -132,7 +133,7 @@ int viewport::removeslice()
 {
 	if (last_slice_filled>0 || last_slice_filled-(2*slices+1) <= amount_filled_slates)
 		return SL_destroy_failed;
-
+	
 	long int count=0;
 	for (count=0;count<slices+slices-1;count++) //=(slices+1)+(slices+1)-1
 		destroyslate();
@@ -141,6 +142,9 @@ int viewport::removeslice()
 	cache_last_diag_point_id=slices*slices-slices;
 	last_slice_filled=nto_last_slice_filled;
 	nto_last_slice_filled=count_filled_slots(slices-1);
+
+	update_slice_change();
+	
 	return OP_success;
 }
 master *viewport::getmaster()
@@ -164,7 +168,7 @@ void viewport::unlock_all_intern()
 void viewport::fillslate_intern(long int id)
 {
 	amount_filled_slates++;
-
+	
 	if (id>=id_last_beg)
 		last_slice_filled++;
 	else if (id>=id_nto_last_beg)
@@ -200,4 +204,9 @@ void *viewport::get_viewport_screen()
 int viewport::get_id()
 {
 	return ownid;
+}
+
+int viewport::get_slices()
+{
+	return slices;
 }

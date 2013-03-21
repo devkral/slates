@@ -40,7 +40,7 @@ public:
 	~gtkmm_viewport();
 	slate *create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp);
 protected:
-
+	void update_slice_change();
 private:
 	void destroy_mscreen_ob();
 	void create_mscreen_ob();

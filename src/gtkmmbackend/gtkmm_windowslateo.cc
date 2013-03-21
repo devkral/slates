@@ -23,7 +23,7 @@
 
 using namespace std;
 
-gtkmm_windowslateo::gtkmm_windowslateo(slate *parent_slate) : windowslateo(parent_slate)
+gtkmm_windowslateo::gtkmm_windowslateo(slate *parent_slate, void *screenob) : windowslateo(parent_slate,screenob)
 {
 	cerr << "Create gtkmm_windowslateo\n";
 	screen_object=new gtwidget;

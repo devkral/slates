@@ -30,7 +30,7 @@ class tscreenobject;
 class tlockslateo: public lockslateo 
 {
 public:
-	tlockslateo(slate *parent_slate);
+	tlockslateo(slate *parent_slate, void *screenob);
 	~tlockslateo();
 	void draw();
 	void cleanup_handler ();

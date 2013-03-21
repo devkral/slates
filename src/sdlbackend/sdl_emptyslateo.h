@@ -25,19 +25,24 @@ class emptyslateo;
 class sdl_screenobject;
 
 
+#include <atomic>
+
 
 #include "constdef.h"
 
 class sdl_emptyslateo : public emptyslateo 
 {
 public:
-	sdl_emptyslateo(slate *parent_slate);
+	sdl_emptyslateo(slate *parent_slate, void *screenob);
 	~sdl_emptyslateo();
 	void draw();
 	void cleanup_handler ();
 	void draw_function ();
 protected:
-
+	
+	sdlempty widget;
+	atomic<int> update_interval;
+	
 private:
 	
 };

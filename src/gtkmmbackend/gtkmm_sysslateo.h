@@ -33,7 +33,7 @@ class gtkmm_screenobject;
 class gtkmm_sysslateo: public sysslateo 
 {
 public:
-	gtkmm_sysslateo(slate *parent_slate);
+	gtkmm_sysslateo(slate *parent_slate, void *screenob);
 	~gtkmm_sysslateo();
 	void draw();
 	void cleanup_handler ();

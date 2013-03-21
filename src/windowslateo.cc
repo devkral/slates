@@ -19,7 +19,7 @@
 
 #include "windowslateo.h"
 
-windowslateo::windowslateo(slate *parent_slate) : slateobject(parent_slate)
+windowslateo::windowslateo(slate *parent_slate, void *screenob) : slateobject(parent_slate,screenob)
 {
 
 }
@@ -34,7 +34,3 @@ char windowslateo::TYPE()
 	return TYPE_windowslate;
 }
 
-void windowslateo::close()
-{
-	;
-}

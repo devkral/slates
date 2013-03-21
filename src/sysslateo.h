@@ -30,7 +30,7 @@ class slateobject;
 class sysslateo: public slateobject 
 {
 public:
-	sysslateo(slate *parent_slate);
+	sysslateo(slate *parent_slate, void *screenob);
 	~sysslateo();
 	char TYPE();
 protected:

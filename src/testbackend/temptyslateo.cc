@@ -25,7 +25,7 @@
 using namespace std;
 
 
-temptyslateo::temptyslateo(slate *parent_slate) : emptyslateo(parent_slate)
+temptyslateo::temptyslateo(slate *parent_slate, void *screenob) : emptyslateo(parent_slate,screenob)
 {
 	cerr << "Create temptyslateo\n";
 	screen_object=new tpscreen;

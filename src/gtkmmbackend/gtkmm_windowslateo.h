@@ -31,7 +31,7 @@ class gtkmm_screenobject;
 class gtkmm_windowslateo : public windowslateo
 {
 public:
-	gtkmm_windowslateo(slate *parent_slate);
+	gtkmm_windowslateo(slate *parent_slate, void *screenob);
 	~gtkmm_windowslateo();
 	void draw();
 	void cleanup_handler ();

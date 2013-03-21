@@ -33,7 +33,7 @@ class sdl_screenobject;
 class sdl_sysslateo: public sysslateo 
 {
 public:
-	sdl_sysslateo(slate *parent_slate);
+	sdl_sysslateo(slate *parent_slate, void *screenobject);
 	~sdl_sysslateo();
 	void draw();
 	void cleanup_handler ();

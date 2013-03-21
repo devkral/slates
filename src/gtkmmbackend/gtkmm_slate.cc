@@ -37,22 +37,22 @@ gtkmm_slate::~gtkmm_slate()
 
 slateobject *gtkmm_slate::create_lockobject()
 {
-	return new gtkmm_lockslateo((slate*)this);
+	return new gtkmm_lockslateo((slate*)this, new gtwidget());
 }
 
 
 slateobject *gtkmm_slate::create_emptyobject()
 {
-	return new gtkmm_emptyslateo ((slate*)this);
+	return new gtkmm_emptyslateo ((slate*)this,new gtwidget());
 }
 
 slateobject *gtkmm_slate::create_sysobject()
 {
-	return new gtkmm_sysslateo ((slate*)this);
+	return new gtkmm_sysslateo ((slate*)this,new gtwidget());
 }
 
 
 slateobject *gtkmm_slate::create_windowobject(string progname)
 {
-	return new gtkmm_windowslateo ((slate*)this);
+	return new gtkmm_windowslateo ((slate*)this,new gtwidget());
 }

@@ -37,22 +37,22 @@ tslate::~tslate()
 
 slateobject *tslate::create_lockobject()
 {
-	return new tlockslateo((slate*)this);
+	return new tlockslateo((slate*)this, new tpscreen);
 }
 
 
 slateobject *tslate::create_emptyobject()
 {
-	return new temptyslateo ((slate*)this);
+	return new temptyslateo ((slate*)this, new tpscreen);
 }
 
 slateobject *tslate::create_sysobject()
 {
-	return new tsysslateo ((slate*)this);
+	return new tsysslateo ((slate*)this, new tpscreen);
 }
 
 
 slateobject *tslate::create_windowobject(string progname)
 {
-	return new twindowslateo ((slate*)this);
+	return new twindowslateo ((slate*)this, new tpscreen);
 }

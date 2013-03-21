@@ -56,10 +56,12 @@ public:
 
 	void *get_viewport_screen();
 	int get_id();
+	int get_slices();
 	
 protected:
 	//every display a viewport_screen
 	void *viewport_screen=0;
+	virtual void update_slice_change()=0;
 
 private:
 	int ownid=0;

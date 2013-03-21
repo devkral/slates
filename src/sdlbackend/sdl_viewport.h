@@ -39,8 +39,12 @@ public:
 	sdl_viewport(master *masteridd, int ownidd);
 	~sdl_viewport();
 	slate *create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp);
+	long int id_slate_mouse(int x, int y);
+	
 protected:
-
+	void update_slice_change();
+	
+	
 private:
 	void destroy_mscreen_ob();
 	void create_mscreen_ob ();

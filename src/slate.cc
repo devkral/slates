@@ -177,6 +177,7 @@ void slate::emptyslate()
 	if (child_slateo.use_count()==0)
 	{
 		replace_childobject(create_emptyobject());
+		draw();
 	}
 	else
 		emptyslate_nonunique();

@@ -30,7 +30,7 @@ class gtkmm_screenobject;
 class gtkmm_emptyslateo : public emptyslateo 
 {
 public:
-	gtkmm_emptyslateo(slate *parent_slate);
+	gtkmm_emptyslateo(slate *parent_slate, void *screenob);
 	~gtkmm_emptyslateo();
 	void draw();
 	void cleanup_handler ();

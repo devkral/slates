@@ -23,7 +23,7 @@
 
 using namespace std;
 
-tsysslateo::tsysslateo(slate *parent_slate) : sysslateo(parent_slate)
+tsysslateo::tsysslateo(slate *parent_slate, void *screenob) : sysslateo(parent_slate,screenob)
 {
 	cerr << "Create tsysslateo\n";
 	screen_object=new tpscreen;

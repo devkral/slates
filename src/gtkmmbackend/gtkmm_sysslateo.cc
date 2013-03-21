@@ -23,7 +23,7 @@
 
 using namespace std;
 
-gtkmm_sysslateo::gtkmm_sysslateo(slate *parent_slate) : sysslateo(parent_slate)
+gtkmm_sysslateo::gtkmm_sysslateo(slate *parent_slate, void *screenob) : sysslateo(parent_slate,screenob)
 {
 	cerr << "Create gtkmm_sysslateo\n";
 	screen_object=new gtwidget;

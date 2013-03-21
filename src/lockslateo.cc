@@ -19,7 +19,7 @@
 
 #include "lockslateo.h"
 
-lockslateo::lockslateo(slate *parent_slate) : slateobject(parent_slate)
+lockslateo::lockslateo(slate *parent_slate, void *screenob) : slateobject(parent_slate,screenob)
 {
 
 

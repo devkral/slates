@@ -50,3 +50,9 @@ void gtkmm_viewport::create_mscreen_ob()
 {
 	viewport_screen=new gtwindow;
 }
+
+void gtkmm_viewport::update_slice_change()
+{
+
+}
+

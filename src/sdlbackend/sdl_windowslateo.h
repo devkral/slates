@@ -31,7 +31,7 @@ class sdl_screenobject;
 class sdl_windowslateo : public windowslateo
 {
 public:
-	sdl_windowslateo(slate *parent_slate);
+	sdl_windowslateo(slate *parent_slate, void *screenob);
 	~sdl_windowslateo();
 	void draw();
 	void cleanup_handler ();

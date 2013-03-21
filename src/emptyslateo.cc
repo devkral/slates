@@ -19,9 +19,8 @@
 
 #include "emptyslateo.h"
 
-emptyslateo::emptyslateo(slate *parent_slate) : slateobject(parent_slate)
+emptyslateo::emptyslateo(slate *parent_slate, void *screenob) : slateobject(parent_slate,screenob)
 {
-	
 
 }
 

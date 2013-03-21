@@ -62,13 +62,12 @@ public:
 	void hide();
 	
 protected:
-	
+	int position_x;
+	int position_y;
 private:
 	bool filled=false;
 	char lockstate=0; //0 normal, 1 always_unlock 2 lock (3 private: not implemented)
 	long int slateid;
-	int position_x;
-	int position_y;
 	viewport *parent_viewport;
 		
 	shared_ptr<slateobject> child_slateo;

@@ -23,10 +23,9 @@
 
 using namespace std;
 
-sdl_lockslateo::sdl_lockslateo(slate *parent_slate) : lockslateo(parent_slate)
+sdl_lockslateo::sdl_lockslateo(slate *parent_slate, void *screenob) : lockslateo(parent_slate,screenob)
 {
 	cerr << "Create sdl_lockslateo\n";
-	screen_object=new sdlslatecanvas;
 }
 
 sdl_lockslateo::~sdl_lockslateo()
@@ -47,12 +46,26 @@ void sdl_lockslateo::draw()
 	}
 }
 
+string sdl_lockslateo::enter_password ()
+{
+	bool done=false;
+	SDL_Event textevent;
+	SDL_StartTextInput();
+	//while (!done)
+	//{
+		
+
+	//}
+	return (string)"test";
+
+}
+
+
 
 void sdl_lockslateo::unlock()
 {
-	cerr << "check password\n";
-	(*connectedslates)[0][0]->getmaster()->unlock((char*)"test");
-
+	if (! (getfparent()->getmaster()->unlock((char *)enter_password().c_str())) )
+		cout << "Not unlocked\n";
 }
 
 void sdl_lockslateo::cleanup_handler ()

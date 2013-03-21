@@ -23,7 +23,7 @@
 
 using namespace std;
 
-twindowslateo::twindowslateo(slate *parent_slate) : windowslateo(parent_slate)
+twindowslateo::twindowslateo(slate *parent_slate, void *screenob) : windowslateo(parent_slate,screenob)
 {
 	cerr << "Create twindowslateo\n";
 	screen_object=new tpscreen;

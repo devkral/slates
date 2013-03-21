@@ -25,16 +25,20 @@ class lockslateo;
 #include "sdl_screenobject.h"
 class sdl_screenobject;
 
+#include <string>
+
+
 #include "constdef.h"
 
 class sdl_lockslateo: public lockslateo 
 {
 public:
-	sdl_lockslateo(slate *parent_slate);
+	sdl_lockslateo(slate *parent_slate, void *screenob);
 	~sdl_lockslateo();
 	void draw();
 	void cleanup_handler ();
 	void draw_function ();
+	string enter_password ();
 protected:
 
 private:

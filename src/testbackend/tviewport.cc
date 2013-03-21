@@ -51,3 +51,8 @@ void tviewport::destroy_mscreen_ob()
 {
 	delete to_tvs(viewport_screen);
 }
+
+void tviewport::update_slice_change()
+{
+
+}

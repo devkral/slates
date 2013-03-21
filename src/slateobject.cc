@@ -23,11 +23,12 @@
 
 using namespace std;
 
-slateobject::slateobject(slate *parent_slate)
+slateobject::slateobject(slate *parent_slate, void *screenob)
 {
 	connectedslates=make_shared<deque< deque<slate*> > >();
 	(*connectedslates).push_back( deque<slate*>() );
 	(*connectedslates)[0].push_back(parent_slate);
+	screen_object=screenob;
 }
 
 slateobject::~slateobject()

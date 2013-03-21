@@ -38,28 +38,28 @@ void sdl_master::inputhandler_function()
 	SDL_Event event;
 	while (handleinput)
 	{
+		SDL_WaitEventTimeout(&event,1000);
 		while( SDL_PollEvent( &event ) )
 		{
 			switch( event.type )
 			{
 				case SDL_QUIT: handleinput=false;
 					break; //SDL_SCANCODE_LALT&
-			
+				case SDL_KEYDOWN:
+					if (event.key.keysym.sym==SDLK_a )
+						viewport_pool[0]->addslice();
+					if(event.key.keysym.sym==SDLK_b )
+						viewport_pool[0]->removeslice();
+					break;
+				case SDL_KEYUP:
+						
+					break;
 			}
-		
-			//SDL_BlitSurface(image, NULL, screen, NULL);
-			// den veraenderten Bereich des display-surface auffrischen
-			
 		}
-		SDL_Delay(10);
 	}
 }
 
-long int sdl_master::id_slate_mouse(int x, int y)
-{
-	
 
-}
 
 viewport *sdl_master::create_viewport_intern(master *masteridd, int ownidd)
 {

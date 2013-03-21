@@ -23,10 +23,9 @@
 
 using namespace std;
 
-sdl_windowslateo::sdl_windowslateo(slate *parent_slate) : windowslateo(parent_slate)
+sdl_windowslateo::sdl_windowslateo(slate *parent_slate, void *screenob) : windowslateo(parent_slate,screenob)
 {
 	cerr << "Create sdl_windowslateo\n";
-	screen_object=new sdlslatecanvas;
 }
 
 sdl_windowslateo::~sdl_windowslateo()

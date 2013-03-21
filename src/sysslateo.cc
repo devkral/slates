@@ -19,7 +19,7 @@
 
 #include "sysslateo.h"
 
-sysslateo::sysslateo(slate *parent_slate) : slateobject(parent_slate)
+sysslateo::sysslateo(slate *parent_slate, void *screenob) : slateobject(parent_slate,screenob)
 {
 
 

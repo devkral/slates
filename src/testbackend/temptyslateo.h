@@ -30,7 +30,7 @@ class tscreenobject;
 class temptyslateo : public emptyslateo 
 {
 public:
-	temptyslateo(slate *parent_slate);
+	temptyslateo(slate *parent_slate, void *screenob);
 	~temptyslateo();
 	void draw();
 	void cleanup_handler ();

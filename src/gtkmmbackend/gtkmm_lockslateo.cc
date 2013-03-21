@@ -23,7 +23,7 @@
 
 using namespace std;
 
-gtkmm_lockslateo::gtkmm_lockslateo(slate *parent_slate) : lockslateo(parent_slate)
+gtkmm_lockslateo::gtkmm_lockslateo(slate *parent_slate, void *screenob) : lockslateo(parent_slate,screenob)
 {
 	cerr << "Create gtkmm_lockslateo\n";
 	screen_object=new gtwidget;

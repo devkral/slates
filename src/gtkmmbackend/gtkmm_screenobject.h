@@ -25,6 +25,7 @@ using namespace std;
 
 
 typedef struct gtwindow_{
+	
 	~gtwindow_()
 	{
 		cerr << "tvs I'm gone\n";
@@ -34,6 +35,10 @@ typedef struct gtwindow_{
 }gtwindow;
 
 typedef struct gtwidget_{
+	gtwidget_()
+	{
+
+	}
 	~gtwidget_()
 	{
 		cerr << "tps I'm gone\n";

@@ -33,7 +33,7 @@ class tscreenobject;
 class tsysslateo: public sysslateo 
 {
 public:
-	tsysslateo(slate *parent_slate);
+	tsysslateo(slate *parent_slate, void *screenob);
 	~tsysslateo();
 	void draw();
 	void cleanup_handler ();

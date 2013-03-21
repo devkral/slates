@@ -28,9 +28,10 @@ sdl_viewport::sdl_viewport(master *masteridd, int ownidd) : viewport(masteridd,o
 {
 	cerr << "Create sdl_viewport\n";
 	create_mscreen_ob();
-	
-	
 }
+
+
+
 
 sdl_viewport::~sdl_viewport()
 {
@@ -51,8 +52,24 @@ void sdl_viewport::destroy_mscreen_ob()
 void sdl_viewport::create_mscreen_ob()
 {
 	viewport_screen=new sdlmastercanvas;
+	//SDL_CreateWindowAndRenderer(
 	to_sdmac(viewport_screen)->window=SDL_CreateWindow("SDL_RenderClear", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 	                 512, 512,SDL_WINDOW_SHOWN);
+	to_sdmac(viewport_screen)->screenrender=
+		SDL_CreateRenderer(to_sdmac(viewport_screen)->window,-1,SDL_RENDERER_SOFTWARE);
+		                   
+	SDL_GetDisplayBounds(get_id(), &to_sdmac(viewport_screen)->dispbounds);
+}
 
-	SDL_GetDisplayBounds(get_id(), to_sdmac(viewport_screen)->dispbounds);
+long int sdl_viewport::id_slate_mouse(int x, int y)
+{
+	//dispbounds.x/
+
+}
+
+
+void sdl_viewport::update_slice_change()
+{
+	to_sdmac(viewport_screen)->widget_w=to_sdmac(viewport_screen)->dispbounds.w/get_slices();
+	to_sdmac(viewport_screen)->widget_h=to_sdmac(viewport_screen)->dispbounds.h/get_slices();
 }

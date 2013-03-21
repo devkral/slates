@@ -41,7 +41,7 @@ class slateobject
 {
 public:
 
-	slateobject(slate *parent_slate);
+	slateobject(slate *parent_slate, void *screenob);
 	virtual ~slateobject();
 	void set_screen_ob(void *screenob);
 	void swap_screen_ob(shared_ptr<slateobject> swapso);

@@ -25,13 +25,15 @@
 using namespace std;
 
 
-sdl_emptyslateo::sdl_emptyslateo(slate *parent_slate) : emptyslateo(parent_slate)
+sdl_emptyslateo::sdl_emptyslateo(slate *parent_slate, void *screenob) : emptyslateo(parent_slate,screenob)
 {
-	cerr << "Create sdl_emptyslateo\n";
-	screen_object=new sdlslatecanvas;
-	to_sdslc(screen_object)->mastercanvas=to_sdmac (getviewport()->get_viewport_screen());
-	to_sdslc(screen_object)->slatescreen=new SDL_Surface();
-	to_sdslc(screen_object)->slatebox=new SDL_Rect();
+	update_interval=100;
+	widget.inner_object.x=to_sdslc(screen_object)->slatebox.x;
+	widget.inner_object.y=to_sdslc(screen_object)->slatebox.y;
+	widget.inner_object.w=to_sdslc(screen_object)->slatebox.w;
+	widget.inner_object.h=to_sdslc(screen_object)->slatebox.h;
+	widget.inn=SDL_CreateRGBSurface (0,widget.inner_object.w,widget.inner_object.h,32,255,1,1,0);
+	
 }
 
 sdl_emptyslateo::~sdl_emptyslateo()
@@ -60,9 +62,19 @@ void sdl_emptyslateo::cleanup_handler ()
 
 void sdl_emptyslateo::draw_function ()
 {
-	SDL_Event event;
 	while(isdrawn==true)
 	{
-		SDL_Delay(10000);
+
+		SDL_RenderClear(to_sdslc(screen_object)->mastercanvas->screenrender);
+        //SDL_RenderCopy(to_sdslc(screen_object)->mastercanvas->screenrender, &widget.inn, NULL, NULL);
+
+		
+		SDL_RenderCopy(to_sdslc(screen_object)->mastercanvas->screenrender,
+		               SDL_CreateTextureFromSurface(to_sdslc(screen_object)->mastercanvas->screenrender,
+		                                            widget.inn),NULL,&widget.inner_object);
+		SDL_RenderPresent(to_sdslc(screen_object)->mastercanvas->screenrender);
+		//SDL_BlitSurface(inn,0, to_sdslc(screen_object)->mastercanvas->viewport,&widget.inner_object);
+		//SDL_RenderDrawRect(to_sdslc(screen_object)->mastercanvas->screenrender,&widget.inner_object);
+		SDL_Delay(update_interval);
 	}
 }

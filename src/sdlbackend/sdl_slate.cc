@@ -37,22 +37,42 @@ sdl_slate::~sdl_slate()
 
 slateobject *sdl_slate::create_lockobject()
 {
-	return new sdl_lockslateo((slate*)this);
+	sdlslatecanvas *temp=new sdlslatecanvas(position_x*(to_sdmac (getviewport()->get_viewport_screen())->widget_w),
+	position_y*(to_sdmac (getviewport()->get_viewport_screen())->widget_h),
+	(to_sdmac (getviewport()->get_viewport_screen())->widget_w),
+	 (to_sdmac (getviewport()->get_viewport_screen())->widget_h));
+	temp->mastercanvas=to_sdmac (getviewport()->get_viewport_screen());
+	return new sdl_lockslateo((slate*)this, temp);
 }
 
 
 slateobject *sdl_slate::create_emptyobject()
 {
-	return new sdl_emptyslateo ((slate*)this);
+	sdlslatecanvas *temp=new sdlslatecanvas(position_x*(to_sdmac (getviewport()->get_viewport_screen())->widget_w),
+	position_y*(to_sdmac (getviewport()->get_viewport_screen())->widget_h),
+	(to_sdmac (getviewport()->get_viewport_screen())->widget_w),
+	 (to_sdmac (getviewport()->get_viewport_screen())->widget_h));
+	temp->mastercanvas=to_sdmac (getviewport()->get_viewport_screen());
+	return new sdl_emptyslateo ((slate*)this,temp);
 }
 
 slateobject *sdl_slate::create_sysobject()
 {
-	return new sdl_sysslateo ((slate*)this);
+	sdlslatecanvas *temp=new sdlslatecanvas(position_x*(to_sdmac (getviewport()->get_viewport_screen())->widget_w),
+	position_y*(to_sdmac (getviewport()->get_viewport_screen())->widget_h),
+	(to_sdmac (getviewport()->get_viewport_screen())->widget_w),
+	 (to_sdmac (getviewport()->get_viewport_screen())->widget_h));
+	temp->mastercanvas=to_sdmac (getviewport()->get_viewport_screen());
+	return new sdl_sysslateo ((slate*)this,temp);
 }
 
 
 slateobject *sdl_slate::create_windowobject(string progname)
 {
-	return new sdl_windowslateo ((slate*)this);
+	sdlslatecanvas *temp=new sdlslatecanvas(position_x*(to_sdmac (getviewport()->get_viewport_screen())->widget_w),
+	position_y*(to_sdmac (getviewport()->get_viewport_screen())->widget_h),
+	(to_sdmac (getviewport()->get_viewport_screen())->widget_w),
+	 (to_sdmac (getviewport()->get_viewport_screen())->widget_h));
+	temp->mastercanvas=to_sdmac (getviewport()->get_viewport_screen());
+	return new sdl_windowslateo ((slate*)this,temp);
 }
