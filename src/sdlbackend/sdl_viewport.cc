@@ -63,8 +63,7 @@ void sdl_viewport::create_mscreen_ob()
 
 long int sdl_viewport::id_slate_mouse(int x, int y)
 {
-	//dispbounds.x/
-
+	return calcidslate(x/to_sdmac(viewport_screen)->widget_w, y/to_sdmac(viewport_screen)->widget_h);
 }
 
 

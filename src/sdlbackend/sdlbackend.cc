@@ -38,8 +38,8 @@ void sdl_master::inputhandler_function()
 	SDL_Event event;
 	while (handleinput)
 	{
-		SDL_WaitEventTimeout(&event,1000);
-		while( SDL_PollEvent( &event ) )
+		SDL_WaitEvent(&event);
+		do
 		{
 			switch( event.type )
 			{
@@ -52,10 +52,11 @@ void sdl_master::inputhandler_function()
 						viewport_pool[0]->removeslice();
 					break;
 				case SDL_KEYUP:
-						
+						//SDL_WarpMouseInWindow(to_sdmac (viewport_pool[0]->get_viewport_screen ())->window,10,10);
 					break;
 			}
-		}
+		} while (SDL_PollEvent (&event));
+		SDL_Delay(100);
 	}
 }
 
