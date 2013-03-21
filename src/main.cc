@@ -74,11 +74,11 @@ main (int argc, char *argv[])
 	}
 	if (testoptions=="gtkmm" || testoptions=="2")
 	{
-		sel=1;
+		sel=2;
 	}
 	if (testoptions=="test" || testoptions=="3")
 	{
-		sel=1;
+		sel=3;
 	}
 	
 	int returnvalue;

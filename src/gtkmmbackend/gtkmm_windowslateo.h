@@ -34,6 +34,7 @@ public:
 	gtkmm_windowslateo(slate *parent_slate, void *screenob);
 	~gtkmm_windowslateo();
 	void draw();
+	void hide();
 	void cleanup_handler ();
 	void draw_function ();
 protected:

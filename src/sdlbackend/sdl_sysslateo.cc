@@ -40,10 +40,6 @@ void sdl_sysslateo::draw()
 		isdrawn=true;
 		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
 	}
-	else
-	{
-		cerr << "Update sdl_sysslateo\n";
-	}
 }
 
 

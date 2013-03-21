@@ -39,12 +39,16 @@ void gtkmm_sysslateo::draw()
 	if (isdrawn==false)
 	{
 		isdrawn=true;
-		cerr << "Draw gtkmm_sysslateo\n";
+		draw_function ();
 	}
 	else
 	{
-		cerr << "Update gtkmm_sysslateo\n";
+		to_gtw(screen_object)->widgetspace.show();
 	}
+}
+void gtkmm_sysslateo::hide()
+{
+	to_gtw(screen_object)->widgetspace.hide();
 }
 
 void gtkmm_sysslateo::cleanup_handler ()
@@ -54,4 +58,5 @@ void gtkmm_sysslateo::cleanup_handler ()
 
 void gtkmm_sysslateo::draw_function ()
 {
+	to_gtw(screen_object)->widgetspace.show();
 }

@@ -100,6 +100,18 @@ void slateobject::hide()
 		drawthread.join();
 	}
 }
+void slateobject::draw()
+{
+	if (isdrawn==false)
+	{
+		isdrawn=true;
+		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
+	}
+	{
+		//override for updatefunction
+	}
+}
+
 void slateobject::cleanup()
 {
 	hide();

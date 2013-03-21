@@ -40,12 +40,17 @@ void gtkmm_emptyslateo::draw()
 	if (isdrawn==false)
 	{
 		isdrawn=true;
-		cerr << "Draw gtkmm_emptyslateo\n";
+		draw_function();
 	}
 	else
 	{
-		cerr << "Update gtkmm_emptyslateo\n";
+		to_gtw(screen_object)->widgetspace.show();
 	}
+}
+
+void gtkmm_emptyslateo::hide()
+{
+	to_gtw(screen_object)->widgetspace.hide();
 }
 
 void gtkmm_emptyslateo::cleanup_handler ()
@@ -55,4 +60,5 @@ void gtkmm_emptyslateo::cleanup_handler ()
 
 void gtkmm_emptyslateo::draw_function ()
 {
+	to_gtw(screen_object)->widgetspace.show();
 }

@@ -62,14 +62,15 @@ public:
 	
 	virtual char TYPE()=0;
 	void close();
-	virtual void draw()=0;
+	virtual void draw();
 	virtual void draw_function()=0; //for kickstarter
-	void hide();
+	virtual void hide();
 	/** implementation idea:
 	 * draw() start drawthread (especially window) if isdrawn=false 
 			elsewise update static elements
 
 	 * hide() stop threads if isdrawn=true elsewise do nothing, join drawthread 
+		 also possible to override
 	 */
 	void cleanup();
 	

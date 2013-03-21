@@ -58,6 +58,7 @@ void sdl_master::inputhandler_function()
 		} while (SDL_PollEvent (&event));
 		SDL_Delay(100);
 	}
+	render=false;
 }
 
 
@@ -72,16 +73,33 @@ sdl_master::sdl_master(int argc, char* argv[])
 	for (int count=0; count<SDL_GetNumVideoDisplays(); count++) //SDL_GetNumVideoDisplays
 		createviewport();
 	start_handling_input();
+	render=true;
+	renderthread=thread(kickstarter_renderthread,this);
 	inputthread.join();
 }
 
 sdl_master::~sdl_master()
 {
-	cerr << "Destroy sdlmaster\n";
+	cout << "Destroy sdlmaster\n";
+	render=false;
 	cleanup();
+	renderthread.join();
 	SDL_Quit();
 }
+void kickstarter_renderthread(sdl_master *parent_object)
+{
+	parent_object->renderthread_function();
 
+}
+
+void sdl_master::renderthread_function()
+{
+	while (render==true)
+	{
+		
+		SDL_Delay(10);
+	}
+}
 
 int sdlmain(int argc, char *argv[])
 {
@@ -100,7 +118,7 @@ int sdlmain(int argc, char *argv[])
 	}	
 	catch (char  *errorstring)
 	{
-		cerr << "Caught error:" << errorstring << " happened\n";
+		cerr << "Caught error string:" << errorstring << " happened\n";
 		return 1;
 	}
 	catch (...)

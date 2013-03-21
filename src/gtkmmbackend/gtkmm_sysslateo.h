@@ -36,6 +36,7 @@ public:
 	gtkmm_sysslateo(slate *parent_slate, void *screenob);
 	~gtkmm_sysslateo();
 	void draw();
+	void hide();
 	void cleanup_handler ();
 	void draw_function ();
 protected:

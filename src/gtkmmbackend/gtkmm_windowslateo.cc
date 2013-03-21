@@ -39,14 +39,17 @@ void gtkmm_windowslateo::draw()
 	if (isdrawn==false)
 	{
 		isdrawn=true;
-		cerr << "Draw tsysslateo\n";
+		draw_function ();
 	}
 	else
 	{
-		cerr << "Update tsysslateo\n";
+		to_gtw(screen_object)->widgetspace.show();
 	}
 }
-
+void gtkmm_windowslateo::hide()
+{
+	to_gtw(screen_object)->widgetspace.hide();
+}
 
 void gtkmm_windowslateo::cleanup_handler ()
 {
@@ -54,4 +57,5 @@ void gtkmm_windowslateo::cleanup_handler ()
 }
 void gtkmm_windowslateo::draw_function ()
 {
+	to_gtw(screen_object)->widgetspace.show();
 }

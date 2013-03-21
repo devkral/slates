@@ -22,6 +22,7 @@
 
 
 #include <iostream>
+#include <system_error>
 
 using namespace std;
 
@@ -58,6 +59,16 @@ int testmain(int argc ,char *argv[])
 	try
 	{
 		testmaster(argc,argv);
+	}
+	catch (const std::system_error& error)
+	{
+		cerr << "Caught error: " << error.what() << endl;
+		return 1;
+	}	
+	catch (char  *errorstring)
+	{
+		cerr << "Caught error string:" << errorstring << " happened\n";
+		return 1;
 	}
 	catch (...)
 	{

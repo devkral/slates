@@ -26,7 +26,35 @@
 
 #include "gtkmmbackend.h"
 #include <iostream>
+#include <system_error>
 using namespace std;
+
+viewport *gtkmmmaster::create_viewport_intern(master *masteridd, int ownidd)
+{
+	gtkmm_viewport *temp=new gtkmm_viewport(masteridd,ownidd);
+	masterapp->add_window (to_gdw(temp->get_viewport_screen ())->display_window);
+	return temp;
+}
+
+gtkmmmaster::gtkmmmaster(int argc, char* argv[])
+{
+	masterapp=Gtk::Application::create(argc, argv, "org.slates.test");
+	createviewport();
+	
+	inputhandler_function();
+}
+
+gtkmmmaster::~gtkmmmaster()
+{
+	cerr << "Destroy gtkmmmaster\n";
+	cleanup();
+}
+void gtkmmmaster::inputhandler_function()
+{
+	masterapp->run();
+}
+
+
 
 
 
@@ -34,7 +62,17 @@ int gtkmmmain(int argc, char *argv[])
 {
 	try
 	{
-		cerr << "implemented soon\n";//gtkmmmaster(argc,argv);
+		gtkmmmaster(argc,argv);
+	}
+	catch (const std::system_error& error)
+	{
+		cerr << "Caught error: " << error.what() << endl;
+		return 1;
+	}	
+	catch (char  *errorstring)
+	{
+		cerr << "Caught error string:" << errorstring << " happened\n";
+		return 1;
 	}
 	catch (...)
 	{

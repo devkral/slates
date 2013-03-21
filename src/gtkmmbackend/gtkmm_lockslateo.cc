@@ -39,18 +39,22 @@ void gtkmm_lockslateo::draw()
 	if (isdrawn==false)
 	{
 		isdrawn=true;
-		cerr << "Draw gtkmm_lockslateo\n";
+		draw_function ();
 	}
 	else
 	{
-		cerr << "Update gtkmm_lockslateo\n";
+		to_gtw(screen_object)->widgetspace.show();
 	}
+}
+void gtkmm_lockslateo::hide()
+{
+	to_gtw(screen_object)->widgetspace.hide();
 }
 
 void gtkmm_lockslateo::unlock()
 {
 	cerr << "check password\n";
-	(*connectedslates)[0][0]->getmaster()->unlock((char*)"test");
+	getfparent()->getmaster()->unlock((char*)"test");
 
 }
 
@@ -60,4 +64,5 @@ void gtkmm_lockslateo::cleanup_handler ()
 }
 void gtkmm_lockslateo::draw_function ()
 {
+	to_gtw(screen_object)->widgetspace.show();
 }

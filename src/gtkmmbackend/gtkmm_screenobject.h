@@ -21,32 +21,28 @@
 #define _GTKMM_SCREENOBJECT_H_
 
 #include <iostream>
+#include <gtkmm.h>
 using namespace std;
 
 
 typedef struct gtwindow_{
-	
-	~gtwindow_()
+	gtwindow_() : display_grid(), display_window()
 	{
-		cerr << "tvs I'm gone\n";
+
 	}
+	
+	Gtk::Grid display_grid;
+	Gtk::ApplicationWindow display_window;
 	
 	
 }gtwindow;
 
 typedef struct gtwidget_{
-	gtwidget_()
+	gtwidget_() : widgetspace()
 	{
 
 	}
-	~gtwidget_()
-	{
-		cerr << "tps I'm gone\n";
-	}
-	int x;
-	int y;
-	int w;
-	int h;
+	Gtk::Grid widgetspace;
 	
 }gtwidget;
 

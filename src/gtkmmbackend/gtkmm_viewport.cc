@@ -26,13 +26,13 @@ using namespace std;
 
 gtkmm_viewport::gtkmm_viewport(master *masteridd, int ownidd) : viewport(masteridd,ownidd)
 {
-	cerr << "Create gtkmm_viewport\n";
+	cout << "Create gtkmm_viewport\n";
 	create_mscreen_ob();	
 }
 
 gtkmm_viewport::~gtkmm_viewport()
 {
-	cerr << "Destroy gtkmm_viewport\n";
+	cout << "Destroy gtkmm_viewport\n";
 }
 
 
@@ -48,7 +48,8 @@ void gtkmm_viewport::destroy_mscreen_ob()
 
 void gtkmm_viewport::create_mscreen_ob()
 {
-	viewport_screen=new gtwindow;
+	viewport_screen=new gtwindow();
+	//to_gdw(viewport_screen)->display_grid();
 }
 
 void gtkmm_viewport::update_slice_change()

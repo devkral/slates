@@ -27,7 +27,22 @@
 #ifndef _GTKMMBACKEND_H_
 #define _GTKMMBACKEND_H_
 
+#include "master.h"
+#include "gtkmm_viewport.h"
 
+class gtkmmmaster : public master
+{
+public:
+	gtkmmmaster(int argc, char* argv[]);
+	~gtkmmmaster();
+	void inputhandler_function();
+	Glib::RefPtr<Gtk::Application> masterapp;
+protected:
+	
+
+private:
+	viewport *create_viewport_intern(master *masteridd, int ownidd);
+};
 
 int gtkmmmain(int argc ,char *argv[]);
 
