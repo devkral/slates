@@ -51,17 +51,15 @@ if test "x$buildgtkmmbackend" = "xyes" ; then
 	AC_DEFINE([COMPILED_WITH_GTKMM], [1], [gtkmm support: YES])
 else
 	AM_CONDITIONAL(IS_COMPILED_WITH_GTKMM, [false])
-	AC_MSG_RESULT( [ gtkmm support: NO ] )
 fi
 
-PKG_CHECK_MODULES(SDL, [sdl2 SDL2_image], [buildsdlbackend="yes"] , [buildsdlbackend="no"] )
+PKG_CHECK_MODULES(SDL2, [sdl2 SDL2_image], [buildsdlbackend="yes"] , [buildsdlbackend="no"] )
 
 if test "x$buildsdlbackend" = "xyes" ; then
 	AM_CONDITIONAL(IS_COMPILED_WITH_SDL, [true])
 	AC_DEFINE([COMPILED_WITH_SDL], [1], [sdl support: YES])
 else
 	AM_CONDITIONAL(IS_COMPILED_WITH_SDL, [false])
-	AC_MSG_RESULT([sdl support: NO])
 fi
 
 

@@ -8,7 +8,7 @@ AM_CPPFLAGS = \
 	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
 	-DPACKAGE_DATA_DIR=\""$(pkgdatadir)"\" \
 	$(GTKMM_CFLAGS) \
-	$(SDL_CFLAGS) \
+	$(SDL2_CFLAGS) \
 	$(SLATES_CFLAGS)
 
 AM_CFLAGS =\
@@ -35,7 +35,7 @@ slates_SOURCES = \
 	sysslateo.cc \
 	sysslateo.h \
 	emptyslateo.cc \
-	emptyslateo.h 
+	emptyslateo.h
 
 
 
@@ -96,10 +96,10 @@ slates_SOURCES += sdlbackend/sdlbackend.cc \
 	sdlbackend/sdl_screenobject.h
 endif
 
-slates_CXXFLAGS = -std=c++11 
+slates_CXXFLAGS = -std=c++11
 
 slates_LDADD = \
     $(GTKMM_LIBS) \
-    $(SDL_LIBS) \
-    $(SLATES_LIBS) 
+    $(SDL2_LIBS) \
+    $(SLATES_LIBS)
 
