@@ -57,7 +57,7 @@ void sdl_viewport::create_mscreen_ob()
 	//SDL_CreateWindowAndRenderer(
 	SDL_GetDisplayBounds(get_id(), &to_sdmac(viewport_screen)->dispbounds);
 	to_sdmac(viewport_screen)->window=SDL_CreateWindow("Slates", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-	                 to_sdmac(viewport_screen)->dispbounds.w, to_sdmac(viewport_screen)->dispbounds.h,SDL_WINDOW_MAXIMIZED);//SDL_WINDOW_FULLSCREEN);
+	                 to_sdmac(viewport_screen)->dispbounds.w, to_sdmac(viewport_screen)->dispbounds.h,SDL_WINDOW_FULLSCREEN);
 	SDL_GetWindowDisplayMode(to_sdmac(viewport_screen)->window,&to_sdmac(viewport_screen)->curdisplaymode);
 
 	to_sdmac(viewport_screen)->globalrender=SDL_CreateRenderer(to_sdmac(viewport_screen)->window,-1,SDL_RENDERER_SOFTWARE);//SDL_RENDERER_ACCELERATED);
