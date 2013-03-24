@@ -21,7 +21,7 @@
 #define _SDL_SCREENOBJECT_H_
 
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_opengl.h>
+//#include <SDL2/SDL_opengl.h>
 #include <iostream>
 #include <atomic>
 #include <thread>
@@ -37,18 +37,19 @@ typedef struct sdlmastercanvas_{
 		
 	~sdlmastercanvas_()
 	{
-		SDL_DestroyRenderer (screenrender);
+		SDL_DestroyRenderer (globalrender);
 		SDL_DestroyWindow (window);
 		SDL_DestroyTexture(viewport_tex);
 		SDL_FreeSurface(viewport);
 	}
 	SDL_Window* window=0;
-	SDL_Renderer* screenrender=0;
+	SDL_Renderer* globalrender=0;
 	atomic<bool> is_rendering;
 	SDL_Texture *viewport_tex=0;
 	SDL_Surface *viewport=0;
 	int displayindex=0;
 	SDL_Rect dispbounds;
+	SDL_DisplayMode curdisplaymode;
 	int widget_w=0;
 	int widget_h=0;
 	
@@ -63,12 +64,16 @@ typedef struct sdlslatecanvas_{
 	sdlslatecanvas_(sdlmastercanvas *mastercanvast)
 	{
 		mastercanvas=mastercanvast;
+		slateface=SDL_CreateRGBSurface(0,1,1,32,0,0,0,0);
 	}
 	~sdlslatecanvas_()
 	{
-		
+		SDL_FreeSurface (slateface);
 	}
-	SDL_Rect slatebox;	
+	SDL_Rect slatebox;
+
+	SDL_Surface *slateface;	
+	
 	//must not be freed done by master
 	sdlmastercanvas *mastercanvas=0;
 	void updaterect(int x, int y, int w, int h)

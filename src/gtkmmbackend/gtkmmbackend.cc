@@ -36,7 +36,7 @@ viewport *gtkmmmaster::create_viewport_intern(master *masteridd, int ownidd)
 	return temp;
 }
 
-gtkmmmaster::gtkmmmaster(int argc, char* argv[])
+gtkmmmaster::gtkmmmaster(int argc, char* argv[]) : master()
 {
 	masterapp=Gtk::Application::create(argc, argv, "org.slates.test");
 	createviewport();

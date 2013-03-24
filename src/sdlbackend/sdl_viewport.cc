@@ -20,6 +20,7 @@
 #include "sdl_viewport.h"
 
 #include <iostream>
+#include <SDL2/SDL_image.h>
 
 using namespace std;
 
@@ -57,21 +58,33 @@ void sdl_viewport::create_mscreen_ob()
 	SDL_GetDisplayBounds(get_id(), &to_sdmac(viewport_screen)->dispbounds);
 	to_sdmac(viewport_screen)->window=SDL_CreateWindow("Slates", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 	                 to_sdmac(viewport_screen)->dispbounds.w, to_sdmac(viewport_screen)->dispbounds.h,SDL_WINDOW_MAXIMIZED);//SDL_WINDOW_FULLSCREEN);
-	//to_sdmac(viewport_screen)->window=SDL_CreateWindow("Slates", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-	//                 512, 512,SDL_WINDOW_MAXIMIZED);
-	
-	to_sdmac(viewport_screen)->screenrender=
-		SDL_CreateRenderer(to_sdmac(viewport_screen)->window,-1,SDL_RENDERER_SOFTWARE);//SDL_RENDERER_ACCELERATED);
-	
+	SDL_GetWindowDisplayMode(to_sdmac(viewport_screen)->window,&to_sdmac(viewport_screen)->curdisplaymode);
+
+	to_sdmac(viewport_screen)->globalrender=SDL_CreateRenderer(to_sdmac(viewport_screen)->window,-1,SDL_RENDERER_SOFTWARE);//SDL_RENDERER_ACCELERATED);
+	to_sdmac(viewport_screen)->viewport_tex=SDL_CreateTexture (to_sdmac(viewport_screen)->globalrender,
+	                                                           to_sdmac(viewport_screen)->curdisplaymode.format,
+	                                                           SDL_TEXTUREACCESS_STREAMING,
+	                                                            to_sdmac(viewport_screen)->dispbounds.w,
+																to_sdmac(viewport_screen)->dispbounds.h);
+	to_sdmac(viewport_screen)->viewport=IMG_Load("themes/samplebackground.png");
+	if (to_sdmac(viewport_screen)->viewport!=0)
+		SDL_UpdateTexture(to_sdmac(viewport_screen)->viewport_tex,0,to_sdmac(viewport_screen)->viewport->pixels,to_sdmac(viewport_screen)->viewport->pitch);
+	else
+		cerr << "Couldn't load theme.\n";
 }
 
 long int sdl_viewport::id_slate_mouse(int x, int y)
 {
+	if (x<0 || y<0)
+		return xy_negative;
 	return calcidslate(x/to_sdmac(viewport_screen)->widget_w, y/to_sdmac(viewport_screen)->widget_h);
 }
 slate *sdl_viewport::get_slate_mouse(int x, int y)
 {
-	return getslate_by_id( id_slate_mouse(x, y));
+	long int id= id_slate_mouse(x, y);
+	if (id<0)
+		return 0;
+	return getslate_by_id(id);
 
 }
 

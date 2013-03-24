@@ -223,5 +223,5 @@ void slate::handle_input(void *initializer)
 
 void slate::handle_event(void *event)
 {
-	child_slateo->handle_event(event);
+	child_slateo->handle_event(event,false);
 }

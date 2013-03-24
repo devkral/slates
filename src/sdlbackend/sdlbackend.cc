@@ -36,22 +36,24 @@ using namespace std;
 void sdl_master::inputhandler_function()
 {
 	SDL_Event event;
-	while (handleinput)
+	while (hasinputhandle)
 	{
 		SDL_WaitEvent(&event);
 		do
 		{
 			switch( event.type )
 			{
-				case SDL_QUIT: handleinput=false;
+				case SDL_QUIT: hasinputhandle=false;
 					break;
-				case SDL_MOUSEMOTION: 
-					(((sdl_viewport*)viewport_pool[0])->get_slate_mouse(event.motion.x,event.motion.y))->handle_input(&event);
+				case SDL_MOUSEMOTION:
+					slate* temp=((sdl_viewport*)viewport_pool[0])->get_slate_mouse(event.motion.x,event.motion.y);
+					if (temp!=0)
+						temp->handle_input(&event);
 					break;
 				break;
 			}
 		} while (SDL_PollEvent (&event));
-		SDL_Delay(100);
+		//SDL_Delay(100);
 	}
 }
 
@@ -61,7 +63,7 @@ viewport *sdl_master::create_viewport_intern(master *masteridd, int ownidd)
 	return new sdl_viewport(masteridd,ownidd);
 }
 
-sdl_master::sdl_master(int argc, char* argv[])
+sdl_master::sdl_master(int argc, char* argv[]) : master()
 {
 	for (int count=0; count<SDL_GetNumVideoDisplays(); count++) //SDL_GetNumVideoDisplays
 		createviewport();
@@ -78,18 +80,17 @@ sdl_master::~sdl_master()
 
 int sdl_master::handle_masterevent(void *event)
 {
-	bool ishandled=MASTER_UNHANDLED;
+	int ishandled=MASTER_UNHANDLED;
 
 	//do
 	//{
 		switch (((SDL_Event*)event)->type)
 		{
-			case SDL_QUIT: handleinput=false;
+			case SDL_QUIT: hasinputhandle=false;
 				ishandled=MASTER_QUIT;
 				break;
 
 			case SDL_KEYDOWN:
-			case SDL_KEYUP:
 				if (((SDL_Event*)event)->key.keysym.sym==SDLK_a )
 				{
 					viewport_pool[0]->addslice();
@@ -97,18 +98,18 @@ int sdl_master::handle_masterevent(void *event)
 				}
 				if (((SDL_Event*)event)->key.keysym.sym==SDLK_b )
 				{
-					viewport_pool[0]->removeslice();
+					if (viewport_pool[0]->removeslice()==SL_destroy_failed)
+						cerr << "Destroy failed\n";
 					ishandled=MASTER_HANDLED;
 				}
 				if (((SDL_Event*)event)->key.keysym.sym==SDLK_ESCAPE )
 				{
-					handleinput=false;
+					hasinputhandle=false;
 					ishandled=MASTER_QUIT;
 				}
 				break;
 		}
-	//} while (SDL_PollEvent ((SDL_Event*)event));
-	return false;
+	return ishandled;
 }
 
 //#define NONCATCHSDL 1

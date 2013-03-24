@@ -146,7 +146,7 @@ void viewport::addslice()
 
 int viewport::removeslice()
 {
-	if (last_slice_filled>0 || last_slice_filled-(2*slices+1) <= amount_filled_slates)
+	if (last_slice_filled>0 || nto_last_slice_filled >= (slices-1)+(slices-1)) //just one free slot
 		return SL_destroy_failed;
 	
 	long int count=0;

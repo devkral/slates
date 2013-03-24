@@ -39,7 +39,10 @@ bool checkpassword(char *password)
 
 
 
-
+master::master()
+{
+	hasinputhandle=false;
+}
 
 
 master::~master()
@@ -99,15 +102,15 @@ void master::unlock_slates_intern()
 
 void master::start_handling_input()
 {
-	handleinput=true;
+	hasinputhandle=true;
 	inputthread=thread(kickstarter_inputthread,(master *)this);
 }
 
 void master::stop_handling_input()
 {
-	if (handleinput)
+	if (hasinputhandle)
 	{
-		handleinput=false;
+		hasinputhandle=false;
 		inputthread.join();
 	}
 }

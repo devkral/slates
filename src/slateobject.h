@@ -32,6 +32,7 @@ class slate;
 #include <thread>
 #include <deque>
 #include <memory>
+#include <atomic>
 using namespace std;
 
 
@@ -53,8 +54,10 @@ public:
 	slate *getfparent();
 	//
 	//void input_handler(void *initializer);
-	virtual void handle_event(void *initializer); //needn't to be implemented if there is an other solution
+	virtual void handle_event(void *initializer, bool called_by_input); //needn't to be implemented if there is an other solution
+	//be carefull: if not called by input don't send something to an alleventhandler
 	virtual void handle_input(void *initializer); //needn't to be implemented if there is an other solution
+	
 	
 	//should be ignored in emptyobject
 	void move(int x, int y); //swaps object
@@ -67,22 +70,25 @@ public:
 	virtual char TYPE()=0;
 	void close();
 
+	virtual void hide();
 	virtual void draw();
 	virtual void draw_function(); //for kickstarter optional
 	//either draw or draw_function must be defined
-	virtual void hide();
 	/** implementation idea:
 	 * draw() start drawthread (especially window) if isdrawn=false 
 			elsewise update static elements
 
-	 * hide() stop threads if isdrawn=true elsewise do nothing, join drawthread 
+	 * hide() stop threads if isdrawn=true elsewise do nothing 
 		 also possible to override
 	 */
 	void cleanup();
 	
 protected:
-	bool isdrawn=false;
-	bool hasinputhandle=false;
+	atomic<bool> isdrawn;
+	atomic<bool> hasinputhandle;
+
+	//set to false after end
+	bool drawthreadactive=false;
 	void *screen_object=0; //reason why here: must grow over slates
 	//not thread safe
 	shared_ptr<deque< deque<slate*> > > connectedslates; //outer vector y inner x

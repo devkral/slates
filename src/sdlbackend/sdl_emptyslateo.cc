@@ -36,6 +36,7 @@ sdl_emptyslateo::sdl_emptyslateo(slate *parent_slate, void *screenob) : emptysla
 
 sdl_emptyslateo::~sdl_emptyslateo()
 {
+	
 }
 
 void sdl_emptyslateo::draw()
@@ -52,14 +53,18 @@ void sdl_emptyslateo::draw()
 	widget.inner_object.y=to_sdslc(screen_object)->slatebox.y+2;
 	widget.inner_object.w=to_sdslc(screen_object)->slatebox.w-2;
 	widget.inner_object.h=to_sdslc(screen_object)->slatebox.h-2;
-
+	if(widget.emptysur!=0)
+		SDL_FreeSurface (widget.emptysur);
 	widget.emptysur=SDL_CreateRGBSurface (0,widget.inner_object.w,widget.inner_object.h,32,0,0,0,0);
+	
 	assert(widget.emptysur!=0);
 	
 	Uint32 white=SDL_MapRGBA (widget.emptysur->format, 255,255,255,255);
 
 	SDL_FillRect (widget.emptysur, &widget.inner_object, white);
-	widget.emptytex=SDL_CreateTextureFromSurface (to_sdslc(screen_object)->mastercanvas->screenrender,widget.emptysur);
+	if(widget.emptytex!=0)
+		SDL_DestroyTexture (widget.emptytex);
+	widget.emptytex=SDL_CreateTextureFromSurface (to_sdslc(screen_object)->mastercanvas->globalrender,widget.emptysur);
 	//SDL_RenderPresent(to_sdslc (screen_object)->mastercanvas->screenrender);
 	
 	 
@@ -91,34 +96,38 @@ void sdl_emptyslateo::draw_function ()
 	{
 		//SDL_RenderCopy(to_sdslc (screen_object)->mastercanvas->screenrender, widget.emptytex, &widget.inner_object, &widget.inner_object);
 
-		SDL_RenderCopy(to_sdslc (screen_object)->mastercanvas->screenrender, widget.emptytex, NULL, &widget.inner_object);
+		SDL_RenderCopy(to_sdslc (screen_object)->mastercanvas->globalrender, widget.emptytex, NULL, &widget.inner_object);
 		if (to_sdslc (screen_object)->mastercanvas->is_rendering==false)
 		{
 			to_sdslc (screen_object)->mastercanvas->is_rendering=true;
-			SDL_RenderPresent(to_sdslc (screen_object)->mastercanvas->screenrender);
+			SDL_RenderPresent(to_sdslc (screen_object)->mastercanvas->globalrender);
+			
+			SDL_RenderPresent(to_sdslc (screen_object)->mastercanvas->globalrender);
 			to_sdslc (screen_object)->mastercanvas->is_rendering=false;
 		}
 		SDL_Delay(update_interval);
 	}
+	drawthreadactive=false;
 }
 
-void sdl_emptyslateo::handle_event (void *event)
+void sdl_emptyslateo::handle_event (void *event, bool called_by_input)
 {
 	switch( ((SDL_Event*)event)->type )
 	{
 		case SDL_QUIT: hasinputhandle=false;
 			getfparent()->getmaster()->send_event_to_all(event); //message master
 			break;
-		case SDL_KEYUP:
 		case SDL_KEYDOWN:
 			//the only modifier keys with which shortcuts can be made
-			if (((SDL_Event*)event)->key.keysym.sym==SDLK_ESCAPE ||
-			    ((SDL_Event*)event)->key.keysym.mod&KMOD_CTRL!=0 ||
-			    ((SDL_Event*)event)->key.keysym.mod&KMOD_GUI!=0)
-			{	if (getfparent()->getmaster()->send_event_to_all(event)==MASTER_QUIT)
+			if (called_by_input && (((SDL_Event*)event)->key.keysym.sym==SDLK_ESCAPE ||
+			    ((SDL_Event*)event)->key.keysym.mod&KMOD_CTRL ||
+			    ((SDL_Event*)event)->key.keysym.mod&KMOD_GUI)) 
 				{
-					hasinputhandle=false;
-				}
+					int status=getfparent()->getmaster()->send_event_to_all(event);
+					if (status==MASTER_QUIT)
+					{
+						hasinputhandle=false;
+					}
 			}
 			break;
 		case SDL_MOUSEMOTION: 
@@ -126,10 +135,14 @@ void sdl_emptyslateo::handle_event (void *event)
 			{
 				if (((SDL_Event*)event)->motion.x<to_sdslc (screen_object)->slatebox.x ||
 					((SDL_Event*)event)->motion.y<to_sdslc (screen_object)->slatebox.y)
-						hasinputhandle=false;
+				{	
+					hasinputhandle=false;
+				}
 				if (((SDL_Event*)event)->motion.x>to_sdslc (screen_object)->slatebox.x+to_sdslc (screen_object)->slatebox.w ||
-					((SDL_Event*)event)->motion.y<to_sdslc (screen_object)->slatebox.y+to_sdslc (screen_object)->slatebox.h)
-						hasinputhandle=false;
+					((SDL_Event*)event)->motion.y>to_sdslc (screen_object)->slatebox.y+to_sdslc (screen_object)->slatebox.h)
+				{
+					hasinputhandle=false;
+				}
 			}
 			break;
 			
@@ -139,13 +152,14 @@ void sdl_emptyslateo::handle_event (void *event)
 
 void sdl_emptyslateo::handle_input (void *initializer)
 {
+	hasinputhandle=true;
 	event=*((SDL_Event*)initializer);
 	do
 	{
 		SDL_WaitEvent(&event);
 		do
 		{
-			handle_event(&event);
+			handle_event(&event,true);
 		} while (SDL_PollEvent (&event));
 		SDL_Delay(update_interval/2);
 	}while (hasinputhandle);

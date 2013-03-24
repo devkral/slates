@@ -29,6 +29,8 @@ slateobject::slateobject(slate *parent_slate, void *screenob)
 	(*connectedslates).push_back( deque<slate*>() );
 	(*connectedslates)[0].push_back(parent_slate);
 	screen_object=screenob;
+	isdrawn=false;
+	drawthreadactive=false;
 }
 
 slateobject::~slateobject()
@@ -74,7 +76,7 @@ shared_ptr<deque< deque<slate*> > > slateobject::get_connectedslates()
 
 void slateobject::move(int x, int y)
 {
-	(*connectedslates)[0][0]->swap_childobject((*connectedslates)[0][0]->getviewport()->getslate (x,y));
+	getfparent()->swap_childobject((*connectedslates)[0][0]->getviewport()->getslate (x,y));
 }
 void slateobject::resizeleftuppercorner(int x_delta, int y_delta)
 {
@@ -94,29 +96,18 @@ void slateobject::close()
 }
 void slateobject::hide()
 {
-	if (isdrawn==true)
-	{
-		isdrawn=false;
-		
-		if (hasinputhandle==true)
-		{
-			hasinputhandle=false;
-			//window_inputthread.join();
-		}
-		drawthread.join();
-	}
-
-	if (hasinputhandle==true)
-	{
-		throw ((char *)"Inputhandler on the loose");
-	}
+	isdrawn=false;
+	hasinputhandle=false;
 }
+
+
 
 void slateobject::draw()
 {
 	if (isdrawn==false)
 	{
 		isdrawn=true;
+		drawthreadactive=true;
 		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
 	}
 	{
@@ -131,6 +122,11 @@ void slateobject::draw_function()
 void slateobject::cleanup()
 {
 	hide();
+	if (drawthreadactive==false)
+	{
+		drawthread.join();
+	}
+	
 	cleanup_handler();
 }
 
@@ -144,12 +140,8 @@ viewport *slateobject::getviewport()
 	return getfparent()->getviewport();
 }
 
-//void slateobject::input_handler(void *initializer)
-//{
-	//window_inputthread=thread(kickstarter_windowinputthread,this,initializer);
-//}
 
-void slateobject::handle_event(void *event)
+void slateobject::handle_event(void *event, bool called_by_input)
 {
 
 }
@@ -158,11 +150,6 @@ void slateobject::handle_input(void *initializer)
 {
 	
 }
-
-/**void kickstarter_windowinputthread(slateobject *contextkeep, void *initializer)
-{
-	contextkeep->input_handler (initializer);
-}*/
 
 void kickstarter_drawthread(slateobject *parent)
 {

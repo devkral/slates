@@ -57,7 +57,7 @@ public:
 	void cleanup_handler ();
 	void draw_function ();
 	void handle_input(void *initializer);
-	void handle_event(void *event);
+	void handle_event(void *event, bool called_by_input);
 protected:
 	
 	sdlempty widget;

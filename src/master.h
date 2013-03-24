@@ -21,6 +21,7 @@
 #define _MASTER_H_
 #include "viewport.h"
 class viewport;
+class slateobject;
 //#include "slate.h"
 //class slate;
 //#include "slateobject.h"
@@ -30,6 +31,7 @@ class viewport;
 
 #include <vector>
 #include <thread>
+#include <atomic>
 
 using namespace std;
 
@@ -38,6 +40,7 @@ using namespace std;
 class master
 {
 public:
+	master();
 	virtual ~master();
 	void createviewport();
 	virtual viewport *create_viewport_intern(master *masteridd, int ownidd)=0;
@@ -56,7 +59,7 @@ public:
 protected:
 	vector<viewport*> viewport_pool;
 	thread inputthread;
-	bool handleinput=false;
+	atomic<bool> hasinputhandle;
 	
 private:
 	void unlock_slates_intern();

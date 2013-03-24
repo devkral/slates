@@ -22,6 +22,8 @@
 #define OP_success 0
 #define SL_destroy_failed -2
 #define SL_not_empty -3 //used in slate
+#define xy_negative -4
+#define xy_out_of_range -4
 
 #define MASTER_HANDLED 1
 #define MASTER_UNHANDLED 2
