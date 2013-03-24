@@ -69,9 +69,10 @@ typedef struct sdlslatecanvas_{
 	~sdlslatecanvas_()
 	{
 		SDL_FreeSurface (slateface);
+		SDL_DestroyRenderer (slaterender);
 	}
 	SDL_Rect slatebox;
-
+	SDL_Renderer *slaterender;	
 	SDL_Surface *slateface;	
 	
 	//must not be freed done by master

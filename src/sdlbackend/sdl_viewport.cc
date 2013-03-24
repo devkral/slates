@@ -60,7 +60,7 @@ void sdl_viewport::create_mscreen_ob()
 	                 to_sdmac(viewport_screen)->dispbounds.w, to_sdmac(viewport_screen)->dispbounds.h,SDL_WINDOW_FULLSCREEN);
 	SDL_GetWindowDisplayMode(to_sdmac(viewport_screen)->window,&to_sdmac(viewport_screen)->curdisplaymode);
 
-	to_sdmac(viewport_screen)->globalrender=SDL_CreateRenderer(to_sdmac(viewport_screen)->window,-1,SDL_RENDERER_SOFTWARE);//SDL_RENDERER_ACCELERATED);
+	to_sdmac(viewport_screen)->globalrender=SDL_CreateRenderer(to_sdmac(viewport_screen)->window,-1,SDL_RENDERER_SOFTWARE);//|SDL_RENDERER_PRESENTVSYNC);//SDL_RENDERER_ACCELERATED);
 	to_sdmac(viewport_screen)->viewport_tex=SDL_CreateTexture (to_sdmac(viewport_screen)->globalrender,
 	                                                           to_sdmac(viewport_screen)->curdisplaymode.format,
 	                                                           SDL_TEXTUREACCESS_STREAMING,

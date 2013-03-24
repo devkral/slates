@@ -30,6 +30,7 @@ using namespace std;
 sdl_emptyslateo::sdl_emptyslateo(slate *parent_slate, void *screenob) : emptyslateo(parent_slate,screenob)
 {
 	update_interval=100;
+	to_sdslc(screen_object)->slaterender=SDL_CreateRenderer (to_sdslc(screen_object)->mastercanvas->window,-1,SDL_RENDERER_TARGETTEXTURE);
 	//SDL_RendererPresent
 	//
 }
@@ -60,14 +61,15 @@ void sdl_emptyslateo::draw()
 	assert(widget.emptysur!=0);
 	
 	Uint32 white=SDL_MapRGBA (widget.emptysur->format, 255,255,255,255);
-
+	Uint32 black=SDL_MapRGBA (widget.emptysur->format, 0,0,0,255);
+	//SDL_FillRect (widget.emptysur, &widget.inner_object, black);
 	SDL_FillRect (widget.emptysur, &widget.inner_object, white);
 	if(widget.emptytex!=0)
 		SDL_DestroyTexture (widget.emptytex);
 	widget.emptytex=SDL_CreateTextureFromSurface (to_sdslc(screen_object)->mastercanvas->globalrender,widget.emptysur);
+	//SDL_SetRenderTarget(to_sdslc(screen_object)->slaterender,to_sdslc (screen_object)->mastercanvas->viewport_tex);
 	//SDL_RenderPresent(to_sdslc (screen_object)->mastercanvas->screenrender);
 	
-	 
 	if (isdrawn==false)
 	{
 		isdrawn=true;
@@ -88,26 +90,6 @@ void sdl_emptyslateo::draw()
 void sdl_emptyslateo::cleanup_handler ()
 {
 	delete to_sdslc (screen_object);
-}
-
-void sdl_emptyslateo::draw_function ()
-{
-	while(isdrawn==true)
-	{
-		//SDL_RenderCopy(to_sdslc (screen_object)->mastercanvas->screenrender, widget.emptytex, &widget.inner_object, &widget.inner_object);
-
-		SDL_RenderCopy(to_sdslc (screen_object)->mastercanvas->globalrender, widget.emptytex, NULL, &widget.inner_object);
-		if (to_sdslc (screen_object)->mastercanvas->is_rendering==false)
-		{
-			to_sdslc (screen_object)->mastercanvas->is_rendering=true;
-			SDL_RenderPresent(to_sdslc (screen_object)->mastercanvas->globalrender);
-			
-			SDL_RenderPresent(to_sdslc (screen_object)->mastercanvas->globalrender);
-			to_sdslc (screen_object)->mastercanvas->is_rendering=false;
-		}
-		SDL_Delay(update_interval);
-	}
-	drawthreadactive=false;
 }
 
 void sdl_emptyslateo::handle_event (void *event, bool called_by_input)
@@ -162,8 +144,28 @@ void sdl_emptyslateo::handle_input (void *initializer)
 			handle_event(&event,true);
 		} while (SDL_PollEvent (&event));
 		SDL_Delay(update_interval/2);
-	}while (hasinputhandle);
-		
-
-	
+	}while (hasinputhandle);	
 }
+
+
+void sdl_emptyslateo::draw_function ()
+{
+	while(isdrawn==true)
+	{
+
+		SDL_RenderCopy(to_sdslc (screen_object)->mastercanvas->globalrender, widget.emptytex, &widget.inner_object, &widget.inner_object);
+
+		//SDL_RenderCopy(to_sdslc (screen_object)->slaterender, widget.emptytex, 0, &widget.inner_object);
+		if (to_sdslc (screen_object)->mastercanvas->is_rendering==false)
+		{
+			to_sdslc (screen_object)->mastercanvas->is_rendering=true;
+			SDL_RenderCopy(to_sdslc (screen_object)->mastercanvas->globalrender,
+			               to_sdslc (screen_object)->mastercanvas->viewport_tex,0,0);			
+			SDL_RenderPresent(to_sdslc (screen_object)->mastercanvas->globalrender);
+			to_sdslc (screen_object)->mastercanvas->is_rendering=false;
+		}
+		SDL_Delay(update_interval);
+	}
+	drawthreadactive=false;
+}
+
