@@ -63,9 +63,9 @@ protected:
 	sdlempty widget;
 	atomic<int> update_interval;
 	SDL_Event event;
+	bool specialcondition=false;
 	
 private:
-	
 };
 
 #endif // _EMPTYSLATEO_H_

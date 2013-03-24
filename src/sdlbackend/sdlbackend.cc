@@ -44,7 +44,7 @@ void sdl_master::inputhandler_function()
 			switch( event.type )
 			{
 				case SDL_QUIT: handleinput=false;
-					break; //SDL_SCANCODE_LALT&
+					break;
 				case SDL_MOUSEMOTION: 
 					(((sdl_viewport*)viewport_pool[0])->get_slate_mouse(event.motion.x,event.motion.y))->handle_input(&event);
 					break;
@@ -79,27 +79,35 @@ sdl_master::~sdl_master()
 int sdl_master::handle_masterevent(void *event)
 {
 	bool ishandled=MASTER_UNHANDLED;
-	switch (((SDL_Event*)event)->type)
-	{
-		case SDL_KEYDOWN:
-			if (((SDL_Event*)event)->key.keysym.sym==SDLK_a )
-			{
-				viewport_pool[0]->addslice();
-				ishandled=MASTER_HANDLED;
-			}
-			if (((SDL_Event*)event)->key.keysym.sym==SDLK_b )
-			{
-				viewport_pool[0]->removeslice();
-				ishandled=MASTER_HANDLED;
-			}
-			if (((SDL_Event*)event)->key.keysym.sym==SDLK_ESCAPE )
-			{
-				viewport_pool[0]->addslice();
-				handleinput=false;
+
+	//do
+	//{
+		switch (((SDL_Event*)event)->type)
+		{
+			case SDL_QUIT: handleinput=false;
 				ishandled=MASTER_QUIT;
-			}
-			break;
-	}
+				break;
+
+			case SDL_KEYDOWN:
+				/**if (((SDL_Event*)event)->key.keysym.sym==SDLK_a )
+				{
+					viewport_pool[0]->addslice();
+					ishandled=MASTER_HANDLED;
+				}
+				if (((SDL_Event*)event)->key.keysym.sym==SDLK_b )
+				{
+					viewport_pool[0]->removeslice();
+					ishandled=MASTER_HANDLED;
+				}*/
+				if (((SDL_Event*)event)->key.keysym.sym==SDLK_ESCAPE )
+				{
+					viewport_pool[0]->addslice();
+					handleinput=false;
+					ishandled=MASTER_QUIT;
+				}
+					break;
+		}
+	//} while (SDL_PollEvent ((SDL_Event*)event));
 	return false;
 }
 

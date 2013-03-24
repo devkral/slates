@@ -107,17 +107,30 @@ void sdl_emptyslateo::handle_event (void *event)
 	switch( ((SDL_Event*)event)->type )
 	{
 		case SDL_QUIT: hasinputhandle=false;
+			getfparent()->getmaster()->send_event_to_all(event); //message master
 			break;
 		case SDL_KEYDOWN:
+			//the only modifier keys with which shortcuts can be made
 			if (((SDL_Event*)event)->key.keysym.sym==SDLK_ESCAPE ||
-			    ((SDL_Event*)event)->key.keysym.mod==KMOD_CTRL ||
-			     ((SDL_Event*)event)->key.keysym.mod==KMOD_CTRL ||
-			    ((SDL_Event*)event)->key.keysym.mod==KMOD_LGUI ||
-			    ((SDL_Event*)event)->key.keysym.mod==KMOD_RGUI)
+			    ((SDL_Event*)event)->key.keysym.mod|KMOD_CTRL!=0 ||
+			    ((SDL_Event*)event)->key.keysym.mod|KMOD_GUI!=0)
 			{
 				if (getfparent()->getmaster()->send_event_to_all(event)==MASTER_QUIT)
 					hasinputhandle=false;
 			}
+			break;
+		case SDL_MOUSEMOTION: 
+			if (specialcondition==false)
+			{
+				if (((SDL_Event*)event)->motion.x<to_sdslc (screen_object)->slatebox.x ||
+					((SDL_Event*)event)->motion.y<to_sdslc (screen_object)->slatebox.y)
+						hasinputhandle=false;
+				if (((SDL_Event*)event)->motion.x>to_sdslc (screen_object)->slatebox.x+to_sdslc (screen_object)->slatebox.w ||
+					((SDL_Event*)event)->motion.y<to_sdslc (screen_object)->slatebox.y+to_sdslc (screen_object)->slatebox.h)
+						hasinputhandle=false;
+			}
+
+
 			break;
 	}
 
