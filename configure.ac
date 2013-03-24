@@ -34,7 +34,7 @@ LT_INIT
 # here: bash except some additions
 
 
-buildtestbackend="yes"
+buildtestbackend="no"
 
 if test "x$buildtestbackend" = "xyes" ; then
 	AM_CONDITIONAL(IS_COMPILED_WITH_TESTBACKEND, [true])

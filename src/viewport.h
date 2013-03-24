@@ -23,8 +23,8 @@
 class master;
 #include "slate.h"
 class slate;
-#include "slateobject.h"
-class slateobject;
+//#include "slateobject.h"
+//class slateobject;
 
 #include "constdef.h"
 

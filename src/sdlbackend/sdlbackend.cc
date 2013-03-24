@@ -89,7 +89,8 @@ int sdl_master::handle_masterevent(void *event)
 				break;
 
 			case SDL_KEYDOWN:
-				/**if (((SDL_Event*)event)->key.keysym.sym==SDLK_a )
+			case SDL_KEYUP:
+				if (((SDL_Event*)event)->key.keysym.sym==SDLK_a )
 				{
 					viewport_pool[0]->addslice();
 					ishandled=MASTER_HANDLED;
@@ -98,20 +99,19 @@ int sdl_master::handle_masterevent(void *event)
 				{
 					viewport_pool[0]->removeslice();
 					ishandled=MASTER_HANDLED;
-				}*/
+				}
 				if (((SDL_Event*)event)->key.keysym.sym==SDLK_ESCAPE )
 				{
-					viewport_pool[0]->addslice();
 					handleinput=false;
 					ishandled=MASTER_QUIT;
 				}
-					break;
+				break;
 		}
 	//} while (SDL_PollEvent ((SDL_Event*)event));
 	return false;
 }
 
-#define NONCATCHSDL 1
+//#define NONCATCHSDL 1
 
 int sdlmain(int argc, char *argv[])
 {

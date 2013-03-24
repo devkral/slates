@@ -94,8 +94,6 @@ void slateobject::close()
 }
 void slateobject::hide()
 {
-
-
 	if (isdrawn==true)
 	{
 		isdrawn=false;
@@ -109,10 +107,11 @@ void slateobject::hide()
 	}
 
 	if (hasinputhandle==true)
-		{
-			throw ((char *)"Inputhandler on the loose");
-		}
+	{
+		throw ((char *)"Inputhandler on the loose");
+	}
 }
+
 void slateobject::draw()
 {
 	if (isdrawn==false)
