@@ -51,6 +51,10 @@ void testmaster::inputhandler_function()
 
 
 }
+int testmaster::handle_masterevent(void *event)
+{
+	return MASTER_UNHANDLED;
+}
 
 
 

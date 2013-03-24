@@ -28,6 +28,10 @@ class sdl_screenobject;
 
 #include "constdef.h"
 
+#include <thread>
+#include <atomic>
+
+
 
 
 using namespace std;
@@ -40,6 +44,7 @@ public:
 	~sdl_viewport();
 	slate *create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp);
 	long int id_slate_mouse(int x, int y);
+	slate *get_slate_mouse(int x, int y);
 	
 protected:
 	void update_slice_change();
@@ -48,7 +53,11 @@ protected:
 private:
 	void destroy_mscreen_ob();
 	void create_mscreen_ob ();
+	
+	
 };
 
+
+void kickstarter_renderthread(sdl_viewport *parent_object);
 #endif // _VIEWPORT_H_
 

@@ -111,6 +111,17 @@ void master::stop_handling_input()
 		inputthread.join();
 	}
 }
+int master::send_event_to_all(void *event)
+{
+	int status=handle_masterevent(event);
+	if (status==MASTER_UNHANDLED)
+	{
+		for (long int count=0; count<viewport_idcount; count++)
+			viewport_pool[count]->handle_event(event);
+	}
+	return status;
+}
+
 
 void kickstarter_inputthread(master *parent_object)
 {

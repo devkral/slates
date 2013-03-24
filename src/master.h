@@ -49,6 +49,9 @@ public:
 	void start_handling_input();
 	virtual void inputhandler_function()=0;
 	void stop_handling_input();
+	int send_event_to_all(void *event);
+	virtual int handle_masterevent(void *event)=0; //returns true if handled by master return false if handled by slates
+
 
 protected:
 	vector<viewport*> viewport_pool;

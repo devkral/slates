@@ -66,7 +66,7 @@ slate *viewport::getslate(int x, int y)
 		return 0;
 	}
 	int validate=calcidslate(x, y);
-	if (validate>max_avail_slates-1)
+	if (validate>=max_avail_slates)
 	{
 		cerr << "Error: x or y greater than available slates, x:" << x << " y:" << y << endl;
 		return 0;
@@ -75,23 +75,34 @@ slate *viewport::getslate(int x, int y)
 
 }
 
+slate *viewport::getslate_by_id(long int id)
+{
+	if (id<0 || id>=max_avail_slates)
+	{
+		cerr << "Error: id out of range " << id  << endl;
+		return 0;
+	}
+	return slate_pool[id];
+
+}
+
 
 //validate before calling
+//update slices, caches, id_nto_last_beg, id_last_beg,
 void viewport::createslate()
 {
 	int temp_x, temp_y;
 	
 	if (slate_idcount<slices*slices-slices)
 	{
-		temp_y=slices;
-		temp_x=cache_last_diag_point_id;
+		temp_y=slices-1;
+		temp_x=slate_idcount-id_last_beg;
 	}
 	else
 	{
-		temp_y=cache_last_diag_point_id;
-		temp_x=slices;
+		temp_y=(cache_last_diag_point_id+(slices-1))-slate_idcount; //sure???
+		temp_x=slices-1;
 	}
-
 	slate_pool.push_back(create_slate_intern(this,slate_idcount, temp_x, temp_y));
 	slate_pool[slate_idcount]->init_slate();
 	slate_idcount++;
@@ -120,9 +131,13 @@ void viewport::addslice()
 {
 	slices++;
 	max_avail_slates=slices*slices;
+	cache_nto_last_diag_point_id=cache_last_diag_point_id;
 	cache_last_diag_point_id=slices*slices-slices;
+	id_nto_last_beg=id_last_beg;
+	id_last_beg=cache_last_diag_point_id-(slices-1);
 	nto_last_slice_filled=last_slice_filled;
 	last_slice_filled=0;
+	
 	update_slice_change();
 	long int count=0;
 	for (count=0;count<slices+slices-1;count++) //=(slices+1)+(slices+1)-1
@@ -139,7 +154,10 @@ int viewport::removeslice()
 		destroyslate();
 	slices--;
 	max_avail_slates=slices*slices;
-	cache_last_diag_point_id=slices*slices-slices;
+	cache_last_diag_point_id=cache_nto_last_diag_point_id;
+	cache_nto_last_diag_point_id=(slices-1)*(slices-1)-(slices-1);
+	id_last_beg=id_nto_last_beg;
+	id_nto_last_beg=cache_nto_last_diag_point_id-(slices-2);
 	last_slice_filled=nto_last_slice_filled;
 	nto_last_slice_filled=count_filled_slots(slices-1);
 
@@ -209,4 +227,10 @@ int viewport::get_id()
 int viewport::get_slices()
 {
 	return slices;
+}
+
+void viewport::handle_event(void *event)
+{
+	for (long int count=0;count<max_avail_slates;count++)
+		slate_pool[count]->handle_event(event);
 }

@@ -33,8 +33,6 @@ class sdl_viewport;
 
 #include "SDL.h"
 #include <vector>
-#include <thread>
-#include <atomic>
 
 
 using namespace std;
@@ -46,16 +44,13 @@ class sdl_master : public master
 public:
 	sdl_master(int argc, char* argv[]);
 	~sdl_master();
-	void inputhandler_function(); 
-	void renderthread_function(); 
+	void inputhandler_function();
+	int handle_masterevent(void *event);
 protected:
 	
 private:
-	thread renderthread;
-	atomic<bool> render;
 	viewport *create_viewport_intern(master *masteridd, int ownidd);
 };
-void kickstarter_renderthread(sdl_master *parent_object);
 
 int sdlmain(int argc, char *argv[]);
  

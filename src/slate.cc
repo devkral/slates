@@ -207,3 +207,21 @@ void slate::hide()
 	child_slateo->hide();
 }
 
+int slate::get_position_x()
+{
+	return position_x;
+}
+
+int slate::get_position_y()
+{
+	return position_y;
+}
+void slate::handle_input(void *initializer)
+{
+	child_slateo->handle_input(initializer);
+}
+
+void slate::handle_event(void *event)
+{
+	child_slateo->handle_event(event);
+}

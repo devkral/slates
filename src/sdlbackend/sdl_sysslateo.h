@@ -29,6 +29,19 @@ class sdl_screenobject;
 
 #include "constdef.h"
 
+using namespace std;
+
+typedef struct sdlsysprivat_{
+	~sdlsysprivat_()
+	{
+		SDL_FreeSurface(syssur);
+		SDL_DestroyTexture (systex);
+	}
+	SDL_Surface *syssur=0;
+	SDL_Texture *systex=0;
+	SDL_Rect inner_object;
+	
+}sdlsys;
 
 class sdl_sysslateo: public sysslateo 
 {
@@ -41,7 +54,9 @@ public:
 protected:
 
 private:
-
+	sdlsys widget;
+	atomic<int> update_interval;
+	SDL_Event event;
 };
 
 #endif // _SYSSLATEO_H_

@@ -94,11 +94,24 @@ void slateobject::close()
 }
 void slateobject::hide()
 {
+
+
 	if (isdrawn==true)
 	{
 		isdrawn=false;
+		
+		if (hasinputhandle==true)
+		{
+			hasinputhandle=false;
+			//window_inputthread.join();
+		}
 		drawthread.join();
 	}
+
+	if (hasinputhandle==true)
+		{
+			throw ((char *)"Inputhandler on the loose");
+		}
 }
 void slateobject::draw()
 {
@@ -110,6 +123,10 @@ void slateobject::draw()
 	{
 		//override for updatefunction
 	}
+}
+void slateobject::draw_function()
+{
+	//do nothing
 }
 
 void slateobject::cleanup()
@@ -128,6 +145,25 @@ viewport *slateobject::getviewport()
 	return getfparent()->getviewport();
 }
 
+//void slateobject::input_handler(void *initializer)
+//{
+	//window_inputthread=thread(kickstarter_windowinputthread,this,initializer);
+//}
+
+void slateobject::handle_event(void *event)
+{
+
+}
+
+void slateobject::handle_input(void *initializer)
+{
+	
+}
+
+/**void kickstarter_windowinputthread(slateobject *contextkeep, void *initializer)
+{
+	contextkeep->input_handler (initializer);
+}*/
 
 void kickstarter_drawthread(slateobject *parent)
 {

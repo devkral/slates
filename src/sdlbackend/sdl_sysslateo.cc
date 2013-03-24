@@ -25,7 +25,7 @@ using namespace std;
 
 sdl_sysslateo::sdl_sysslateo(slate *parent_slate, void *screenob) : sysslateo(parent_slate,screenob)
 {
-	cerr << "Create sdl_sysslateo\n";
+	update_interval=100;
 }
 
 sdl_sysslateo::~sdl_sysslateo()

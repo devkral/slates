@@ -45,22 +45,15 @@ void sdl_master::inputhandler_function()
 			{
 				case SDL_QUIT: handleinput=false;
 					break; //SDL_SCANCODE_LALT&
-				case SDL_KEYDOWN:
-					if (event.key.keysym.sym==SDLK_a )
-						viewport_pool[0]->addslice();
-					if(event.key.keysym.sym==SDLK_b )
-						viewport_pool[0]->removeslice();
+				case SDL_MOUSEMOTION: 
+					(((sdl_viewport*)viewport_pool[0])->get_slate_mouse(event.motion.x,event.motion.y))->handle_input(&event);
 					break;
-				case SDL_KEYUP:
-						//SDL_WarpMouseInWindow(to_sdmac (viewport_pool[0]->get_viewport_screen ())->window,10,10);
-					break;
+				break;
 			}
 		} while (SDL_PollEvent (&event));
 		SDL_Delay(100);
 	}
-	render=false;
 }
-
 
 
 viewport *sdl_master::create_viewport_intern(master *masteridd, int ownidd)
@@ -73,44 +66,58 @@ sdl_master::sdl_master(int argc, char* argv[])
 	for (int count=0; count<SDL_GetNumVideoDisplays(); count++) //SDL_GetNumVideoDisplays
 		createviewport();
 	start_handling_input();
-	render=true;
-	renderthread=thread(kickstarter_renderthread,this);
 	inputthread.join();
 }
 
 sdl_master::~sdl_master()
 {
 	cout << "Destroy sdlmaster\n";
-	render=false;
 	cleanup();
-	renderthread.join();
 	SDL_Quit();
 }
-void kickstarter_renderthread(sdl_master *parent_object)
-{
-	parent_object->renderthread_function();
 
-}
-
-void sdl_master::renderthread_function()
+int sdl_master::handle_masterevent(void *event)
 {
-	while (render==true)
+	bool ishandled=MASTER_UNHANDLED;
+	switch (((SDL_Event*)event)->type)
 	{
-		
-		SDL_Delay(10);
+		case SDL_KEYDOWN:
+			if (((SDL_Event*)event)->key.keysym.sym==SDLK_a )
+			{
+				viewport_pool[0]->addslice();
+				ishandled=MASTER_HANDLED;
+			}
+			if (((SDL_Event*)event)->key.keysym.sym==SDLK_b )
+			{
+				viewport_pool[0]->removeslice();
+				ishandled=MASTER_HANDLED;
+			}
+			if (((SDL_Event*)event)->key.keysym.sym==SDLK_ESCAPE )
+			{
+				viewport_pool[0]->addslice();
+				handleinput=false;
+				ishandled=MASTER_QUIT;
+			}
+			break;
 	}
+	return false;
 }
+
+#define NONCATCHSDL 1
 
 int sdlmain(int argc, char *argv[])
 {
+#ifndef NONCATCHSDL
 	try
 	{
+#endif
 		if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
 		{
 		    throw ("Error: could not initialize SDL");
 		}
 		
 		sdl_master(argc,argv);
+#ifndef NONCATCHSDL
 	}
 	catch (const std::system_error& error)
 	{
@@ -126,5 +133,6 @@ int sdlmain(int argc, char *argv[])
 		cerr << "An Error: happened\n";
 		return 1;
 	}
+#endif	
 	return 0;
 }

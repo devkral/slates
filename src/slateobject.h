@@ -34,14 +34,12 @@ class slate;
 #include <memory>
 using namespace std;
 
-class slateobject;
-extern void kickstarter_drawthread(slateobject *parent);
 
 class slateobject
 {
 public:
 
-	slateobject(slate *parent_slate, void *screenob);
+	slateobject(slate *parent_slate, void *screenob); //rethink if shrinked to parent_slate
 	virtual ~slateobject();
 	void set_screen_ob(void *screenob);
 	void swap_screen_ob(shared_ptr<slateobject> swapso);
@@ -53,17 +51,25 @@ public:
 
 	viewport *getviewport();
 	slate *getfparent();
+	//
+	//void input_handler(void *initializer);
+	virtual void handle_event(void *initializer); //needn't to be implemented if there is an other solution
+	virtual void handle_input(void *initializer); //needn't to be implemented if there is an other solution
 	
 	//should be ignored in emptyobject
 	void move(int x, int y); //swaps object
 	void resizeleftuppercorner(int x_delta, int y_delta);
 	void resizerightlowercorner(int x_delta, int y_delta);
 	//if resize x or y <=0 close slate and replace by emptyslate
+
+
 	
 	virtual char TYPE()=0;
 	void close();
+
 	virtual void draw();
-	virtual void draw_function()=0; //for kickstarter
+	virtual void draw_function(); //for kickstarter optional
+	//either draw or draw_function must be defined
 	virtual void hide();
 	/** implementation idea:
 	 * draw() start drawthread (especially window) if isdrawn=false 
@@ -76,15 +82,19 @@ public:
 	
 protected:
 	bool isdrawn=false;
+	bool hasinputhandle=false;
 	void *screen_object=0; //reason why here: must grow over slates
 	//not thread safe
 	shared_ptr<deque< deque<slate*> > > connectedslates; //outer vector y inner x
 
 	thread drawthread;
+	//thread window_inputthread;
 	friend slate;	
 private:
 	
 };
+//extern void kickstarter_windowinputthread(slateobject *contextkeep, void *initializer);
+extern void kickstarter_drawthread(slateobject *parent);
 
 #endif // _SLATEOBJECT_H_
 

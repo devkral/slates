@@ -20,13 +20,13 @@
 #include "sdl_slate.h"
 
 #include <iostream>
-
+#include <cassert>
 using namespace std;
 
 
 sdl_slate::sdl_slate (viewport *parent, long int id,int position_xtemp,int position_ytemp) : slate(parent, id,position_xtemp,position_ytemp)
 {
-	cerr << "Create sdl_slate\n";
+	cerr << "Create sdl_slate\nposition x:" << position_xtemp << " Position y: " << position_ytemp << endl ;
 }
 
 sdl_slate::~sdl_slate()
@@ -37,42 +37,30 @@ sdl_slate::~sdl_slate()
 
 slateobject *sdl_slate::create_lockobject()
 {
-	sdlslatecanvas *temp=new sdlslatecanvas(position_x*(to_sdmac (getviewport()->get_viewport_screen())->widget_w),
-	position_y*(to_sdmac (getviewport()->get_viewport_screen())->widget_h),
-	(to_sdmac (getviewport()->get_viewport_screen())->widget_w),
-	 (to_sdmac (getviewport()->get_viewport_screen())->widget_h));
-	temp->mastercanvas=to_sdmac (getviewport()->get_viewport_screen());
+	sdlslatecanvas *temp=new sdlslatecanvas(to_sdmac (getviewport()->get_viewport_screen()));
+	assert(temp);
 	return new sdl_lockslateo((slate*)this, temp);
 }
 
 
 slateobject *sdl_slate::create_emptyobject()
 {
-	sdlslatecanvas *temp=new sdlslatecanvas(position_x*(to_sdmac (getviewport()->get_viewport_screen())->widget_w),
-	position_y*(to_sdmac (getviewport()->get_viewport_screen())->widget_h),
-	(to_sdmac (getviewport()->get_viewport_screen())->widget_w),
-	 (to_sdmac (getviewport()->get_viewport_screen())->widget_h));
-	temp->mastercanvas=to_sdmac (getviewport()->get_viewport_screen());
+	sdlslatecanvas *temp=new sdlslatecanvas(to_sdmac (getviewport()->get_viewport_screen()));
+	assert(temp);
 	return new sdl_emptyslateo ((slate*)this,temp);
 }
 
 slateobject *sdl_slate::create_sysobject()
 {
-	sdlslatecanvas *temp=new sdlslatecanvas(position_x*(to_sdmac (getviewport()->get_viewport_screen())->widget_w),
-	position_y*(to_sdmac (getviewport()->get_viewport_screen())->widget_h),
-	(to_sdmac (getviewport()->get_viewport_screen())->widget_w),
-	 (to_sdmac (getviewport()->get_viewport_screen())->widget_h));
-	temp->mastercanvas=to_sdmac (getviewport()->get_viewport_screen());
+	sdlslatecanvas *temp=new sdlslatecanvas(to_sdmac (getviewport()->get_viewport_screen()));
+	assert(temp);
 	return new sdl_sysslateo ((slate*)this,temp);
 }
 
 
 slateobject *sdl_slate::create_windowobject(string progname)
 {
-	sdlslatecanvas *temp=new sdlslatecanvas(position_x*(to_sdmac (getviewport()->get_viewport_screen())->widget_w),
-	position_y*(to_sdmac (getviewport()->get_viewport_screen())->widget_h),
-	(to_sdmac (getviewport()->get_viewport_screen())->widget_w),
-	 (to_sdmac (getviewport()->get_viewport_screen())->widget_h));
-	temp->mastercanvas=to_sdmac (getviewport()->get_viewport_screen());
+	sdlslatecanvas *temp=new sdlslatecanvas(to_sdmac (getviewport()->get_viewport_screen()));
+	assert(temp);
 	return new sdl_windowslateo ((slate*)this,temp);
 }

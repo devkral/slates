@@ -38,6 +38,7 @@ public:
 	testmaster(int argc, char* argv[]);
 	~testmaster();
 	void inputhandler_function();
+	int handle_masterevent(void *event);
 
 private:
 	viewport *create_viewport_intern(master *masteridd, int ownidd);

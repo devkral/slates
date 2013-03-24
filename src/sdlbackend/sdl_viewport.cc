@@ -28,6 +28,7 @@ sdl_viewport::sdl_viewport(master *masteridd, int ownidd) : viewport(masteridd,o
 {
 	cerr << "Create sdl_viewport\n";
 	create_mscreen_ob();
+	//addslice(); 
 }
 
 
@@ -53,17 +54,25 @@ void sdl_viewport::create_mscreen_ob()
 {
 	viewport_screen=new sdlmastercanvas;
 	//SDL_CreateWindowAndRenderer(
-	to_sdmac(viewport_screen)->window=SDL_CreateWindow("SDL_RenderClear", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-	                 512, 512,SDL_WINDOW_SHOWN);
-	to_sdmac(viewport_screen)->screenrender=
-		SDL_CreateRenderer(to_sdmac(viewport_screen)->window,-1,SDL_RENDERER_SOFTWARE);
-		                   
 	SDL_GetDisplayBounds(get_id(), &to_sdmac(viewport_screen)->dispbounds);
+	to_sdmac(viewport_screen)->window=SDL_CreateWindow("Slates", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+	                 to_sdmac(viewport_screen)->dispbounds.w, to_sdmac(viewport_screen)->dispbounds.h,SDL_WINDOW_MAXIMIZED);//SDL_WINDOW_FULLSCREEN);
+	//to_sdmac(viewport_screen)->window=SDL_CreateWindow("Slates", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+	//                 512, 512,SDL_WINDOW_MAXIMIZED);
+	
+	to_sdmac(viewport_screen)->screenrender=
+		SDL_CreateRenderer(to_sdmac(viewport_screen)->window,-1,SDL_RENDERER_SOFTWARE);//SDL_RENDERER_ACCELERATED);
+	
 }
 
 long int sdl_viewport::id_slate_mouse(int x, int y)
 {
 	return calcidslate(x/to_sdmac(viewport_screen)->widget_w, y/to_sdmac(viewport_screen)->widget_h);
+}
+slate *sdl_viewport::get_slate_mouse(int x, int y)
+{
+	return getslate_by_id( id_slate_mouse(x, y));
+
 }
 
 
@@ -72,3 +81,6 @@ void sdl_viewport::update_slice_change()
 	to_sdmac(viewport_screen)->widget_w=to_sdmac(viewport_screen)->dispbounds.w/get_slices();
 	to_sdmac(viewport_screen)->widget_h=to_sdmac(viewport_screen)->dispbounds.h/get_slices();
 }
+
+
+

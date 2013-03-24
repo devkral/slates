@@ -54,8 +54,10 @@ void gtkmmmaster::inputhandler_function()
 	masterapp->run();
 }
 
-
-
+int gtkmmmaster::handle_masterevent(void *event)
+{
+	return MASTER_UNHANDLED;
+}
 
 
 int gtkmmmain(int argc, char *argv[])

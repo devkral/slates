@@ -19,8 +19,10 @@
 
 #include "sdl_emptyslateo.h"
 
-
+#include "sdlbackend.h"
+class sdl_master;
 #include <iostream>
+#include <cassert>
 
 using namespace std;
 
@@ -28,19 +30,39 @@ using namespace std;
 sdl_emptyslateo::sdl_emptyslateo(slate *parent_slate, void *screenob) : emptyslateo(parent_slate,screenob)
 {
 	update_interval=100;
-	widget.inner_object.x=to_sdslc(screen_object)->slatebox.x;
-	widget.inner_object.y=to_sdslc(screen_object)->slatebox.y;
-	widget.inner_object.w=to_sdslc(screen_object)->slatebox.w;
-	widget.inner_object.h=to_sdslc(screen_object)->slatebox.h;
-	widget.inn=SDL_CreateRGBSurface (0,widget.inner_object.w,widget.inner_object.h,32,255,1,1,0);
-	
+	//SDL_RendererPresent
+	//
 }
 
 sdl_emptyslateo::~sdl_emptyslateo()
 {
 }
+
 void sdl_emptyslateo::draw()
 {
+
+	to_sdslc(screen_object)->updaterect(
+	            (getfparent()->get_position_x())*(to_sdmac (getviewport()->get_viewport_screen())->widget_w),
+	           (getfparent()->get_position_y())*(to_sdmac (getviewport()->get_viewport_screen())->widget_h),
+	(to_sdmac (getviewport()->get_viewport_screen())->widget_w),
+	 (to_sdmac (getviewport()->get_viewport_screen())->widget_h));
+
+	
+	widget.inner_object.x=to_sdslc(screen_object)->slatebox.x+2;
+	widget.inner_object.y=to_sdslc(screen_object)->slatebox.y+2;
+	widget.inner_object.w=to_sdslc(screen_object)->slatebox.w-2;
+	widget.inner_object.h=to_sdslc(screen_object)->slatebox.h-2;
+
+	widget.emptysur=SDL_CreateRGBSurface (0,widget.inner_object.w,widget.inner_object.h,32,0,0,0,0);
+	assert(widget.emptysur!=0);
+	
+	Uint32 white=SDL_MapRGBA (widget.emptysur->format, 255,255,255,255);
+
+	SDL_FillRect (widget.emptysur, &widget.inner_object, white);
+	widget.emptytex=SDL_CreateTextureFromSurface (to_sdslc(screen_object)->mastercanvas->screenrender,widget.emptysur);
+	//SDL_RenderPresent(to_sdslc (screen_object)->mastercanvas->screenrender);
+	
+	 
 	if (isdrawn==false)
 	{
 		isdrawn=true;
@@ -48,7 +70,10 @@ void sdl_emptyslateo::draw()
 	}
 	else
 	{
-		cerr << "Update sdl_emptyslateo\n";
+		isdrawn=false;
+		drawthread.join();
+		isdrawn=true;
+		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
 	}
 }
 
@@ -64,17 +89,53 @@ void sdl_emptyslateo::draw_function ()
 {
 	while(isdrawn==true)
 	{
+		//SDL_RenderCopy(to_sdslc (screen_object)->mastercanvas->screenrender, widget.emptytex, &widget.inner_object, &widget.inner_object);
 
-		SDL_RenderClear(to_sdslc(screen_object)->mastercanvas->screenrender);
-        //SDL_RenderCopy(to_sdslc(screen_object)->mastercanvas->screenrender, &widget.inn, NULL, NULL);
-
-		
-		SDL_RenderCopy(to_sdslc(screen_object)->mastercanvas->screenrender,
-		               SDL_CreateTextureFromSurface(to_sdslc(screen_object)->mastercanvas->screenrender,
-		                                            widget.inn),NULL,&widget.inner_object);
-		SDL_RenderPresent(to_sdslc(screen_object)->mastercanvas->screenrender);
-		//SDL_BlitSurface(inn,0, to_sdslc(screen_object)->mastercanvas->viewport,&widget.inner_object);
-		//SDL_RenderDrawRect(to_sdslc(screen_object)->mastercanvas->screenrender,&widget.inner_object);
+		SDL_RenderCopy(to_sdslc (screen_object)->mastercanvas->screenrender, widget.emptytex, NULL, &widget.inner_object);
+		if (to_sdslc (screen_object)->mastercanvas->is_rendering==false)
+		{
+			to_sdslc (screen_object)->mastercanvas->is_rendering=true;
+			SDL_RenderPresent(to_sdslc (screen_object)->mastercanvas->screenrender);
+			to_sdslc (screen_object)->mastercanvas->is_rendering=false;
+		}
 		SDL_Delay(update_interval);
 	}
+}
+
+void sdl_emptyslateo::handle_event (void *event)
+{
+	switch( ((SDL_Event*)event)->type )
+	{
+		case SDL_QUIT: hasinputhandle=false;
+			break;
+		case SDL_KEYDOWN:
+			if (((SDL_Event*)event)->key.keysym.sym==SDLK_ESCAPE ||
+			    ((SDL_Event*)event)->key.keysym.mod==KMOD_CTRL ||
+			     ((SDL_Event*)event)->key.keysym.mod==KMOD_CTRL ||
+			    ((SDL_Event*)event)->key.keysym.mod==KMOD_LGUI ||
+			    ((SDL_Event*)event)->key.keysym.mod==KMOD_RGUI)
+			{
+				if (getfparent()->getmaster()->send_event_to_all(event)==MASTER_QUIT)
+					hasinputhandle=false;
+			}
+			break;
+	}
+
+}
+
+void sdl_emptyslateo::handle_input (void *initializer)
+{
+	event=*((SDL_Event*)initializer);
+	do
+	{
+		SDL_WaitEvent(&event);
+		do
+		{
+			handle_event(&event);
+		} while (SDL_PollEvent (&event));
+		SDL_Delay(update_interval/2);
+	}while (hasinputhandle);
+		
+
+	
 }

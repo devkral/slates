@@ -37,6 +37,7 @@ public:
 	~gtkmmmaster();
 	void inputhandler_function();
 	Glib::RefPtr<Gtk::Application> masterapp;
+	int handle_masterevent(void *event);
 protected:
 	
 

@@ -37,6 +37,7 @@ public:
 	void hide();
 	void cleanup_handler ();
 	void draw_function ();
+
 protected:
 
 private:

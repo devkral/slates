@@ -46,12 +46,14 @@ public:
 	viewport(master *masteridd, int ownidd);
 	~viewport();
 	slate *getslate(int x, int y);
+	slate *getslate_by_id(long int id);
 	void addslice();
 	int removeslice();
 	int count_filled_slots(int sliceid);
 	void fillslate_intern(long int id); //counter 
 	void emptyslate_intern(long int id); //counter
-
+	void handle_event(void *event);
+	
 	master *getmaster();
 
 	void *get_viewport_screen();
@@ -86,6 +88,7 @@ private:
 	
 	//cache
 	long int cache_last_diag_point_id=0;
+	long int cache_nto_last_diag_point_id=0;
 	
 	//autoremove last slice
 		//last slice

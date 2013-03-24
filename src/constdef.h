@@ -23,6 +23,10 @@
 #define SL_destroy_failed -2
 #define SL_not_empty -3 //used in slate
 
+#define MASTER_HANDLED 1
+#define MASTER_UNHANDLED 2
+#define MASTER_QUIT 3
+
 #define TYPE_sysslate 1
 #define TYPE_emptyslate 2
 #define TYPE_lockslate 3

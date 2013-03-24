@@ -25,7 +25,8 @@ using namespace std;
 
 sdl_windowslateo::sdl_windowslateo(slate *parent_slate, void *screenob) : windowslateo(parent_slate,screenob)
 {
-	cerr << "Create sdl_windowslateo\n";
+	//update_interval=100;
+	
 }
 
 sdl_windowslateo::~sdl_windowslateo()

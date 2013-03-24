@@ -60,11 +60,15 @@ public:
 	void destroy_slate();
 	void draw();
 	void hide();
+	int get_position_x();
+	int get_position_y();
+	void handle_input(void *initializer);
+	void handle_event(void *event);
 	
 protected:
+private:
 	int position_x;
 	int position_y;
-private:
 	bool filled=false;
 	char lockstate=0; //0 normal, 1 always_unlock 2 lock (3 private: not implemented)
 	long int slateid;

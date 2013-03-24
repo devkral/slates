@@ -24,20 +24,29 @@
 #include <SDL2/SDL_opengl.h>
 #include <iostream>
 #include <atomic>
+#include <thread>
 
 using namespace std;
 
 
-
 typedef struct sdlmastercanvas_{
+	sdlmastercanvas_()
+	{
+		is_rendering=false;
+	}
+		
 	~sdlmastercanvas_()
 	{
 		SDL_DestroyRenderer (screenrender);
 		SDL_DestroyWindow (window);
+		SDL_DestroyTexture(viewport_tex);
+		SDL_FreeSurface(viewport);
 	}
 	SDL_Window* window=0;
 	SDL_Renderer* screenrender=0;
-	//SDL_Texture *viewport=0;
+	atomic<bool> is_rendering;
+	SDL_Texture *viewport_tex=0;
+	SDL_Surface *viewport=0;
 	int displayindex=0;
 	SDL_Rect dispbounds;
 	int widget_w=0;
@@ -46,34 +55,34 @@ typedef struct sdlmastercanvas_{
 	
 }sdlmastercanvas;
 
+
+
+
+
 typedef struct sdlslatecanvas_{
-	sdlslatecanvas_(int x, int y, int w, int h)
+	sdlslatecanvas_(sdlmastercanvas *mastercanvast)
 	{
-		slatebox.x=x;
-		slatebox.y=y;
-		slatebox.w=w;
-		slatebox.h=h;
+		mastercanvas=mastercanvast;
 	}
 	~sdlslatecanvas_()
 	{
 		
 	}
-	SDL_Rect slatebox;
-
+	SDL_Rect slatebox;	
 	//must not be freed done by master
 	sdlmastercanvas *mastercanvas=0;
+	void updaterect(int x, int y, int w, int h)
+	{
+		slatebox.x=x;
+		slatebox.y=y;
+		slatebox.w=w;
+		slatebox.h=h;
+
+	};
 	
 }sdlslatecanvas;
 
-typedef struct sdlemptyprivat_{
-	~sdlemptyprivat_()
-	{
-		SDL_FreeSurface(inn);
-	}
-	SDL_Surface *inn=0;
-	SDL_Rect inner_object;
-	
-}sdlempty;
+
 
 extern sdlmastercanvas *to_sdmac(void* in);
 extern sdlslatecanvas *to_sdslc(void* in);

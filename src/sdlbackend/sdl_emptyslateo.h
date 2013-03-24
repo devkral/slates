@@ -30,6 +30,24 @@ class sdl_screenobject;
 
 #include "constdef.h"
 
+using namespace std;
+
+
+
+typedef struct sdlemptyprivat_{
+	~sdlemptyprivat_()
+	{
+		SDL_FreeSurface(emptysur);
+		SDL_DestroyTexture (emptytex);
+	}
+	SDL_Surface *emptysur=0;
+	SDL_Texture *emptytex=0;
+	SDL_Rect inner_object;
+	
+}sdlempty;
+
+
+
 class sdl_emptyslateo : public emptyslateo 
 {
 public:
@@ -38,10 +56,13 @@ public:
 	void draw();
 	void cleanup_handler ();
 	void draw_function ();
+	void handle_input(void *initializer);
+	void handle_event(void *event);
 protected:
 	
 	sdlempty widget;
 	atomic<int> update_interval;
+	SDL_Event event;
 	
 private:
 	
