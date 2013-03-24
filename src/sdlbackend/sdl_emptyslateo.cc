@@ -30,7 +30,7 @@ using namespace std;
 sdl_emptyslateo::sdl_emptyslateo(slate *parent_slate, void *screenob) : emptyslateo(parent_slate,screenob)
 {
 	update_interval=100;
-	to_sdslc(screen_object)->slaterender=SDL_CreateRenderer (to_sdslc(screen_object)->mastercanvas->window,-1,SDL_RENDERER_TARGETTEXTURE);
+	to_sdslc(screen_object)->slaterender=SDL_CreateRenderer (to_sdslc(screen_object)->mastercanvas->window,-1,SDL_RENDERER_SOFTWARE|SDL_RENDERER_TARGETTEXTURE);
 	//SDL_RendererPresent
 	//
 }
@@ -67,8 +67,8 @@ void sdl_emptyslateo::draw()
 	if(widget.emptytex!=0)
 		SDL_DestroyTexture (widget.emptytex);
 	widget.emptytex=SDL_CreateTextureFromSurface (to_sdslc(screen_object)->mastercanvas->globalrender,widget.emptysur);
-	//SDL_SetRenderTarget(to_sdslc(screen_object)->slaterender,to_sdslc (screen_object)->mastercanvas->viewport_tex);
-	//SDL_RenderPresent(to_sdslc (screen_object)->mastercanvas->screenrender);
+	SDL_SetRenderTarget(to_sdslc(screen_object)->slaterender,to_sdslc (screen_object)->mastercanvas->viewport_tex);
+	//SDL_RenderPresent(to_sdslc (screen_object)->slaterender);
 	
 	if (isdrawn==false)
 	{
@@ -153,14 +153,17 @@ void sdl_emptyslateo::draw_function ()
 	while(isdrawn==true)
 	{
 
-		SDL_RenderCopy(to_sdslc (screen_object)->mastercanvas->globalrender, widget.emptytex, &widget.inner_object, &widget.inner_object);
 
-		//SDL_RenderCopy(to_sdslc (screen_object)->slaterender, widget.emptytex, 0, &widget.inner_object);
+
+		//SDL_RenderCopy(to_sdslc (screen_object)->mastercanvas->globalrender, widget.emptytex, 0, &widget.inner_object);
+
+		SDL_RenderCopy(to_sdslc (screen_object)->slaterender, widget.emptytex, 0, &widget.inner_object);
+		SDL_RenderPresent(to_sdslc (screen_object)->slaterender);
 		if (to_sdslc (screen_object)->mastercanvas->is_rendering==false)
 		{
 			to_sdslc (screen_object)->mastercanvas->is_rendering=true;
 			SDL_RenderCopy(to_sdslc (screen_object)->mastercanvas->globalrender,
-			               to_sdslc (screen_object)->mastercanvas->viewport_tex,0,0);			
+			               to_sdslc (screen_object)->mastercanvas->viewport_tex,0,0);
 			SDL_RenderPresent(to_sdslc (screen_object)->mastercanvas->globalrender);
 			to_sdslc (screen_object)->mastercanvas->is_rendering=false;
 		}

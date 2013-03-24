@@ -68,7 +68,11 @@ void sdl_viewport::create_mscreen_ob()
 																to_sdmac(viewport_screen)->dispbounds.h);
 	to_sdmac(viewport_screen)->viewport=IMG_Load("themes/samplebackground.png");
 	if (to_sdmac(viewport_screen)->viewport!=0)
-		SDL_UpdateTexture(to_sdmac(viewport_screen)->viewport_tex,0,to_sdmac(viewport_screen)->viewport->pixels,to_sdmac(viewport_screen)->viewport->pitch);
+	{
+		to_sdmac(viewport_screen)->viewport_tex=SDL_CreateTextureFromSurface (to_sdmac(viewport_screen)->globalrender,to_sdmac(viewport_screen)->viewport);
+		SDL_RenderPresent(to_sdmac(viewport_screen)->globalrender);
+		//SDL_UpdateTexture(to_sdmac(viewport_screen)->viewport_tex,0,to_sdmac(viewport_screen)->viewport->pixels,to_sdmac(viewport_screen)->viewport->pitch);
+	}
 	else
 		cerr << "Couldn't load theme.\n";
 }
