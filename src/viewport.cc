@@ -40,7 +40,7 @@ long int calcidslate(long int x, long int y)
 	return result;
 }
 
-viewport::viewport(master *masteridd, int ownidd)
+viewport::viewport(master *masteridd, int ownidd) : slateid_prot()
 {
 	mroot=masteridd;
 	ownid=ownidd;
@@ -53,8 +53,7 @@ viewport::~viewport()
 }
 void viewport::cleanup()
 {
-	while (slate_pool.empty()!=true)
-		destroyslate();
+	async_destroy_slates(max_avail_slates);
 	destroy_mscreen_ob();
 }
 
@@ -91,8 +90,9 @@ slate *viewport::getslate_by_id(long int id)
 //update slices, caches, id_nto_last_beg, id_last_beg,
 void viewport::createslate()
 {
+	slateid_prot.lock();
 	int temp_x, temp_y;
-	
+	slate *verify;
 	if (slate_idcount<slices*slices-slices)
 	{
 		temp_y=slices-1;
@@ -103,20 +103,85 @@ void viewport::createslate()
 		temp_y=(cache_last_diag_point_id+(slices-1))-slate_idcount; //sure???
 		temp_x=slices-1;
 	}
-	slate_pool.push_back(create_slate_intern(this,slate_idcount, temp_x, temp_y));
+	verify=create_slate_intern(this,slate_idcount, temp_x, temp_y);
+	assert(verify);
+		
+	slate_pool.push_back(verify);
 	slate_pool[slate_idcount]->init_slate();
 	slate_idcount++;
+	slateid_prot.unlock();
 }
 
 //validate before calling
 void viewport::destroyslate()
 {
+	slateid_prot.lock();
 	slate_pool.back()->cleanup();
 	delete slate_pool.back();
 	slate_pool.pop_back();
 	slate_idcount--;;
+	slateid_prot.unlock();
 }
 
+void async_update_slates_intern(slate *targob)
+{
+	targob->update();
+}
+
+void viewport::async_update_slates()
+{
+	vector<thread> temppool;
+	for (long int count=0;count<max_avail_slates;count++)
+	{
+		temppool.push_back(thread(async_update_slates_intern,slate_pool[count]));
+	}
+	while (temppool.empty()==false)
+	{
+		temppool.back().join();
+		temppool.pop_back();
+	}
+}
+
+void async_destroy_slates_intern(slate *targob)
+{
+	targob->cleanup();
+	delete targob;
+}
+
+void viewport::async_destroy_slates(long int amount)
+{
+	slateid_prot.lock();
+	slate_idcount-=amount;
+	vector<thread> temppool;
+	for (long int count=0;count<amount;count++)
+	{
+		temppool.push_back(thread(async_destroy_slates_intern,slate_pool.back()));
+		slate_pool.pop_back();
+	}
+	while (temppool.empty()==false)
+	{
+		temppool.back().join();
+		temppool.pop_back();
+	}
+	slateid_prot.unlock();
+}
+
+void async_cleanup_slates_intern(slate *targob)
+{
+	targob->cleanup();
+}
+
+void viewport::async_cleanup_slates(long int id_beg, long int id_end)
+{
+	vector<thread> temppool;
+	for (long int count=id_beg;count<id_end;count++)
+		temppool.push_back(thread(async_cleanup_slates_intern,slate_pool[count]));
+	while (temppool.empty()==false)
+	{
+		temppool.back().join();
+		temppool.pop_back();
+	}
+}
 int viewport::count_filled_slots(int sliceid)
 {
 	int temp=0;
@@ -139,9 +204,9 @@ void viewport::addslice()
 	last_slice_filled=0;
 	
 	update_slice_change();
-	long int count=0;
-	for (count=0;count<slices+slices-1;count++) //=(slices+1)+(slices+1)-1
+	for (long int count=0;count<slices+slices-1;count++) //=(slices+1)+(slices+1)-1
 		createslate();
+	async_update_slates();
 }
 
 int viewport::removeslice()
@@ -149,9 +214,7 @@ int viewport::removeslice()
 	if (last_slice_filled>0 || nto_last_slice_filled >= (slices-1)+(slices-1)) //just one free slot
 		return SL_destroy_failed;
 	
-	long int count=0;
-	for (count=0;count<slices+slices-1;count++) //=(slices+1)+(slices+1)-1
-		destroyslate();
+	async_destroy_slates(slices+slices-1); //=(slices+1)+(slices+1)-1
 	slices--;
 	max_avail_slates=slices*slices;
 	cache_last_diag_point_id=cache_nto_last_diag_point_id;
@@ -160,9 +223,9 @@ int viewport::removeslice()
 	id_nto_last_beg=cache_nto_last_diag_point_id-(slices-2);
 	last_slice_filled=nto_last_slice_filled;
 	nto_last_slice_filled=count_filled_slots(slices-1);
-
-	update_slice_change();
 	
+	update_slice_change();
+	async_update_slates();
 	return OP_success;
 }
 master *viewport::getmaster()
@@ -228,6 +291,8 @@ int viewport::get_slices()
 {
 	return slices;
 }
+
+
 
 void viewport::handle_event(void *event)
 {

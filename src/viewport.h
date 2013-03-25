@@ -31,6 +31,7 @@ class slate;
 #include <vector>
 #include <iostream>
 #include <atomic>
+#include <mutex>
 
 
 
@@ -53,13 +54,20 @@ public:
 	void fillslate_intern(long int id); //counter 
 	void emptyslate_intern(long int id); //counter
 	void handle_event(void *event);
+	void async_update_slates();
+	
+	void async_cleanup_slates(long int id_beg, long int id_end);
+	void async_destroy_slates(long int amount);
 	
 	master *getmaster();
 
 	void *get_viewport_screen();
 	int get_id();
 	int get_slices();
-	
+	void cleanup();
+
+
+
 protected:
 	//every display a viewport_screen
 	void *viewport_screen=0;
@@ -68,16 +76,17 @@ protected:
 private:
 	int ownid=0;
 	int slices=0;
-	long int slate_idcount=0;
-	atomic<long int> amount_filled_slates;
-	long int max_avail_slates=0; //=slice*slice
-	vector< slate* > slate_pool; //leftwing first, then diag then top wing
-	master *mroot;
-
-	void cleanup();
-	
 	void destroyslate();
 	void createslate();
+	long int slate_idcount=0;
+	mutex slateid_prot;
+	atomic<long int> amount_filled_slates;
+	long int max_avail_slates=0; //=slice*slice
+	vector<slate*> slate_pool; //leftwing first, then diag then top wing
+	master *mroot;
+	
+
+
 	virtual slate *create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp)=0;
 
 	

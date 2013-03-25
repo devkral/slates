@@ -53,7 +53,7 @@ class sdl_emptyslateo : public emptyslateo
 public:
 	sdl_emptyslateo(slate *parent_slate, void *screenob);
 	~sdl_emptyslateo();
-	void draw();
+	void update();
 	void cleanup_handler ();
 	void draw_function ();
 	void handle_input(void *initializer);
@@ -66,6 +66,7 @@ protected:
 	bool specialcondition=false;
 	
 private:
+	void draw_real();
 };
 
 #endif // _EMPTYSLATEO_H_

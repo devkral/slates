@@ -31,6 +31,7 @@ class slateobject;
 #include <memory>
 #include <thread>
 #include <string>
+#include <mutex>
 
 using namespace std;
 
@@ -60,12 +61,14 @@ public:
 	void destroy_slate();
 	void draw();
 	void hide();
+	void update();
 	int get_position_x();
 	int get_position_y();
 	void handle_input(void *initializer);
 	void handle_event(void *event);
 	
 protected:
+	mutex interact_withchild; //graphically, not input or should I
 private:
 	int position_x;
 	int position_y;

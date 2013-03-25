@@ -18,6 +18,8 @@
  */
 #ifndef constdefh
 #define constdefh
+#include <cassert>
+
 
 #define OP_success 0
 #define SL_destroy_failed -2

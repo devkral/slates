@@ -30,7 +30,6 @@ slateobject::slateobject(slate *parent_slate, void *screenob)
 	(*connectedslates)[0].push_back(parent_slate);
 	screen_object=screenob;
 	isdrawn=false;
-	drawthreadactive=false;
 }
 
 slateobject::~slateobject()
@@ -98,35 +97,45 @@ void slateobject::hide()
 {
 	isdrawn=false;
 	hasinputhandle=false;
+	if (drawthread.joinable())
+		drawthread.join();
 }
 
-
+void slateobject::update()
+{
+	bool restart=false;
+	if (isdrawn==true)
+	{
+		restart=true;
+		isdrawn=false;
+		if (drawthread.joinable())
+			drawthread.join();
+	}
+	//code
+	
+	if (restart==true)
+	{
+		isdrawn=true;
+		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
+	}
+}
 
 void slateobject::draw()
 {
+	update();
 	if (isdrawn==false)
 	{
 		isdrawn=true;
-		drawthreadactive=true;
 		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
-	}
-	{
-		//override for updatefunction
 	}
 }
 void slateobject::draw_function()
 {
-	//do nothing
 }
 
 void slateobject::cleanup()
 {
-	hide();
-	if (drawthreadactive==false)
-	{
-		drawthread.join();
-	}
-	
+	hide();	
 	cleanup_handler();
 }
 

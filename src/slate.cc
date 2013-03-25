@@ -34,8 +34,10 @@ slate::~slate()
 
 void slate::init_slate()
 {
+	interact_withchild.lock();
 	emptyslate();
 	preserve_after_lock.reset(create_lockobject());
+	interact_withchild.unlock();
 }
 
 void slate::cleanup()
@@ -47,7 +49,9 @@ void slate::cleanup()
 
 void slate::destroy_slate()
 {
+	interact_withchild.lock();
 	replace_childobject(0);
+	interact_withchild.unlock();
 }
 
 bool slate::isfilled()
@@ -68,12 +72,16 @@ viewport *slate::getviewport()
 
 void slate::set_screen_ob(void *screenob)
 {
+	interact_withchild.lock();
 	child_slateo->set_screen_ob(screenob);
+	interact_withchild.unlock();
 }
 
 void *slate::get_screen_ob()
 {
+	interact_withchild.lock();
 	return child_slateo->get_screen_ob();
+	interact_withchild.unlock();
 }
 
 
@@ -97,6 +105,7 @@ void slate::swap_childobject(slate *swapslate)
 
 void slate::replace_childobject(slateobject *temp)
 {
+	interact_withchild.lock();
 	if (child_slateo.use_count()!=0)
 	{	
 		child_slateo->cleanup();
@@ -109,6 +118,7 @@ void slate::replace_childobject(slateobject *temp)
 	{
 		child_slateo.reset();
 	}
+	interact_withchild.unlock();
 }
 
 shared_ptr<slateobject> slate::get_childobject()
@@ -200,11 +210,22 @@ void slate::emptyslate_nonunique()
 
 void slate::draw()
 {
+	interact_withchild.lock();
 	child_slateo->draw();
+	interact_withchild.unlock();
 }
 void slate::hide()
 {
+	interact_withchild.lock();
 	child_slateo->hide();
+	interact_withchild.unlock();
+}
+
+void slate::update()
+{
+	interact_withchild.lock();
+	child_slateo->update();
+	interact_withchild.unlock();
 }
 
 int slate::get_position_x()

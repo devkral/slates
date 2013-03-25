@@ -40,9 +40,17 @@ sdl_emptyslateo::~sdl_emptyslateo()
 	
 }
 
-void sdl_emptyslateo::draw()
+void sdl_emptyslateo::update()
 {
-
+	bool restart=false;
+	if (isdrawn)
+	{
+		restart=true;
+		isdrawn=false;
+		if (drawthread.joinable())
+			drawthread.join();
+	}
+	
 	to_sdslc(screen_object)->updaterect(
 	            (getfparent()->get_position_x())*(to_sdmac (getviewport()->get_viewport_screen())->widget_w),
 	           (getfparent()->get_position_y())*(to_sdmac (getviewport()->get_viewport_screen())->widget_h),
@@ -67,23 +75,17 @@ void sdl_emptyslateo::draw()
 	if(widget.emptytex!=0)
 		SDL_DestroyTexture (widget.emptytex);
 	widget.emptytex=SDL_CreateTextureFromSurface (to_sdslc(screen_object)->mastercanvas->globalrender,widget.emptysur);
-	SDL_SetRenderTarget(to_sdslc(screen_object)->slaterender,to_sdslc (screen_object)->mastercanvas->viewport_tex);
+	//SDL_SetRenderTarget(to_sdslc(screen_object)->slaterender,to_sdslc (screen_object)->mastercanvas->viewport_tex);
 	//SDL_RenderPresent(to_sdslc (screen_object)->slaterender);
-	
-	if (isdrawn==false)
-	{
-		isdrawn=true;
-		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
-	}
-	else
-	{
-		isdrawn=false;
-		drawthread.join();
-		isdrawn=true;
-		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
-	}
-}
+	//cout << "new innerobject x: " << widget.inner_object.x << " y: " << widget.inner_object.y << " w: " << widget.inner_object.w << "h: " << widget.inner_object.h << endl;
 
+	if (restart==true)
+	{
+		isdrawn=true;
+		drawthread=thread(kickstarter_drawthread, this);
+	}
+
+}
 
 
 
@@ -155,20 +157,19 @@ void sdl_emptyslateo::draw_function ()
 
 
 
-		//SDL_RenderCopy(to_sdslc (screen_object)->mastercanvas->globalrender, widget.emptytex, 0, &widget.inner_object);
+		SDL_RenderCopy(to_sdslc (screen_object)->mastercanvas->globalrender, widget.emptytex, 0, &widget.inner_object);
 
-		SDL_RenderCopy(to_sdslc (screen_object)->slaterender, widget.emptytex, 0, &widget.inner_object);
-		SDL_RenderPresent(to_sdslc (screen_object)->slaterender);
+		//SDL_RenderCopy(to_sdslc (screen_object)->slaterender, widget.emptytex, 0, &widget.inner_object);
+		//SDL_RenderPresent(to_sdslc (screen_object)->slaterender);
 		if (to_sdslc (screen_object)->mastercanvas->is_rendering==false)
 		{
-			to_sdslc (screen_object)->mastercanvas->is_rendering=true;
-			SDL_RenderCopy(to_sdslc (screen_object)->mastercanvas->globalrender,
-			               to_sdslc (screen_object)->mastercanvas->viewport_tex,0,0);
+		//	to_sdslc (screen_object)->mastercanvas->is_rendering=true;
+			//SDL_RenderCopy(to_sdslc (screen_object)->mastercanvas->globalrender,
+			//               to_sdslc (screen_object)->mastercanvas->viewport_tex,0,0);
 			SDL_RenderPresent(to_sdslc (screen_object)->mastercanvas->globalrender);
-			to_sdslc (screen_object)->mastercanvas->is_rendering=false;
+		//	to_sdslc (screen_object)->mastercanvas->is_rendering=false;
 		}
 		SDL_Delay(update_interval);
 	}
-	drawthreadactive=false;
 }
 

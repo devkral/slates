@@ -56,8 +56,13 @@ void sdl_viewport::create_mscreen_ob()
 	viewport_screen=new sdlmastercanvas;
 	//SDL_CreateWindowAndRenderer(
 	SDL_GetDisplayBounds(get_id(), &to_sdmac(viewport_screen)->dispbounds);
-	to_sdmac(viewport_screen)->window=SDL_CreateWindow("Slates", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-	                 to_sdmac(viewport_screen)->dispbounds.w, to_sdmac(viewport_screen)->dispbounds.h,SDL_WINDOW_FULLSCREEN);
+	bool justmaximize=1;
+	if (justmaximize)
+		to_sdmac(viewport_screen)->window=SDL_CreateWindow("Slates", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+			           to_sdmac(viewport_screen)->dispbounds.w, to_sdmac(viewport_screen)->dispbounds.h,SDL_WINDOW_MAXIMIZED);
+	else
+		to_sdmac(viewport_screen)->window=SDL_CreateWindow("Slates", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+			           to_sdmac(viewport_screen)->dispbounds.w, to_sdmac(viewport_screen)->dispbounds.h,SDL_WINDOW_FULLSCREEN);
 	SDL_GetWindowDisplayMode(to_sdmac(viewport_screen)->window,&to_sdmac(viewport_screen)->curdisplaymode);
 
 	to_sdmac(viewport_screen)->globalrender=SDL_CreateRenderer(to_sdmac(viewport_screen)->window,-1,SDL_RENDERER_SOFTWARE);//|SDL_RENDERER_PRESENTVSYNC);//SDL_RENDERER_ACCELERATED);
@@ -70,6 +75,7 @@ void sdl_viewport::create_mscreen_ob()
 	if (to_sdmac(viewport_screen)->viewport!=0)
 	{
 		to_sdmac(viewport_screen)->viewport_tex=SDL_CreateTextureFromSurface (to_sdmac(viewport_screen)->globalrender,to_sdmac(viewport_screen)->viewport);
+		SDL_RenderCopy(to_sdmac(viewport_screen)->globalrender,to_sdmac(viewport_screen)->viewport_tex, 0, 0);
 		SDL_RenderPresent(to_sdmac(viewport_screen)->globalrender);
 		//SDL_UpdateTexture(to_sdmac(viewport_screen)->viewport_tex,0,to_sdmac(viewport_screen)->viewport->pixels,to_sdmac(viewport_screen)->viewport->pitch);
 	}

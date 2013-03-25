@@ -71,14 +71,16 @@ public:
 	void close();
 
 	virtual void hide();
+	virtual void update();
 	virtual void draw();
 	virtual void draw_function(); //for kickstarter optional
 	//either draw or draw_function must be defined
 	/** implementation idea:
+	 * update() update draw information, without drawing
 	 * draw() start drawthread (especially window) if isdrawn=false 
 			elsewise update static elements
 
-	 * hide() stop threads if isdrawn=true elsewise do nothing 
+	 * hide() stop threads if isdrawn=true elsewise do nothing, should join drawthread
 		 also possible to override
 	 */
 	void cleanup();
@@ -88,7 +90,7 @@ protected:
 	atomic<bool> hasinputhandle;
 
 	//set to false after end
-	bool drawthreadactive=false;
+	//bool drawthreadactive=false;
 	void *screen_object=0; //reason why here: must grow over slates
 	//not thread safe
 	shared_ptr<deque< deque<slate*> > > connectedslates; //outer vector y inner x
