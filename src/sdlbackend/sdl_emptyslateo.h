@@ -54,6 +54,7 @@ public:
 	sdl_emptyslateo(slate *parent_slate, void *screenob);
 	~sdl_emptyslateo();
 	void update();
+	void draw();
 	void cleanup_handler ();
 	void draw_function ();
 	void handle_input(void *initializer);

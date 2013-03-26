@@ -68,7 +68,7 @@ public:
 	void handle_event(void *event);
 	
 protected:
-	mutex interact_withchild; //graphically, not input or should I
+	mutex change_slate; //
 private:
 	int position_x;
 	int position_y;

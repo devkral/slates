@@ -103,20 +103,11 @@ void slateobject::hide()
 
 void slateobject::update()
 {
-	bool restart=false;
-	if (isdrawn==true)
+	if (interact_with_draw.try_lock_for(defaulttimeout))
 	{
-		restart=true;
-		isdrawn=false;
-		if (drawthread.joinable())
-			drawthread.join();
-	}
-	//code
+		//code
 	
-	if (restart==true)
-	{
-		isdrawn=true;
-		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
+		interact_with_draw.unlock();
 	}
 }
 
@@ -131,6 +122,12 @@ void slateobject::draw()
 }
 void slateobject::draw_function()
 {
+	if (interact_with_draw.try_lock_for(defaulttimeout))
+	{
+		//code
+	
+		interact_with_draw.unlock();
+	}
 }
 
 void slateobject::cleanup()

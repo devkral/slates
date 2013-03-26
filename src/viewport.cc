@@ -57,6 +57,39 @@ void viewport::cleanup()
 	destroy_mscreen_ob();
 }
 
+
+int viewport::get_viewport_width()
+{
+	if (horizontal_tiles<=0)
+		return slices;
+	else
+		return horizontal_tiles;
+}
+
+int viewport::get_viewport_height()
+{
+	if (vertical_tiles<=0)
+		return slices;
+	else
+		return vertical_tiles;
+}
+
+void viewport::set_viewport(int width, int height)
+{
+	if (width<=0 || width>=slices)
+		horizontal_tiles=-1;
+	else
+		horizontal_tiles=width;
+
+	if (height<=0 || height>=slices)
+		vertical_tiles=-1;
+	else
+		vertical_tiles=height;
+	update_slice_change();
+	async_update_slates();
+}
+
+
 slate *viewport::getslate(int x, int y)
 {
 	if (x<0 || y<0)

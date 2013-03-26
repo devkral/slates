@@ -52,6 +52,8 @@ typedef struct sdlmastercanvas_{
 	SDL_DisplayMode curdisplaymode;
 	int widget_w=0;
 	int widget_h=0;
+	int max_w=0;
+	int max_h=0;
 	
 	
 }sdlmastercanvas;

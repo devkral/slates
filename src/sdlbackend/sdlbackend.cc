@@ -102,6 +102,23 @@ int sdl_master::handle_masterevent(void *event)
 						cerr << "Destroy failed\n";
 					ishandled=MASTER_HANDLED;
 				}
+
+				if (((SDL_Event*)event)->key.keysym.sym==SDLK_PLUS )
+				{
+					cerr << "PLUS\n";
+					int width=(viewport_pool[0]->get_viewport_width())+1;
+					int height=(viewport_pool[0]->get_viewport_height())+1;
+					viewport_pool[0]->set_viewport(width, height );
+					ishandled=MASTER_HANDLED;
+				}
+
+				if (((SDL_Event*)event)->key.keysym.sym==SDLK_MINUS )
+				{
+					int width=(viewport_pool[0]->get_viewport_width())-1;
+					int height=(viewport_pool[0]->get_viewport_height())-1;
+					viewport_pool[0]->set_viewport(width, height );
+					ishandled=MASTER_HANDLED;
+				}
 				if (((SDL_Event*)event)->key.keysym.sym==SDLK_ESCAPE )
 				{
 					hasinputhandle=false;

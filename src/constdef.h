@@ -20,6 +20,9 @@
 #define constdefh
 #include <cassert>
 
+#include <chrono>
+
+static std::chrono::seconds defaulttimeout(4);
 
 #define OP_success 0
 #define SL_destroy_failed -2

@@ -66,14 +66,17 @@ public:
 	int get_slices();
 	void cleanup();
 
-
+	void set_viewport(int width, int height); //unit slates
+	int get_viewport_width();
+	int get_viewport_height();
 
 protected:
 	//every display a viewport_screen
 	void *viewport_screen=0;
 	virtual void update_slice_change()=0;
-
 private:
+	int horizontal_tiles=-1;
+	int vertical_tiles=-1;
 	int ownid=0;
 	int slices=0;
 	void destroyslate();
@@ -84,6 +87,8 @@ private:
 	long int max_avail_slates=0; //=slice*slice
 	vector<slate*> slate_pool; //leftwing first, then diag then top wing
 	master *mroot;
+
+
 	
 
 

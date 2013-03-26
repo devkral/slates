@@ -33,6 +33,7 @@ class slate;
 #include <deque>
 #include <memory>
 #include <atomic>
+#include <mutex>
 using namespace std;
 
 
@@ -72,13 +73,11 @@ public:
 
 	virtual void hide();
 	virtual void update();
-	virtual void draw();
+	virtual void draw(); //soon deprecate draw(), update is better
 	virtual void draw_function(); //for kickstarter optional
 	//either draw or draw_function must be defined
 	/** implementation idea:
-	 * update() update draw information, without drawing
-	 * draw() start drawthread (especially window) if isdrawn=false 
-			elsewise update static elements
+	 * update() update draw information, draws if in viewport area, hides otherwise 
 
 	 * hide() stop threads if isdrawn=true elsewise do nothing, should join drawthread
 		 also possible to override
@@ -88,6 +87,8 @@ public:
 protected:
 	atomic<bool> isdrawn;
 	atomic<bool> hasinputhandle;
+	timed_mutex interact_with_draw; //should be locked while update and of course while drawing
+	//but exclusive wait function
 
 	//set to false after end
 	//bool drawthreadactive=false;

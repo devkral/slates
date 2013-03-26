@@ -26,7 +26,7 @@ using namespace std;
 
 sdl_slate::sdl_slate (viewport *parent, long int id,int position_xtemp,int position_ytemp) : slate(parent, id,position_xtemp,position_ytemp)
 {
-	cerr << "Create sdl_slate\nposition x:" << position_xtemp << " Position y: " << position_ytemp << endl ;
+	cerr << "Create sdl_slateposition x:" << position_xtemp << " Position y: " << position_ytemp << endl ;
 }
 
 sdl_slate::~sdl_slate()

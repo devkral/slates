@@ -101,8 +101,14 @@ slate *sdl_viewport::get_slate_mouse(int x, int y)
 
 void sdl_viewport::update_slice_change()
 {
-	to_sdmac(viewport_screen)->widget_w=to_sdmac(viewport_screen)->dispbounds.w/get_slices();
-	to_sdmac(viewport_screen)->widget_h=to_sdmac(viewport_screen)->dispbounds.h/get_slices();
+	to_sdmac(viewport_screen)->widget_w=to_sdmac(viewport_screen)->dispbounds.w/get_viewport_width();
+	to_sdmac(viewport_screen)->widget_h=to_sdmac(viewport_screen)->dispbounds.h/get_viewport_height();
+
+	to_sdmac(viewport_screen)->max_w=to_sdmac(viewport_screen)->widget_w*get_viewport_width ();
+	to_sdmac(viewport_screen)->max_h=to_sdmac(viewport_screen)->widget_h*get_viewport_height ();
+	
+	SDL_RenderCopy(to_sdmac(viewport_screen)->globalrender,to_sdmac(viewport_screen)->viewport_tex, 0, 0);
+	SDL_RenderPresent(to_sdmac(viewport_screen)->globalrender);
 }
 
 
