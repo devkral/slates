@@ -103,16 +103,17 @@ int sdl_master::handle_masterevent(void *event)
 					ishandled=MASTER_HANDLED;
 				}
 
-				if (((SDL_Event*)event)->key.keysym.sym==SDLK_PLUS )
+				if (((SDL_Event*)event)->key.keysym.sym==SDLK_MINUS ||
+				    ((SDL_Event*)event)->key.keysym.sym==SDLK_KP_MINUS )
 				{
-					cerr << "PLUS\n";
 					int width=(viewport_pool[0]->get_viewport_width())+1;
 					int height=(viewport_pool[0]->get_viewport_height())+1;
 					viewport_pool[0]->set_viewport(width, height );
 					ishandled=MASTER_HANDLED;
 				}
 
-				if (((SDL_Event*)event)->key.keysym.sym==SDLK_MINUS )
+				if (((SDL_Event*)event)->key.keysym.sym==SDLK_PLUS || 
+				    ((SDL_Event*)event)->key.keysym.sym==SDLK_KP_PLUS)
 				{
 					int width=(viewport_pool[0]->get_viewport_width())-1;
 					int height=(viewport_pool[0]->get_viewport_height())-1;
