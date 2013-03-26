@@ -54,6 +54,8 @@ public:
 	void fillslate_intern(long int id); //counter 
 	void emptyslate_intern(long int id); //counter
 	void handle_event(void *event);
+	
+	virtual void update_slice_info()=0;
 	void async_update_slates();
 	
 	void async_cleanup_slates(long int id_beg, long int id_end);
@@ -70,10 +72,11 @@ public:
 	int get_viewport_width();
 	int get_viewport_height();
 
+	
+
 protected:
 	//every display a viewport_screen
 	void *viewport_screen=0;
-	virtual void update_slice_info()=0;
 private:
 	int horizontal_tiles=-1;
 	int vertical_tiles=-1;

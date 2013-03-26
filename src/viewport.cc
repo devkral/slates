@@ -89,6 +89,7 @@ void viewport::set_viewport(int width, int height)
 		vertical_tiles=1;
 	else
 		vertical_tiles=height;
+	update_slice_info();
 	async_update_slates();
 }
 
@@ -166,7 +167,6 @@ void async_update_slates_intern(slate *targob)
 
 void viewport::async_update_slates()
 {	
-	update_slice_info();
 	vector<thread> temppool;
 	for (long int count=0;count<max_avail_slates;count++)
 	{
@@ -260,7 +260,8 @@ int viewport::removeslice()
 	id_nto_last_beg=cache_nto_last_diag_point_id-(slices-2);
 	last_slice_filled=nto_last_slice_filled;
 	nto_last_slice_filled=count_filled_slots(slices-1);
-	
+
+	update_slice_info();
 	async_update_slates();
 	return OP_success;
 }

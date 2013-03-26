@@ -106,6 +106,7 @@ int sdl_master::handle_masterevent(void *event)
 				}
 				if (((SDL_Event*)event)->key.keysym.sym==SDLK_r )
 				{
+					viewport_pool[0]->update_slice_info();
 					viewport_pool[0]->async_update_slates();
 					ishandled=MASTER_HANDLED;
 				}
