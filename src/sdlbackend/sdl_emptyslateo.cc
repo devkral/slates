@@ -51,21 +51,21 @@ void sdl_emptyslateo::update()
 		(to_sdmac (getviewport()->get_viewport_screen())->widget_w),
 		 (to_sdmac (getviewport()->get_viewport_screen())->widget_h));
 
-	
-		widget.inner_object.x=to_sdslc(screen_object)->slatebox.x+2;
-		widget.inner_object.y=to_sdslc(screen_object)->slatebox.y+2;
-		widget.inner_object.w=to_sdslc(screen_object)->slatebox.w-2;
-		widget.inner_object.h=to_sdslc(screen_object)->slatebox.h-2;
+	/**
+		widget.inner_object.x=to_sdslc(screen_object)->slatebox.x;
+		widget.inner_object.y=to_sdslc(screen_object)->slatebox.y;
+		widget.inner_object.w=to_sdslc(screen_object)->slatebox.w;
+		widget.inner_object.h=to_sdslc(screen_object)->slatebox.h;*/
 		if(widget.emptysur!=0)
 			SDL_FreeSurface (widget.emptysur);
-		widget.emptysur=SDL_CreateRGBSurface (0,widget.inner_object.w,widget.inner_object.h,32,0,0,0,0);
+		widget.emptysur=SDL_CreateRGBSurface (0,to_sdslc(screen_object)->slatebox.w,to_sdslc(screen_object)->slatebox.h,32,0,0,0,0);
 	
 		assert(widget.emptysur!=0);
 	
 		Uint32 white=SDL_MapRGBA (widget.emptysur->format, 255,255,255,255);
 		Uint32 black=SDL_MapRGBA (widget.emptysur->format, 0,0,0,255);
 		//SDL_FillRect (widget.emptysur, &widget.inner_object, black);
-		SDL_FillRect (widget.emptysur, &widget.inner_object, white);
+		SDL_FillRect (widget.emptysur, &to_sdslc(screen_object)->slatebox, white);
 		if(widget.emptytex!=0)
 			SDL_DestroyTexture (widget.emptytex);
 		widget.emptytex=SDL_CreateTextureFromSurface (to_sdslc(screen_object)->mastercanvas->globalrender,widget.emptysur);
@@ -73,13 +73,16 @@ void sdl_emptyslateo::update()
 		//SDL_RenderPresent(to_sdslc (screen_object)->slaterender);
 		//cout << "new innerobject x: " << widget.inner_object.x << " y: " << widget.inner_object.y << " w: " << widget.inner_object.w << "h: " << widget.inner_object.h << endl;
 
-		if (to_sdslc (screen_object)->mastercanvas->max_w<=to_sdslc (screen_object)->slatebox.x || 
+		if (isvisible==false || to_sdslc (screen_object)->mastercanvas->max_w<=to_sdslc (screen_object)->slatebox.x || 
 		    to_sdslc (screen_object)->mastercanvas->max_h<=to_sdslc (screen_object)->slatebox.y)
 		{
-			hide();
+			isdrawn=false;
+			hasinputhandle=false;
 		}
 		else if (isdrawn==false)
 		{
+			if (drawthread.joinable())
+				drawthread.join();
 			isdrawn=true;
 			drawthread=thread(kickstarter_drawthread, (slateobject *)this);
 		}
@@ -88,15 +91,6 @@ void sdl_emptyslateo::update()
 	}
 }
 
-void sdl_emptyslateo::draw()
-{
-	update();
-	/**if (isdrawn==false)
-	{
-		isdrawn=true;
-		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
-	}*/
-}
 
 void sdl_emptyslateo::cleanup_handler ()
 {
@@ -171,7 +165,7 @@ void sdl_emptyslateo::draw_function ()
 	
 	
 
-			SDL_RenderCopy(to_sdslc (screen_object)->mastercanvas->globalrender, widget.emptytex, 0, &widget.inner_object);
+			SDL_RenderCopy(to_sdslc (screen_object)->mastercanvas->globalrender, widget.emptytex, 0, &to_sdslc(screen_object)->slatebox);
 
 			//SDL_RenderCopy(to_sdslc (screen_object)->slaterender, widget.emptytex, 0, &widget.inner_object);
 			//SDL_RenderPresent(to_sdslc (screen_object)->slaterender);

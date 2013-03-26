@@ -116,13 +116,26 @@ void master::stop_handling_input()
 		inputthread.join();
 	}
 }
+void send_event_to_all_intern(viewport *viewportobject, void *event)
+{
+	viewportobject->handle_event(event);
+
+}
+
 int master::send_event_to_all(void *event)
 {
 	int status=handle_masterevent(event);
 	if (status==MASTER_UNHANDLED)
 	{
+		vector<thread> threadpool_events;
 		for (long int count=0; count<viewport_idcount; count++)
-			viewport_pool[count]->handle_event(event);
+			threadpool_events.push_back( thread(send_event_to_all_intern,viewport_pool[count],event));
+		while (threadpool_events.empty()==false)
+		{
+			if (threadpool_events.back().joinable())
+				threadpool_events.back().join();
+			threadpool_events.pop_back();
+		}
 	}
 	return status;
 }

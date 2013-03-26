@@ -76,16 +76,19 @@ int viewport::get_viewport_height()
 
 void viewport::set_viewport(int width, int height)
 {
-	if (width<=0 || width>=slices)
+	if (width>=slices)
 		horizontal_tiles=-1;
+	else if (width<=0)
+		horizontal_tiles=1;
 	else
 		horizontal_tiles=width;
 
-	if (height<=0 || height>=slices)
+	if (height>=slices)
 		vertical_tiles=-1;
+	else if (height<=0)
+		vertical_tiles=1;
 	else
 		vertical_tiles=height;
-	update_slice_change();
 	async_update_slates();
 }
 
@@ -162,7 +165,8 @@ void async_update_slates_intern(slate *targob)
 }
 
 void viewport::async_update_slates()
-{
+{	
+	update_slice_info();
 	vector<thread> temppool;
 	for (long int count=0;count<max_avail_slates;count++)
 	{
@@ -236,7 +240,7 @@ void viewport::addslice()
 	nto_last_slice_filled=last_slice_filled;
 	last_slice_filled=0;
 	
-	update_slice_change();
+	update_slice_info();
 	for (long int count=0;count<slices+slices-1;count++) //=(slices+1)+(slices+1)-1
 		createslate();
 	async_update_slates();
@@ -257,7 +261,6 @@ int viewport::removeslice()
 	last_slice_filled=nto_last_slice_filled;
 	nto_last_slice_filled=count_filled_slots(slices-1);
 	
-	update_slice_change();
 	async_update_slates();
 	return OP_success;
 }

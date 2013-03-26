@@ -52,7 +52,7 @@ void gtkmm_viewport::create_mscreen_ob()
 	//to_gdw(viewport_screen)->display_grid();
 }
 
-void gtkmm_viewport::update_slice_change()
+void gtkmm_viewport::update_slice_info()
 {
 
 }

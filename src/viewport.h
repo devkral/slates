@@ -73,7 +73,7 @@ public:
 protected:
 	//every display a viewport_screen
 	void *viewport_screen=0;
-	virtual void update_slice_change()=0;
+	virtual void update_slice_info()=0;
 private:
 	int horizontal_tiles=-1;
 	int vertical_tiles=-1;
@@ -87,6 +87,7 @@ private:
 	long int max_avail_slates=0; //=slice*slice
 	vector<slate*> slate_pool; //leftwing first, then diag then top wing
 	master *mroot;
+	
 
 
 	

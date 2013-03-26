@@ -1,7 +1,6 @@
-Don't use!
-It's pre-working
+Status: in development
 
-TODO: overlap to close
-Working why: effectively one program needs just one slate
+REQUIREMENTS:
+c++11 compatible compiler (=not visual studio)
+sdl2 (=hg version);
 
-i3

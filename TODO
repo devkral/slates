@@ -1,12 +1,10 @@
 TODO:
-messaging via openmpi??
-implement messaging =>
-implement actual actions (close destroy)
-implement running programs as children  //is there a lib
+messaging via separation only special input events are exposed to all
+implement running programs as children  //is there a lib?
 implement program selector
+overlap to close
 
 Future:
-deco: would be nice to have deco instead of having a spartan interface
 implement gui isolation
 
 

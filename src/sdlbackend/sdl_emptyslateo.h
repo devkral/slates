@@ -42,7 +42,7 @@ typedef struct sdlemptyprivat_{
 	}
 	SDL_Surface *emptysur=0;
 	SDL_Texture *emptytex=0;
-	SDL_Rect inner_object;
+	//SDL_Rect inner_object;
 	
 }sdlempty;
 
@@ -54,7 +54,6 @@ public:
 	sdl_emptyslateo(slate *parent_slate, void *screenob);
 	~sdl_emptyslateo();
 	void update();
-	void draw();
 	void cleanup_handler ();
 	void draw_function ();
 	void handle_input(void *initializer);

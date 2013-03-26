@@ -53,7 +53,7 @@ void sdl_viewport::destroy_mscreen_ob()
 
 void sdl_viewport::create_mscreen_ob()
 {
-	viewport_screen=new sdlmastercanvas;
+	viewport_screen=new sdlmastercanvas(2);
 	//SDL_CreateWindowAndRenderer(
 	SDL_GetDisplayBounds(get_id(), &to_sdmac(viewport_screen)->dispbounds);
 	bool justmaximize=1;
@@ -99,7 +99,7 @@ slate *sdl_viewport::get_slate_mouse(int x, int y)
 }
 
 
-void sdl_viewport::update_slice_change()
+void sdl_viewport::update_slice_info()
 {
 	to_sdmac(viewport_screen)->widget_w=to_sdmac(viewport_screen)->dispbounds.w/get_viewport_width();
 	to_sdmac(viewport_screen)->widget_h=to_sdmac(viewport_screen)->dispbounds.h/get_viewport_height();

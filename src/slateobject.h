@@ -73,19 +73,22 @@ public:
 
 	virtual void hide();
 	virtual void update();
-	virtual void draw(); //soon deprecate draw(), update is better
+	virtual void draw();
 	virtual void draw_function(); //for kickstarter optional
 	//either draw or draw_function must be defined
 	/** implementation idea:
-	 * update() update draw information, draws if in viewport area, hides otherwise 
-
-	 * hide() stop threads if isdrawn=true elsewise do nothing, should join drawthread
-		 also possible to override
+	 * draw() set isvisible true, update
+	 * update() update draw information
+		if isdrawn false and isvisible true: join ending draw thread (if exists check with joinable()) and start it again
+		if isvisible false: set isdraw and hasinputhandle false
+	 * hide() set isvisible false, destruction routine, join drawthread
+		 important: make independent from update
 	 */
 	void cleanup();
 	
 protected:
 	atomic<bool> isdrawn;
+	atomic<bool> isvisible;
 	atomic<bool> hasinputhandle;
 	timed_mutex interact_with_draw; //should be locked while update and of course while drawing
 	//but exclusive wait function

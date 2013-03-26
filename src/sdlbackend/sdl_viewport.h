@@ -47,7 +47,7 @@ public:
 	slate *get_slate_mouse(int x, int y);
 	
 protected:
-	void update_slice_change();
+	void update_slice_info();
 	
 	
 private:

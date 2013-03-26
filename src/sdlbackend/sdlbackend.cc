@@ -45,12 +45,14 @@ void sdl_master::inputhandler_function()
 			{
 				case SDL_QUIT: hasinputhandle=false;
 					break;
-				case SDL_MOUSEMOTION:
+				case SDL_MOUSEMOTION:{
 					slate* temp=((sdl_viewport*)viewport_pool[0])->get_slate_mouse(event.motion.x,event.motion.y);
 					if (temp!=0)
 						temp->handle_input(&event);
-					break;
-				break;
+					break;}
+				default:{
+					handle_masterevent(&event);
+					break;}
 			}
 		} while (SDL_PollEvent (&event));
 		//SDL_Delay(100);
@@ -100,6 +102,11 @@ int sdl_master::handle_masterevent(void *event)
 				{
 					if (viewport_pool[0]->removeslice()==SL_destroy_failed)
 						cerr << "Destroy failed\n";
+					ishandled=MASTER_HANDLED;
+				}
+				if (((SDL_Event*)event)->key.keysym.sym==SDLK_r )
+				{
+					viewport_pool[0]->async_update_slates();
 					ishandled=MASTER_HANDLED;
 				}
 

@@ -30,9 +30,10 @@ using namespace std;
 
 
 typedef struct sdlmastercanvas_{
-	sdlmastercanvas_()
+	sdlmastercanvas_(int borderthicknesst)
 	{
 		is_rendering=false;
+		borderthickness=borderthicknesst;
 	}
 		
 	~sdlmastercanvas_()
@@ -54,6 +55,7 @@ typedef struct sdlmastercanvas_{
 	int widget_h=0;
 	int max_w=0;
 	int max_h=0;
+	int borderthickness=0;
 	
 	
 }sdlmastercanvas;
@@ -81,10 +83,10 @@ typedef struct sdlslatecanvas_{
 	sdlmastercanvas *mastercanvas=0;
 	void updaterect(int x, int y, int w, int h)
 	{
-		slatebox.x=x;
-		slatebox.y=y;
-		slatebox.w=w;
-		slatebox.h=h;
+		slatebox.x=x+mastercanvas->borderthickness;
+		slatebox.y=y+mastercanvas->borderthickness;
+		slatebox.w=w-mastercanvas->borderthickness;
+		slatebox.h=h-mastercanvas->borderthickness;
 
 	};
 	

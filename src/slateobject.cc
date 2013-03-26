@@ -29,6 +29,7 @@ slateobject::slateobject(slate *parent_slate, void *screenob)
 	(*connectedslates).push_back( deque<slate*>() );
 	(*connectedslates)[0].push_back(parent_slate);
 	screen_object=screenob;
+	isvisible=false;
 	isdrawn=false;
 }
 
@@ -95,8 +96,10 @@ void slateobject::close()
 }
 void slateobject::hide()
 {
+	isvisible=false;
 	isdrawn=false;
 	hasinputhandle=false;
+	//update();
 	if (drawthread.joinable())
 		drawthread.join();
 }
@@ -106,26 +109,34 @@ void slateobject::update()
 	if (interact_with_draw.try_lock_for(defaulttimeout))
 	{
 		//code
-	
+
+
+		if (isvisible==false) // || …
+		{
+			isdrawn=false;
+			hasinputhandle=false;
+		}
+		else if (isdrawn==false)
+		{
+			isdrawn=true;
+			drawthread=thread(kickstarter_drawthread, (slateobject *)this);
+		}
 		interact_with_draw.unlock();
 	}
 }
 
 void slateobject::draw()
 {
+	isvisible=true;
 	update();
-	if (isdrawn==false)
-	{
-		isdrawn=true;
-		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
-	}
+	
 }
 void slateobject::draw_function()
 {
 	if (interact_with_draw.try_lock_for(defaulttimeout))
 	{
 		//code
-	
+		
 		interact_with_draw.unlock();
 	}
 }
