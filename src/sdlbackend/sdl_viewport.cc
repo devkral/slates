@@ -63,9 +63,10 @@ void sdl_viewport::create_mscreen_ob()
 	else
 		to_sdmac(viewport_screen)->window=SDL_CreateWindow("Slates", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 			           to_sdmac(viewport_screen)->dispbounds.w, to_sdmac(viewport_screen)->dispbounds.h,SDL_WINDOW_FULLSCREEN);
-	SDL_GetWindowDisplayMode(to_sdmac(viewport_screen)->window,&to_sdmac(viewport_screen)->curdisplaymode);
+	SDL_GetCurrentDisplayMode(get_id (),&to_sdmac(viewport_screen)->curdisplaymode);
 
 	to_sdmac(viewport_screen)->globalrender=SDL_CreateRenderer(to_sdmac(viewport_screen)->window,-1,SDL_RENDERER_SOFTWARE);//|SDL_RENDERER_PRESENTVSYNC);//SDL_RENDERER_ACCELERATED);
+
 	to_sdmac(viewport_screen)->viewport_tex=SDL_CreateTexture (to_sdmac(viewport_screen)->globalrender,
 	                                                           to_sdmac(viewport_screen)->curdisplaymode.format,
 	                                                           SDL_TEXTUREACCESS_STREAMING,
@@ -104,9 +105,12 @@ void sdl_viewport::update_slice_info()
 	to_sdmac(viewport_screen)->widget_w=to_sdmac(viewport_screen)->dispbounds.w/get_viewport_width();
 	to_sdmac(viewport_screen)->widget_h=to_sdmac(viewport_screen)->dispbounds.h/get_viewport_height();
 
+	to_sdmac(viewport_screen)->beg_x=to_sdmac(viewport_screen)->widget_w*get_viewport_beg_x();
+	to_sdmac(viewport_screen)->beg_y=to_sdmac(viewport_screen)->widget_h*get_viewport_beg_y();
+	
 	to_sdmac(viewport_screen)->max_w=to_sdmac(viewport_screen)->widget_w*get_viewport_width ();
 	to_sdmac(viewport_screen)->max_h=to_sdmac(viewport_screen)->widget_h*get_viewport_height ();
-	
+	SDL_RenderClear(to_sdmac(viewport_screen)->globalrender);
 	SDL_RenderCopy(to_sdmac(viewport_screen)->globalrender,to_sdmac(viewport_screen)->viewport_tex, 0, 0);
 	SDL_RenderPresent(to_sdmac(viewport_screen)->globalrender);
 }

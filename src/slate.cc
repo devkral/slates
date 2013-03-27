@@ -129,7 +129,7 @@ shared_ptr<slateobject> slate::get_lockobject()
 
 void slate::lock_slate()
 {
-	if (lockstate!=0)
+	if (lockstate==0)
 	{
 		preserve_after_lock.swap(child_slateo);
 		lockstate=2;
@@ -140,7 +140,7 @@ void slate::lock_slate()
 
 void slate::unlock_slate()
 {
-	if (lockstate!=2)
+	if (lockstate==2)
 	{
 		child_slateo.swap(preserve_after_lock);
 		lockstate=0;

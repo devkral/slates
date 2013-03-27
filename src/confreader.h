@@ -17,37 +17,28 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SDL_LOCKSLATEO_H_
-#define _SDL_LOCKSLATEO_H_
+#ifndef _CONFREADER_H_
+#define _CONFREADER_H_
 
-#include "lockslateo.h"
-class lockslateo;
-#include "sdl_screenobject.h"
-class sdl_screenobject;
 
 #include <string>
 
 
-#include "constdef.h"
+using namespace std;
 
-class sdl_lockslateo: public lockslateo 
+
+class confreader
 {
-public:
-	sdl_lockslateo(slate *parent_slate, void *screenob);
-	~sdl_lockslateo();
-	void update();
-	void cleanup_handler ();
-	void draw_function ();
-	void handle_input(void *initializer);
-	void handle_event(void *event, bool called_by_input);
-	string enter_password ();
+	public:
+		confreader(string file);
+		~confreader();
+		void set_variable(string varname, string varvalue);
+		void del_variable(string varname);
+		string get_variable(string varname);
 	
-protected:
-	int update_interval;
-	SDL_Event event;
-private:
-	void unlock();
+	private:
+		string filename;
+		
 };
 
-#endif // _LOCKSLATEO_H_
-
+#endif //CONFREADER

@@ -26,6 +26,7 @@ using namespace std;
 sdl_lockslateo::sdl_lockslateo(slate *parent_slate, void *screenob) : lockslateo(parent_slate,screenob)
 {
 	cerr << "Create sdl_lockslateo\n";
+	update_interval=3000;
 }
 
 sdl_lockslateo::~sdl_lockslateo()
@@ -33,18 +34,132 @@ sdl_lockslateo::~sdl_lockslateo()
 	cerr << "Destroy sdl_lockslateo\n";
 }
 
-void sdl_lockslateo::draw()
+
+void sdl_lockslateo::update()
 {
-	if (isdrawn==false)
+	interact_with_draw.lock();
+	//{
+		to_sdslc(screen_object)->updaterect(
+			        (getfparent()->get_position_x())*(to_sdmac (getviewport()->get_viewport_screen())->widget_w-to_sdmac (getviewport()->get_viewport_screen())->beg_x),
+			       (getfparent()->get_position_y())*(to_sdmac (getviewport()->get_viewport_screen())->widget_h-to_sdmac (getviewport()->get_viewport_screen())->beg_y),
+		(to_sdmac (getviewport()->get_viewport_screen())->widget_w - to_sdmac (getviewport()->get_viewport_screen())->beg_x),
+		 (to_sdmac (getviewport()->get_viewport_screen())->widget_h - to_sdmac (getviewport()->get_viewport_screen())->beg_y));
+
+	
+		if (isvisible==false || to_sdslc (screen_object)->mastercanvas->max_w<=to_sdslc (screen_object)->slatebox.x || 
+		    to_sdslc (screen_object)->mastercanvas->max_h<=to_sdslc (screen_object)->slatebox.y ||
+		    to_sdslc (screen_object)->slatebox.x+to_sdslc (screen_object)->slatebox.w<=0  ||
+		    to_sdslc (screen_object)->slatebox.y+to_sdslc (screen_object)->slatebox.h<=0)
+		{
+			isdrawn=false;
+			hasinputhandle=false;
+		}
+		else if (isdrawn==false)
+		{
+			if (drawthread.joinable())
+				drawthread.join();
+			isdrawn=true;
+			drawthread=thread(kickstarter_drawthread, (slateobject *)this);
+		}
+		
+		interact_with_draw.unlock();
+	//}
+}
+
+
+void sdl_lockslateo::cleanup_handler ()
+{
+	delete to_sdslc (screen_object);
+}
+
+void sdl_lockslateo::handle_event (void *event, bool called_by_input)
+{
+
+	if (called_by_input==true && ((SDL_Event*)event)->key.keysym.sym==SDLK_ESCAPE)
 	{
-		isdrawn=true;
-		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
+		hasinputhandle=false;
+		getfparent()->getmaster()->handle_masterevent(event);
 	}
 	else
 	{
-		cerr << "Update sdl_lockslateo\n";
+		switch( ((SDL_Event*)event)->type )
+		{
+			case SDL_QUIT: hasinputhandle=false;
+				getfparent()->getmaster()->handle_masterevent(event); //message master
+			break;
+			case SDL_MOUSEBUTTONDOWN:
+				if (((SDL_Event*)event)->button.button==SDL_BUTTON_LEFT)
+				{
+					cout << "Replaced by emptyobject\n";
+					getfparent ()->unlock_slate();
+				}
+			break;
+			case SDL_MOUSEMOTION: 
+			if (called_by_input==true)
+			{
+				if (((SDL_Event*)event)->motion.x<to_sdslc (screen_object)->slatebox.x ||
+					((SDL_Event*)event)->motion.y<to_sdslc (screen_object)->slatebox.y)
+				{	
+					hasinputhandle=false;
+				}
+				if (((SDL_Event*)event)->motion.x>to_sdslc (screen_object)->slatebox.x+to_sdslc (screen_object)->slatebox.w ||
+					((SDL_Event*)event)->motion.y>to_sdslc (screen_object)->slatebox.y+to_sdslc (screen_object)->slatebox.h)
+				{
+					hasinputhandle=false;
+				}
+			}
+			break;
+		}
+			
+	}
+
+}
+
+void sdl_lockslateo::handle_input (void *initializer)
+{
+	hasinputhandle=true;
+	cout << "lockslate ready to serve\n"; 
+	event=*((SDL_Event*)initializer);
+	do
+	{
+		SDL_WaitEvent(&event);
+		do
+		{
+			handle_event(&event,true);
+		} while (SDL_PollEvent (&event));
+		SDL_Delay(update_interval/2);
+	}while (hasinputhandle);	
+}
+
+
+void sdl_lockslateo::draw_function ()
+{
+	while(isdrawn==true)
+	{
+
+		if (interact_with_draw.try_lock_for(defaulttimeout))
+		{
+
+			//SDL_RenderCopy(to_sdslc (screen_object)->slaterender, widget.emptytex, 0, &to_sdslc(screen_object)->slatebox);
+			//SDL_RenderCopy(to_sdslc (screen_object)->mastercanvas->globalrender, widget.emptytex, 0, &to_sdslc(screen_object)->slatebox);
+			//SDL_RenderCopy(to_sdslc (screen_object)->slaterender, widget.emptytex, 0, &widget.inner_object);
+			//SDL_RenderPresent(to_sdslc (screen_object)->slaterender);
+			//if (to_sdslc (screen_object)->mastercanvas->is_rendering==false)
+			//{
+			//	to_sdslc (screen_object)->mastercanvas->is_rendering=true;
+				//SDL_RenderCopy(to_sdslc (screen_object)->mastercanvas->globalrender,
+				//               to_sdslc (screen_object)->mastercanvas->viewport_tex,0,0);
+				//SDL_RenderPresent(to_sdslc (screen_object)->slaterender);
+				//SDL_RenderPresent(to_sdslc (screen_object)->mastercanvas->globalrender);
+			//	to_sdslc (screen_object)->mastercanvas->is_rendering=false;
+			//}
+		
+			interact_with_draw.unlock();
+		}
+		SDL_Delay(update_interval);
 	}
 }
+
 
 string sdl_lockslateo::enter_password ()
 {
@@ -66,13 +181,4 @@ void sdl_lockslateo::unlock()
 {
 	if (! (getfparent()->getmaster()->unlock((char *)enter_password().c_str())) )
 		cout << "Not unlocked\n";
-}
-
-void sdl_lockslateo::cleanup_handler ()
-{
-	delete to_sdslc (screen_object);
-}
-
-void sdl_lockslateo::draw_function ()
-{
 }

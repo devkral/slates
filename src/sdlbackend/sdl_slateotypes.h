@@ -17,37 +17,18 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SDL_LOCKSLATEO_H_
-#define _SDL_LOCKSLATEO_H_
+#ifndef _SDLSLATEOTYPES_H_
+#define _SDLSLATEOTYPES_H_
 
-#include "lockslateo.h"
-class lockslateo;
-#include "sdl_screenobject.h"
-class sdl_screenobject;
-
-#include <string>
-
-
-#include "constdef.h"
-
-class sdl_lockslateo: public lockslateo 
+class sdl_slateotypes
 {
 public:
-	sdl_lockslateo(slate *parent_slate, void *screenob);
-	~sdl_lockslateo();
-	void update();
-	void cleanup_handler ();
-	void draw_function ();
-	void handle_input(void *initializer);
-	void handle_event(void *event, bool called_by_input);
-	string enter_password ();
-	
+
 protected:
-	int update_interval;
-	SDL_Event event;
+
 private:
-	void unlock();
+
 };
 
-#endif // _LOCKSLATEO_H_
+#endif // _SDLSLATEOTYPES_H_
 

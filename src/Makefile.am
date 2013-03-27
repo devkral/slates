@@ -35,7 +35,9 @@ slates_SOURCES = \
 	sysslateo.cc \
 	sysslateo.h \
 	emptyslateo.cc \
-	emptyslateo.h
+	emptyslateo.h \
+	confreader.cc \
+	confreader.h
 
 
 
@@ -93,7 +95,9 @@ slates_SOURCES += sdlbackend/sdlbackend.cc \
 	sdlbackend/sdl_emptyslateo.cc \
 	sdlbackend/sdl_emptyslateo.h \
 	sdlbackend/sdl_screenobject.cc \
-	sdlbackend/sdl_screenobject.h
+	sdlbackend/sdl_screenobject.h \
+	sdlbackend/sdl_slateotypes.cc \
+	sdlbackend/sdl_slateotypes.h
 endif
 
 slates_CXXFLAGS = -std=c++11

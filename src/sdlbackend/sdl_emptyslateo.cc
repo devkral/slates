@@ -29,8 +29,9 @@ using namespace std;
 
 sdl_emptyslateo::sdl_emptyslateo(slate *parent_slate, void *screenob) : emptyslateo(parent_slate,screenob)
 {
+	cout << "Create emptyslate\n";
 	update_interval=100;
-	to_sdslc(screen_object)->slaterender=SDL_CreateRenderer (to_sdslc(screen_object)->mastercanvas->window,-1,SDL_RENDERER_SOFTWARE|SDL_RENDERER_TARGETTEXTURE);
+	to_sdslc(screen_object)->slaterender=SDL_CreateRenderer (to_sdslc(screen_object)->mastercanvas->window,-1,SDL_RENDERER_SOFTWARE);
 	//SDL_RendererPresent
 	//
 }
@@ -42,14 +43,13 @@ sdl_emptyslateo::~sdl_emptyslateo()
 
 void sdl_emptyslateo::update()
 {
-	if (interact_with_draw.try_lock_for(defaulttimeout))
-	{
-	
+	interact_with_draw.lock();
+	//{
 		to_sdslc(screen_object)->updaterect(
-			        (getfparent()->get_position_x())*(to_sdmac (getviewport()->get_viewport_screen())->widget_w),
-			       (getfparent()->get_position_y())*(to_sdmac (getviewport()->get_viewport_screen())->widget_h),
-		(to_sdmac (getviewport()->get_viewport_screen())->widget_w),
-		 (to_sdmac (getviewport()->get_viewport_screen())->widget_h));
+			        (getfparent()->get_position_x())*(to_sdmac (getviewport()->get_viewport_screen())->widget_w-to_sdmac (getviewport()->get_viewport_screen())->beg_x),
+			       (getfparent()->get_position_y())*(to_sdmac (getviewport()->get_viewport_screen())->widget_h-to_sdmac (getviewport()->get_viewport_screen())->beg_y),
+		(to_sdmac (getviewport()->get_viewport_screen())->widget_w - to_sdmac (getviewport()->get_viewport_screen())->beg_x),
+		 (to_sdmac (getviewport()->get_viewport_screen())->widget_h - to_sdmac (getviewport()->get_viewport_screen())->beg_y));
 
 	/**
 		widget.inner_object.x=to_sdslc(screen_object)->slatebox.x;
@@ -62,8 +62,8 @@ void sdl_emptyslateo::update()
 	
 		assert(widget.emptysur!=0);
 	
-		Uint32 white=SDL_MapRGBA (widget.emptysur->format, 255,255,255,255);
-		Uint32 black=SDL_MapRGBA (widget.emptysur->format, 0,0,0,255);
+		white=SDL_MapRGBA (widget.emptysur->format, 255,255,255,255);
+		black=SDL_MapRGBA (widget.emptysur->format, 0,0,0,255);
 		//SDL_FillRect (widget.emptysur, &widget.inner_object, black);
 		SDL_FillRect (widget.emptysur, &to_sdslc(screen_object)->slatebox, white);
 		if(widget.emptytex!=0)
@@ -74,7 +74,9 @@ void sdl_emptyslateo::update()
 		//cout << "new innerobject x: " << widget.inner_object.x << " y: " << widget.inner_object.y << " w: " << widget.inner_object.w << "h: " << widget.inner_object.h << endl;
 
 		if (isvisible==false || to_sdslc (screen_object)->mastercanvas->max_w<=to_sdslc (screen_object)->slatebox.x || 
-		    to_sdslc (screen_object)->mastercanvas->max_h<=to_sdslc (screen_object)->slatebox.y)
+		    to_sdslc (screen_object)->mastercanvas->max_h<=to_sdslc (screen_object)->slatebox.y ||
+		    to_sdslc (screen_object)->slatebox.x+to_sdslc (screen_object)->slatebox.w<=0  ||
+		    to_sdslc (screen_object)->slatebox.y+to_sdslc (screen_object)->slatebox.h<=0)
 		{
 			isdrawn=false;
 			hasinputhandle=false;
@@ -88,7 +90,7 @@ void sdl_emptyslateo::update()
 		}
 		
 		interact_with_draw.unlock();
-	}
+	//}
 }
 
 
@@ -99,26 +101,38 @@ void sdl_emptyslateo::cleanup_handler ()
 
 void sdl_emptyslateo::handle_event (void *event, bool called_by_input)
 {
-	switch( ((SDL_Event*)event)->type )
+
+	if (called_by_input==true && SDL_GetModState()&(KMOD_GUI|KMOD_CTRL))
 	{
-		case SDL_QUIT: hasinputhandle=false;
-			getfparent()->getmaster()->send_event_to_all(event); //message master
+		int status=getfparent()->getmaster()->send_event_to_all(event);
+		if (status==MASTER_QUIT)
+		{
+			hasinputhandle=false;
+		}
+	}
+	else if (called_by_input==true && ((SDL_Event*)event)->key.keysym.sym==SDLK_ESCAPE)
+	{
+		hasinputhandle=false;
+		getfparent()->getmaster()->handle_masterevent(event);
+	}
+	else
+	{
+		switch( ((SDL_Event*)event)->type )
+		{
+			case SDL_QUIT: hasinputhandle=false;
+				getfparent()->getmaster()->handle_masterevent(event); //message master
 			break;
-		case SDL_KEYDOWN:
-			//the only modifier keys with which shortcuts can be made
-			if (called_by_input && (((SDL_Event*)event)->key.keysym.sym==SDLK_ESCAPE ||
-			    ((SDL_Event*)event)->key.keysym.mod&KMOD_CTRL ||
-			    ((SDL_Event*)event)->key.keysym.mod&KMOD_GUI)) 
+			case SDL_MOUSEBUTTONDOWN:
+				if (((SDL_Event*)event)->button.button==SDL_BUTTON_LEFT)
 				{
-					int status=getfparent()->getmaster()->send_event_to_all(event);
-					if (status==MASTER_QUIT)
-					{
-						hasinputhandle=false;
-					}
-			}
+					cout << "Replace by lockobject\n";
+					getfparent ()->lock_slate();
+				}
 			break;
-		case SDL_MOUSEMOTION: 
-			if (specialcondition==false)
+			case SDL_KEYDOWN:
+			break;
+			case SDL_MOUSEMOTION: 
+			if (called_by_input==true && specialcondition==false)
 			{
 				if (((SDL_Event*)event)->motion.x<to_sdslc (screen_object)->slatebox.x ||
 					((SDL_Event*)event)->motion.y<to_sdslc (screen_object)->slatebox.y)
@@ -132,6 +146,7 @@ void sdl_emptyslateo::handle_event (void *event, bool called_by_input)
 				}
 			}
 			break;
+		}
 			
 	}
 
@@ -161,12 +176,9 @@ void sdl_emptyslateo::draw_function ()
 //		interact_with_draw.lock();
 		if (interact_with_draw.try_lock_for(defaulttimeout))
 		{
-			//code
-	
-	
 
+			//SDL_RenderCopy(to_sdslc (screen_object)->slaterender, widget.emptytex, 0, &to_sdslc(screen_object)->slatebox);
 			SDL_RenderCopy(to_sdslc (screen_object)->mastercanvas->globalrender, widget.emptytex, 0, &to_sdslc(screen_object)->slatebox);
-
 			//SDL_RenderCopy(to_sdslc (screen_object)->slaterender, widget.emptytex, 0, &widget.inner_object);
 			//SDL_RenderPresent(to_sdslc (screen_object)->slaterender);
 			//if (to_sdslc (screen_object)->mastercanvas->is_rendering==false)
@@ -174,6 +186,7 @@ void sdl_emptyslateo::draw_function ()
 			//	to_sdslc (screen_object)->mastercanvas->is_rendering=true;
 				//SDL_RenderCopy(to_sdslc (screen_object)->mastercanvas->globalrender,
 				//               to_sdslc (screen_object)->mastercanvas->viewport_tex,0,0);
+				//SDL_RenderPresent(to_sdslc (screen_object)->slaterender);
 				SDL_RenderPresent(to_sdslc (screen_object)->mastercanvas->globalrender);
 			//	to_sdslc (screen_object)->mastercanvas->is_rendering=false;
 			//}

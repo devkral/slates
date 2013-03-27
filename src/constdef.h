@@ -33,6 +33,7 @@ static std::chrono::seconds defaulttimeout(4);
 #define MASTER_HANDLED 1
 #define MASTER_UNHANDLED 2
 #define MASTER_QUIT 3
+#define MASTER_TIMEDOUT 4
 
 #define TYPE_sysslate 1
 #define TYPE_emptyslate 2

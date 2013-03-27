@@ -83,9 +83,8 @@ sdl_master::~sdl_master()
 int sdl_master::handle_masterevent(void *event)
 {
 	int ishandled=MASTER_UNHANDLED;
-
-	//do
-	//{
+	if(protectmaster_eventhandle.try_lock_for(defaulttimeout))
+	{
 		switch (((SDL_Event*)event)->type)
 		{
 			case SDL_QUIT: hasinputhandle=false;
@@ -110,31 +109,37 @@ int sdl_master::handle_masterevent(void *event)
 					viewport_pool[0]->async_update_slates();
 					ishandled=MASTER_HANDLED;
 				}
-
-				if (((SDL_Event*)event)->key.keysym.sym==SDLK_MINUS ||
-				    ((SDL_Event*)event)->key.keysym.sym==SDLK_KP_MINUS )
+				if ((SDL_GetModState()&KMOD_CTRL) && (SDL_GetModState()&KMOD_ALT) && (SDL_GetModState()&KMOD_SHIFT))
 				{
-					int width=(viewport_pool[0]->get_viewport_width())+1;
-					int height=(viewport_pool[0]->get_viewport_height())+1;
-					viewport_pool[0]->set_viewport(width, height );
-					ishandled=MASTER_HANDLED;
-				}
+					viewport_pool[0]->set_viewport_size(viewport_pool[0]->get_viewport_height(), viewport_pool[0]->get_viewport_width());
+				}		
 
-				if (((SDL_Event*)event)->key.keysym.sym==SDLK_PLUS || 
-				    ((SDL_Event*)event)->key.keysym.sym==SDLK_KP_PLUS)
-				{
-					int width=(viewport_pool[0]->get_viewport_width())-1;
-					int height=(viewport_pool[0]->get_viewport_height())-1;
-					viewport_pool[0]->set_viewport(width, height );
-					ishandled=MASTER_HANDLED;
-				}
+				
 				if (((SDL_Event*)event)->key.keysym.sym==SDLK_ESCAPE )
 				{
 					hasinputhandle=false;
 					ishandled=MASTER_QUIT;
 				}
+
 				break;
+			case SDL_MOUSEWHEEL:
+				{
+					if ((SDL_GetModState()&KMOD_CTRL) && (SDL_GetModState()&KMOD_ALT))
+					{
+						int width=(viewport_pool[0]->get_viewport_width())-((SDL_Event*)event)->wheel.x;
+						int height=(viewport_pool[0]->get_viewport_height())-((SDL_Event*)event)->wheel.y;
+						viewport_pool[0]->set_viewport_size(width, height);
+						ishandled=MASTER_HANDLED;
+					}
+				
+					break;
+				}
+	
 		}
+		protectmaster_eventhandle.unlock();
+	}
+	else
+		ishandled=MASTER_TIMEDOUT;
 	return ishandled;
 }
 

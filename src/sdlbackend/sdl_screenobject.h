@@ -55,7 +55,11 @@ typedef struct sdlmastercanvas_{
 	int widget_h=0;
 	int max_w=0;
 	int max_h=0;
+	int beg_x=0;
+	int beg_y=0;
 	int borderthickness=0;
+	Uint32 white=0;
+	Uint32 black=0;
 	
 	
 }sdlmastercanvas;

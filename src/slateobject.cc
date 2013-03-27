@@ -106,9 +106,9 @@ void slateobject::hide()
 
 void slateobject::update()
 {
-	if (interact_with_draw.try_lock_for(defaulttimeout))
-	{
-		//code
+	interact_with_draw.lock();
+	//{				
+	//code
 
 
 		if (isvisible==false) // || …
@@ -121,8 +121,7 @@ void slateobject::update()
 			isdrawn=true;
 			drawthread=thread(kickstarter_drawthread, (slateobject *)this);
 		}
-		interact_with_draw.unlock();
-	}
+	interact_with_draw.unlock();
 }
 
 void slateobject::draw()

@@ -60,6 +60,7 @@ public:
 	
 	void async_cleanup_slates(long int id_beg, long int id_end);
 	void async_destroy_slates(long int amount);
+	void async_create_slates(long int amount);
 	
 	master *getmaster();
 
@@ -68,9 +69,12 @@ public:
 	int get_slices();
 	void cleanup();
 
-	void set_viewport(int width, int height); //unit slates
+	void set_viewport_size(int width, int height); //unit slates
+	void set_viewport_begin(int x, int y); //unit slates
 	int get_viewport_width();
 	int get_viewport_height();
+	int get_viewport_beg_x();
+	int get_viewport_beg_y();
 
 	
 
@@ -80,6 +84,8 @@ protected:
 private:
 	int horizontal_tiles=-1;
 	int vertical_tiles=-1;
+	int view_beg_slate_x=0;
+	int view_beg_slate_y=0;
 	int ownid=0;
 	int slices=0;
 	void destroyslate();
@@ -91,10 +97,6 @@ private:
 	vector<slate*> slate_pool; //leftwing first, then diag then top wing
 	master *mroot;
 	
-
-
-	
-
 
 	virtual slate *create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp)=0;
 
