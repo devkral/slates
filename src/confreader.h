@@ -20,9 +20,9 @@
 #ifndef _CONFREADER_H_
 #define _CONFREADER_H_
 
-
 #include <string>
 
+#define buffersize 256
 
 using namespace std;
 

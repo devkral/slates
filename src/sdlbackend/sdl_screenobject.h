@@ -22,9 +22,8 @@
 
 #include <SDL2/SDL.h>
 //#include <SDL2/SDL_opengl.h>
-#include <iostream>
-#include <atomic>
 #include <thread>
+#include <atomic>
 
 using namespace std;
 

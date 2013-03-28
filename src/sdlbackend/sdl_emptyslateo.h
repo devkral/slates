@@ -28,26 +28,7 @@ class sdl_screenobject;
 #include <mutex>
 
 
-#include "constdef.h"
 
-using namespace std;
-
-
-
-typedef struct sdlemptyprivat_{
-	~sdlemptyprivat_()
-	{
-		if (emptysur)
-			SDL_FreeSurface(emptysur);
-		if (emptytex)
-			SDL_DestroyTexture (emptytex);
-	}
-	SDL_Surface *emptysur=0;
-	SDL_Texture *emptytex=0;
-		
-	//SDL_Rect inner_object;
-	
-}sdlempty;
 
 
 
@@ -63,14 +44,13 @@ public:
 	void handle_event(void *event, bool called_by_input);
 protected:
 	
-	sdlempty widget;
+//	sdlempty widget;
 	int update_interval;
 	SDL_Event event;
 	bool specialcondition=false;
 	
 private:
-	Uint32 white;
-	Uint32 black;
+
 };
 
 #endif // _EMPTYSLATEO_H_

@@ -18,6 +18,7 @@
  */
 
 #include "sdl_emptyslateo.h"
+#include "sdl_slateotypes.h"
 
 #include "sdlbackend.h"
 class sdl_master;
@@ -56,19 +57,17 @@ void sdl_emptyslateo::update()
 		widget.inner_object.y=to_sdslc(screen_object)->slatebox.y;
 		widget.inner_object.w=to_sdslc(screen_object)->slatebox.w;
 		widget.inner_object.h=to_sdslc(screen_object)->slatebox.h;*/
-		if(widget.emptysur!=0)
-			SDL_FreeSurface (widget.emptysur);
-		widget.emptysur=SDL_CreateRGBSurface (0,to_sdslc(screen_object)->slatebox.w,to_sdslc(screen_object)->slatebox.h,32,0,0,0,0);
+		SDL_Surface *initsur=SDL_CreateRGBSurface (0,to_sdslc(screen_object)->slatebox.w,to_sdslc(screen_object)->slatebox.h,32,0,0,0,0);
+		if (!initsur)
+			cerr << "Could not initialize surface\n";
+		sdlemptyoo.init_colors(initsur);
+		SDL_FillRect (initsur, &to_sdslc(screen_object)->slatebox, sdlemptyoo.white);
+		sdlemptyoo.set_emptysur(initsur,to_sdslc(screen_object)->mastercanvas->globalrender);
+		                     ;
 	
-		assert(widget.emptysur!=0);
 	
-		white=SDL_MapRGBA (widget.emptysur->format, 255,255,255,255);
-		black=SDL_MapRGBA (widget.emptysur->format, 0,0,0,255);
+		
 		//SDL_FillRect (widget.emptysur, &widget.inner_object, black);
-		SDL_FillRect (widget.emptysur, &to_sdslc(screen_object)->slatebox, white);
-		if(widget.emptytex!=0)
-			SDL_DestroyTexture (widget.emptytex);
-		widget.emptytex=SDL_CreateTextureFromSurface (to_sdslc(screen_object)->mastercanvas->globalrender,widget.emptysur);
 		//SDL_SetRenderTarget(to_sdslc(screen_object)->slaterender,to_sdslc (screen_object)->mastercanvas->viewport_tex);
 		//SDL_RenderPresent(to_sdslc (screen_object)->slaterender);
 		//cout << "new innerobject x: " << widget.inner_object.x << " y: " << widget.inner_object.y << " w: " << widget.inner_object.w << "h: " << widget.inner_object.h << endl;
@@ -126,7 +125,7 @@ void sdl_emptyslateo::handle_event (void *event, bool called_by_input)
 				if (((SDL_Event*)event)->button.button==SDL_BUTTON_LEFT)
 				{
 					cout << "Replace by lockobject\n";
-					getfparent ()->lock_slate();
+				//	getfparent ()->lock_slate();
 				}
 			break;
 			case SDL_KEYDOWN:
@@ -178,7 +177,7 @@ void sdl_emptyslateo::draw_function ()
 		{
 
 			//SDL_RenderCopy(to_sdslc (screen_object)->slaterender, widget.emptytex, 0, &to_sdslc(screen_object)->slatebox);
-			SDL_RenderCopy(to_sdslc (screen_object)->mastercanvas->globalrender, widget.emptytex, 0, &to_sdslc(screen_object)->slatebox);
+			SDL_RenderCopy(to_sdslc (screen_object)->mastercanvas->globalrender, sdlemptyoo.get_emptytex(), 0, &to_sdslc(screen_object)->slatebox);
 			//SDL_RenderCopy(to_sdslc (screen_object)->slaterender, widget.emptytex, 0, &widget.inner_object);
 			//SDL_RenderPresent(to_sdslc (screen_object)->slaterender);
 			//if (to_sdslc (screen_object)->mastercanvas->is_rendering==false)

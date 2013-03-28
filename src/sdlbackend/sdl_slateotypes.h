@@ -20,15 +20,34 @@
 #ifndef _SDLSLATEOTYPES_H_
 #define _SDLSLATEOTYPES_H_
 
-class sdl_slateotypes
+
+#include "constdef.h"
+
+#include <SDL2/SDL.h>
+#include <mutex>
+
+using namespace std;
+
+class sdlemptyprivat
 {
 public:
+	//sdlemptyprivat();
+	~sdlemptyprivat();
 
-protected:
 
+	SDL_Surface *emptysur=0;
+	SDL_Texture *emptytex=0;
+	Uint32 white=0;
+	Uint32 black=0;
+	void init_colors(SDL_Surface *in);
+	mutex lockonwriteread;
+	void set_emptysur(SDL_Surface *in, SDL_Renderer *renderer);
+	//void set_emptytex(SDL_Surface *in);
+	//SDL_Surface *get_emptysur();
+	SDL_Texture *get_emptytex();
 private:
-
+	bool iseverset=false;
 };
-
+extern sdlemptyprivat sdlemptyoo;
 #endif // _SDLSLATEOTYPES_H_
 

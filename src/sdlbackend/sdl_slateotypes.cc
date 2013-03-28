@@ -21,3 +21,51 @@
 
 
 
+sdlemptyprivat::~sdlemptyprivat()
+{
+	if (iseverset==true)
+	{
+		SDL_FreeSurface(emptysur);
+		SDL_DestroyTexture (emptytex);
+	}
+}
+
+void sdlemptyprivat::init_colors(SDL_Surface *in)
+{
+	if (iseverset==false)
+	{
+		lockonwriteread.lock();
+		white=SDL_MapRGBA (in->format, 255,255,255,255);
+		black=SDL_MapRGBA (in->format, 0,0,0,255);
+		lockonwriteread.unlock();
+	}
+}
+
+
+void sdlemptyprivat::set_emptysur(SDL_Surface *in, SDL_Renderer *renderer)
+{
+	if (iseverset==false)
+		lockonwriteread.lock();
+	else
+		if (lockonwriteread.try_lock()==false)
+			return ;
+	emptysur=in;
+	
+	if(emptytex!=0)
+		SDL_DestroyTexture (emptytex);
+	emptytex=SDL_CreateTextureFromSurface (renderer,emptysur);
+	
+	iseverset=true;
+	lockonwriteread.unlock();
+}
+SDL_Texture *sdlemptyprivat::get_emptytex()
+{
+	if (iseverset==false)
+		lockonwriteread.lock();
+	else
+		lockonwriteread.try_lock();
+	return emptytex;
+	lockonwriteread.unlock();
+}
+
+sdlemptyprivat sdlemptyoo;
