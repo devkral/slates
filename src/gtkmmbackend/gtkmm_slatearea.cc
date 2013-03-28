@@ -17,7 +17,7 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "tslatearea.h"
+#include "gtkmm_slatearea.h"
 
 
 #include "lockslateo.h"
