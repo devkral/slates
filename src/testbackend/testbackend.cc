@@ -37,8 +37,6 @@ testmaster::testmaster(int argc, char* argv[])
 {
 	cerr << "Create testmaster\n";
 	createviewport();
-	cerr << "\n";
-	viewport_pool[0]->getslate(0,0)->fillsysslate ();
 }
 
 testmaster::~testmaster()

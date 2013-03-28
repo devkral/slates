@@ -7,52 +7,44 @@
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * slates is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "tslate.h"
+#ifndef _SDL_SLATEAREA_H_
+#define _SDL_SLATEAREA_H_
 
-#include <iostream>
+#include "slatearea.h"
+class slatearea;
+class slate;
+
+#include "constdef.h"
+#include "sdl_screenobject.h"
+
 
 using namespace std;
 
-
-tslate::tslate (viewport *parent, long int id,int position_xtemp,int position_ytemp) : slate(parent, id,position_xtemp,position_ytemp)
+class sdl_slatearea : slatearea
 {
-	cerr << "Create tslate\n";
-}
+public:
+	sdl_slatearea(slate *parent_slate, sdl_slateareacanvas *canvastemp);
+	~sdl_slatearea();
 
-tslate::~tslate()
-{
-	cerr << "Destroy tslate\n";
-}
+	void *get_screen();
+	void update_screen();
 
+	
+protected:
+	sdl_slateareacanvas *screen;
+private:
+	
+};
 
-slateobject *tslate::create_lockobject()
-{
-	return new tlockslateo((slate*)this, new tpscreen);
-}
+#endif // SDL_SLATEAREA_H_
 
-
-slateobject *tslate::create_emptyobject()
-{
-	return new temptyslateo ((slate*)this, new tpscreen);
-}
-
-slateobject *tslate::create_sysobject()
-{
-	return new tsysslateo ((slate*)this, new tpscreen);
-}
-
-
-slateobject *tslate::create_windowobject(string progname)
-{
-	return new twindowslateo ((slate*)this, new tpscreen);
-}

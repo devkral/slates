@@ -44,14 +44,12 @@ slates_SOURCES += testbackend/testbackend.cc \
 	testbackend/testbackend.h \
 	testbackend/tviewport.cc \
 	testbackend/tviewport.h \
-	testbackend/tslate.cc \
-	testbackend/tslate.h \
 	testbackend/tlockslateo.cc \
 	testbackend/tlockslateo.h \
 	testbackend/temptyslateo.cc \
 	testbackend/temptyslateo.h \
 	testbackend/tscreenobject.cc \
-	testbackend/tscreenobject.h
+	testbackend/tscreenobject.h \
 	testbackend/tslatearea.cc \
 	testbackend/tslatearea.h
 endif

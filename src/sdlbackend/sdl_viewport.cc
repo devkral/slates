@@ -108,6 +108,6 @@ slatearea *sdl_viewport::create_area(slate *parent_slate)
 	sdl_slateareacanvas *temp=new sdl_slateareacanvas(viewport_screen);
 	assert(temp);
 	
-	return 0;//new sdl_slatearea(parent_slate,temp);
+	return (slatearea *) new sdl_slatearea(parent_slate,temp);
 }
 

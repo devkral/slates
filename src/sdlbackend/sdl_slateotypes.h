@@ -48,6 +48,6 @@ public:
 private:
 	bool iseverset=false;
 };
-extern sdlemptyprivat sdlemptyoo;
+//extern sdlemptyprivat sdlemptyoo;
 #endif // _SDLSLATEOTYPES_H_
 
