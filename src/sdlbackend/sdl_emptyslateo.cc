@@ -18,7 +18,6 @@
  */
 
 #include "sdl_emptyslateo.h"
-#include "sdl_slateotypes.h"
 
 #include "sdlbackend.h"
 class sdl_master;
