@@ -25,16 +25,18 @@ class slateobject;
 
 #include "constdef.h"
 
-class lockslateo: public slateobject 
+class lockslateo: public slatetype 
 {
 public:
-	lockslateo(slate *parent_slate, void *screenob);
+	lockslateo(slatearea *parent_slate, slatetype *lockedobjectin);
 	~lockslateo();
 	char TYPE();
+	slatetype *unlock();
 protected:
 
 private:
-	virtual void unlock()=0;
+	slatetype *lockedobject=0;
+	void sendunlock();
 };
 
 #endif // _LOCKSLATEO_H_

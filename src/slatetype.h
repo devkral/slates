@@ -7,64 +7,64 @@
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * slates is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLATE_H_
-#define _SLATE_H_
+#ifndef _SLATEOBJECT_H_
+#define _SLATEOBJECT_H_
+
 //#include "master.h"
 //class master;
-#include "viewport.h"
-class viewport;
-#include "slatearea.h"
-class slatearea;
+//#include "viewport.h"
+//class viewport;
+#include "slate.h"
+class slate;
 
 #include "constdef.h"
 
-#include <memory>
 #include <thread>
-#include <string>
-#include <mutex>
-
 using namespace std;
 
 
-class slate
+class slatetype
 {
 public:
-	slate (viewport *parent,long int id, int position_xtemp,int position_ytemp);
-	virtual ~slate();
-	bool isfilled();
-	master *getmaster();
-	viewport *getviewport();
-	void lock();
-	void unlock();
-	void create_area();
-	void destroy_area();
-	void update();
-	int get_x();
-	int get_y();
-	void handle_input(void *initializer);
-	void handle_event(void *event);
-	
-	bool isorigin();
-	
-protected:
-	mutex change_slate; //
-private:
-	int position_x;
-	int position_y;
-	long int slateid;
-	viewport *parent_viewport;
-	slatearea *child;
 
+	slatetype(viewport *parent_viewportt);
+	virtual ~slatetype();
+	viewport *getviewport();
+	
+	virtual void handle_event(void *initializer, bool called_by_input); //needn't to be implemented if there is an other solution
+	//be carefull: if not called by input don't send something to an alleventhandler
+	virtual void handle_input(void *initializer); //needn't to be implemented if there is an other solution
+	virtual void update()=0;
+
+	virtual void draw_function(); //for kickstarter
+	/** implementation idea:
+	 * init with creation
+	 * stop with destruction
+	 * hide/draw via update and slateareas isvisible state
+	 */
+	
+	
+	virtual char TYPE()=0;
+protected:
+	bool isdrawn=false;
+	bool hasinputhandle=false;
+	thread drawthread;
+	viewport *parent_viewport;
+	//thread window_inputthread;
+private:
+	
 };
-#endif // _SLATE_H_
+extern void kickstarter_drawthread(slateobject *parent);
+
+#endif // _SLATEOBJECT_H_
 

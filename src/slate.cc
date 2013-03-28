@@ -19,42 +19,26 @@
 
 #include "slate.h"
 
-slate::slate (viewport *parent, long int id,int position_xtemp,int position_ytemp)
+slate::slate (viewport *parent,long int id,int position_xtemp,int position_ytemp)
 {
-	parent_viewport=parent;
 	slateid=id;
+	parent_viewport=parent;
 	position_x=position_xtemp;
 	position_y=position_ytemp;
+	create_area();
 }
 
 slate::~slate()
 {
-	//cleanup();
-}
-
-void slate::init_slate()
-{
-	emptyslate();
-	slateobject *verify=create_lockobject();
-	assert(verify);
-	preserve_after_lock.reset(verify);
-}
-
-void slate::cleanup()
-{
-	destroy_slate();
+	delete child;
 }
 
 
 
-void slate::destroy_slate()
-{
-	replace_childobject(0);
-}
 
 bool slate::isfilled()
 {
-	return filled;
+	return child->isfilled();
 }
 
 master *slate::getmaster()
@@ -68,128 +52,8 @@ viewport *slate::getviewport()
 }
 
 
-void slate::set_screen_ob(void *screenob)
-{
-	child_slateo->set_screen_ob(screenob);
-}
-
-void *slate::get_screen_ob()
-{
-	return child_slateo->get_screen_ob();
-}
 
 
-void slate::swap_childobject(shared_ptr<slateobject> child, shared_ptr<slateobject> preserved_child)
-{
-	child_slateo->hide();
-	preserved_child->hide();
-	void *temp2=child_slateo->get_screen_ob();
-	child_slateo->swap_connectedslates(child);
-	preserve_after_lock->swap_connectedslates(preserved_child);
-	preserve_after_lock.swap(preserved_child);
-	child_slateo.swap(child);
-	child->set_screen_ob(child_slateo->get_screen_ob());
-	child_slateo->set_screen_ob(temp2);
-}
-
-void slate::swap_childobject(slate *swapslate)
-{
-	change_slate.lock();
-	swap_childobject(swapslate->get_childobject(),swapslate->get_lockobject());
-	change_slate.unlock();
-}
-
-void slate::replace_childobject(slateobject *temp)
-{
-	change_slate.lock();
-	if (child_slateo.use_count()!=0)
-	{	
-		child_slateo->cleanup();
-	}
-	if(temp!=0)
-	{
-		child_slateo.reset(temp);
-	}
-	else
-	{
-		child_slateo.reset();
-	}
-	change_slate.unlock();
-}
-
-shared_ptr<slateobject> slate::get_childobject()
-{
-	return child_slateo;
-}
-
-shared_ptr<slateobject> slate::get_lockobject()
-{
-	return preserve_after_lock;
-}
-
-void slate::lock_slate()
-{
-	if (lockstate==0)
-	{
-		preserve_after_lock.swap(child_slateo);
-		lockstate=2;
-		preserve_after_lock->hide();
-		draw();
-	}
-}
-
-void slate::unlock_slate()
-{
-	if (lockstate==2)
-	{
-		child_slateo.swap(preserve_after_lock);
-		lockstate=0;
-		preserve_after_lock->hide();
-		draw();
-	}
-}
-
-int slate::fillslate(string progname)
-{
-	if (child_slateo.use_count()==0 || child_slateo->TYPE()==TYPE_emptyslate)
-	{
-		replace_childobject(create_windowobject(progname));
-		draw();
-		parent_viewport->fillslate_intern(slateid);
-		
-		return OP_success;
-	}
-	else
-		return SL_not_empty;
-}
-int slate::fillsysslate()
-{
-	if (child_slateo.use_count()==0 || child_slateo->TYPE()==TYPE_emptyslate)
-	{
-		slateobject *verify=create_sysobject();
-		assert(verify);
-		replace_childobject(verify);
-		draw();
-		parent_viewport->fillslate_intern(slateid);
-		
-		return OP_success;
-	}
-	else
-		return SL_not_empty;
-}
-
-void slate::emptyslate()
-{
-	if (child_slateo!=0 && child_slateo->TYPE()!=TYPE_emptyslate)
-			parent_viewport->emptyslate_intern(slateid);
-	if (child_slateo.use_count()==0)
-	{
-		replace_childobject(create_emptyobject());
-		draw();
-	}
-	else
-		emptyslate_nonunique();
-}
 
 void slate::emptyslate_nonunique()
 {
@@ -206,35 +70,37 @@ void slate::emptyslate_nonunique()
 	}
 }
 
-void slate::draw()
-{
-	child_slateo->draw();
-}
-void slate::hide()
-{
-	child_slateo->hide();
-}
-
 void slate::update()
 {
-	child_slateo->update();
+	child->update();
 }
 
-int slate::get_position_x()
+int slate::get_x()
 {
 	return position_x;
 }
 
-int slate::get_position_y()
+int slate::get_y()
 {
 	return position_y;
 }
+
+bool slate::isorigin()
+{
+	if (child()->get_origin()->get_id()==get_id())
+		return true;
+	else
+		return false;
+
+}
+
+
 void slate::handle_input(void *initializer)
 {
-	child_slateo->handle_input(initializer);
+	child->handle_input(initializer);
 }
 
 void slate::handle_event(void *event)
 {
-	child_slateo->handle_event(event,false);
+	child->handle_event(event,false);
 }

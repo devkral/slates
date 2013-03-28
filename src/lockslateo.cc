@@ -19,9 +19,9 @@
 
 #include "lockslateo.h"
 
-lockslateo::lockslateo(slate *parent_slate, void *screenob) : slateobject(parent_slate,screenob)
+lockslateo::lockslateo(slatearea *parent_slatearea, slatetype *lockedobjectin) : slatetype(parent_slatearea)
 {
-
+	lockedobject=lockedobjectin;
 
 }
 
@@ -29,7 +29,13 @@ lockslateo::~lockslateo()
 {
 
 }
-
+slatetype *lockslateo::unlock()
+{
+	slatetype *temp=lockedobject;
+	assert(lockedobject);
+	lockedobject=0;	
+	return temp;
+}
 
 
 

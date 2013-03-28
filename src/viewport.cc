@@ -40,16 +40,17 @@ long int calcidslate(long int x, long int y)
 	return result;
 }
 
-viewport::viewport(master *masteridd, int ownidd) : slateid_prot()
+viewport::viewport(master *master_parent,int viewportidtemp) : slateid_prot()
 {
+	viewportid=viewportidtemp;
 	mroot=masteridd;
 	ownid=ownidd;
 	amount_filled_slates=0;
+	
 }
 
 viewport::~viewport()
 {
-	
 }
 void viewport::cleanup()
 {
@@ -147,44 +148,6 @@ slate *viewport::getslate_by_id(long int id)
 
 }
 
-
-//validate before calling
-//update slices, caches, id_nto_last_beg, id_last_beg,
-void viewport::createslate()
-{
-	slateid_prot.lock();
-	int temp_x, temp_y;
-	slate *verify;
-	if (slate_idcount<slices*slices-slices)
-	{
-		temp_y=slices-1;
-		temp_x=slate_idcount-id_last_beg;
-	}
-	else
-	{
-		temp_y=(cache_last_diag_point_id+(slices-1))-slate_idcount; //sure???
-		temp_x=slices-1;
-	}
-	verify=create_slate_intern(this,slate_idcount, temp_x, temp_y);
-	assert(verify);
-		
-	slate_pool.push_back(verify);
-	slate_pool[slate_idcount]->init_slate();
-	slate_idcount++;
-	slateid_prot.unlock();
-}
-
-//validate before calling
-void viewport::destroyslate()
-{
-	slateid_prot.lock();
-	slate_pool.back()->cleanup();
-	delete slate_pool.back();
-	slate_pool.pop_back();
-	slate_idcount--;;
-	slateid_prot.unlock();
-}
-
 void async_update_slates_intern(slate *targob)
 {
 	targob->update();
@@ -204,9 +167,9 @@ void viewport::async_update_slates()
 	}
 }
 
-void async_create_slates_intern(slate *slatein)
+void async_create_slates_intern(slate *placeholderpointer, viewport *parent, long int sid, int temp_x, int temp_y)
 {
-	slatein->init_slate();
+	placeholderpointer=new slate(parent,sid,temp_x,temp_y);
 }
 
 void viewport::async_create_slates(long int amount)
@@ -220,8 +183,8 @@ void viewport::async_create_slates(long int amount)
 		temp_x=slate_idcount-id_last_beg;
 
 		//warning synchronize this in both while loops
-		slate *tempslate=create_slate_intern(this,slate_idcount, temp_x, temp_y);
-		slate_pool.push_back(tempslate);
+		slate *placeholderpointer=0; 
+		slate_pool.push_back(placeholderpointer,slate_idcount, temp_x, temp_y);
 		temppool.push_back(thread(async_create_slates_intern,tempslate));
 		
 		slate_idcount++;
@@ -231,8 +194,8 @@ void viewport::async_create_slates(long int amount)
 		temp_y=(cache_last_diag_point_id+(slices-1))-slate_idcount; //sure???
 		temp_x=slices-1;
 
-		slate *tempslate=create_slate_intern(this,slate_idcount, temp_x, temp_y);
-		slate_pool.push_back(tempslate);
+		slate *placeholderpointer=0; 
+		slate_pool.push_back(placeholderpointer,slate_idcount, temp_x, temp_y);
 		temppool.push_back(thread(async_create_slates_intern,tempslate));
 
 		slate_idcount++;
@@ -251,7 +214,6 @@ void viewport::async_create_slates(long int amount)
 
 void async_destroy_slates_intern(slate *targob)
 {
-	targob->cleanup();
 	delete targob;
 }
 
@@ -273,22 +235,6 @@ void viewport::async_destroy_slates(long int amount)
 	slateid_prot.unlock();
 }
 
-void async_cleanup_slates_intern(slate *targob)
-{
-	targob->cleanup();
-}
-
-void viewport::async_cleanup_slates(long int id_beg, long int id_end)
-{
-	vector<thread> temppool;
-	for (long int count=id_beg;count<id_end;count++)
-		temppool.push_back(thread(async_cleanup_slates_intern,slate_pool[count]));
-	while (temppool.empty()==false)
-	{
-		temppool.back().join();
-		temppool.pop_back();
-	}
-}
 int viewport::count_filled_slots(int sliceid)
 {
 	int temp=0;
@@ -390,20 +336,35 @@ void *viewport::get_viewport_screen()
 	return viewport_screen;
 }
 
-int viewport::get_id()
+int viewport::get_viewport_id()
 {
-	return ownid;
+	return viewportid;
 }
 
 int viewport::get_slices()
 {
 	return slices;
 }
-
+void handle_event_intern(slate *slateob, void *event)
+{
+	slateob->handle_event(event);
+}
 
 
 void viewport::handle_event(void *event)
 {
+	vector<thread> threadpool_events;
 	for (long int count=0;count<max_avail_slates;count++)
-		slate_pool[count]->handle_event(event);
+	{
+		if (slate_pool[count]->isorigin())
+		{
+			threadpool_events.push_back( thread(handle_event_intern,slate_pool[count],event));
+		}
+	}
+	while (threadpool_events.empty()==false)
+	{
+		if (threadpool_events.back().joinable())
+			threadpool_events.back().join();
+		threadpool_events.pop_back();
+	}
 }

@@ -44,7 +44,7 @@ extern long int calcidslate(long int x, long int y);
 class viewport
 {
 public:
-	viewport(master *masteridd, int ownidd);
+	viewport(master *masteridd, int viewportidd);
 	~viewport();
 	slate *getslate(int x, int y);
 	slate *getslate_by_id(long int id);
@@ -55,19 +55,16 @@ public:
 	void emptyslate_intern(long int id); //counter
 	void handle_event(void *event);
 	
-	virtual void update_slice_info()=0;
-	void async_update_slates();
 	
-	void async_cleanup_slates(long int id_beg, long int id_end);
+	void async_update_slates();
 	void async_destroy_slates(long int amount);
 	void async_create_slates(long int amount);
 	
 	master *getmaster();
 
 	void *get_viewport_screen();
-	int get_id();
+	int get_viewport_id();
 	int get_slices();
-	void cleanup();
 
 	void set_viewport_size(int width, int height); //unit slates
 	void set_viewport_begin(int x, int y); //unit slates
@@ -76,11 +73,10 @@ public:
 	int get_viewport_beg_x();
 	int get_viewport_beg_y();
 
-	
-	virtual slateobject *create_lockobject()=0;
-	virtual slateobject *create_emptyobject()=0;
-	virtual slateobject *create_sysobject()=0;
 
+	virtual void update_slice_info()=0;
+	virtual slatetype *create_lockslatetype(slatearea *parent_slatearea, slatetype *lockobject)=0;
+	virtual slatetype *create_emptyslatetype(slatearea *parent_slatearea)=0;
 	
 
 protected:
@@ -91,25 +87,19 @@ private:
 	int vertical_tiles=-1;
 	int view_beg_slate_x=0;
 	int view_beg_slate_y=0;
-	int ownid=0;
+	int viewportid;
 	int slices=0;
-	void destroyslate();
-	void createslate();
 	long int slate_idcount=0;
 	mutex slateid_prot;
 	atomic<long int> amount_filled_slates;
 	long int max_avail_slates=0; //=slice*slice
 	vector<slate*> slate_pool; //leftwing first, then diag then top wing
+	//deque<slatetype*> slatetype_pool;
 	master *mroot;
 	
-
-	virtual slate *create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp)=0;
-
 	
 	void lock_all_intern();
 	void unlock_all_intern();
-	virtual void destroy_mscreen_ob()=0;
-	virtual void create_mscreen_ob()=0;
 	
 	//cache
 	long int cache_last_diag_point_id=0;

@@ -26,14 +26,10 @@ slates_SOURCES = \
 	viewport.h \
 	slate.cc \
 	slate.h \
-	slateobject.cc \
-	slateobject.h \
-	windowslateo.cc \
-	windowslateo.h \
+	slatetype.cc \
+	slatetype.h \
 	lockslateo.cc \
 	lockslateo.h \
-	sysslateo.cc \
-	sysslateo.h \
 	emptyslateo.cc \
 	emptyslateo.h \
 	confreader.cc \
@@ -50,12 +46,8 @@ slates_SOURCES += testbackend/testbackend.cc \
 	testbackend/tviewport.h \
 	testbackend/tslate.cc \
 	testbackend/tslate.h \
-	testbackend/twindowslateo.cc \
-	testbackend/twindowslateo.h \
 	testbackend/tlockslateo.cc \
 	testbackend/tlockslateo.h \
-	testbackend/tsysslateo.cc \
-	testbackend/tsysslateo.h \
 	testbackend/temptyslateo.cc \
 	testbackend/temptyslateo.h \
 	testbackend/tscreenobject.cc \

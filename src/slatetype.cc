@@ -17,31 +17,54 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EMPTYSLATEO_H_
-#define _EMPTYSLATEO_H_
-#include "slatetype.h"
-class slatetype;
+#include "slateobject.h"
 
-#include "constdef.h"
+#include <iostream>
 
-class emptyslateo : public slatetype 
+using namespace std;
+
+slatetype::slatetype(viewport *parent_viewportt);
 {
-public:
-	emptyslateo(slatearea *parent_slatearea);
-	~emptyslateo();
+	parent_viewport=parent_viewportt;
+	isdrawn=true;
+	drawthread=thread(kickstarter_drawthread,this);
+}
+
+slatetype::~slatetype()
+{
+	isdrawn=false;
+	hasinputhandle=false;
+	if (drawthread.joinable())
+		drawthread.join();
+}
+
+void slatetype::update()
+{
+
+}
+
+void slatetype::draw_function()
+{
+	//code
+}
+
+viewport *slatetype::getviewport()
+{
+	return parent_viewport;
+}
+
+
+void slatetype::handle_event(void *event, bool called_by_input)
+{
+
+}
+
+void slatetype::handle_input(void *initializer)
+{
 	
-	//int fillslate(string progname); //own content
-	//int fillsysslate();
-	char TYPE();
-	
-protected:
+}
 
-private:
-	//virtual slatetype *create_windowslatetype()=0;
-	//virtual slatetype *create_sysslatetype()=0;
-};
-
-
-
-#endif // _EMPTYSLATEO_H_
-
+void kickstarter_drawthread(slatetype *parent)
+{
+	parent->draw_function ();
+}

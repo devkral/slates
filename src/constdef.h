@@ -35,10 +35,9 @@ static std::chrono::seconds defaulttimeout(4);
 #define MASTER_QUIT 3
 #define MASTER_TIMEDOUT 4
 
-#define TYPE_sysslate 1
-#define TYPE_emptyslate 2
-#define TYPE_lockslate 3
-#define TYPE_windowslate 4
+#define TYPE_empty 1
+#define TYPE_locked 2
+#define TYPE_filled 3
 
 
 #ifdef _WIN64

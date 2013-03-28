@@ -20,13 +20,13 @@
 #ifndef _WINDOWSLATEO_H_
 #define _WINDOWSLATEO_H_
 
-#include "slateobject.h"
+#include "slatetype.h"
 class slateobject;
 
 #include "constdef.h"
 
 
-class windowslateo : public slateobject
+class windowslateo : public slatetype
 {
 public:
 	windowslateo(slate *parent_slate, void *screenob);
