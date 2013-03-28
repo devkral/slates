@@ -48,11 +48,13 @@ master::master()
 master::~master()
 {
 	stop_handling_input();
+	while (viewport_pool.empty()!=true)
+		destroyviewport();
 }
 
 void master::swapcontent(int viewportid1, long int slateid1,int viewportid2, long int slateid2)
 {
-	viewport_pool[viewportid1]->slate_pool[slateid1]->swap_childobject(viewport_pool[viewportid2]->slate_pool[slateid2]);
+	//viewport_pool[viewportid1]->slate_pool[slateid1]->swap_childobject(viewport_pool[viewportid2]->slate_pool[slateid2]);
 }
 
 
@@ -69,38 +71,58 @@ void master::createviewport()
 //validate before calling
 void master::destroyviewport()
 {
-	viewport_pool.back()->cleanup();
 	delete viewport_pool.back();
 	viewport_pool.pop_back();
 	viewport_idcount--;
 }
-void master::cleanup()
+
+void lock_intern(viewport *viewp)
 {
-	while (viewport_pool.empty()!=true)
-		destroyviewport();
+	viewp->lock();
 }
 
-void master::lock ()
+void master::lock()
 {
-	for (int count=0;count<viewport_idcount;count) //viewport_idcount is one higher than used id
-		viewport_pool[count]->lock_all_intern();
+	vector<thread> threadpool_lock;
+	for (long int count=0; count<viewport_idcount; count++)
+		threadpool_lock.push_back( thread(lock_intern,viewport_pool[count]));
+	while (threadpool_lock.empty()==false)
+	{
+		if (threadpool_lock.back().joinable())
+			threadpool_lock.back().join();
+		threadpool_lock.pop_back();
+	}
 }
-bool master::unlock (char *password)
+void unlock_intern(viewport *viewp)
+{
+	viewp->unlock();
+}
+
+void master::unlock()
+{
+	vector<thread> threadpool_unlock;
+	for (long int count=0; count<viewport_idcount; count++)
+		threadpool_unlock.push_back( thread(unlock_intern,viewport_pool[count]));
+	while (threadpool_unlock.empty()==false)
+	{
+		if (threadpool_unlock.back().joinable())
+			threadpool_unlock.back().join();
+		threadpool_unlock.pop_back();
+	}
+}
+
+bool master::unlock_slates (char *password)
 {
 	if (checkpassword(password))
 	{
-		unlock_slates_intern();
+		unlock();
 		return true;
 	}
 	else
 		return false;
 }
 
-void master::unlock_slates_intern()
-{
-	for (int count=0;count<viewport_idcount;count) //viewport_idcount is one higher than used id
-		viewport_pool[count]->unlock_all_intern();
-}
+
 
 void master::start_handling_input()
 {
@@ -129,7 +151,9 @@ int master::handle_event(void *event)
 	{
 		vector<thread> threadpool_events;
 		for (long int count=0; count<viewport_idcount; count++)
+		{
 			threadpool_events.push_back( thread(handle_event_intern,viewport_pool[count],event));
+		}
 		while (threadpool_events.empty()==false)
 		{
 			if (threadpool_events.back().joinable())

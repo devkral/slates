@@ -23,13 +23,13 @@
 
 using namespace std;
 
-sdlmastercanvas *to_sdmac(void* in)
+sdl_viewportcanvas *to_viewport(void* in)
 {
-	return (sdlmastercanvas*)in;
+	return (sdl_viewportcanvas*)in;
 }
 
-sdlslatecanvas *to_sdslc(void* in)
+sdl_slateareacanvas *to_slatearea(void* in)
 {
-	return (sdlslatecanvas*)in;
+	return (sdl_slateareacanvas*)in;
 }
 

@@ -58,7 +58,7 @@ fi
 
 PKG_CHECK_MODULES(SDL2, [sdl2 SDL2_image], [buildsdlbackend="yes"] , [buildsdlbackend="no"] )
 
-buildsdlbackend="no"
+#buildsdlbackend="no"
 
 if test "x$buildsdlbackend" = "xyes" ; then
 	AM_CONDITIONAL(IS_COMPILED_WITH_SDL, [true])

@@ -26,6 +26,7 @@ class lockslateo;
 class sdl_screenobject;
 
 #include <string>
+#include <mutex>
 
 
 #include "constdef.h"
@@ -33,20 +34,21 @@ class sdl_screenobject;
 class sdl_lockslateo: public lockslateo 
 {
 public:
-	sdl_lockslateo(slate *parent_slate, void *screenob);
+	sdl_lockslateo(master *parent);
 	~sdl_lockslateo();
 	void update();
-	void cleanup_handler ();
 	void draw_function ();
 	void handle_input(void *initializer);
 	void handle_event(void *event, bool called_by_input);
 	string enter_password ();
+	slatearea *getfslatea();
 	
 protected:
 	int update_interval;
 	SDL_Event event;
 private:
 	void unlock();
+	mutex interact_with_draw;
 };
 
 #endif // _LOCKSLATEO_H_

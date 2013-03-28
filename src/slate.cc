@@ -30,7 +30,9 @@ slate::slate (viewport *parent,long int id,int position_xtemp,int position_ytemp
 
 slate::~slate()
 {
-	delete child;
+	if (child!=0)
+		delete child;
+	child=0;
 }
 
 
@@ -51,10 +53,21 @@ viewport *slate::getviewport()
 	return parent_viewport;
 }
 
+void slate::create_area()
+{
+	if (child!=0)
+		delete child;
+	child=getviewport()->create_area(this);
+}
 
+void slate::replace_area(slatearea *newarea)
+{
+	if (child!=0)
+		delete child;
+	child=newarea;
+}
 
-
-
+/**
 void slate::emptyslate_nonunique()
 {
 	shared_ptr<deque< deque<slate*> > > tempconectedslates=child_slateo->connectedslates;
@@ -68,12 +81,23 @@ void slate::emptyslate_nonunique()
 		}
 		tempconectedslates->pop_back();
 	}
-}
+}*/
 
 void slate::update()
 {
 	child->update();
 }
+
+void slate::lock()
+{
+	//child->lock();
+}
+
+void slate::unlock()
+{
+	//child->unlock();
+}
+
 
 int slate::get_x()
 {
@@ -87,13 +111,16 @@ int slate::get_y()
 
 bool slate::isorigin()
 {
-	if (child()->get_origin()->get_id()==get_id())
+	if (child->get_origin()->get_id()==get_id())
 		return true;
 	else
 		return false;
 
 }
-
+int slate::get_id()
+{
+	return slateid;
+}
 
 void slate::handle_input(void *initializer)
 {
@@ -102,5 +129,5 @@ void slate::handle_input(void *initializer)
 
 void slate::handle_event(void *event)
 {
-	child->handle_event(event,false);
+	child->handle_event(event);
 }

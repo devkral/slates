@@ -24,7 +24,6 @@
 #include "config.h"
 #endif //_CONFIG_H_
 
-#include <iostream>
 
 //#ifdef test
 #ifdef COMPILED_WITH_GTKMM
@@ -40,8 +39,6 @@
 #ifdef COMPILED_WITH_TESTBACKEND
 #include "testbackend/testbackend.h"
 #endif
-
-
 
 #define DEFAULT_BACKEND 1
 
@@ -59,11 +56,13 @@
 #endif
 */
 
-
+#include <iostream>
+#include <string>
+using namespace std;
    
-int
-main (int argc, char *argv[])
+int main (int argc, char *argv[])
 {
+	
 	string testoptions="";
 	if (argc>1)
 		testoptions=argv[1];

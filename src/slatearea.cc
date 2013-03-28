@@ -19,46 +19,81 @@
 
 #include "slatearea.h"
 
+
+#include "lockslateo.h"
+class lockslateo;
+
 slatearea::slatearea(slate *parent_slate)
 {
 	connectedslates.push_back( deque<slate*>() );
 	connectedslates[0].push_back(parent_slate);
-	x=get_origin()->get_x();
-	y=get_origin()->get_y();
-	get_origin()->getviewport()->getempty();
+	//get_origin()->getviewport()->getempty();
 }
 
 slatearea::~slatearea()
 {
-	if (isfilled())
+	if (isfilled()!=0)
 	{
 		delete child;
 	}
 	
 	while (connectedslates.empty()==false)
 	{
-		delete connectedslates.back();
 		connectedslates.pop_back();
 	}
 }
 
 bool slatearea::isfilled()
 {
-	if (child->TYPE()==TYPE_windowslate)
+	if (child->TYPE()==TYPE_filled)
 		return false;
 	else
 		return true;
+}
+
+bool slatearea::get_isvisible ()
+{
+	return isvisible;
 }
 slate *slatearea::get_origin()
 {
 	return connectedslates[0][0];
 }
 
+void slatearea::handle_event(void  *event)
+{
+	child->handle_event(event);
+}
+
+void slatearea::handle_input(void *initializer)
+{
+	child->handle_input(initializer);
+}
+
+void slatearea::update()
+{
+	if (get_x()+width<=get_origin ()->getviewport()->get_viewport_beg_x() ||
+		get_y()+height<=get_origin ()->getviewport()->get_viewport_beg_y() ||
+		get_x()<=width+get_origin ()->getviewport()->get_viewport_beg_x() ||
+		get_y()<=height+get_origin ()->getviewport()->get_viewport_beg_y())
+	{
+		isvisible=false;
+	}
+
+	else
+	{
+		isvisible=true;
+	}
+	update_screen();
+	child->update();
+}
+
+
 void slatearea::lock()
 {
 	if (lockstate==0)
 	{
-		child=get_origin()->create_lockslatetype (this,child);
+		child=get_origin()->getviewport ()->create_lockslatetype (this,child);
 		lockstate+=1;
 	}
 }
@@ -67,9 +102,10 @@ void slatearea::unlock()
 {
 	if (lockstate==1)
 	{
-		slatetype *temp=child;
-		child=temp->unlock();
-		delete temp;
+		lockslateo *temp=(lockslateo*)child;
+		child=temp->unlock(this);
+		if (temp->isempty()==true)
+			delete temp;
 		lockstate-=1;
 	}
 }
@@ -83,3 +119,13 @@ int slatearea::get_y()
 	get_origin()->get_y();
 }
 
+
+void slatearea::move(int x, int y)
+{
+
+}
+
+void slatearea::resize(int w, int h)
+{
+
+}

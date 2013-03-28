@@ -35,7 +35,7 @@ class sdl_screenobject;
 class sdl_emptyslateo : public emptyslateo 
 {
 public:
-	sdl_emptyslateo(slate *parent_slate, void *screenob);
+	sdl_emptyslateo(master *parent_mastert);
 	~sdl_emptyslateo();
 	void update();
 	void cleanup_handler ();

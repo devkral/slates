@@ -27,7 +27,7 @@ class slatetype;
 class emptyslateo : public slatetype 
 {
 public:
-	emptyslateo(slatearea *parent_slatearea);
+	emptyslateo(master *parent_mastert);
 	~emptyslateo();
 	
 	//int fillslate(string progname); //own content

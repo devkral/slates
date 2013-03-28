@@ -21,15 +21,15 @@
 #define _SDL_VIEWPORT_H_
 #include "viewport.h"
 class viewport;
-#include "sdl_slate.h"
-class sdl_slate;
+
+#include "sdl_slatearea.h"
+class sdl_slatearea;
+
 #include "sdl_screenobject.h"
 class sdl_screenobject;
 
 #include "constdef.h"
 
-#include <thread>
-#include <atomic>
 
 
 
@@ -42,17 +42,19 @@ class sdl_viewport : public viewport
 public:
 	sdl_viewport(master *masteridd, int ownidd);
 	~sdl_viewport();
-	slate *create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp);
 	long int id_slate_mouse(int x, int y);
 	slate *get_slate_mouse(int x, int y);
+	void *get_viewportscreen();
+	void update_slice_info();
+	slatetype *create_lockslatetype(slatearea *parent_slatearea, slatetype *lockobject);
+	slatetype *create_emptyslatetype(slatearea *parent_slatearea);
+	slatearea *create_area(slate *parent_slate);
 	
 protected:
-	void update_slice_info();
 	
+	sdl_viewportcanvas *viewport_screen;
 	
 private:
-	void destroy_mscreen_ob();
-	void create_mscreen_ob ();
 	
 	
 };

@@ -19,29 +19,29 @@
 
 #include "lockslateo.h"
 
-lockslateo::lockslateo(slatearea *parent_slatearea, slatetype *lockedobjectin) : slatetype(parent_slatearea)
+lockslateo::lockslateo(master *parent_mastert) : slatetype(parent_mastert)
 {
-	lockedobject=lockedobjectin;
-
+	
 }
 
 lockslateo::~lockslateo()
 {
 
 }
-slatetype *lockslateo::unlock()
+
+/**slatetype *lockslateo::unlock(slatearea *)
 {
 	slatetype *temp=lockedobject;
 	assert(lockedobject);
 	lockedobject=0;	
 	return temp;
-}
+}*/
 
 
 
 
 char lockslateo::TYPE()
 {
-	return TYPE_lockslate;
+	return TYPE_locked;
 }
 

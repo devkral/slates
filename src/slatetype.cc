@@ -17,15 +17,15 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "slateobject.h"
+#include "slatetype.h"
 
 #include <iostream>
 
 using namespace std;
 
-slatetype::slatetype(viewport *parent_viewportt);
+slatetype::slatetype(master *parent_mastert)
 {
-	parent_viewport=parent_viewportt;
+	parent_master=parent_mastert;
 	isdrawn=true;
 	drawthread=thread(kickstarter_drawthread,this);
 }
@@ -38,9 +38,9 @@ slatetype::~slatetype()
 		drawthread.join();
 }
 
-void slatetype::update()
+master *slatetype::getmaster()
 {
-
+	return parent_master;
 }
 
 void slatetype::draw_function()
@@ -48,13 +48,8 @@ void slatetype::draw_function()
 	//code
 }
 
-viewport *slatetype::getviewport()
-{
-	return parent_viewport;
-}
 
-
-void slatetype::handle_event(void *event, bool called_by_input)
+void slatetype::handle_event(void *event)
 {
 
 }

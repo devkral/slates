@@ -19,7 +19,7 @@
 
 #include "emptyslateo.h"
 
-emptyslateo::emptyslateo(slatearea *parent_slatearea) : slateobject(parent_slate,screenob)
+emptyslateo::emptyslateo(master *parent_mastert) : slatetype(parent_mastert)
 {
 
 }
@@ -33,7 +33,7 @@ char emptyslateo::TYPE()
 {
 	return TYPE_empty;
 }
-
+/**
 
 int slate::fillslate(string progname)
 {
@@ -76,4 +76,4 @@ void slate::emptyslate()
 	else
 		emptyslate_nonunique();
 }
-
+*/

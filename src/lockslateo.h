@@ -20,22 +20,25 @@
 #ifndef _LOCKSLATEO_H_
 #define _LOCKSLATEO_H_
 
-#include "slateobject.h"
-class slateobject;
+#include "slatetype.h"
+class slatetype;
+//#include "slatearea.h"
+class slatearea;
 
 #include "constdef.h"
 
-class lockslateo: public slatetype 
+class lockslateo : public slatetype
 {
 public:
-	lockslateo(slatearea *parent_slate, slatetype *lockedobjectin);
+	lockslateo(master *parent_mastert);
 	~lockslateo();
 	char TYPE();
-	slatetype *unlock();
+	void lock(slatearea *slateareaout,slatetype *lockedobject);
+	virtual slatetype *unlock(slatearea *slateareaout)=0;
+	virtual bool isempty()=0;
 protected:
 
 private:
-	slatetype *lockedobject=0;
 	void sendunlock();
 };
 

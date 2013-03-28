@@ -52,6 +52,8 @@ slates_SOURCES += testbackend/testbackend.cc \
 	testbackend/temptyslateo.h \
 	testbackend/tscreenobject.cc \
 	testbackend/tscreenobject.h
+	testbackend/tslatearea.cc \
+	testbackend/tslatearea.h
 endif
 
 if IS_COMPILED_WITH_GTKMM
@@ -70,7 +72,9 @@ slates_SOURCES +=  gtkmmbackend/gtkmmbackend.cc \
 	gtkmmbackend/gtkmm_emptyslateo.cc \
 	gtkmmbackend/gtkmm_emptyslateo.h \
 	gtkmmbackend/gtkmm_screenobject.cc \
-	gtkmmbackend/gtkmm_screenobject.h
+	gtkmmbackend/gtkmm_screenobject.h \
+	gtkmmbackend/gtkmm_slatearea.cc \
+	gtkmmbackend/gtkmm_slatearea.h
 endif
 
 if IS_COMPILED_WITH_SDL
@@ -78,20 +82,16 @@ slates_SOURCES += sdlbackend/sdlbackend.cc \
 	sdlbackend/sdlbackend.h \
 	sdlbackend/sdl_viewport.cc \
 	sdlbackend/sdl_viewport.h \
-	sdlbackend/sdl_slate.cc \
-	sdlbackend/sdl_slate.h \
-	sdlbackend/sdl_windowslateo.cc \
-	sdlbackend/sdl_windowslateo.h \
 	sdlbackend/sdl_lockslateo.cc \
 	sdlbackend/sdl_lockslateo.h \
-	sdlbackend/sdl_sysslateo.cc \
-	sdlbackend/sdl_sysslateo.h \
 	sdlbackend/sdl_emptyslateo.cc \
 	sdlbackend/sdl_emptyslateo.h \
 	sdlbackend/sdl_screenobject.cc \
 	sdlbackend/sdl_screenobject.h \
 	sdlbackend/sdl_slateotypes.cc \
-	sdlbackend/sdl_slateotypes.h
+	sdlbackend/sdl_slateotypes.h \
+	sdlbackend/sdl_slatearea.cc \
+	sdlbackend/sdl_slatearea.h
 endif
 
 slates_CXXFLAGS = -std=c++11

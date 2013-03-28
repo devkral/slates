@@ -47,10 +47,11 @@ public:
 	void lock();
 	void unlock();
 	void create_area();
-	void destroy_area();
+	void replace_area(slatearea *newarea);
 	void update();
 	int get_x();
 	int get_y();
+	int get_id();
 	void handle_input(void *initializer);
 	void handle_event(void *event);
 	

@@ -75,8 +75,8 @@ sdl_master::sdl_master(int argc, char* argv[]) : master()
 
 sdl_master::~sdl_master()
 {
+	//~master();
 	cout << "Destroy sdlmaster\n";
-	cleanup();
 	SDL_Quit();
 }
 

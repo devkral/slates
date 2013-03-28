@@ -28,14 +28,14 @@
 using namespace std;
 
 
-typedef struct sdlmastercanvas_{
-	sdlmastercanvas_(int borderthicknesst)
+typedef struct sdl_viewportcanvas_{
+	sdl_viewportcanvas_(int borderthicknesst)
 	{
 		is_rendering=false;
 		borderthickness=borderthicknesst;
 	}
 		
-	~sdlmastercanvas_()
+	~sdl_viewportcanvas_()
 	{
 		SDL_DestroyRenderer (globalrender);
 		SDL_DestroyWindow (window);
@@ -61,19 +61,19 @@ typedef struct sdlmastercanvas_{
 	Uint32 black=0;
 	
 	
-}sdlmastercanvas;
+}sdl_viewportcanvas;
 
 
 
 
 
-typedef struct sdlslatecanvas_{
-	sdlslatecanvas_(sdlmastercanvas *mastercanvast)
+typedef struct sdl_slateareacanvas_{
+	sdl_slateareacanvas_(sdl_viewportcanvas *viewportcanvast)
 	{
-		mastercanvas=mastercanvast;
+		viewportcanvas=viewportcanvast;
 		slateface=SDL_CreateRGBSurface(0,1,1,32,0,0,0,0);
 	}
-	~sdlslatecanvas_()
+	~sdl_slateareacanvas_()
 	{
 		SDL_FreeSurface (slateface);
 		SDL_DestroyRenderer (slaterender);
@@ -83,22 +83,22 @@ typedef struct sdlslatecanvas_{
 	SDL_Surface *slateface;	
 	
 	//must not be freed done by master
-	sdlmastercanvas *mastercanvas=0;
+	sdl_viewportcanvas *viewportcanvas=0;
 	void updaterect(int x, int y, int w, int h)
 	{
-		slatebox.x=x+mastercanvas->borderthickness;
-		slatebox.y=y+mastercanvas->borderthickness;
-		slatebox.w=w-mastercanvas->borderthickness;
-		slatebox.h=h-mastercanvas->borderthickness;
+		slatebox.x=x+viewportcanvas->borderthickness;
+		slatebox.y=y+viewportcanvas->borderthickness;
+		slatebox.w=w-viewportcanvas->borderthickness;
+		slatebox.h=h-viewportcanvas->borderthickness;
 
 	};
 	
-}sdlslatecanvas;
+}sdl_slateareacanvas;
 
 
 
-extern sdlmastercanvas *to_sdmac(void* in);
-extern sdlslatecanvas *to_sdslc(void* in);
+extern sdl_viewportcanvas *to_viewport(void *in);
+extern sdl_slateareacanvas *to_slatearea(void *in);
 
 
 #endif // _TSCREENOBJECT_H_

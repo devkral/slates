@@ -23,7 +23,7 @@
 
 using namespace std;
 
-sdl_lockslateo::sdl_lockslateo(slate *parent_slate, void *screenob) : lockslateo(parent_slate,screenob)
+sdl_lockslateo::sdl_lockslateo(master *parent_mastert) : lockslateo(parent_mastert)
 {
 	cerr << "Create sdl_lockslateo\n";
 	update_interval=3000;
@@ -37,7 +37,7 @@ sdl_lockslateo::~sdl_lockslateo()
 
 void sdl_lockslateo::update()
 {
-	interact_with_draw.lock();
+/**	interact_with_draw.lock();
 	//{
 		to_sdslc(screen_object)->updaterect(
 			        (getfparent()->get_position_x())*(to_sdmac (getviewport()->get_viewport_screen())->widget_w-to_sdmac (getviewport()->get_viewport_screen())->beg_x),
@@ -63,14 +63,9 @@ void sdl_lockslateo::update()
 		}
 		
 		interact_with_draw.unlock();
-	//}
+	//}*/
 }
 
-
-void sdl_lockslateo::cleanup_handler ()
-{
-	delete to_sdslc (screen_object);
-}
 
 void sdl_lockslateo::handle_event (void *event, bool called_by_input)
 {
@@ -78,26 +73,26 @@ void sdl_lockslateo::handle_event (void *event, bool called_by_input)
 	if (called_by_input==true && ((SDL_Event*)event)->key.keysym.sym==SDLK_ESCAPE)
 	{
 		hasinputhandle=false;
-		getfparent()->getmaster()->handle_masterevent(event);
+		//getfparent()->getmaster()->handle_masterevent(event);
 	}
 	else
 	{
 		switch( ((SDL_Event*)event)->type )
 		{
 			case SDL_QUIT: hasinputhandle=false;
-				getfparent()->getmaster()->handle_masterevent(event); //message master
+				//getfparent()->getmaster()->handle_masterevent(event); //message master
 			break;
 			case SDL_MOUSEBUTTONDOWN:
 				if (((SDL_Event*)event)->button.button==SDL_BUTTON_LEFT)
 				{
 					cout << "Replaced by emptyobject\n";
-					getfparent ()->unlock_slate();
+					//getfparent ()->unlock_slate();
 				}
 			break;
 			case SDL_MOUSEMOTION: 
 			if (called_by_input==true)
 			{
-				if (((SDL_Event*)event)->motion.x<to_sdslc (screen_object)->slatebox.x ||
+				/**if (((SDL_Event*)event)->motion.x<to_sdslc (screen_object)->slatebox.x ||
 					((SDL_Event*)event)->motion.y<to_sdslc (screen_object)->slatebox.y)
 				{	
 					hasinputhandle=false;
@@ -106,7 +101,7 @@ void sdl_lockslateo::handle_event (void *event, bool called_by_input)
 					((SDL_Event*)event)->motion.y>to_sdslc (screen_object)->slatebox.y+to_sdslc (screen_object)->slatebox.h)
 				{
 					hasinputhandle=false;
-				}
+				}*/
 			}
 			break;
 		}
@@ -134,7 +129,7 @@ void sdl_lockslateo::handle_input (void *initializer)
 
 void sdl_lockslateo::draw_function ()
 {
-	while(isdrawn==true)
+	/**while(isdrawn==true)
 	{
 
 		if (interact_with_draw.try_lock_for(defaulttimeout))
@@ -157,7 +152,7 @@ void sdl_lockslateo::draw_function ()
 			interact_with_draw.unlock();
 		}
 		SDL_Delay(update_interval);
-	}
+	}*/
 }
 
 
@@ -176,9 +171,3 @@ string sdl_lockslateo::enter_password ()
 }
 
 
-
-void sdl_lockslateo::unlock()
-{
-	if (! (getfparent()->getmaster()->unlock((char *)enter_password().c_str())) )
-		cout << "Not unlocked\n";
-}

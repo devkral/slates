@@ -46,10 +46,10 @@ public:
 	void createviewport();
 	virtual viewport *create_viewport_intern(master *masteridd, int ownidd)=0;
 	void destroyviewport();
-	void cleanup();
+	
 	void swapcontent(int viewportid1, long int slateid1,int viewportid2, long int slateid2);
 	void lock();
-	bool unlock(char *password);
+	bool unlock_slates(char *password);
 	void start_handling_input();
 	virtual void inputhandler_function()=0;
 	void stop_handling_input();
@@ -64,7 +64,7 @@ protected:
 	timed_mutex protectmaster_eventhandle;
 	
 private:
-	void unlock_slates_intern();
+	void unlock();
 	int viewport_idcount=0;
 };
 

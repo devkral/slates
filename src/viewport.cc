@@ -40,22 +40,16 @@ long int calcidslate(long int x, long int y)
 	return result;
 }
 
-viewport::viewport(master *master_parent,int viewportidtemp) : slateid_prot()
+viewport::viewport(master *master_parent,int viewportidtemp)
 {
 	viewportid=viewportidtemp;
-	mroot=masteridd;
-	ownid=ownidd;
+	mroot=master_parent;
 	amount_filled_slates=0;
-	
 }
 
 viewport::~viewport()
 {
-}
-void viewport::cleanup()
-{
 	async_destroy_slates(max_avail_slates);
-	destroy_mscreen_ob();
 }
 
 
@@ -184,8 +178,8 @@ void viewport::async_create_slates(long int amount)
 
 		//warning synchronize this in both while loops
 		slate *placeholderpointer=0; 
-		slate_pool.push_back(placeholderpointer,slate_idcount, temp_x, temp_y);
-		temppool.push_back(thread(async_create_slates_intern,tempslate));
+		slate_pool.push_back(placeholderpointer);
+		temppool.push_back(thread(async_create_slates_intern,placeholderpointer,this,slate_idcount, temp_x, temp_y));
 		
 		slate_idcount++;
 	}
@@ -195,8 +189,8 @@ void viewport::async_create_slates(long int amount)
 		temp_x=slices-1;
 
 		slate *placeholderpointer=0; 
-		slate_pool.push_back(placeholderpointer,slate_idcount, temp_x, temp_y);
-		temppool.push_back(thread(async_create_slates_intern,tempslate));
+		slate_pool.push_back(placeholderpointer);
+		temppool.push_back(thread(async_create_slates_intern,placeholderpointer,this,slate_idcount, temp_x, temp_y));
 
 		slate_idcount++;
 
@@ -287,18 +281,45 @@ master *viewport::getmaster()
 	return mroot;
 }
 
-void viewport::lock_all_intern()
+void lock_intern(slate *temp)
 {
-	for (long int count=0;count<max_avail_slates;count++)
-		(slate_pool[count])->lock_slate();
+	temp->lock();
 }
 
-void viewport::unlock_all_intern()
+void viewport::lock()
 {
-	for (long int count=0;count<max_avail_slates;count++)
-		(slate_pool[count])->unlock_slate();
+	vector<thread> temppool;
+	for (long int count=0;count<amount_filled_slates;count++)
+	{
+		temppool.push_back(thread(lock_intern,slate_pool[count]));
+		slate_idcount--;
+	}
+	while (temppool.empty()==false)
+	{
+		temppool.back().join();
+		temppool.pop_back();
+	}
 }
 
+void unlock_intern(slate *temp)
+{
+	temp->unlock();
+}
+
+void viewport::unlock()
+{
+	vector<thread> temppool;
+	for (long int count=0;count<amount_filled_slates;count++)
+	{
+		temppool.push_back(thread(unlock_intern,slate_pool[count]));
+		slate_idcount--;
+	}
+	while (temppool.empty()==false)
+	{
+		temppool.back().join();
+		temppool.pop_back();
+	}
+}
 
 void viewport::fillslate_intern(long int id)
 {
@@ -331,11 +352,6 @@ void viewport::emptyslate_intern(long int id)
 	
 }
 
-void *viewport::get_viewport_screen()
-{
-	return viewport_screen;
-}
-
 int viewport::get_viewport_id()
 {
 	return viewportid;
@@ -345,12 +361,12 @@ int viewport::get_slices()
 {
 	return slices;
 }
+
+
 void handle_event_intern(slate *slateob, void *event)
 {
 	slateob->handle_event(event);
 }
-
-
 void viewport::handle_event(void *event)
 {
 	vector<thread> threadpool_events;

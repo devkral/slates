@@ -50,7 +50,6 @@ protected:
 	
 private:
 	viewport *create_viewport_intern(master *masteridd, int ownidd);
-	bool ismodmousepressed=false;
 };
 
 int sdlmain(int argc, char *argv[]);

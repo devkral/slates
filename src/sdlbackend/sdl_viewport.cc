@@ -19,8 +19,12 @@
 
 #include "sdl_viewport.h"
 
+
+
 #include <iostream>
 #include <SDL2/SDL_image.h>
+
+
 
 using namespace std;
 
@@ -28,8 +32,35 @@ using namespace std;
 sdl_viewport::sdl_viewport(master *masteridd, int ownidd) : viewport(masteridd,ownidd)
 {
 	cerr << "Create sdl_viewport\n";
-	create_mscreen_ob();
-	//addslice(); 
+	viewport_screen=new sdl_viewportcanvas(2);
+	//SDL_CreateWindowAndRenderer(
+	SDL_GetDisplayBounds(get_viewport_id(), &viewport_screen->dispbounds);
+	bool justmaximize=true;
+	if (justmaximize)
+		viewport_screen->window=SDL_CreateWindow("Slates", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+			           viewport_screen->dispbounds.w, viewport_screen->dispbounds.h,SDL_WINDOW_MAXIMIZED);
+	else
+		viewport_screen->window=SDL_CreateWindow("Slates", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+			           viewport_screen->dispbounds.w, viewport_screen->dispbounds.h,SDL_WINDOW_FULLSCREEN);
+	SDL_GetCurrentDisplayMode(get_viewport_id (),&viewport_screen->curdisplaymode);
+
+	viewport_screen->globalrender=SDL_CreateRenderer(viewport_screen->window,-1,SDL_RENDERER_SOFTWARE);//|SDL_RENDERER_PRESENTVSYNC);//SDL_RENDERER_ACCELERATED);
+
+	viewport_screen->viewport_tex=SDL_CreateTexture (viewport_screen->globalrender,
+	                                                           viewport_screen->curdisplaymode.format,
+	                                                           SDL_TEXTUREACCESS_STREAMING,
+	                                                            viewport_screen->dispbounds.w,
+																viewport_screen->dispbounds.h);
+	viewport_screen->viewport=IMG_Load("themes/samplebackground.png");
+	if (to_viewport(viewport_screen)->viewport!=0)
+	{
+		to_viewport(viewport_screen)->viewport_tex=SDL_CreateTextureFromSurface (to_viewport(viewport_screen)->globalrender,to_viewport(viewport_screen)->viewport);
+		SDL_RenderCopy(to_viewport(viewport_screen)->globalrender,to_viewport(viewport_screen)->viewport_tex, 0, 0);
+		SDL_RenderPresent(to_viewport(viewport_screen)->globalrender);
+		//SDL_UpdateTexture(to_sdmac(viewport_screen)->viewport_tex,0,to_sdmac(viewport_screen)->viewport->pixels,to_sdmac(viewport_screen)->viewport->pitch);
+	}
+	else
+		cerr << "Couldn't load theme.\n";
 }
 
 
@@ -37,58 +68,15 @@ sdl_viewport::sdl_viewport(master *masteridd, int ownidd) : viewport(masteridd,o
 
 sdl_viewport::~sdl_viewport()
 {
-	
+	delete viewport_screen;
 }
 
-
-slate *sdl_viewport::create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp)
-{
-	return new sdl_slate(parent,id,position_xtemp,position_ytemp);
-}
-
-void sdl_viewport::destroy_mscreen_ob()
-{
-	delete to_sdmac(viewport_screen);
-}
-
-void sdl_viewport::create_mscreen_ob()
-{
-	viewport_screen=new sdlmastercanvas(2);
-	//SDL_CreateWindowAndRenderer(
-	SDL_GetDisplayBounds(get_id(), &to_sdmac(viewport_screen)->dispbounds);
-	bool justmaximize=1;
-	if (justmaximize)
-		to_sdmac(viewport_screen)->window=SDL_CreateWindow("Slates", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-			           to_sdmac(viewport_screen)->dispbounds.w, to_sdmac(viewport_screen)->dispbounds.h,SDL_WINDOW_MAXIMIZED);
-	else
-		to_sdmac(viewport_screen)->window=SDL_CreateWindow("Slates", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-			           to_sdmac(viewport_screen)->dispbounds.w, to_sdmac(viewport_screen)->dispbounds.h,SDL_WINDOW_FULLSCREEN);
-	SDL_GetCurrentDisplayMode(get_id (),&to_sdmac(viewport_screen)->curdisplaymode);
-
-	to_sdmac(viewport_screen)->globalrender=SDL_CreateRenderer(to_sdmac(viewport_screen)->window,-1,SDL_RENDERER_SOFTWARE);//|SDL_RENDERER_PRESENTVSYNC);//SDL_RENDERER_ACCELERATED);
-
-	to_sdmac(viewport_screen)->viewport_tex=SDL_CreateTexture (to_sdmac(viewport_screen)->globalrender,
-	                                                           to_sdmac(viewport_screen)->curdisplaymode.format,
-	                                                           SDL_TEXTUREACCESS_STREAMING,
-	                                                            to_sdmac(viewport_screen)->dispbounds.w,
-																to_sdmac(viewport_screen)->dispbounds.h);
-	to_sdmac(viewport_screen)->viewport=IMG_Load("themes/samplebackground.png");
-	if (to_sdmac(viewport_screen)->viewport!=0)
-	{
-		to_sdmac(viewport_screen)->viewport_tex=SDL_CreateTextureFromSurface (to_sdmac(viewport_screen)->globalrender,to_sdmac(viewport_screen)->viewport);
-		SDL_RenderCopy(to_sdmac(viewport_screen)->globalrender,to_sdmac(viewport_screen)->viewport_tex, 0, 0);
-		SDL_RenderPresent(to_sdmac(viewport_screen)->globalrender);
-		//SDL_UpdateTexture(to_sdmac(viewport_screen)->viewport_tex,0,to_sdmac(viewport_screen)->viewport->pixels,to_sdmac(viewport_screen)->viewport->pitch);
-	}
-	else
-		cerr << "Couldn't load theme.\n";
-}
 
 long int sdl_viewport::id_slate_mouse(int x, int y)
 {
 	if (x<0 || y<0)
 		return xy_negative;
-	return calcidslate(x/to_sdmac(viewport_screen)->widget_w, y/to_sdmac(viewport_screen)->widget_h);
+	return calcidslate(x/viewport_screen->widget_w, y/viewport_screen->widget_h);
 }
 slate *sdl_viewport::get_slate_mouse(int x, int y)
 {
@@ -102,18 +90,24 @@ slate *sdl_viewport::get_slate_mouse(int x, int y)
 
 void sdl_viewport::update_slice_info()
 {
-	to_sdmac(viewport_screen)->widget_w=to_sdmac(viewport_screen)->dispbounds.w/get_viewport_width();
-	to_sdmac(viewport_screen)->widget_h=to_sdmac(viewport_screen)->dispbounds.h/get_viewport_height();
+	viewport_screen->widget_w=viewport_screen->dispbounds.w/get_viewport_width();
+	viewport_screen->widget_h=viewport_screen->dispbounds.h/get_viewport_height();
 
-	to_sdmac(viewport_screen)->beg_x=to_sdmac(viewport_screen)->widget_w*get_viewport_beg_x();
-	to_sdmac(viewport_screen)->beg_y=to_sdmac(viewport_screen)->widget_h*get_viewport_beg_y();
+	viewport_screen->beg_x=viewport_screen->widget_w*get_viewport_beg_x();
+	viewport_screen->beg_y=viewport_screen->widget_h*get_viewport_beg_y();
 	
-	to_sdmac(viewport_screen)->max_w=to_sdmac(viewport_screen)->widget_w*get_viewport_width ();
-	to_sdmac(viewport_screen)->max_h=to_sdmac(viewport_screen)->widget_h*get_viewport_height ();
-	SDL_RenderClear(to_sdmac(viewport_screen)->globalrender);
-	SDL_RenderCopy(to_sdmac(viewport_screen)->globalrender,to_sdmac(viewport_screen)->viewport_tex, 0, 0);
-	SDL_RenderPresent(to_sdmac(viewport_screen)->globalrender);
+	viewport_screen->max_w=viewport_screen->widget_w*get_viewport_width ();
+	viewport_screen->max_h=viewport_screen->widget_h*get_viewport_height ();
+	SDL_RenderClear(to_viewport(viewport_screen)->globalrender);
+	SDL_RenderCopy(viewport_screen->globalrender,viewport_screen->viewport_tex, 0, 0);
+	SDL_RenderPresent(viewport_screen->globalrender);
 }
 
-
+slatearea *sdl_viewport::create_area(slate *parent_slate)
+{
+	sdl_slateareacanvas *temp=new sdl_slateareacanvas(viewport_screen);
+	assert(temp);
+	
+	return 0;//new sdl_slatearea(parent_slate,temp);
+}
 

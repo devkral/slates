@@ -20,11 +20,11 @@
 #ifndef _SLATEOBJECT_H_
 #define _SLATEOBJECT_H_
 
-//#include "master.h"
-//class master;
+#include "master.h"
+class master;
 //#include "viewport.h"
 //class viewport;
-#include "slate.h"
+//#include "slate.h"
 class slate;
 
 #include "constdef.h"
@@ -37,11 +37,10 @@ class slatetype
 {
 public:
 
-	slatetype(viewport *parent_viewportt);
+	slatetype(master *parent_mastert);
 	virtual ~slatetype();
-	viewport *getviewport();
 	
-	virtual void handle_event(void *initializer, bool called_by_input); //needn't to be implemented if there is an other solution
+	virtual void handle_event(void *event); //needn't to be implemented if there is an other solution
 	//be carefull: if not called by input don't send something to an alleventhandler
 	virtual void handle_input(void *initializer); //needn't to be implemented if there is an other solution
 	virtual void update()=0;
@@ -52,19 +51,18 @@ public:
 	 * stop with destruction
 	 * hide/draw via update and slateareas isvisible state
 	 */
-	
+	master *getmaster();
 	
 	virtual char TYPE()=0;
 protected:
 	bool isdrawn=false;
 	bool hasinputhandle=false;
 	thread drawthread;
-	viewport *parent_viewport;
-	//thread window_inputthread;
+	master *parent_master;
 private:
 	
 };
-extern void kickstarter_drawthread(slateobject *parent);
+extern void kickstarter_drawthread(slatetype *parent);
 
 #endif // _SLATEOBJECT_H_
 

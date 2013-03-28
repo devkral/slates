@@ -23,8 +23,9 @@
 class master;
 #include "slate.h"
 class slate;
-//#include "slateobject.h"
-//class slateobject;
+#include "slatetype.h"
+class slatetype;
+class slatearea;
 
 #include "constdef.h"
 
@@ -44,8 +45,8 @@ extern long int calcidslate(long int x, long int y);
 class viewport
 {
 public:
-	viewport(master *masteridd, int viewportidd);
-	~viewport();
+	viewport(master *master_parent, int viewportidtemp);
+	virtual ~viewport();
 	slate *getslate(int x, int y);
 	slate *getslate_by_id(long int id);
 	void addslice();
@@ -54,7 +55,9 @@ public:
 	void fillslate_intern(long int id); //counter 
 	void emptyslate_intern(long int id); //counter
 	void handle_event(void *event);
-	
+
+	void lock();
+	void unlock();
 	
 	void async_update_slates();
 	void async_destroy_slates(long int amount);
@@ -62,7 +65,6 @@ public:
 	
 	master *getmaster();
 
-	void *get_viewport_screen();
 	int get_viewport_id();
 	int get_slices();
 
@@ -74,14 +76,15 @@ public:
 	int get_viewport_beg_y();
 
 
+	virtual void *get_viewportscreen()=0;
 	virtual void update_slice_info()=0;
 	virtual slatetype *create_lockslatetype(slatearea *parent_slatearea, slatetype *lockobject)=0;
 	virtual slatetype *create_emptyslatetype(slatearea *parent_slatearea)=0;
+	virtual slatearea *create_area(slate *parent_slate)=0;
 	
 
 protected:
-	//every display a viewport_screen
-	void *viewport_screen=0;
+	
 private:
 	int horizontal_tiles=-1;
 	int vertical_tiles=-1;
