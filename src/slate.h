@@ -67,6 +67,8 @@ public:
 	void handle_input(void *initializer);
 	void handle_event(void *event);
 	
+	
+	
 protected:
 	mutex change_slate; //
 private:
@@ -77,16 +79,9 @@ private:
 	long int slateid;
 	viewport *parent_viewport;
 		
-	shared_ptr<slateobject> child_slateo;
-	shared_ptr<slateobject> preserve_after_lock;
+	slatearea *child
 
-	void emptyslate_nonunique();
-	
-	virtual slateobject *create_lockobject()=0;
-	virtual slateobject *create_emptyobject()=0;
-	virtual slateobject *create_sysobject()=0;
 	virtual slateobject *create_windowobject(string progname)=0;
-	
 };
 #endif // _SLATE_H_
 

@@ -77,6 +77,11 @@ public:
 	int get_viewport_beg_y();
 
 	
+	virtual slateobject *create_lockobject()=0;
+	virtual slateobject *create_emptyobject()=0;
+	virtual slateobject *create_sysobject()=0;
+
+	
 
 protected:
 	//every display a viewport_screen

@@ -37,7 +37,9 @@ slates_SOURCES = \
 	emptyslateo.cc \
 	emptyslateo.h \
 	confreader.cc \
-	confreader.h
+	confreader.h \
+	slatearea.cc \
+	slatearea.h
 
 
 
