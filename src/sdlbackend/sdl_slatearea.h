@@ -30,7 +30,7 @@ class slate;
 
 using namespace std;
 
-class sdl_slatearea : slatearea
+class sdl_slatearea : public slatearea
 {
 public:
 	sdl_slatearea(slate *parent_slate, sdl_slateareacanvas *canvastemp);

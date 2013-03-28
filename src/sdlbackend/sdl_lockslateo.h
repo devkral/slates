@@ -42,12 +42,15 @@ public:
 	void handle_event(void *event, bool called_by_input);
 	string enter_password ();
 	slatearea *getfslatea();
+
+	void lock(slatearea *, slatetype*);
+	slatetype *unlock(slatearea *);
+	bool isempty();
 	
 protected:
 	int update_interval;
 	SDL_Event event;
 private:
-	void unlock();
 	mutex interact_with_draw;
 };
 

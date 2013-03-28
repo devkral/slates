@@ -26,8 +26,6 @@ using namespace std;
 slatetype::slatetype(master *parent_mastert)
 {
 	parent_master=parent_mastert;
-	isdrawn=true;
-	drawthread=thread(kickstarter_drawthread,this);
 }
 
 slatetype::~slatetype()
@@ -41,6 +39,12 @@ slatetype::~slatetype()
 master *slatetype::getmaster()
 {
 	return parent_master;
+}
+
+void slatetype::init()
+{
+	isdrawn=true;
+	drawthread=thread(kickstarter_drawthread,this);
 }
 
 void slatetype::draw_function()

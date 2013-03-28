@@ -35,8 +35,7 @@ void sdlemptyprivat::init_colors(SDL_Surface *in)
 	if (iseverset==false)
 	{
 		lockonwriteread.lock();
-		white=SDL_MapRGBA (in->format, 255,255,255,255);
-		black=SDL_MapRGBA (in->format, 0,0,0,255);
+
 		lockonwriteread.unlock();
 	}
 }

@@ -85,17 +85,17 @@ void slate::emptyslate_nonunique()
 
 void slate::update()
 {
-	child->update();
+	//child->update();
 }
 
 void slate::lock()
 {
-	//child->lock();
+	child->lock();
 }
 
 void slate::unlock()
 {
-	//child->unlock();
+	child->unlock();
 }
 
 

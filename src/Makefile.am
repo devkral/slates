@@ -86,8 +86,6 @@ slates_SOURCES += sdlbackend/sdlbackend.cc \
 	sdlbackend/sdl_emptyslateo.h \
 	sdlbackend/sdl_screenobject.cc \
 	sdlbackend/sdl_screenobject.h \
-	sdlbackend/sdl_slateotypes.cc \
-	sdlbackend/sdl_slateotypes.h \
 	sdlbackend/sdl_slatearea.cc \
 	sdlbackend/sdl_slatearea.h
 endif

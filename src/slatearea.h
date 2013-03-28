@@ -38,7 +38,7 @@ class slatearea
 public:
 	slatearea(slate *parent_slate);
 	virtual ~slatearea();
-
+	void init();
 	void move(int x, int y);  //swaps origin
 	slate *get_origin();
 	

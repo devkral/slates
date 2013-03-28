@@ -35,7 +35,7 @@ class sdl_screenobject;
 class sdl_emptyslateo : public emptyslateo 
 {
 public:
-	sdl_emptyslateo(master *parent_mastert);
+	sdl_emptyslateo(master *parent_mastert, slatearea *initarea);
 	~sdl_emptyslateo();
 	void update();
 	void cleanup_handler ();
@@ -48,9 +48,14 @@ protected:
 	int update_interval;
 	SDL_Event event;
 	bool specialcondition=false;
+	SDL_Surface *emptysur=0;
+	SDL_Texture *emptytex=0;
+	Uint32 white=0;
+	Uint32 black=0;
 	
 private:
-
+	vector<slatearea*> drawareas;
+	timed_mutex interact_with_draw;
 };
 
 #endif // _EMPTYSLATEO_H_

@@ -25,6 +25,9 @@ class master;
 class slate;
 #include "slatetype.h"
 class slatetype;
+//I let them undefined, hope no bugs
+class lockslateo;
+class emptyslateo;
 class slatearea;
 
 #include "constdef.h"
@@ -78,8 +81,8 @@ public:
 
 	virtual void *get_viewportscreen()=0;
 	virtual void update_slice_info()=0;
-	virtual slatetype *create_lockslatetype(slatearea *parent_slatearea, slatetype *lockobject)=0;
-	virtual slatetype *create_emptyslatetype(slatearea *parent_slatearea)=0;
+	virtual lockslateo *create_lockslatetype(slatearea *parent_slatearea, slatetype *lockobject)=0;
+	virtual emptyslateo *create_emptyslatetype(slatearea *parent_slatearea)=0;
 	virtual slatearea *create_area(slate *parent_slate)=0;
 	
 

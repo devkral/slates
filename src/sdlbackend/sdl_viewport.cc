@@ -61,6 +61,7 @@ sdl_viewport::sdl_viewport(master *masteridd, int ownidd) : viewport(masteridd,o
 	}
 	else
 		cerr << "Couldn't load theme.\n";
+	
 }
 
 
@@ -103,11 +104,30 @@ void sdl_viewport::update_slice_info()
 	SDL_RenderPresent(viewport_screen->globalrender);
 }
 
+
+void *sdl_viewport::get_viewportscreen()
+{
+	return (void*)viewport_screen;
+}
 slatearea *sdl_viewport::create_area(slate *parent_slate)
 {
 	sdl_slateareacanvas *temp=new sdl_slateareacanvas(viewport_screen);
-	assert(temp);
+	sdl_slatearea *temp2=new sdl_slatearea(parent_slate,temp);
+	temp2->init();
 	
-	return (slatearea *) new sdl_slatearea(parent_slate,temp);
+	return (slatearea *)temp2 ;
+}
+lockslateo *sdl_viewport::create_lockslatetype(slatearea *parent_slatearea, slatetype *lockobject)
+{
+	lockslateo *temp=new sdl_lockslateo(getmaster());
+	temp->init();
+	temp->lock(parent_slatearea,lockobject);
+	return temp;
 }
 
+emptyslateo *sdl_viewport::create_emptyslatetype(slatearea *parent_slatearea)
+{
+	emptyslateo *temp=new sdl_emptyslateo(getmaster(),parent_slatearea);
+	temp->init();
+	return temp;
+}

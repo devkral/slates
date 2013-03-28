@@ -36,7 +36,7 @@ public:
 
 
 	SDL_Surface *emptysur=0;
-	SDL_Texture *emptytex=0;
+	
 	Uint32 white=0;
 	Uint32 black=0;
 	void init_colors(SDL_Surface *in);

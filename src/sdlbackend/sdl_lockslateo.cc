@@ -170,4 +170,16 @@ string sdl_lockslateo::enter_password ()
 
 }
 
+slatetype *sdl_lockslateo::unlock(slatearea *ttt)
+{
+	return 0;
+}
+bool sdl_lockslateo::isempty()
+{
+	return true;
+}
 
+void sdl_lockslateo::lock(slatearea *, slatetype*)
+{
+
+}

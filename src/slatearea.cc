@@ -27,7 +27,7 @@ slatearea::slatearea(slate *parent_slate)
 {
 	connectedslates.push_back( deque<slate*>() );
 	connectedslates[0].push_back(parent_slate);
-	//get_origin()->getviewport()->getempty();
+	
 }
 
 slatearea::~slatearea()
@@ -41,6 +41,11 @@ slatearea::~slatearea()
 	{
 		connectedslates.pop_back();
 	}
+}
+
+void slatearea::init()
+{
+	child=(slatetype*)get_origin()->getviewport()->create_emptyslatetype (this);
 }
 
 bool slatearea::isfilled()
