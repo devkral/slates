@@ -186,6 +186,6 @@ void sdl_lockslateo::lock(slatearea *, slatetype*)
 
 void *sdl_lockslateo::set_slatearea(slatearea *set)
 {
-
+	return 0;
 
 }

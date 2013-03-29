@@ -34,7 +34,8 @@ sdl_emptyslateo::sdl_emptyslateo(master *parent_mastert) : emptyslateo(parent_ma
 
 sdl_emptyslateo::~sdl_emptyslateo()
 {
-	
+	SDL_FreeSurface (emptysur);
+	SDL_DestroyTexture (emptytex);
 }
 
 void sdl_emptyslateo::update()
@@ -45,14 +46,14 @@ void sdl_emptyslateo::update()
 
 		if (!emptysur)
 			SDL_FreeSurface (emptysur);
-		emptysur=SDL_CreateRGBSurface (0,to_slatearea (drawareas[0]->get_screen())->slatebox.w,to_slatearea (drawareas[0]->get_screen())->slatebox.h,32,0,0,0,0);
+		emptysur=SDL_CreateRGBSurface (0,to_sdlslatearea (drawareas[0]->get_screen())->slatebox.w,to_sdlslatearea (drawareas[0]->get_screen())->slatebox.h,32,0,0,0,0);
 		if (!emptysur)
 			return;
 		
 		white=SDL_MapRGBA (emptysur->format, 255,255,255,255);
 		black=SDL_MapRGBA (emptysur->format, 0,0,0,255);
-		SDL_FillRect (emptysur, &to_slatearea (drawareas[0]->get_screen())->slatebox,white);
-		emptytex=SDL_CreateTextureFromSurface (to_slatearea (drawareas[0]->get_screen())->viewportcanvas->globalrender,emptysur);
+		SDL_FillRect (emptysur, &to_sdlslatearea (drawareas[0]->get_screen())->slatebox,white);
+		emptytex=SDL_CreateTextureFromSurface (to_sdlslatearea (drawareas[0]->get_screen())->viewportcanvas->globalrender,emptysur);
 		
 	
 		
@@ -72,7 +73,7 @@ void sdl_emptyslateo::handle_event (void *event, bool called_by_input)
 
 	if (called_by_input==true && SDL_GetModState()&(KMOD_GUI|KMOD_CTRL))
 	{
-		int status=getmaster()->handle_event(event);
+		int status=get_master()->handle_event(event);
 		if (status==MASTER_QUIT)
 		{
 			hasinputhandle=false;
@@ -81,14 +82,14 @@ void sdl_emptyslateo::handle_event (void *event, bool called_by_input)
 	else if (called_by_input==true && ((SDL_Event*)event)->key.keysym.sym==SDLK_ESCAPE)
 	{
 		hasinputhandle=false;
-		getmaster()->handle_masterevent(event);
+		get_master()->handle_masterevent(event);
 	}
 	else
 	{
 		switch( ((SDL_Event*)event)->type )
 		{
 			case SDL_QUIT: hasinputhandle=false;
-				getmaster()->handle_masterevent(event); //message master
+				get_master()->handle_masterevent(event); //message master
 			break;
 			case SDL_MOUSEBUTTONDOWN:
 				if (((SDL_Event*)event)->button.button==SDL_BUTTON_LEFT)
@@ -144,10 +145,10 @@ void sdl_emptyslateo::draw_function ()
 
 		//interact_with_draw.lock();
 		
-		if (drawareas[0]->get_isvisible()==true && interact_with_draw.try_lock_for(defaulttimeout))
+		if ( drawareas.empty()==false && drawareas[0]->get_isvisible()==true && interact_with_draw.try_lock_for(defaulttimeout))
 		{
-			SDL_RenderCopy(to_slatearea (drawareas[0]->get_screen())->viewportcanvas->globalrender, emptytex, 0, &to_slatearea ((drawareas[0])->get_screen())->slatebox);
-			SDL_RenderPresent(to_slatearea (drawareas[0]->get_screen())->viewportcanvas->globalrender);
+			SDL_RenderCopy(to_sdlslatearea (drawareas[0]->get_screen())->viewportcanvas->globalrender, emptytex, 0, &to_sdlslatearea ((drawareas[0])->get_screen())->slatebox);
+			SDL_RenderPresent(to_sdlslatearea (drawareas[0]->get_screen())->viewportcanvas->globalrender);
 			interact_with_draw.unlock();
 		}
 		SDL_Delay(update_interval);
@@ -157,5 +158,5 @@ void sdl_emptyslateo::draw_function ()
 void *sdl_emptyslateo::set_slatearea(slatearea *set)
 {
 	drawareas.push_back(set);
-	return drawareas.back();
+	return (void*)drawareas.back();
 }

@@ -36,6 +36,7 @@ public:
 	void hide();
 	void cleanup_handler ();
 	void draw_function ();
+	void *set_slatearea(slatearea *in);
 protected:
 
 private:

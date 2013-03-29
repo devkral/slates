@@ -52,11 +52,11 @@ sdl_viewport::sdl_viewport(master *masteridd, int ownidd) : viewport(masteridd,o
 	                                                            viewport_screen->dispbounds.w,
 																viewport_screen->dispbounds.h);
 	viewport_screen->viewport=IMG_Load("themes/samplebackground.png");
-	if (to_viewport(viewport_screen)->viewport!=0)
+	if (to_sdlviewport(viewport_screen)->viewport!=0)
 	{
-		to_viewport(viewport_screen)->viewport_tex=SDL_CreateTextureFromSurface (to_viewport(viewport_screen)->globalrender,to_viewport(viewport_screen)->viewport);
-		SDL_RenderCopy(to_viewport(viewport_screen)->globalrender,to_viewport(viewport_screen)->viewport_tex, 0, 0);
-		SDL_RenderPresent(to_viewport(viewport_screen)->globalrender);
+		to_sdlviewport(viewport_screen)->viewport_tex=SDL_CreateTextureFromSurface (to_sdlviewport(viewport_screen)->globalrender,to_sdlviewport(viewport_screen)->viewport);
+		SDL_RenderCopy(to_sdlviewport(viewport_screen)->globalrender,to_sdlviewport(viewport_screen)->viewport_tex, 0, 0);
+		SDL_RenderPresent(to_sdlviewport(viewport_screen)->globalrender);
 		//SDL_UpdateTexture(to_sdmac(viewport_screen)->viewport_tex,0,to_sdmac(viewport_screen)->viewport->pixels,to_sdmac(viewport_screen)->viewport->pitch);
 	}
 	else
@@ -99,7 +99,7 @@ void sdl_viewport::update_slice_info()
 	
 	viewport_screen->max_w=viewport_screen->widget_w*get_viewport_width ();
 	viewport_screen->max_h=viewport_screen->widget_h*get_viewport_height ();
-	SDL_RenderClear(to_viewport(viewport_screen)->globalrender);
+	SDL_RenderClear(to_sdlviewport(viewport_screen)->globalrender);
 	SDL_RenderCopy(viewport_screen->globalrender,viewport_screen->viewport_tex, 0, 0);
 	SDL_RenderPresent(viewport_screen->globalrender);
 }

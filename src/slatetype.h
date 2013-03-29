@@ -50,7 +50,7 @@ public:
 	 * stop with destruction
 	 * hide/draw via update and slateareas isvisible state
 	 */
-	master *getmaster();
+	master *get_master();
 	virtual void *set_slatearea(slatearea *in)=0; //use double pointer intern, so you can replace this
 	
 	virtual char TYPE()=0;

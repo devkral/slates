@@ -36,7 +36,7 @@ slatetype::~slatetype()
 		drawthread.join();
 }
 
-master *slatetype::getmaster()
+master *slatetype::get_master()
 {
 	return parent_master;
 }

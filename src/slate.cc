@@ -39,7 +39,6 @@ void slate::init()
 }
 
 
-
 bool slate::isfilled()
 {
 	return child->isfilled();

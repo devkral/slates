@@ -40,3 +40,7 @@ void gtkmm_emptyslateo::draw_function ()
 {
 	
 }
+void *gtkmm_emptyslateo::set_slatearea(slatearea *in)
+{
+	return 0;
+}

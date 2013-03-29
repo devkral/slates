@@ -28,6 +28,7 @@ sdl_slatearea::~sdl_slatearea()
 {
 	delete screen;
 }
+
 void *sdl_slatearea::get_screen()
 {
 	return (void*)screen;

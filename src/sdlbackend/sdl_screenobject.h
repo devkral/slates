@@ -97,8 +97,8 @@ typedef struct sdl_slateareacanvas_{
 
 
 
-extern sdl_viewportcanvas *to_viewport(void *in);
-extern sdl_slateareacanvas *to_slatearea(void *in);
+extern sdl_viewportcanvas *to_sdlviewport(void *in);
+extern sdl_slateareacanvas *to_sdlslatearea(void *in);
 //port
 
 #endif // _TSCREENOBJECT_H_

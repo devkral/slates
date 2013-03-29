@@ -32,10 +32,7 @@ slatearea::slatearea(slate *parent_slate)
 
 slatearea::~slatearea()
 {
-	if (isfilled()!=0)
-	{
-		delete child;
-	}
+	delete child;
 	
 	while (connectedslates.empty()==false)
 	{
@@ -50,10 +47,10 @@ void slatearea::init()
 
 bool slatearea::isfilled()
 {
-	if (child->TYPE()!=TYPE_filled)
-		return false;
-	else
+	if (child->TYPE()!=TYPE_empty)
 		return true;
+	else
+		return false;
 }
 
 bool slatearea::get_isvisible ()

@@ -40,6 +40,7 @@ protected:
 private:
 	Gtk::Button lock;
 	Gtk::Entry entry;
+	void *set_slatearea(slatearea *in);
 };
 
 #endif // _LOCKSLATEO_H_
