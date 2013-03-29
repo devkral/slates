@@ -37,10 +37,11 @@ typedef struct sdl_viewportcanvas_{
 		
 	~sdl_viewportcanvas_()
 	{
+		
+		SDL_FreeSurface(viewport);
+		SDL_DestroyTexture(viewport_tex);
 		SDL_DestroyRenderer (globalrender);
 		SDL_DestroyWindow (window);
-		SDL_DestroyTexture(viewport_tex);
-		SDL_FreeSurface(viewport);
 	}
 	SDL_Window* window=0;
 	SDL_Renderer* globalrender=0;

@@ -34,8 +34,10 @@ sdl_emptyslateo::sdl_emptyslateo(master *parent_mastert) : emptyslateo(parent_ma
 
 sdl_emptyslateo::~sdl_emptyslateo()
 {
+	interact_with_draw.lock();
 	SDL_FreeSurface (emptysur);
 	SDL_DestroyTexture (emptytex);
+	interact_with_draw.unlock();
 }
 
 void sdl_emptyslateo::update()
@@ -44,8 +46,10 @@ void sdl_emptyslateo::update()
 	interact_with_draw.lock();
 	//{
 
-		if (!emptysur)
+		if (emptysur)
+		{
 			SDL_FreeSurface (emptysur);
+		}
 		emptysur=SDL_CreateRGBSurface (0,to_sdlslatearea (drawareas[0]->get_screen())->slatebox.w,to_sdlslatearea (drawareas[0]->get_screen())->slatebox.h,32,0,0,0,0);
 		if (!emptysur)
 			return;

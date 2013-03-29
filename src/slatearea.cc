@@ -33,6 +33,7 @@ slatearea::slatearea(slate *parent_slate)
 slatearea::~slatearea()
 {
 	delete child;
+	child=0;
 	
 	while (connectedslates.empty()==false)
 	{
