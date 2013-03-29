@@ -35,15 +35,15 @@ class slatearea;
 
 using namespace std;
 
-
 class slate
 {
 public:
 	slate (viewport *parent,long int id, int position_xtemp,int position_ytemp);
 	virtual ~slate();
+	void init();
 	bool isfilled();
-	master *getmaster();
-	viewport *getviewport();
+	master *get_master();
+	viewport *get_viewport();
 	void lock();
 	void unlock();
 	void create_area();
@@ -56,6 +56,7 @@ public:
 	void handle_event(void *event);
 	
 	bool isorigin();
+	void *get_selfreference_pointer();
 	
 protected:
 	mutex change_slate; //
@@ -63,8 +64,8 @@ private:
 	int position_x;
 	int position_y;
 	long int slateid;
-	viewport *parent_viewport;
-	slatearea *child;
+	viewport *parent_viewport=0;
+	slatearea *child=0;
 
 };
 #endif // _SLATE_H_

@@ -23,12 +23,12 @@
 
 using namespace std;
 
-gtwidget *to_gtw(void* in)
+gtkviewport *to_gtkviewport(void* in)
 {
-	return (gtwidget*)in;
+	return (gtkviewport*)in;
 }
 
-gtwindow *to_gdw(void* in)
+gtkslatearea *to_gtkslatearea(void* in)
 {
-	return (gtwindow*)in;
+	return (gtkslatearea*)in;
 }

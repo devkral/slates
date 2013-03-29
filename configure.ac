@@ -47,7 +47,7 @@ fi
 PKG_CHECK_MODULES(GTKMM, [gtkmm-3.0],  [buildgtkmmbackend="yes"],  [buildgtkmmbackend="no"] )
 
 
-buildgtkmmbackend="no"
+#buildgtkmmbackend="no"
 
 if test "x$buildgtkmmbackend" = "xyes" ; then
 	AM_CONDITIONAL(IS_COMPILED_WITH_GTKMM, [true])

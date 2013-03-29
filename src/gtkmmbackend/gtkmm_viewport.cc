@@ -27,33 +27,28 @@ using namespace std;
 gtkmm_viewport::gtkmm_viewport(master *masteridd, int ownidd) : viewport(masteridd,ownidd)
 {
 	cout << "Create gtkmm_viewport\n";
-	create_mscreen_ob();	
+	viewport_screen=new gtkviewport();
 }
 
 gtkmm_viewport::~gtkmm_viewport()
 {
-	cout << "Destroy gtkmm_viewport\n";
+	delete viewport_screen;
 }
 
-
-slate *gtkmm_viewport::create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp)
-{
-	return new gtkmm_slate(parent,id,position_xtemp,position_ytemp);
-}
-
-void gtkmm_viewport::destroy_mscreen_ob()
-{
-	delete to_gdw(viewport_screen);
-}
-
-void gtkmm_viewport::create_mscreen_ob()
-{
-	viewport_screen=new gtwindow();
-	//to_gdw(viewport_screen)->display_grid();
-}
 
 void gtkmm_viewport::update_slice_info()
 {
+	
+}
 
+
+slatearea *gtkmm_viewport::create_area(slate *parent_slate)
+{
+	return (slatearea*)new gtkmm_slatearea(parent_slate);
+
+}
+void *gtkmm_viewport::get_viewportscreen()
+{
+	return (void*)viewport_screen;
 }
 

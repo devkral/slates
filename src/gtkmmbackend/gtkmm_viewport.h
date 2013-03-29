@@ -21,8 +21,12 @@
 #define _GTKMM_VIEWPORT_H_
 #include "viewport.h"
 class viewport;
-#include "gtkmm_slate.h"
-class gtkmm_slate;
+#include "gtkmm_slatearea.h"
+class gtkmm_slatearea;
+#include "gtkmm_lockslateo.h"
+class gtkmm_lockslateo;
+#include "gtkmm_emptyslateo.h"
+class gtkmm_emptyslateo;
 #include "gtkmm_screenobject.h"
 class gtkmm_screenobject;
 
@@ -39,13 +43,14 @@ public:
 	gtkmm_viewport(master *masteridd, int ownidd);
 	~gtkmm_viewport();
 	slate *create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp);
-protected:
 	void update_slice_info();
+	void *get_viewportscreen();
+
+	slatearea *create_area(slate *parent_slate);
+protected:
 	Gtk::ApplicationWindow window;
-	
 private:
-	void destroy_mscreen_ob();
-	void create_mscreen_ob();
+	gtkviewport *viewport_screen;
 };
 
 #endif // _VIEWPORT_H_

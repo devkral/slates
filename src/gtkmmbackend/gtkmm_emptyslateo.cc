@@ -25,40 +25,18 @@
 using namespace std;
 
 
-gtkmm_emptyslateo::gtkmm_emptyslateo(slate *parent_slate, void *screenob) : emptyslateo(parent_slate,screenob)
+gtkmm_emptyslateo::gtkmm_emptyslateo(master *parent_master) : emptyslateo(parent_master)
 {
 	cerr << "Create gtkmm_emptyslateo\n";
-	screen_object=new gtwidget;
 }
 
 gtkmm_emptyslateo::~gtkmm_emptyslateo()
 {
 	cerr << "Destroy gtkmm_emptyslateo\n";
 }
-void gtkmm_emptyslateo::draw()
-{
-	if (isdrawn==false)
-	{
-		isdrawn=true;
-		draw_function();
-	}
-	else
-	{
-		to_gtw(screen_object)->widgetspace.show();
-	}
-}
 
-void gtkmm_emptyslateo::hide()
-{
-	to_gtw(screen_object)->widgetspace.hide();
-}
-
-void gtkmm_emptyslateo::cleanup_handler ()
-{
-	delete to_gtw(screen_object);
-}
 
 void gtkmm_emptyslateo::draw_function ()
 {
-	to_gtw(screen_object)->widgetspace.show();
+	
 }

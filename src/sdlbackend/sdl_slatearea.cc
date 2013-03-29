@@ -40,5 +40,20 @@ void sdl_slatearea::update_screen()
 			       (get_origin()->get_y())*(screen->viewportcanvas->widget_h-screen->viewportcanvas->beg_y),
 		(screen->viewportcanvas->widget_w - screen->viewportcanvas->beg_x),
 		 (screen->viewportcanvas->widget_h - screen->viewportcanvas->beg_y));
+}
 
+void sdl_slatearea::create_lockslatetype()
+{
+	sdl_lockslateo *temp=new sdl_lockslateo(get_master());
+	temp->init();
+	temp->lock(this,child);
+	child=temp;
+}
+
+void sdl_slatearea::create_emptyslatetype()
+{
+	emptyslateo *temp=new sdl_emptyslateo(get_master());
+	selfreference_pointer=temp->set_slatearea(this);
+	temp->init();
+	child=temp;
 }

@@ -17,6 +17,8 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+
 #ifndef _GTKMM_WINDOWSLATEO_H_
 #define _GTKMM_WINDOWSLATEO_H_
 
@@ -31,10 +33,8 @@ class gtkmm_screenobject;
 class gtkmm_windowslateo : public windowslateo
 {
 public:
-	gtkmm_windowslateo(slate *parent_slate, void *screenob);
+	gtkmm_windowslateo(slate *parent_slate);
 	~gtkmm_windowslateo();
-	void draw();
-	void hide();
 	void cleanup_handler ();
 	void draw_function ();
 

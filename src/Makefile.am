@@ -59,14 +59,8 @@ slates_SOURCES +=  gtkmmbackend/gtkmmbackend.cc \
 	gtkmmbackend/gtkmmbackend.h \
 	gtkmmbackend/gtkmm_viewport.cc \
 	gtkmmbackend/gtkmm_viewport.h \
-	gtkmmbackend/gtkmm_slate.cc \
-	gtkmmbackend/gtkmm_slate.h \
-	gtkmmbackend/gtkmm_windowslateo.cc \
-	gtkmmbackend/gtkmm_windowslateo.h \
 	gtkmmbackend/gtkmm_lockslateo.cc \
 	gtkmmbackend/gtkmm_lockslateo.h \
-	gtkmmbackend/gtkmm_sysslateo.cc \
-	gtkmmbackend/gtkmm_sysslateo.h \
 	gtkmmbackend/gtkmm_emptyslateo.cc \
 	gtkmmbackend/gtkmm_emptyslateo.h \
 	gtkmmbackend/gtkmm_screenobject.cc \

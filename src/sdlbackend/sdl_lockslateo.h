@@ -51,6 +51,7 @@ protected:
 	int update_interval;
 	SDL_Event event;
 private:
+	void *set_slatearea(slatearea *set);
 	mutex interact_with_draw;
 };
 

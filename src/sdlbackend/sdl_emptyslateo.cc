@@ -27,18 +27,9 @@ class sdl_master;
 using namespace std;
 
 
-sdl_emptyslateo::sdl_emptyslateo(master *parent_mastert, slatearea *initarea) : emptyslateo(parent_mastert)
+sdl_emptyslateo::sdl_emptyslateo(master *parent_mastert) : emptyslateo(parent_mastert)
 {
-	cout << "Create emptyslate\n";
 	update_interval=100;
-	drawareas.push_back(initarea);
-	SDL_PixelFormat *tempform=to_slatearea (drawareas[0]->get_screen())->viewportcanvas->viewport->format;
-	
-	white=SDL_MapRGBA (tempform, 255,255,255,255);
-	black=SDL_MapRGBA (tempform, 0,0,0,255);
-	
-	//SDL_RendererPresent
-	//
 }
 
 sdl_emptyslateo::~sdl_emptyslateo()
@@ -48,16 +39,21 @@ sdl_emptyslateo::~sdl_emptyslateo()
 
 void sdl_emptyslateo::update()
 {
+	//cout << "Update empty\n";
 	interact_with_draw.lock();
 	//{
 
+		if (!emptysur)
+			SDL_FreeSurface (emptysur);
 		emptysur=SDL_CreateRGBSurface (0,to_slatearea (drawareas[0]->get_screen())->slatebox.w,to_slatearea (drawareas[0]->get_screen())->slatebox.h,32,0,0,0,0);
 		if (!emptysur)
 			return;
+		
+		white=SDL_MapRGBA (emptysur->format, 255,255,255,255);
+		black=SDL_MapRGBA (emptysur->format, 0,0,0,255);
 		SDL_FillRect (emptysur, &to_slatearea (drawareas[0]->get_screen())->slatebox,white);
 		emptytex=SDL_CreateTextureFromSurface (to_slatearea (drawareas[0]->get_screen())->viewportcanvas->globalrender,emptysur);
-		                     ;
-	
+		
 	
 		
 		//SDL_FillRect (widget.emptysur, &widget.inner_object, black);
@@ -146,28 +142,20 @@ void sdl_emptyslateo::draw_function ()
 	while(isdrawn==true)
 	{
 
-//		interact_with_draw.lock();
+		//interact_with_draw.lock();
 		
-		if (interact_with_draw.try_lock_for(defaulttimeout))
+		if (drawareas[0]->get_isvisible()==true && interact_with_draw.try_lock_for(defaulttimeout))
 		{
-
-			//SDL_RenderCopy(to_sdslc (screen_object)->slaterender, widget.emptytex, 0, &to_sdslc(screen_object)->slatebox);
-			SDL_RenderCopy(to_slatearea (drawareas[0]->get_screen())->viewportcanvas->globalrender, emptytex, 0, &to_slatearea (drawareas[0]->get_screen())->slatebox);
-			//SDL_RenderCopy(to_sdslc (screen_object)->slaterender, widget.emptytex, 0, &widget.inner_object);
-			//SDL_RenderPresent(to_sdslc (screen_object)->slaterender);
-			//if (to_sdslc (screen_object)->mastercanvas->is_rendering==false)
-			//{
-			//	to_sdslc (screen_object)->mastercanvas->is_rendering=true;
-				//SDL_RenderCopy(to_sdslc (screen_object)->mastercanvas->globalrender,
-				//               to_sdslc (screen_object)->mastercanvas->viewport_tex,0,0);
-				//SDL_RenderPresent(to_sdslc (screen_object)->slaterender);
-				SDL_RenderPresent(to_slatearea (drawareas[0]->get_screen())->viewportcanvas->globalrender);
-			//	to_sdslc (screen_object)->mastercanvas->is_rendering=false;
-			//}
-		
+			SDL_RenderCopy(to_slatearea (drawareas[0]->get_screen())->viewportcanvas->globalrender, emptytex, 0, &to_slatearea ((drawareas[0])->get_screen())->slatebox);
+			SDL_RenderPresent(to_slatearea (drawareas[0]->get_screen())->viewportcanvas->globalrender);
 			interact_with_draw.unlock();
 		}
 		SDL_Delay(update_interval);
 	}
 }
 
+void *sdl_emptyslateo::set_slatearea(slatearea *set)
+{
+	drawareas.push_back(set);
+	return drawareas.back();
+}

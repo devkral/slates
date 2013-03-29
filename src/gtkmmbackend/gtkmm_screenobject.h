@@ -25,8 +25,8 @@
 using namespace std;
 
 
-typedef struct gtwindow_{
-	gtwindow_() : display_grid(), display_window()
+typedef struct gtkviewport_{
+	gtkviewport_()
 	{
 
 	}
@@ -35,20 +35,21 @@ typedef struct gtwindow_{
 	Gtk::ApplicationWindow display_window;
 	
 	
-}gtwindow;
+}gtkviewport;
 
-typedef struct gtwidget_{
-	gtwidget_() : widgetspace()
+typedef struct gtkslatearea_{
+	gtkslatearea_() : widgetspace()
 	{
 
 	}
 	Gtk::Grid widgetspace;
+	//Gtk::Frame ;
 	
-}gtwidget;
+}gtkslatearea;
 
-extern gtwindow *to_gdw(void* in);
-extern gtwidget *to_gtw(void* in);
+extern gtkviewport *to_gtkviewport(void* in);
+extern gtkslatearea *to_gtkslatearea(void* in);
 
 
-#endif // _TSCREENOBJECT_H_
+#endif // _GTKMM_SCREENOBJECT_H_
 

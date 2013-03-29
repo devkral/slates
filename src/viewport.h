@@ -25,9 +25,7 @@ class master;
 class slate;
 #include "slatetype.h"
 class slatetype;
-//I let them undefined, hope no bugs
-class lockslateo;
-class emptyslateo;
+
 class slatearea;
 
 #include "constdef.h"
@@ -50,8 +48,8 @@ class viewport
 public:
 	viewport(master *master_parent, int viewportidtemp);
 	virtual ~viewport();
-	slate *getslate(int x, int y);
-	slate *getslate_by_id(long int id);
+	slate *get_slate(int x, int y);
+	slate *get_slate_by_id(long int id);
 	void addslice();
 	int removeslice();
 	int count_filled_slots(int sliceid);
@@ -64,9 +62,9 @@ public:
 	
 	void async_update_slates();
 	void async_destroy_slates(long int amount);
-	void async_create_slates(long int amount);
+	void async_create_slates();
 	
-	master *getmaster();
+	master *get_master();
 
 	int get_viewport_id();
 	int get_slices();
@@ -81,8 +79,6 @@ public:
 
 	virtual void *get_viewportscreen()=0;
 	virtual void update_slice_info()=0;
-	virtual lockslateo *create_lockslatetype(slatearea *parent_slatearea, slatetype *lockobject)=0;
-	virtual emptyslateo *create_emptyslatetype(slatearea *parent_slatearea)=0;
 	virtual slatearea *create_area(slate *parent_slate)=0;
 	
 

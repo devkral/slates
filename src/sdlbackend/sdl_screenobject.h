@@ -79,8 +79,8 @@ typedef struct sdl_slateareacanvas_{
 		SDL_DestroyRenderer (slaterender);
 	}
 	SDL_Rect slatebox;
-	SDL_Renderer *slaterender;	
-	SDL_Surface *slateface;	
+	SDL_Renderer *slaterender=0;	
+	SDL_Surface *slateface=0;	
 	
 	//must not be freed done by master
 	sdl_viewportcanvas *viewportcanvas=0;
@@ -99,7 +99,7 @@ typedef struct sdl_slateareacanvas_{
 
 extern sdl_viewportcanvas *to_viewport(void *in);
 extern sdl_slateareacanvas *to_slatearea(void *in);
-
+//port
 
 #endif // _TSCREENOBJECT_H_
 

@@ -30,7 +30,7 @@ class gtkmm_screenobject;
 class gtkmm_emptyslateo : public emptyslateo 
 {
 public:
-	gtkmm_emptyslateo(slate *parent_slate, void *screenob);
+	gtkmm_emptyslateo(master *parent_master);
 	~gtkmm_emptyslateo();
 	void draw();
 	void hide();
@@ -39,7 +39,7 @@ public:
 protected:
 
 private:
-
+	Gtk::Button widget;
 };
 
 #endif // _EMPTYSLATEO_H_

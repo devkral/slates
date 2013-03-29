@@ -28,11 +28,6 @@ class sdl_slatearea;
 #include "sdl_screenobject.h"
 class sdl_screenobject;
 
-#include "sdl_emptyslateo.h"
-class sdl_emptyslateo;
-
-#include "sdl_lockslateo.h"
-class sdl_lockslateo;
 
 #include "constdef.h"
 
@@ -52,8 +47,6 @@ public:
 	slate *get_slate_mouse(int x, int y);
 	void *get_viewportscreen();
 	void update_slice_info();
-	lockslateo *create_lockslatetype(slatearea *parent_slatearea, slatetype *lockobject);
-	emptyslateo *create_emptyslatetype(slatearea *parent_slatearea);
 	slatearea *create_area(slate *parent_slate);
 	
 protected:

@@ -31,7 +31,6 @@ class slateobject;
 
 #include <vector>
 #include <thread>
-#include <atomic>
 #include <mutex>
 
 using namespace std;
@@ -60,7 +59,7 @@ public:
 protected:
 	vector<viewport*> viewport_pool;
 	thread inputthread;
-	atomic<bool> hasinputhandle;
+	bool hasinputhandle=false;
 	timed_mutex protectmaster_eventhandle;
 	
 private:

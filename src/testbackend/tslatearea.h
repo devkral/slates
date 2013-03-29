@@ -20,12 +20,12 @@
 #ifndef _TSLATEAREA_H_
 #define _TSLATEAREA_H_
 
-#include <slate.h>
+#include "slate.h"
 class slate;
 //#include <slatetype.h>
 class slatetype;
 //class lockslateo;
-#include <viewport.h>
+#include "viewport.h"
 class viewport;
 
 

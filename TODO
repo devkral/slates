@@ -1,5 +1,5 @@
 TODO:
-messaging via separation only special input events are exposed to all
+unify getxy get_xy
 implement running programs as children  //is there a lib?
 implement program selector
 overlap to close
@@ -7,6 +7,8 @@ overlap to close
 Future:
 implement gui isolation
 
+Inspiration:
+http://members.chello.nl/w.boeke/SDL-widgets/index.html
 
 Rethinking Licence:
 LGPL? BSD?

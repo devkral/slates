@@ -84,7 +84,7 @@ slate *sdl_viewport::get_slate_mouse(int x, int y)
 	long int id= id_slate_mouse(x, y);
 	if (id<0)
 		return 0;
-	return getslate_by_id(id);
+	return get_slate_by_id(id);
 
 }
 
@@ -116,18 +116,4 @@ slatearea *sdl_viewport::create_area(slate *parent_slate)
 	temp2->init();
 	
 	return (slatearea *)temp2 ;
-}
-lockslateo *sdl_viewport::create_lockslatetype(slatearea *parent_slatearea, slatetype *lockobject)
-{
-	lockslateo *temp=new sdl_lockslateo(getmaster());
-	temp->init();
-	temp->lock(parent_slatearea,lockobject);
-	return temp;
-}
-
-emptyslateo *sdl_viewport::create_emptyslatetype(slatearea *parent_slatearea)
-{
-	emptyslateo *temp=new sdl_emptyslateo(getmaster(),parent_slatearea);
-	temp->init();
-	return temp;
 }

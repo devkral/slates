@@ -45,12 +45,12 @@ slatearea::~slatearea()
 
 void slatearea::init()
 {
-	child=(slatetype*)get_origin()->getviewport()->create_emptyslatetype (this);
+	create_emptyslatetype();
 }
 
 bool slatearea::isfilled()
 {
-	if (child->TYPE()==TYPE_filled)
+	if (child->TYPE()!=TYPE_filled)
 		return false;
 	else
 		return true;
@@ -65,6 +65,11 @@ slate *slatearea::get_origin()
 	return connectedslates[0][0];
 }
 
+master *slatearea::get_master()
+{
+	return get_origin()->get_master();
+}
+
 void slatearea::handle_event(void  *event)
 {
 	child->handle_event(event);
@@ -77,10 +82,10 @@ void slatearea::handle_input(void *initializer)
 
 void slatearea::update()
 {
-	if (get_x()+width<=get_origin ()->getviewport()->get_viewport_beg_x() ||
-		get_y()+height<=get_origin ()->getviewport()->get_viewport_beg_y() ||
-		get_x()<=width+get_origin ()->getviewport()->get_viewport_beg_x() ||
-		get_y()<=height+get_origin ()->getviewport()->get_viewport_beg_y())
+	if (get_x()+width<=get_origin ()->get_viewport()->get_viewport_beg_x() ||
+		get_y()+height<=get_origin ()->get_viewport()->get_viewport_beg_y() ||
+		get_x()>=get_origin ()->get_viewport()->get_viewport_width()+get_origin ()->get_viewport()->get_viewport_beg_x() ||
+		get_y()>=get_origin()->get_viewport()->get_viewport_height()+get_origin ()->get_viewport()->get_viewport_beg_y())
 	{
 		isvisible=false;
 	}
@@ -92,13 +97,16 @@ void slatearea::update()
 	update_screen();
 	child->update();
 }
-
+void *slatearea::get_selfreference_pointer()
+{
+	return selfreference_pointer;
+}
 
 void slatearea::lock()
 {
 	if (lockstate==0)
 	{
-		child=get_origin()->getviewport ()->create_lockslatetype (this,child);
+		create_lockslatetype ();
 		lockstate+=1;
 	}
 }
@@ -127,7 +135,7 @@ int slatearea::get_y()
 
 void slatearea::move(int x, int y)
 {
-
+	//get_origin()->get_viewport()->ge;
 }
 
 void slatearea::resize(int w, int h)

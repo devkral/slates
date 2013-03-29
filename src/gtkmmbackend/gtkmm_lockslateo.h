@@ -30,17 +30,16 @@ class tscreenobject;
 class gtkmm_lockslateo: public lockslateo 
 {
 public:
-	gtkmm_lockslateo(slate *parent_slate, void *screenob);
+	gtkmm_lockslateo(master *parent_master);
 	~gtkmm_lockslateo();
-	void draw();
-	void hide();
-	void cleanup_handler ();
+	void update ();
 	void draw_function ();
 
 protected:
 
 private:
-	void unlock();
+	Gtk::Button lock;
+	Gtk::Entry entry;
 };
 
 #endif // _LOCKSLATEO_H_

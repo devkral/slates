@@ -20,8 +20,8 @@
 #ifndef _GTKMM_SYSSLATEO_H_
 #define _GTKMM_SYSSLATEO_H_
 
-#include "sysslateo.h"
-class sysslateo;
+#include "slatetype.h"
+class slatetype;
 #include "gtkmm_screenobject.h"
 class gtkmm_screenobject;
 
@@ -30,7 +30,7 @@ class gtkmm_screenobject;
 #include "constdef.h"
 
 
-class gtkmm_sysslateo: public sysslateo 
+class gtkmm_sysslateo: public slatetype 
 {
 public:
 	gtkmm_sysslateo(slate *parent_slate, void *screenob);

@@ -35,13 +35,14 @@ class sdl_screenobject;
 class sdl_emptyslateo : public emptyslateo 
 {
 public:
-	sdl_emptyslateo(master *parent_mastert, slatearea *initarea);
+	sdl_emptyslateo(master *parent_mastert);
 	~sdl_emptyslateo();
 	void update();
 	void cleanup_handler ();
 	void draw_function ();
 	void handle_input(void *initializer);
 	void handle_event(void *event, bool called_by_input);
+	void *set_slatearea(slatearea *set);
 protected:
 	
 //	sdlempty widget;

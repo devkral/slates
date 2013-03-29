@@ -26,7 +26,6 @@ using namespace std;
 gtkmm_windowslateo::gtkmm_windowslateo(slate *parent_slate, void *screenob) : windowslateo(parent_slate,screenob)
 {
 	cerr << "Create gtkmm_windowslateo\n";
-	screen_object=new gtwidget;
 }
 
 gtkmm_windowslateo::~gtkmm_windowslateo()
@@ -34,27 +33,6 @@ gtkmm_windowslateo::~gtkmm_windowslateo()
 	cerr << "Destroy gtkmm_windowslateo\n";
 }
 
-void gtkmm_windowslateo::draw()
-{
-	if (isdrawn==false)
-	{
-		isdrawn=true;
-		draw_function ();
-	}
-	else
-	{
-		to_gtw(screen_object)->widgetspace.show();
-	}
-}
-void gtkmm_windowslateo::hide()
-{
-	to_gtw(screen_object)->widgetspace.hide();
-}
-
-void gtkmm_windowslateo::cleanup_handler ()
-{
-	delete to_gtw(screen_object);
-}
 void gtkmm_windowslateo::draw_function ()
 {
 	to_gtw(screen_object)->widgetspace.show();

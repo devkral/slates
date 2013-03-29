@@ -23,10 +23,9 @@
 
 using namespace std;
 
-gtkmm_lockslateo::gtkmm_lockslateo(slate *parent_slate, void *screenob) : lockslateo(parent_slate,screenob)
+gtkmm_lockslateo::gtkmm_lockslateo(master *parent_master) : lockslateo(parent_master)
 {
 	cerr << "Create gtkmm_lockslateo\n";
-	screen_object=new gtwidget;
 }
 
 gtkmm_lockslateo::~gtkmm_lockslateo()
@@ -34,35 +33,12 @@ gtkmm_lockslateo::~gtkmm_lockslateo()
 	cerr << "Destroy gtkmm_lockslateo\n";
 }
 
-void gtkmm_lockslateo::draw()
-{
-	if (isdrawn==false)
-	{
-		isdrawn=true;
-		draw_function ();
-	}
-	else
-	{
-		to_gtw(screen_object)->widgetspace.show();
-	}
-}
-void gtkmm_lockslateo::hide()
-{
-	to_gtw(screen_object)->widgetspace.hide();
-}
-
-void gtkmm_lockslateo::unlock()
-{
-	cerr << "check password\n";
-	getfparent()->getmaster()->unlock((char*)"test");
-
-}
-
-void gtkmm_lockslateo::cleanup_handler ()
-{
-	delete to_gtw(screen_object);
-}
 void gtkmm_lockslateo::draw_function ()
 {
-	to_gtw(screen_object)->widgetspace.show();
+	
+}
+
+void gtkmm_lockslateo::update ()
+{
+	
 }

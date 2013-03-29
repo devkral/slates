@@ -22,10 +22,8 @@
 
 #include "master.h"
 class master;
-//#include "viewport.h"
-//class viewport;
-//#include "slate.h"
 class slate;
+class slatearea;
 
 #include "constdef.h"
 
@@ -53,6 +51,7 @@ public:
 	 * hide/draw via update and slateareas isvisible state
 	 */
 	master *getmaster();
+	virtual void *set_slatearea(slatearea *in)=0; //use double pointer intern, so you can replace this
 	
 	virtual char TYPE()=0;
 protected:

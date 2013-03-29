@@ -41,7 +41,6 @@ bool checkpassword(char *password)
 
 master::master()
 {
-	hasinputhandle=false;
 }
 
 
@@ -61,9 +60,7 @@ void master::swapcontent(int viewportid1, long int slateid1,int viewportid2, lon
 //validate before calling
 void master::createviewport()
 {
-	viewport *verify=create_viewport_intern(this,viewport_idcount);
-	assert(verify);
-	viewport_pool.push_back(verify);
+	viewport_pool.push_back(create_viewport_intern(this,viewport_idcount));
 	viewport_pool[viewport_idcount]->addslice();
 	viewport_idcount++;
 }

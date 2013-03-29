@@ -24,6 +24,14 @@
 class slatearea;
 class slate;
 
+
+#include "sdl_emptyslateo.h"
+class sdl_emptyslateo;
+
+#include "sdl_lockslateo.h"
+class sdl_lockslateo;
+
+
 #include "constdef.h"
 #include "sdl_screenobject.h"
 
@@ -38,6 +46,9 @@ public:
 
 	void *get_screen();
 	void update_screen();
+	
+	void create_lockslatetype();
+	void create_emptyslatetype();
 
 	
 protected:
