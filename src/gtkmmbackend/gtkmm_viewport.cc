@@ -24,10 +24,10 @@
 using namespace std;
 
 
-gtkmm_viewport::gtkmm_viewport(master *masteridd, int ownidd) : viewport(masteridd,ownidd)
+gtkmm_viewport::gtkmm_viewport(master *masteridd, int ownidd, gtkviewport *setviewport) : viewport(masteridd,ownidd)
 {
 	cout << "Create gtkmm_viewport\n";
-	viewport_screen=new gtkviewport();
+	viewport_screen=setviewport;
 }
 
 gtkmm_viewport::~gtkmm_viewport()
@@ -44,7 +44,10 @@ void gtkmm_viewport::update_slice_info()
 
 slatearea *gtkmm_viewport::create_area(slate *parent_slate)
 {
-	return (slatearea*)new gtkmm_slatearea(parent_slate);
+	gtkslatearea *temp=new gtkslatearea();
+	gtkmm_slatearea *temp2=new gtkmm_slatearea(parent_slate,temp);
+	temp2->init();
+	return (slatearea*)temp2;
 
 }
 void *gtkmm_viewport::get_viewportscreen()

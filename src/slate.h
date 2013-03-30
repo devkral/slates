@@ -57,7 +57,8 @@ public:
 	void handle_event(void *event);
 	
 	bool isorigin();
-	void *get_selfreference_pointer();
+	slatearea *get_slatearea();
+	void set_slatearea(slatearea *parent);
 	
 protected:
 	mutex change_slate; //

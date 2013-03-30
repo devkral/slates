@@ -31,7 +31,9 @@ using namespace std;
 
 viewport *gtkmmmaster::create_viewport_intern(master *masteridd, int ownidd)
 {
-	gtkmm_viewport *temp=new gtkmm_viewport(masteridd,ownidd);
+	gtkviewport *zzz=new gtkviewport();
+	//masterapp->add_window(zzz->display_window);
+	gtkmm_viewport *temp=new gtkmm_viewport(masteridd,ownidd,zzz);
 	return temp;
 }
 
@@ -39,7 +41,8 @@ gtkmmmaster::gtkmmmaster(int argc, char* argv[]) : master()
 {
 	masterapp=Gtk::Application::create(argc, argv, "org.slates.test");
 	createviewport();
-	start_handling_input();
+	inputhandler_function();
+	//start_handling_input();
 }
 
 gtkmmmaster::~gtkmmmaster()

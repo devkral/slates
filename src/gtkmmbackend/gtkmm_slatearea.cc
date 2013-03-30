@@ -23,9 +23,9 @@
 #include "lockslateo.h"
 class lockslateo;
 
-gtkmm_slatearea::gtkmm_slatearea(slate *parent_slate) : slatearea(parent_slate)
+gtkmm_slatearea::gtkmm_slatearea(slate *parent_slate, gtkslatearea *newarea) : slatearea(parent_slate)
 {
-	slatearea_screen=new gtkslatearea();
+	slatearea_screen=newarea;
 }
 
 gtkmm_slatearea::~gtkmm_slatearea()
@@ -43,9 +43,13 @@ void gtkmm_slatearea::update_screen()
 }
 void gtkmm_slatearea::create_lockslatetype()
 {
-
+	child=new gtkmm_lockslateo (get_master());
+	set_childslatearea (this);
+	child->init();
 }
 void gtkmm_slatearea::create_emptyslatetype()
 {
-
+	child=new gtkmm_emptyslateo (get_master());
+	set_childslatearea (this);
+	child->init();
 }

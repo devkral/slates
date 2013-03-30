@@ -33,13 +33,13 @@ public:
 	lockslateo(master *parent_mastert);
 	~lockslateo();
 	char TYPE();
-	virtual void lock(slatearea *slateareaout,slatetype *lockedobject)=0;
-	virtual slatetype *unlock(slatearea *slateareaout)=0;
-	virtual bool isempty()=0;
+	virtual void lock(slatetype *lockedobject)=0;
+	virtual slatetype *unlock()=0;
 protected:
 
 private:
 	void sendunlock();
+	slatetype *lockedob;
 };
 
 #endif // _LOCKSLATEO_H_

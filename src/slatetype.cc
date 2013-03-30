@@ -68,6 +68,17 @@ void slatetype::handle_input(void *initializer)
 	
 }
 
+
+slatearea *slatetype::get_slatearea()
+{
+	return parent;
+}
+bool slatetype::get_isvisible()
+{
+	if (parent->get_isondestruction()==true ||
+}
+
+
 void kickstarter_drawthread(slatetype *parent)
 {
 	parent->draw_function ();

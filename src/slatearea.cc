@@ -111,9 +111,9 @@ void slatearea::update()
 	update_screen();
 	child->update();
 }
-void *slatearea::get_selfreference_pointer()
+void slatearea::set_childslatearea(slatearea *parent_slatearea)
 {
-	return selfreference_pointer;
+	child->set_slatearea(parent_slatearea);
 }
 
 void slatearea::lock()
@@ -130,9 +130,9 @@ void slatearea::unlock()
 	if (lockstate==1)
 	{
 		lockslateo *temp=(lockslateo*)child;
-		child=temp->unlock(this);
-		if (temp->isempty()==true)
-			delete temp;
+		child=temp->unlock();
+		delete temp;
+		temp=0;
 		lockstate-=1;
 	}
 }

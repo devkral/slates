@@ -23,10 +23,6 @@
 class viewport;
 #include "gtkmm_slatearea.h"
 class gtkmm_slatearea;
-#include "gtkmm_lockslateo.h"
-class gtkmm_lockslateo;
-#include "gtkmm_emptyslateo.h"
-class gtkmm_emptyslateo;
 #include "gtkmm_screenobject.h"
 class gtkmm_screenobject;
 
@@ -40,7 +36,7 @@ using namespace std;
 class gtkmm_viewport : public viewport
 {
 public:
-	gtkmm_viewport(master *masteridd, int ownidd);
+	gtkmm_viewport(master *masteridd, int ownidd, gtkviewport *temp);
 	~gtkmm_viewport();
 	slate *create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp);
 	void update_slice_info();

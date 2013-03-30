@@ -28,19 +28,21 @@ class slatetype;
 #include "viewport.h"
 class viewport;
 
+#include "gtkmm_emptyslateo.h"
+class gtkmm_emptyslateo;
+#include "gtkmm_lockslateo.h"
+class gtkmm_lockslateo;
+
 #include "gtkmm_screenobject.h"
 class gtkmm_screenobject;
-
-#include <deque>
 
 using namespace std;
 
 class gtkmm_slatearea : public slatearea
 {
 public:
-	gtkmm_slatearea(slate *parent_slate);
+	gtkmm_slatearea(slate *parent_slate, gtkslatearea *newarea);
 	virtual ~gtkmm_slatearea();
-	void update();
 	void *get_screen();
 	void update_screen();
 	void create_lockslatetype();

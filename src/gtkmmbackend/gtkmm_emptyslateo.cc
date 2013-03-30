@@ -34,13 +34,16 @@ gtkmm_emptyslateo::~gtkmm_emptyslateo()
 {
 	cerr << "Destroy gtkmm_emptyslateo\n";
 }
+void gtkmm_emptyslateo::update()
+{
 
+}
 
 void gtkmm_emptyslateo::draw_function ()
 {
 	
 }
-void *gtkmm_emptyslateo::set_slatearea(slatearea *in)
+void gtkmm_emptyslateo::set_slatearea(slatearea *in)
 {
-	return 0;
+	parent=in;
 }

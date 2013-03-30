@@ -46,11 +46,11 @@ sdl_viewport::sdl_viewport(master *masteridd, int ownidd) : viewport(masteridd,o
 
 	viewport_screen->globalrender=SDL_CreateRenderer(viewport_screen->window,-1,SDL_RENDERER_SOFTWARE);//|SDL_RENDERER_PRESENTVSYNC);//SDL_RENDERER_ACCELERATED);
 
-	viewport_screen->viewport_tex=SDL_CreateTexture (viewport_screen->globalrender,
+	/**viewport_screen->viewport_tex=SDL_CreateTexture (viewport_screen->globalrender,
 	                                                           viewport_screen->curdisplaymode.format,
 	                                                           SDL_TEXTUREACCESS_STREAMING,
 	                                                            viewport_screen->dispbounds.w,
-																viewport_screen->dispbounds.h);
+																viewport_screen->dispbounds.h);*/
 	viewport_screen->viewport=IMG_Load("themes/samplebackground.png");
 	if (to_sdlviewport(viewport_screen)->viewport!=0)
 	{

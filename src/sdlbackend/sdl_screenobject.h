@@ -22,7 +22,7 @@
 
 #include <SDL2/SDL.h>
 //#include <SDL2/SDL_opengl.h>
-#include <thread>
+#include <mutex>
 
 using namespace std;
 
@@ -35,12 +35,13 @@ typedef struct sdl_viewportcanvas_{
 		
 	~sdl_viewportcanvas_()
 	{
-		
+		drawmutex.lock();
 		SDL_FreeSurface(viewport);
 		SDL_DestroyTexture(viewport_tex);
 		SDL_DestroyRenderer (globalrender);
 		SDL_DestroyWindow (window);
 	}
+	mutex drawmutex;
 	SDL_Window* window=0;
 	SDL_Renderer* globalrender=0;
 	SDL_Texture *viewport_tex=0;
@@ -68,8 +69,10 @@ typedef struct sdl_viewportcanvas_{
 typedef struct sdl_slateareacanvas_{
 	sdl_slateareacanvas_(sdl_viewportcanvas *viewportcanvast)
 	{
+		static long int rendererid=0;
 		viewportcanvas=viewportcanvast;
 		slateface=SDL_CreateRGBSurface(0,1,1,32,0,0,0,0);
+		slaterender=SDL_CreateRenderer (viewportcanvas->window,rendererid++,SDL_RENDERER_SOFTWARE);
 	}
 	~sdl_slateareacanvas_()
 	{
@@ -79,7 +82,6 @@ typedef struct sdl_slateareacanvas_{
 	SDL_Rect slatebox;
 	SDL_Renderer *slaterender=0;	
 	SDL_Surface *slateface=0;	
-	
 	//must not be freed done by master
 	sdl_viewportcanvas *viewportcanvas=0;
 	void updaterect(int x, int y, int w, int h)

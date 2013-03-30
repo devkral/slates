@@ -51,15 +51,19 @@ public:
 	 * hide/draw via update and slateareas isvisible state
 	 */
 	master *get_master();
-	virtual void *set_slatearea(slatearea *in)=0; //use double pointer intern, so you can replace this
-	
+	virtual void set_slatearea(slatearea *in)=0;
+	slatearea *get_slatearea();
+	virtual void set_visibility(bool t)=0;
+	bool get_isvisible();
 	virtual char TYPE()=0;
 protected:
 	bool isdrawn=true;
 	bool hasinputhandle=false;
+	bool isvisible=true;
 	thread drawthread;
-	master *parent_master;
+	slatearea *parent=0;
 private:
+	master *parent_master=0;
 	
 };
 extern void kickstarter_drawthread(slatetype *parent);

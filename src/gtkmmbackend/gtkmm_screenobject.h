@@ -28,7 +28,6 @@ using namespace std;
 typedef struct gtkviewport_{
 	gtkviewport_()
 	{
-
 	}
 	
 	Gtk::Grid display_grid;

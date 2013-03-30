@@ -47,15 +47,16 @@ void sdl_slatearea::update_screen()
 void sdl_slatearea::create_lockslatetype()
 {
 	sdl_lockslateo *temp=new sdl_lockslateo(get_master());
+	temp->set_slatearea(this);
 	temp->init();
-	temp->lock(this,child);
+	temp->lock(child);
 	child=temp;
 }
 
 void sdl_slatearea::create_emptyslatetype()
 {
 	emptyslateo *temp=new sdl_emptyslateo(get_master());
-	selfreference_pointer=temp->set_slatearea(this);
+	temp->set_slatearea(this);
 	temp->init();
 	child=temp;
 }

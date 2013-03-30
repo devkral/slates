@@ -129,9 +129,9 @@ int slate::get_id()
 {
 	return slateid;
 }
-void *slate::get_selfreference_pointer()
+slatearea *slate::get_slatearea()
 {
-	return child->get_selfreference_pointer();
+	return child;
 }
 
 void slate::handle_input(void *initializer)

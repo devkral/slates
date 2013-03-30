@@ -43,7 +43,16 @@ void gtkmm_lockslateo::update ()
 	
 }
 
-void *gtkmm_lockslateo::set_slatearea(slatearea *in)
+void gtkmm_lockslateo::set_slatearea(slatearea *in)
 {
-	return 0;
+	parent=in;
+}
+
+void gtkmm_lockslateo::lock (slatetype *)
+{
+
+}
+slatetype *gtkmm_lockslateo::unlock ()
+{
+
 }

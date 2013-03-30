@@ -40,22 +40,22 @@ public:
 	void update();
 	void cleanup_handler ();
 	void draw_function ();
+	void set_slatearea(slatearea *in);
 	void handle_input(void *initializer);
 	void handle_event(void *event, bool called_by_input);
-	void *set_slatearea(slatearea *set);
 protected:
 	
 //	sdlempty widget;
 	int update_interval;
 	SDL_Event event;
 	bool specialcondition=false;
+	void set_visibility(bool t);
 	SDL_Surface *emptysur=0;
 	SDL_Texture *emptytex=0;
 	Uint32 white=0;
 	Uint32 black=0;
 	
 private:
-	vector<slatearea*> drawareas;
 	timed_mutex interact_with_draw;
 };
 

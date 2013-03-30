@@ -104,18 +104,18 @@ int sdl_master::handle_masterevent(void *event)
 					if (viewport_pool[0]->removeslice()==SL_destroy_failed)
 						cerr << "Destroy failed\n";
 					ishandled=MASTER_HANDLED;
-				}/**
+				}
 				if (((SDL_Event*)event)->key.keysym.sym==SDLK_c )
 				{
-					slatearea *temp=(slatearea *)viewport_pool[0]->get_slate_by_id(0)->get_selfreference_pointer ();
+					/**slatearea *temp=(slatearea *)viewport_pool[0]->get_slate_by_id(0)->get_selfreference_pointer ();
 					assert(temp);
 					slatearea *temp1=(slatearea *)viewport_pool[1]->get_slate_by_id(0)->get_selfreference_pointer ();
 					slatearea *temp2=temp;
 					temp=temp1;
 					temp1=temp2;
-					to_slatearea(temp->get_screen())->slatebox.h-=4;
-					ishandled=MASTER_HANDLED;
-				}*/
+					to_sdlslatearea(temp->get_screen())->slatebox.h-=4;
+					ishandled=MASTER_HANDLED;*/
+				}
 				if (((SDL_Event*)event)->key.keysym.sym==SDLK_r )
 				{
 					viewport_pool[0]->update_slice_info();

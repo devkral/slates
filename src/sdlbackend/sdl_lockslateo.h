@@ -41,18 +41,22 @@ public:
 	void handle_input(void *initializer);
 	void handle_event(void *event, bool called_by_input);
 	string enter_password ();
-	slatearea *getfslatea();
-
-	void lock(slatearea *, slatetype*);
-	slatetype *unlock(slatearea *);
+	void set_slatearea(slatearea *);
+	void set_visibility(bool t);
+	void lock(slatetype *);
+	slatetype *unlock();
 	bool isempty();
 	
 protected:
 	int update_interval;
 	SDL_Event event;
+
+	bool specialcondition=false;
+	SDL_Surface *locksur=0;
+	SDL_Texture *locktex=0;
+	Uint32 green=0;
 private:
-	void *set_slatearea(slatearea *set);
-	mutex interact_with_draw;
+	timed_mutex interact_with_draw;
 };
 
 #endif // _LOCKSLATEO_H_

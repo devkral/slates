@@ -32,11 +32,11 @@ class gtkmm_emptyslateo : public emptyslateo
 public:
 	gtkmm_emptyslateo(master *parent_master);
 	~gtkmm_emptyslateo();
-	void draw();
-	void hide();
+	void update();
 	void cleanup_handler ();
+	void set_visibility(bool t);
 	void draw_function ();
-	void *set_slatearea(slatearea *in);
+	void set_slatearea(slatearea *);
 protected:
 
 private:

@@ -23,7 +23,7 @@
 #include "lockslateo.h"
 class lockslateo;
 #include "gtkmm_screenobject.h"
-class tscreenobject;
+class gtkmm_screenobject;
 
 #include "constdef.h"
 
@@ -33,14 +33,17 @@ public:
 	gtkmm_lockslateo(master *parent_master);
 	~gtkmm_lockslateo();
 	void update ();
+	void lock (slatetype *);
+	void set_visibility(bool t);
+	slatetype *unlock ();
 	void draw_function ();
+	void set_slatearea(slatearea *);
 
 protected:
 
 private:
-	Gtk::Button lock;
+	Gtk::Button lockbut;
 	Gtk::Entry entry;
-	void *set_slatearea(slatearea *in);
 };
 
 #endif // _LOCKSLATEO_H_
