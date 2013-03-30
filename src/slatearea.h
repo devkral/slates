@@ -67,7 +67,7 @@ public:
 	int get_y();
 	bool isfilled();
 	bool get_isvisible();
-	bool get_isindestruction ();
+	bool get_isondestruction ();
 
 	void *get_selfreference_pointer();
 	
@@ -78,7 +78,7 @@ private:
 	deque< deque<slate*> > connectedslates; //outer vector y inner x
 	char lockstate=0; //0 normal 1 lock, 2 always_unlock,  (3 private_normal, 4 private_locked: not implemented)
 	bool isvisible=false;
-	bool isindestruction=false;
+	bool isondestruction=false;
 	//overgive this in windowlist
 	int width=1; //in slates
 	int height=1; //in slates

@@ -23,7 +23,6 @@
 #include <SDL2/SDL.h>
 //#include <SDL2/SDL_opengl.h>
 #include <thread>
-#include <atomic>
 
 using namespace std;
 
@@ -31,7 +30,6 @@ using namespace std;
 typedef struct sdl_viewportcanvas_{
 	sdl_viewportcanvas_(int borderthicknesst)
 	{
-		is_rendering=false;
 		borderthickness=borderthicknesst;
 	}
 		
@@ -45,7 +43,6 @@ typedef struct sdl_viewportcanvas_{
 	}
 	SDL_Window* window=0;
 	SDL_Renderer* globalrender=0;
-	atomic<bool> is_rendering;
 	SDL_Texture *viewport_tex=0;
 	SDL_Surface *viewport=0;
 	int displayindex=0;

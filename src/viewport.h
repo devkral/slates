@@ -75,7 +75,7 @@ public:
 	int get_viewport_height();
 	int get_viewport_beg_x();
 	int get_viewport_beg_y();
-
+	bool get_isondestruction();
 
 	virtual void *get_viewportscreen()=0;
 	virtual void update_slice_info()=0;
@@ -94,6 +94,7 @@ private:
 	long int slate_idcount=0;
 	mutex slateid_prot;
 	atomic<long int> amount_filled_slates;
+	bool isondestruction=false;
 	long int max_avail_slates=0; //=slice*slice
 	vector<slate*> slate_pool; //leftwing first, then diag then top wing
 	//deque<slatetype*> slatetype_pool;

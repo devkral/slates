@@ -70,6 +70,7 @@ sdl_viewport::sdl_viewport(master *masteridd, int ownidd) : viewport(masteridd,o
 sdl_viewport::~sdl_viewport()
 {
 	delete viewport_screen;
+	viewport_screen=0;
 }
 
 

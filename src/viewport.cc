@@ -49,11 +49,14 @@ viewport::viewport(master *master_parent,int viewportidtemp)
 
 viewport::~viewport()
 {
-	
+	isondestruction=true;
 }
 void viewport::cleanup()
 {
+	isondestruction=true;
+	slateid_prot.lock();
 	async_destroy_slates(max_avail_slates);
+	max_avail_slates=0;
 }
 
 int viewport::get_viewport_width()
@@ -62,6 +65,10 @@ int viewport::get_viewport_width()
 		return slices;
 	else
 		return horizontal_tiles;
+}
+bool viewport::get_isondestruction()
+{
+	return isondestruction;
 }
 
 int viewport::get_viewport_height()
@@ -153,6 +160,8 @@ void async_update_slates_intern(slate *targob)
 
 void viewport::async_update_slates()
 {	
+	if (get_isondestruction())
+		return;
 	vector<thread> temppool;
 	for (long int count=0;count<max_avail_slates;count++)
 	{
@@ -173,8 +182,7 @@ void async_create_slates_intern(slate *placeholderpointer)
 
 void viewport::async_create_slates()
 {
-	if(slateid_prot.try_lock())
-	{
+
 		vector<thread> temppool;
 		int temp_x, temp_y;
 		while (slate_idcount<slices*slices-slices)
@@ -206,21 +214,22 @@ void viewport::async_create_slates()
 		{
 			temppool.back().join();
 			temppool.pop_back();
-		}
-		slateid_prot.unlock();
-	}
+		}	
 }
 
 
 void async_destroy_slates_intern(slate *targob)
 {
-	targob->cleanup();
-	delete targob;
+	if(targob)
+	{
+		targob->cleanup();
+		delete targob;
+		targob=0;
+	}
 }
 
 void viewport::async_destroy_slates(long int amount)
 {
-	slateid_prot.lock();
 	vector<thread> temppool;
 	for (long int count=0;count<amount;count++)
 	{
@@ -233,7 +242,6 @@ void viewport::async_destroy_slates(long int amount)
 		temppool.back().join();
 		temppool.pop_back();
 	}
-	slateid_prot.unlock();
 }
 
 int viewport::count_filled_slots(int sliceid)
@@ -248,41 +256,52 @@ int viewport::count_filled_slots(int sliceid)
 
 void viewport::addslice()
 {
-	slices++;
-	max_avail_slates=slices*slices;
-	cache_nto_last_diag_point_id=cache_last_diag_point_id;
-	cache_last_diag_point_id=slices*slices-slices;
-	id_nto_last_beg=id_last_beg;
-	id_last_beg=cache_last_diag_point_id-(slices-1);
-	nto_last_slice_filled=last_slice_filled;
-	last_slice_filled=0;
+	if (get_isondestruction())
+		return;
+	if(slateid_prot.try_lock())
+	{
+		slices++;
+		max_avail_slates=slices*slices;
+		cache_nto_last_diag_point_id=cache_last_diag_point_id;
+		cache_last_diag_point_id=slices*slices-slices;
+		id_nto_last_beg=id_last_beg;
+		id_last_beg=cache_last_diag_point_id-(slices-1);
+		nto_last_slice_filled=last_slice_filled;
+		last_slice_filled=0;
 	
-	update_slice_info();
-	async_create_slates();
-//	for (long int count=0;count<slices+slices-1;count++) //=(slices+1)+(slices+1)-1
-//		createslate();
-	async_update_slates();
+		update_slice_info();
+		async_create_slates();
+	//	for (long int count=0;count<slices+slices-1;count++) //=(slices+1)+(slices+1)-1
+	//		createslate();
+		async_update_slates();
+		slateid_prot.unlock();
+	}
 }
 
 int viewport::removeslice()
 {
-	if (last_slice_filled>0 || nto_last_slice_filled >= (slices-1)+(slices-1)) //just one free slot
+	if (get_isondestruction() || last_slice_filled>0 || nto_last_slice_filled >= (slices-1)+(slices-1)) //just one free slot
 	{
 		return SL_destroy_failed;
 	}
-	async_destroy_slates(slices+slices-1); //=(slices+1)+(slices+1)-1
-	slices--;
-	max_avail_slates=slices*slices;
-	cache_last_diag_point_id=cache_nto_last_diag_point_id;
-	cache_nto_last_diag_point_id=(slices-1)*(slices-1)-(slices-1);
-	id_last_beg=id_nto_last_beg;
-	id_nto_last_beg=cache_nto_last_diag_point_id-(slices-2);
-	last_slice_filled=nto_last_slice_filled;
-	nto_last_slice_filled=count_filled_slots(slices-1);
+	if(slateid_prot.try_lock())
+	{
+		async_destroy_slates(slices+slices-1); //=(slices+1)+(slices+1)-1
+		slices--;
+		max_avail_slates=slices*slices;
+		cache_last_diag_point_id=cache_nto_last_diag_point_id;
+		cache_nto_last_diag_point_id=(slices-1)*(slices-1)-(slices-1);
+		id_last_beg=id_nto_last_beg;
+		id_nto_last_beg=cache_nto_last_diag_point_id-(slices-2);
+		last_slice_filled=nto_last_slice_filled;
+		nto_last_slice_filled=count_filled_slots(slices-1);
 
-	update_slice_info();
-	async_update_slates();
-	return OP_success;
+		update_slice_info();
+		async_update_slates();
+		slateid_prot.unlock();
+		return OP_success;
+	}
+	return SL_destroy_failed;
 }
 master *viewport::get_master()
 {
@@ -296,6 +315,8 @@ void lock_intern(slate *temp)
 
 void viewport::lock()
 {
+	if (get_isondestruction())
+		return;
 	vector<thread> temppool;
 	for (long int count=0;count<amount_filled_slates;count++)
 	{
@@ -316,6 +337,8 @@ void unlock_intern(slate *temp)
 
 void viewport::unlock()
 {
+	if (get_isondestruction())
+		return;
 	vector<thread> temppool;
 	for (long int count=0;count<amount_filled_slates;count++)
 	{

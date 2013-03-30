@@ -32,7 +32,7 @@ slatearea::slatearea(slate *parent_slate)
 
 slatearea::~slatearea()
 {
-
+	isondestruction=true;
 }
 
 void slatearea::init()
@@ -42,7 +42,7 @@ void slatearea::init()
 
 void slatearea::cleanup()
 {
-	isindestruction=true;
+	isondestruction=true;
 	if (child)
 	{
 		child->cleanup();
@@ -63,14 +63,14 @@ bool slatearea::isfilled()
 		return false;
 }
 
-bool slatearea::get_isindestruction ()
+bool slatearea::get_isondestruction ()
 {
-	return isindestruction;
+	return isondestruction;
 }
 
 bool slatearea::get_isvisible ()
 {
-	if (isindestruction==true)
+	if (isondestruction==true)
 		return false;
 	return isvisible;
 }

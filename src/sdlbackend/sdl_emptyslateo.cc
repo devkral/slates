@@ -49,7 +49,7 @@ sdl_emptyslateo::~sdl_emptyslateo()
 void sdl_emptyslateo::update()
 {
 	//cout << "Update empty\n";
-	if (drawareas[0]->get_isindestruction()==true)
+	if (drawareas[0]->get_isondestruction()==true)
 		return;
 	interact_with_draw.lock();
 	//{
