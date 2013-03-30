@@ -26,7 +26,6 @@ sdl_slatearea::sdl_slatearea(slate *parent_slate, sdl_slateareacanvas *canvastem
 
 sdl_slatearea::~sdl_slatearea()
 {
-	
 	delete screen;
 	screen=0;
 }

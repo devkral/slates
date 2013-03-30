@@ -43,7 +43,7 @@ public:
 	virtual void handle_input(void *initializer); //needn't to be implemented if there is an other solution
 	virtual void update()=0;
 	void init();
-
+	void cleanup();
 	virtual void draw_function(); //for kickstarter
 	/** implementation idea:
 	 * init with creation
@@ -55,7 +55,7 @@ public:
 	
 	virtual char TYPE()=0;
 protected:
-	bool isdrawn=false;
+	bool isdrawn=true;
 	bool hasinputhandle=false;
 	thread drawthread;
 	master *parent_master;

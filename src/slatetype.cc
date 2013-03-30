@@ -30,10 +30,7 @@ slatetype::slatetype(master *parent_mastert)
 
 slatetype::~slatetype()
 {
-	isdrawn=false;
-	hasinputhandle=false;
-	if (drawthread.joinable())
-		drawthread.join();
+
 }
 
 master *slatetype::get_master()
@@ -43,8 +40,16 @@ master *slatetype::get_master()
 
 void slatetype::init()
 {
-	isdrawn=true;
 	drawthread=thread(kickstarter_drawthread,this);
+}
+
+void slatetype::cleanup()
+{
+	
+	isdrawn=false;
+	hasinputhandle=false;
+	if (drawthread.joinable())
+		drawthread.join();
 }
 
 void slatetype::draw_function()

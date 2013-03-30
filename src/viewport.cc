@@ -49,9 +49,12 @@ viewport::viewport(master *master_parent,int viewportidtemp)
 
 viewport::~viewport()
 {
+	
+}
+void viewport::cleanup()
+{
 	async_destroy_slates(max_avail_slates);
 }
-
 
 int viewport::get_viewport_width()
 {
@@ -170,46 +173,48 @@ void async_create_slates_intern(slate *placeholderpointer)
 
 void viewport::async_create_slates()
 {
-	slateid_prot.lock();
-	vector<thread> temppool;
-	int temp_x, temp_y;
-	while (slate_idcount<slices*slices-slices)
+	if(slateid_prot.try_lock())
 	{
-		temp_y=slices-1;
-		temp_x=slate_idcount-id_last_beg;
+		vector<thread> temppool;
+		int temp_x, temp_y;
+		while (slate_idcount<slices*slices-slices)
+		{
+			temp_y=slices-1;
+			temp_x=slate_idcount-id_last_beg;
 
-		//warning synchronize this in both while loops
-		slate *placeholderpointer=new slate(this,slate_idcount,temp_x,temp_y); 
-		slate_pool.push_back(placeholderpointer);
-		temppool.push_back(thread(async_create_slates_intern,placeholderpointer));
+			//warning synchronize this in both while loops
+			slate *placeholderpointer=new slate(this,slate_idcount,temp_x,temp_y); 
+			slate_pool.push_back(placeholderpointer);
+			temppool.push_back(thread(async_create_slates_intern,placeholderpointer));
 		
-		slate_idcount++;
-	}
-	while (slate_idcount<max_avail_slates)
-	{
-		temp_y=(cache_last_diag_point_id+(slices-1))-slate_idcount; //sure???
-		temp_x=slices-1;
+			slate_idcount++;
+		}
+		while (slate_idcount<max_avail_slates)
+		{
+			temp_y=(cache_last_diag_point_id+(slices-1))-slate_idcount; //sure???
+			temp_x=slices-1;
 
-		slate *placeholderpointer=new slate(this,slate_idcount,temp_x,temp_y); 
-		slate_pool.push_back(placeholderpointer);
-		temppool.push_back(thread(async_create_slates_intern,placeholderpointer));
+			slate *placeholderpointer=new slate(this,slate_idcount,temp_x,temp_y); 
+			slate_pool.push_back(placeholderpointer);
+			temppool.push_back(thread(async_create_slates_intern,placeholderpointer));
 
-		slate_idcount++;
+			slate_idcount++;
 
-	}
+		}
 	
-	while (temppool.empty()==false)
-	{
-		temppool.back().join();
-		temppool.pop_back();
+		while (temppool.empty()==false)
+		{
+			temppool.back().join();
+			temppool.pop_back();
+		}
+		slateid_prot.unlock();
 	}
-	slateid_prot.unlock();
-
 }
 
 
 void async_destroy_slates_intern(slate *targob)
 {
+	targob->cleanup();
 	delete targob;
 }
 

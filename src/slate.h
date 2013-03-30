@@ -40,6 +40,7 @@ class slate
 public:
 	slate (viewport *parent,long int id, int position_xtemp,int position_ytemp);
 	virtual ~slate();
+	void cleanup();
 	void init();
 	bool isfilled();
 	master *get_master();

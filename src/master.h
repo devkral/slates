@@ -45,7 +45,7 @@ public:
 	void createviewport();
 	virtual viewport *create_viewport_intern(master *masteridd, int ownidd)=0;
 	void destroyviewport();
-	
+	void cleanup();
 	void swapcontent(int viewportid1, long int slateid1,int viewportid2, long int slateid2);
 	void lock();
 	bool unlock_slates(char *password);

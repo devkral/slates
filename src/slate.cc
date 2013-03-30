@@ -29,13 +29,20 @@ slate::slate (viewport *parent,long int id,int position_xtemp,int position_ytemp
 
 slate::~slate()
 {
-	if (child!=0)
-		delete child;
-	child=0;
 }
 void slate::init()
 {
 	create_area();
+}
+
+void slate::cleanup()
+{
+	if (child!=0)
+	{
+		child->cleanup();
+		delete child;
+		child=0;
+	}
 }
 
 

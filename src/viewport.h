@@ -56,7 +56,7 @@ public:
 	void fillslate_intern(long int id); //counter 
 	void emptyslate_intern(long int id); //counter
 	void handle_event(void *event);
-
+	void cleanup();
 	void lock();
 	void unlock();
 	

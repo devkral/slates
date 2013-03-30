@@ -71,7 +71,6 @@ sdl_master::sdl_master(int argc, char* argv[]) : master()
 		createviewport();
 	hasinputhandle=true;
 	inputhandler_function();
-	//start_handling_input();
 	//inputthread.join();
 }
 
@@ -79,6 +78,7 @@ sdl_master::~sdl_master()
 {
 	//~master();
 	cout << "Destroy sdlmaster\n";
+	cleanup();
 	SDL_Quit();
 }
 

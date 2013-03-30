@@ -32,18 +32,27 @@ slatearea::slatearea(slate *parent_slate)
 
 slatearea::~slatearea()
 {
-	delete child;
-	child=0;
-	
-	while (connectedslates.empty()==false)
-	{
-		connectedslates.pop_back();
-	}
+
 }
 
 void slatearea::init()
 {
 	create_emptyslatetype();
+}
+
+void slatearea::cleanup()
+{
+	isindestruction=true;
+	if (child)
+	{
+		child->cleanup();
+		delete child;
+		child=0;
+	}
+	while (connectedslates.empty()==false)
+	{
+		connectedslates.pop_back();
+	}
 }
 
 bool slatearea::isfilled()
@@ -54,8 +63,15 @@ bool slatearea::isfilled()
 		return false;
 }
 
+bool slatearea::get_isindestruction ()
+{
+	return isindestruction;
+}
+
 bool slatearea::get_isvisible ()
 {
+	if (isindestruction==true)
+		return false;
 	return isvisible;
 }
 slate *slatearea::get_origin()

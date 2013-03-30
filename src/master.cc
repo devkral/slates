@@ -46,6 +46,11 @@ master::master()
 
 master::~master()
 {
+
+}
+
+void master::cleanup()
+{
 	stop_handling_input();
 	while (viewport_pool.empty()!=true)
 		destroyviewport();
@@ -68,6 +73,7 @@ void master::createviewport()
 //validate before calling
 void master::destroyviewport()
 {
+	viewport_pool.back()->cleanup();
 	delete viewport_pool.back();
 	viewport_pool.pop_back();
 	viewport_idcount--;
