@@ -2,7 +2,7 @@
 /*
  * slates
  * Copyright (C) 2013 alex <devkral@web.de>
- * 
+ *
  * slates is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or
@@ -37,7 +37,7 @@ public:
 
 	slatetype(master *parent_mastert);
 	virtual ~slatetype();
-	
+
 	virtual void handle_event(void *event); //needn't to be implemented if there is an other solution
 	//be carefull: if not called by input don't send something to an alleventhandler
 	virtual void handle_input(void *initializer); //needn't to be implemented if there is an other solution
@@ -53,7 +53,7 @@ public:
 	master *get_master();
 	virtual void set_slatearea(slatearea *in)=0;
 	slatearea *get_slatearea();
-	virtual void set_visibility(bool t)=0;
+	//virtual void set_visibility(bool t)=0;
 	bool get_isvisible();
 	virtual char TYPE()=0;
 protected:
@@ -64,7 +64,7 @@ protected:
 	slatearea *parent=0;
 private:
 	master *parent_master=0;
-	
+
 };
 extern void kickstarter_drawthread(slatetype *parent);
 

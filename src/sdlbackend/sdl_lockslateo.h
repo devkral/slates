@@ -2,7 +2,7 @@
 /*
  * slates
  * Copyright (C) 2013 alex <devkral@web.de>
- * 
+ *
  * slates is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or
@@ -31,7 +31,7 @@ class sdl_screenobject;
 
 #include "constdef.h"
 
-class sdl_lockslateo: public lockslateo 
+class sdl_lockslateo: public lockslateo
 {
 public:
 	sdl_lockslateo(master *parent);
@@ -42,11 +42,11 @@ public:
 	void handle_event(void *event, bool called_by_input);
 	string enter_password ();
 	void set_slatearea(slatearea *);
-	void set_visibility(bool t);
+	//void set_visibility(bool t);
 	void lock(slatetype *);
 	slatetype *unlock();
 	bool isempty();
-	
+
 protected:
 	int update_interval;
 	SDL_Event event;

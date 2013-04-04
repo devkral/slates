@@ -2,7 +2,7 @@
 /*
  * slates
  * Copyright (C) 2013 alex <devkral@web.de>
- * 
+ *
  * slates is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or
@@ -36,10 +36,10 @@ public:
 	virtual void lock(slatetype *lockedobject)=0;
 	virtual slatetype *unlock()=0;
 protected:
+	slatetype *lockedob;
 
 private:
 	void sendunlock();
-	slatetype *lockedob;
 };
 
 #endif // _LOCKSLATEO_H_

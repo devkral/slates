@@ -2,7 +2,7 @@
 /*
  * slates
  * Copyright (C) 2013 alex <devkral@web.de>
- * 
+ *
  * slates is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or
@@ -27,14 +27,14 @@ class gtkmm_screenobject;
 
 #include "constdef.h"
 
-class gtkmm_emptyslateo : public emptyslateo 
+class gtkmm_emptyslateo : public emptyslateo
 {
 public:
 	gtkmm_emptyslateo(master *parent_master);
 	~gtkmm_emptyslateo();
 	void update();
 	void cleanup_handler ();
-	void set_visibility(bool t);
+	//void set_visibility(bool t);
 	void draw_function ();
 	void set_slatearea(slatearea *);
 protected:

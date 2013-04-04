@@ -2,7 +2,7 @@
 /*
  * slates
  * Copyright (C) 2013 alex <devkral@web.de>
- * 
+ *
  * slates is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or
@@ -32,7 +32,7 @@ class sdl_screenobject;
 
 
 
-class sdl_emptyslateo : public emptyslateo 
+class sdl_emptyslateo : public emptyslateo
 {
 public:
 	sdl_emptyslateo(master *parent_mastert);
@@ -44,17 +44,17 @@ public:
 	void handle_input(void *initializer);
 	void handle_event(void *event, bool called_by_input);
 protected:
-	
+
 //	sdlempty widget;
 	int update_interval;
 	SDL_Event event;
 	bool specialcondition=false;
-	void set_visibility(bool t);
+	//void set_visibility(bool t);
 	SDL_Surface *emptysur=0;
 	SDL_Texture *emptytex=0;
 	Uint32 white=0;
 	Uint32 black=0;
-	
+
 private:
 	timed_mutex interact_with_draw;
 };

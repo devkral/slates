@@ -2,7 +2,7 @@
 /*
  * slates
  * Copyright (C) 2013 alex <devkral@web.de>
- * 
+ *
  * slates is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or
@@ -45,7 +45,7 @@ void slatetype::init()
 
 void slatetype::cleanup()
 {
-	
+
 	isdrawn=false;
 	hasinputhandle=false;
 	if (drawthread.joinable())
@@ -65,7 +65,7 @@ void slatetype::handle_event(void *event)
 
 void slatetype::handle_input(void *initializer)
 {
-	
+
 }
 
 
@@ -76,6 +76,9 @@ slatearea *slatetype::get_slatearea()
 bool slatetype::get_isvisible()
 {
 	if (parent->get_isondestruction()==true ||
+	parent->get_isvisible()==false)
+		return false;
+	return true;
 }
 
 
