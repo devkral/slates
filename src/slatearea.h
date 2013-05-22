@@ -57,8 +57,9 @@ public:
 	virtual void create_lockslatetype()=0;
 	virtual void create_emptyslatetype()=0;
 
+	virtual void handle_input(void *initializer)=0;
+	
 	void handle_event(void  *event);
-	void handle_input(void *initializer);
 		
 	void lock();
 	void unlock();
@@ -72,6 +73,7 @@ public:
 	
 protected:
 	slatetype *child=0;
+	bool hasinputhandle=false;
 private:
 	deque< deque<slate*> > connectedslates; //outer vector y inner x
 	char lockstate=0; //0 normal 1 lock, 2 always_unlock,  (3 private_normal, 4 private_locked: not implemented)

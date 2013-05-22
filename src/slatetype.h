@@ -40,11 +40,11 @@ public:
 
 	virtual void handle_event(void *event); //needn't to be implemented if there is an other solution
 	//be carefull: if not called by input don't send something to an alleventhandler
-	virtual void handle_input(void *initializer); //needn't to be implemented if there is an other solution
+	//virtual void handle_input(void *initializer); //needn't to be implemented if there is an other solution
 	virtual void update()=0;
 	void init();
 	void cleanup();
-	virtual void draw_function(); //for kickstarter
+	//virtual void draw_function(); //for kickstarter
 	/** implementation idea:
 	 * init with creation
 	 * stop with destruction
@@ -60,7 +60,6 @@ protected:
 	bool isdrawn=true;
 	bool hasinputhandle=false;
 	bool isvisible=true;
-	thread drawthread;
 	slatearea *parent=0;
 private:
 	master *parent_master=0;

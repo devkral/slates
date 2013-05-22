@@ -89,10 +89,6 @@ void slatearea::handle_event(void  *event)
 	child->handle_event(event);
 }
 
-void slatearea::handle_input(void *initializer)
-{
-	child->handle_input(initializer);
-}
 
 void slatearea::update()
 {

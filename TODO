@@ -4,6 +4,10 @@ implement running programs as children  //is there a lib?
 implement program selector
 overlap to close
 
+++just one renderthread per display
+++++every windowtype just implements the architecture
+++++make a list with active windows
+
 Future:
 implement gui isolation
 
