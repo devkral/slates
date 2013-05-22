@@ -35,7 +35,11 @@ slates_SOURCES = \
 	confreader.cc \
 	confreader.h \
 	slatearea.cc \
-	slatearea.h
+	slatearea.h \
+	groupslate.cc \
+	groupslate.h \
+	configslate.cc \
+	configslate.h
 
 
 
@@ -82,10 +86,6 @@ slates_SOURCES += sdlbackend/sdlbackend.cc \
 	sdlbackend/sdl_screenobject.h \
 	sdlbackend/sdl_slatearea.cc \
 	sdlbackend/sdl_slatearea.h \
-	groupslate.cc \
-	groupslate.h \
-	configslate.cc \
-	configslate.h
 endif
 
 slates_CXXFLAGS = -std=c++11
