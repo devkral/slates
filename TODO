@@ -7,6 +7,12 @@ overlap to close
 Future:
 implement gui isolation
 
+
+ideas:
+create node like config menus, but the nodes are automatically ordered in a grid
+create group slates to contain more slates
+
+
 Inspiration:
 http://members.chello.nl/w.boeke/SDL-widgets/index.html
 

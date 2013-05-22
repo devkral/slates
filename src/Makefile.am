@@ -81,7 +81,11 @@ slates_SOURCES += sdlbackend/sdlbackend.cc \
 	sdlbackend/sdl_screenobject.cc \
 	sdlbackend/sdl_screenobject.h \
 	sdlbackend/sdl_slatearea.cc \
-	sdlbackend/sdl_slatearea.h
+	sdlbackend/sdl_slatearea.h \
+	groupslate.cc \
+	groupslate.h \
+	configslate.cc \
+	configslate.h
 endif
 
 slates_CXXFLAGS = -std=c++11
