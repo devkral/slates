@@ -47,7 +47,7 @@ fi
 PKG_CHECK_MODULES(GTKMM, [gtkmm-3.0],  [buildgtkmmbackend="yes"],  [buildgtkmmbackend="no"] )
 
 
-#buildgtkmmbackend="no"
+buildgtkmmbackend="no"
 
 if test "x$buildgtkmmbackend" = "xyes" ; then
 	AM_CONDITIONAL(IS_COMPILED_WITH_GTKMM, [true])
@@ -58,7 +58,7 @@ fi
 
 PKG_CHECK_MODULES(SDL2, [sdl2 SDL2_image], [buildsdlbackend="yes"] , [buildsdlbackend="no"] )
 
-#buildsdlbackend="no"
+buildsdlbackend="no"
 
 if test "x$buildsdlbackend" = "xyes" ; then
 	AM_CONDITIONAL(IS_COMPILED_WITH_SDL, [true])
@@ -67,6 +67,27 @@ else
 	AM_CONDITIONAL(IS_COMPILED_WITH_SDL, [false])
 fi
 
+#PKG_CHECK_MODULES(X, [X], [buildxbackend="yes"] , [buildxbackend="no"] )
+
+buildxbackend="no"
+
+if test "x$buildxbackend" = "xyes" ; then
+	AM_CONDITIONAL(IS_COMPILED_WITH_X, [true])
+	AC_DEFINE([COMPILED_WITH_X], [1], [X support: YES])
+else
+	AM_CONDITIONAL(IS_COMPILED_WITH_X, [false])
+fi
+
+#PKG_CHECK_MODULES(X, [X], [buildxbackend="yes"] , [buildxbackend="no"] )
+
+buildwaylandbackend="no"
+
+if test "x$buildwaylandbackend" = "xyes" ; then
+	AM_CONDITIONAL(IS_COMPILED_WITH_WAYLAND, [true])
+	AC_DEFINE([COMPILED_WITH_WAYLAND], [1], [wayland support: YES])
+else
+	AM_CONDITIONAL(IS_COMPILED_WITH_WAYLAND, [false])
+fi
 
 AC_CONFIG_FILES([
 Makefile

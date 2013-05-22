@@ -85,7 +85,17 @@ slates_SOURCES += sdlbackend/sdlbackend.cc \
 	sdlbackend/sdl_screenobject.cc \
 	sdlbackend/sdl_screenobject.h \
 	sdlbackend/sdl_slatearea.cc \
-	sdlbackend/sdl_slatearea.h \
+	sdlbackend/sdl_slatearea.h 
+endif
+
+if IS_COMPILED_WITH_X
+#slates_SOURCES += 
+
+endif
+
+if IS_COMPILED_WITH_WAYLAND
+#slates_SOURCES +=
+
 endif
 
 slates_CXXFLAGS = -std=c++11
