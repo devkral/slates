@@ -17,31 +17,26 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "lockslateo.h"
+#ifndef _WINDOWSLATE_H_
+#define _WINDOWSLATE_H_
 
-lockslateo::lockslateo(master *parent_mastert) : slatetype(parent_mastert)
+#include "slateareascreen.h"
+class slateareascreen;
+
+#include "constdef.h"
+
+
+class windowslate : public slateareascreen
 {
+public:
+	windowslate();
+	~windowslate();
+	char TYPE();
+protected:
+
+private:
 	
-}
+};
 
-lockslateo::~lockslateo()
-{
-
-}
-
-/**slatetype *lockslateo::unlock(slatearea *)
-{
-	slatetype *temp=lockedobject;
-	assert(lockedobject);
-	lockedobject=0;	
-	return temp;
-}*/
-
-
-
-
-char lockslateo::TYPE()
-{
-	return TYPE_locked;
-}
+#endif // _WINDOWSLATE_H_
 

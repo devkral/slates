@@ -80,11 +80,17 @@ private:
 	
 	bool isvisible=false;
 	bool isondestruction=false;
-	//overgive this in windowlist
+	//give this over to windowlist
 	int width=1; //in slates
 	int height=1; //in slates
 //	friend slateobject;
 };
+
+
+void kickstarter_drawthread(slatetype *parent)
+{
+	parent->draw_function ();
+}
 
 #endif // _SLATEAREA_H_
 

@@ -17,26 +17,20 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _WINDOWSLATEO_H_
-#define _WINDOWSLATEO_H_
+#include "windowslate.h"
 
-#include "slatetype.h"
-class slateobject;
-
-#include "constdef.h"
-
-
-class windowslateo : public slatetype
+windowslate::windowslate(slate *parent_slate, void *screenob) : slateareascreen()
 {
-public:
-	windowslateo(slate *parent_slate, void *screenob);
-	~windowslateo();
-	char TYPE();
-protected:
 
-private:
-	
-};
+}
 
-#endif // _WINDOWSLATEO_H_
+windowslate::~windowslate()
+{
+
+}
+
+char windowslate::TYPE()
+{
+	return TYPE_windowslate;
+}
 

@@ -17,21 +17,21 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "sysslateo.h"
+#include "sysslate.h"
 
-sysslateo::sysslateo(slate *parent_slate, void *screenob) : slateobject(parent_slate,screenob)
+sysslate::sysslate(slate *parent_slate, void *screenob) : slateareascreen()
 {
 
 
 }
 
-sysslateo::~sysslateo()
+sysslate::~sysslate()
 {
 
 
 }
 
-char sysslateo::TYPE()
+char sysslate::TYPE()
 {
 	return TYPE_sysslate;
 }

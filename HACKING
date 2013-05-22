@@ -2,6 +2,6 @@ Relationship:
 
 1 controller – n viewport
 1 viewport – n slate
-x slate – 1 slatearea        slates are socket of slatearea
-1 slatearea – 1 slatetype    slatetype is the architecture of slatearea but separated because it could change
-
+n slate – 1 slatearea        slates are socket of slatearea
+1 slatearea – 1 slateareascreen    slateareascreen is the architecture of slatearea but separated because it could change (slatetype former name)
+1 slateareascreen is one of the slatetypes (sorry for the confusing naming scheme)

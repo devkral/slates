@@ -97,6 +97,10 @@ private:
 	bool isondestruction=false;
 	long int max_avail_slates=0; //=slice*slice
 	vector<slate*> slate_pool; //leftwing first, then diag then top wing
+	vector<slateareascreen*> render_pool;
+	mutex lockrender;
+	thread renderthread;
+	
 	//deque<slatetype*> slatetype_pool;
 	master *mroot;
 	

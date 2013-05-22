@@ -17,14 +17,14 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "emptyslateo.h"
+#include "emptyslate.h"
 
-emptyslateo::emptyslateo(master *parent_mastert) : slatetype(parent_mastert)
+emptyslate::emptyslate(master *parent_mastert) : slateareascreen(parent_mastert)
 {
 
 }
 
-emptyslateo::~emptyslateo()
+emptyslate::~emptyslate()
 {
 
 }

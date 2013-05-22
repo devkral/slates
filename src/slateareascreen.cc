@@ -2,7 +2,7 @@
 /*
  * slates
  * Copyright (C) 2013 alex <devkral@web.de>
- * 
+ *
  * slates is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or
@@ -17,27 +17,35 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SYSSLATEO_H_
-#define _SYSSLATEO_H_
+#include "slateareascreen.h"
 
-#include "slateobject.h"
-class slateobject;
+#include <iostream>
 
+using namespace std;
 
-#include "constdef.h"
-
-
-class sysslateo: public slateobject 
+slateareascreen::slateareascreen(master *parent_mastert)
 {
-public:
-	sysslateo(slate *parent_slate, void *screenob);
-	~sysslateo();
-	char TYPE();
-protected:
+	parent_master=parent_mastert;
+}
 
-private:
+slateareascreen::~slateareascreen()
+{
 
-};
+}
 
-#endif // _SYSSLATEO_H_
+master *slateareascreen::get_master()
+{
+	return parent_master;
+}
+
+void slateareascreen::handle_event(void *event)
+{
+
+}
+
+slatearea *slateareascreen::get_slatearea()
+{
+	return parent;
+}
+
 

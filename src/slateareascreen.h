@@ -17,8 +17,8 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SLATEOBJECT_H_
-#define _SLATEOBJECT_H_
+#ifndef _SLATEAREASCREEN_H_
+#define _SLATEAREASCREEN_H_
 
 #include "master.h"
 class master;
@@ -31,11 +31,11 @@ class slatearea;
 using namespace std;
 
 
-class slatetype
+class slateareascreen
 {
 public:
 
-	slatetype(master *parent_mastert);
+	slateareascreen(master *parent_mastert);
 	virtual ~slatetype();
 
 	virtual void handle_event(void *event); //needn't to be implemented if there is an other solution
@@ -57,15 +57,14 @@ public:
 	bool get_isvisible();
 	virtual char TYPE()=0;
 protected:
-	bool isdrawn=true;
-	bool hasinputhandle=false;
-	bool isvisible=true;
 	slatearea *parent=0;
+	atomic<bool> dirty;
+	bool staticscreen=true;
 private:
 	master *parent_master=0;
 
 };
 extern void kickstarter_drawthread(slatetype *parent);
 
-#endif // _SLATEOBJECT_H_
+#endif // _SLATEAREASCREEN_H_
 

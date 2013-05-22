@@ -17,31 +17,27 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EMPTYSLATEO_H_
-#define _EMPTYSLATEO_H_
-#include "slatetype.h"
-class slatetype;
+#ifndef _SYSSLATEO_H_
+#define _SYSSLATEO_H_
+
+#include "slateareascreen.h"
+class slateareascreen;
+
 
 #include "constdef.h"
 
-class emptyslateo : public slatetype 
+
+class sysslateo: public slateareascreen 
 {
 public:
-	emptyslateo(master *parent_mastert);
-	~emptyslateo();
-	
-	//int fillslate(string progname); //own content
-	//int fillsysslate();
+	sysslate();
+	~sysslate();
 	char TYPE();
-	
 protected:
 
 private:
-	//virtual slatetype *create_windowslatetype()=0;
-	//virtual slatetype *create_sysslatetype()=0;
+
 };
 
-
-
-#endif // _EMPTYSLATEO_H_
+#endif // _SYSSLATEO_H_
 

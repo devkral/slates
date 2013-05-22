@@ -26,20 +26,28 @@ slates_SOURCES = \
 	viewport.h \
 	slate.cc \
 	slate.h \
-	slatetype.cc \
-	slatetype.h \
-	lockslateo.cc \
-	lockslateo.h \
-	emptyslateo.cc \
-	emptyslateo.h \
 	confreader.cc \
 	confreader.h \
 	slatearea.cc \
-	slatearea.h \
-	groupslate.cc \
-	groupslate.h \
-	configslate.cc \
-	configslate.h
+	slatearea.h  \
+	slateareascreen.cc \
+	slateareascreen.h
+
+
+#slates_SOURCES += \
+#	slatetypes/groupslate.cc \
+#	slatetypes/groupslate.h \
+#	slatetypes/configslate.cc \
+#	slatetypes/configslate.h \
+#	slatetypes/lockslate.cc \
+#	slatetypes/lockslate.h \
+#	slatetypes/emptyslate.cc \
+#	slatetypes/emptyslate.h
+#	slatetypes/windowslate.cc \
+#	slatetypes/windowslate.h \
+#	slatetypes/sysslate.cc \
+#	slatetypes/sysslate.h
+	
 
 
 
