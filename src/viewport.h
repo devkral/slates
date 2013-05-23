@@ -31,6 +31,7 @@ class slatearea;
 #include "constdef.h"
 
 #include <vector>
+#include <deque>
 #include <iostream>
 #include <atomic>
 #include <mutex>
@@ -53,14 +54,14 @@ public:
 	void addslice();
 	int removeslice();
 	int count_filled_slots(int sliceid);
-	void fillslate_intern(long int id); //counter 
-	void emptyslate_intern(long int id); //counter
+	void fill_slate_intern(long int id); //counter 
+	void empty_slate_intern(long int id); //counter don't confuse with emptyslate
 	void handle_event(void *event);
 	void cleanup();
 	void lock();
 	void unlock();
 	
-	void async_update_slates();
+	void update_slates();
 	void async_destroy_slates(long int amount);
 	void async_create_slates();
 	
@@ -77,7 +78,11 @@ public:
 	int get_viewport_beg_y();
 	bool get_isondestruction();
 
-	virtual void *get_viewportscreen()=0;
+	long int add_renderob(slateareascreen *renderob);
+	void remove_renderob(long int renderid);
+	slateareascreen *get_renderob(long int renderid);
+	virtual void render(slatearea *renderob)=0; 
+
 	virtual void update_slice_info()=0;
 	virtual slatearea *create_area(slate *parent_slate)=0;
 	
@@ -97,10 +102,13 @@ private:
 	bool isondestruction=false;
 	long int max_avail_slates=0; //=slice*slice
 	vector<slate*> slate_pool; //leftwing first, then diag then top wing
-	vector<slateareascreen*> render_pool;
+
+	deque<slateareascreen> render_pool;
+	atomic<int> amount_render;
+	
+
 	mutex lockrender;
 	thread renderthread;
-	
 	//deque<slatetype*> slatetype_pool;
 	master *mroot;
 	

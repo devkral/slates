@@ -23,9 +23,9 @@
 #include "slate.h"
 class slate;
 //#include <slatetype.h>
-class slatetype;
-class lockslateo;
-class emptyslateo;
+class slateareascreen;
+class lockslate;
+class emptyslate;
 
 #include "viewport.h"
 class viewport;
@@ -51,11 +51,10 @@ public:
 	//void resizeleftuppercorner(int x_delta, int y_delta);
 	//void resizerightlowercorner(int x_delta, int y_delta);
 	void update();
-	virtual void *get_screen()=0;
-	virtual void update_screen()=0;
+	slateareascreen *get_screen();
 	
-	virtual void create_lockslatetype()=0;
-	virtual void create_emptyslatetype()=0;
+	virtual slateareascreen *create_lockslate()=0;
+	virtual slateareascreen *create_emptyslate()=0;
 
 	virtual void handle_input(void *initializer)=0;
 	
@@ -67,7 +66,6 @@ public:
 	int get_x();
 	int get_y();
 	bool isfilled();
-	bool get_isvisible();
 	bool get_isondestruction ();
 	void set_childslatearea(slatearea *replace);
 	
@@ -78,7 +76,6 @@ private:
 	deque< deque<slate*> > connectedslates; //outer vector y inner x
 	char lockstate=0; //0 normal 1 lock, 2 always_unlock,  (3 private_normal, 4 private_locked: not implemented)
 	
-	bool isvisible=false;
 	bool isondestruction=false;
 	//give this over to windowlist
 	int width=1; //in slates

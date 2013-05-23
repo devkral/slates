@@ -20,7 +20,7 @@
 #include "slatearea.h"
 
 
-#include "lockslateo.h"
+#include "lockslate.h"
 class lockslateo;
 
 slatearea::slatearea(slate *parent_slate)
@@ -37,7 +37,7 @@ slatearea::~slatearea()
 
 void slatearea::init()
 {
-	create_emptyslatetype();
+	child=create_emptyslate();
 }
 
 void slatearea::cleanup()
@@ -97,15 +97,17 @@ void slatearea::update()
 		get_x()>=get_origin ()->get_viewport()->get_viewport_width()+get_origin ()->get_viewport()->get_viewport_beg_x() ||
 		get_y()>=get_origin()->get_viewport()->get_viewport_height()+get_origin ()->get_viewport()->get_viewport_beg_y())
 	{
-		isvisible=false;
+		if (child->isstatic ()==false)
+			get_master->remove_renderob(child);
 	}
 
 	else
 	{
-		isvisible=true;
+		if (child->isstatic ()==false)
+			get_master->add_renderob(child);
+		get_master->render(child);
 	}
 	update_screen();
-	child->update();
 }
 void slatearea::set_childslatearea(slatearea *parent_slatearea)
 {
@@ -116,7 +118,7 @@ void slatearea::lock()
 {
 	if (lockstate==0)
 	{
-		create_lockslatetype ();
+		create_lockslate ();
 		lockstate+=1;
 	}
 }
@@ -125,7 +127,8 @@ void slatearea::unlock()
 {
 	if (lockstate==1)
 	{
-		lockslateo *temp=(lockslateo*)child;
+		
+		lockslate *temp=(lockslate*)child;
 		child=temp->unlock();
 		delete temp;
 		temp=0;

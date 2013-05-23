@@ -34,19 +34,19 @@ slates_SOURCES = \
 	slateareascreen.h
 
 
-#slates_SOURCES += \
-#	slatetypes/groupslate.cc \
-#	slatetypes/groupslate.h \
-#	slatetypes/configslate.cc \
-#	slatetypes/configslate.h \
-#	slatetypes/lockslate.cc \
-#	slatetypes/lockslate.h \
-#	slatetypes/emptyslate.cc \
-#	slatetypes/emptyslate.h
-#	slatetypes/windowslate.cc \
-#	slatetypes/windowslate.h \
-#	slatetypes/sysslate.cc \
-#	slatetypes/sysslate.h
+slates_SOURCES += \
+	slatetypes/groupslate.cc \
+	slatetypes/groupslate.h \
+	slatetypes/configslate.cc \
+	slatetypes/configslate.h \
+	slatetypes/lockslate.cc \
+	slatetypes/lockslate.h \
+	slatetypes/emptyslate.cc \
+	slatetypes/emptyslate.h
+	slatetypes/windowslate.cc \
+	slatetypes/windowslate.h \
+	slatetypes/sysslate.cc \
+	slatetypes/sysslate.h
 	
 
 

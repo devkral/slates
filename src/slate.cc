@@ -71,8 +71,11 @@ void slate::create_area()
 void slate::replace_area(slatearea *newarea)
 {
 	if (child!=0)
+	{
 		delete child;
+	}
 	child=newarea;
+	
 }
 
 /**

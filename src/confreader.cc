@@ -109,8 +109,10 @@ string confreader::get_variable(string varname)
 		nextchar=confstr.get();
 		if (nextchar=='\n' || nextchar==EOF )
 		{
+			
 			if (searchtemp.find(varname)==0)
 			{
+				confstr.close();
 				return searchtemp.erase(0,searchtemp.find("=")+1);
 			}
 		}

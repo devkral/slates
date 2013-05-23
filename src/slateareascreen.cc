@@ -48,4 +48,17 @@ slatearea *slateareascreen::get_slatearea()
 	return parent;
 }
 
-
+bool slateareascreen::isstatic()
+{
+	return true;
+}
+long int get_renderid()
+{
+	return renderid;
+}
+void set_renderid(long int id)
+{
+	if (renderid!=-1 && id!=-1 )
+		std::cerr << "Error: renderid dirty\n";
+	renderid=id;
+}

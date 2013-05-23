@@ -152,26 +152,14 @@ slate *viewport::get_slate_by_id(long int id)
 
 }
 
-void async_update_slates_intern(slate *targob)
-{
-	assert(targob);
-	targob->update();
-}
-
-void viewport::async_update_slates()
+void viewport::update_slates()
 {	
 	if (get_isondestruction())
 		return;
 	lockrender.lock();
-	vector<thread> temppool;
 	for (long int count=0;count<max_avail_slates;count++)
 	{
-		temppool.push_back(thread(async_update_slates_intern,slate_pool[count]));
-	}
-	while (temppool.empty()==false)
-	{
-		temppool.back().join();
-		temppool.pop_back();
+		slate_pool[count]->update();
 	}
 	lockrender.unlock();
 }
@@ -186,7 +174,6 @@ void viewport::async_create_slates()
 {
 	if (get_isondestruction())
 		return;
-	lockrender.lock();
 	vector<thread> temppool;
 	int temp_x, temp_y;
 	while (slate_idcount<slices*slices-slices)
@@ -214,7 +201,6 @@ void viewport::async_create_slates()
 		temppool.back().join();
 		temppool.pop_back();
 	}
-	lockrender.unlock();
 }
 
 
@@ -230,7 +216,6 @@ void async_destroy_slates_intern(slate *targob)
 
 void viewport::async_destroy_slates(long int amount)
 {
-	lockrender.lock();
 	vector<thread> temppool;
 	for (long int count=0;count<amount;count++)
 	{
@@ -243,7 +228,6 @@ void viewport::async_destroy_slates(long int amount)
 		temppool.back().join();
 		temppool.pop_back();
 	}
-	lockrender.unlock();
 }
 
 int viewport::count_filled_slots(int sliceid)
@@ -275,7 +259,7 @@ void viewport::addslice()
 		async_create_slates();
 	//	for (long int count=0;count<slices+slices-1;count++) //=(slices+1)+(slices+1)-1
 	//		createslate();
-		async_update_slates();
+		update_slates();
 		slateid_prot.unlock();
 	}
 }
@@ -299,7 +283,7 @@ int viewport::removeslice()
 		nto_last_slice_filled=count_filled_slots(slices-1);
 
 		update_slice_info();
-		async_update_slates();
+		update_slates();
 		slateid_prot.unlock();
 		return OP_success;
 	}
@@ -355,7 +339,7 @@ void viewport::unlock()
 	}
 }
 
-void viewport::fillslate_intern(long int id)
+void viewport::fill_slate_intern(long int id)
 {
 	amount_filled_slates++;
 	
@@ -372,7 +356,7 @@ void viewport::fillslate_intern(long int id)
 	}
 }
 
-void viewport::emptyslate_intern(long int id)
+void viewport::empty_slate_intern(long int id)
 {
 	amount_filled_slates--;
 	if (id>=id_last_beg)
@@ -394,6 +378,16 @@ int viewport::get_viewport_id()
 int viewport::get_slices()
 {
 	return slices;
+}
+
+
+long int add_renderob(slateareascreen *renderob)
+{
+	
+}
+void remove_renderob(long int renderid)
+{
+
 }
 
 

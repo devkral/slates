@@ -27,7 +27,7 @@ public:
 protected:
 
 private:
-
+	deque<slatearea> slatearea_pool;
 };
 
 #endif // _GROUPSLATE_H_

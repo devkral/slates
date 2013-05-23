@@ -54,14 +54,16 @@ public:
 	virtual void set_slatearea(slatearea *in)=0;
 	slatearea *get_slatearea();
 	//virtual void set_visibility(bool t)=0;
-	bool get_isvisible();
+	virtual bool isstatic();
+	long int get_renderid();
+	void set_renderid(long int id);
 	virtual char TYPE()=0;
 protected:
 	slatearea *parent=0;
 	atomic<bool> dirty;
-	bool staticscreen=true;
 private:
 	master *parent_master=0;
+	long int renderid=-1;
 
 };
 extern void kickstarter_drawthread(slatetype *parent);
