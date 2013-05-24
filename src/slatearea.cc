@@ -3,9 +3,8 @@
 
 #include "slatearea.h"
 
-
 #include "lockslate.h"
-class lockslateo;
+class lockslate;
 
 slatearea::slatearea(slate *parent_slate)
 {
@@ -87,9 +86,10 @@ void slatearea::update()
 
 	else
 	{
-		if (child->isstatic ()==false)
-			get_master->add_renderob(child);
-		get_master->render(child);
+		//if (child->isstatic ()==false)
+		get_master->add_renderob(child);
+		//else
+		//	get_master->render(child);
 	}
 	update_screen();
 }

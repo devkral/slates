@@ -35,18 +35,18 @@ slates_SOURCES = \
 
 
 slates_SOURCES += \
-	slatetypes/groupslate.cc \
-	slatetypes/groupslate.h \
-	slatetypes/configslate.cc \
-	slatetypes/configslate.h \
-	slatetypes/lockslate.cc \
-	slatetypes/lockslate.h \
-	slatetypes/emptyslate.cc \
-	slatetypes/emptyslate.h
-	slatetypes/windowslate.cc \
-	slatetypes/windowslate.h \
-	slatetypes/sysslate.cc \
-	slatetypes/sysslate.h
+	groupslate.cc \
+	groupslate.h \
+	configslate.cc \
+	configslate.h \
+	lockslate.cc \
+	lockslate.h \
+	emptyslate.cc \
+	emptyslate.h
+	windowslate.cc \
+	windowslate.h \
+	sysslate.cc \
+	sysslate.h
 	
 
 

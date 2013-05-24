@@ -79,7 +79,7 @@ void viewport::set_viewport_size(int width, int height)
 	else
 		vertical_tiles=height;
 	update_slice_info();
-	async_update_slates();
+	update_slates();
 }
 
 int viewport::get_viewport_beg_x()
@@ -104,7 +104,7 @@ void viewport::set_viewport_begin(int x, int y)
 	if (y<slices)
 		view_beg_slate_y=y;
 	update_slice_info();
-	async_update_slates();
+	update_slates();
 }
 
 
@@ -140,12 +140,12 @@ void viewport::update_slates()
 {	
 	if (get_isondestruction())
 		return;
-	lockrender.lock();
+	protrender.lock();
 	for (long int count=0;count<max_avail_slates;count++)
 	{
 		slate_pool[count]->update();
 	}
-	lockrender.unlock();
+	protrender.unlock();
 }
 
 void async_create_slates_intern(slate *placeholderpointer)
@@ -364,17 +364,6 @@ int viewport::get_slices()
 	return slices;
 }
 
-
-long int add_renderob(slateareascreen *renderob)
-{
-	
-}
-void remove_renderob(long int renderid)
-{
-
-}
-
-
 void handle_event_intern(slate *slateob, void *event)
 {
 	slateob->handle_event(event);
@@ -395,4 +384,53 @@ void viewport::handle_event(void *event)
 			threadpool_events.back().join();
 		threadpool_events.pop_back();
 	}
+}
+
+
+
+void viewport::add_renderob(slateareascreen *renderob)
+{
+	protrender.lock();
+	render_pool.push_back(renderob);
+	renderob->set_renderid (render_pool.size()-1);
+	protrender.unlock();
+}
+void viewport::remove_renderob(long int renderid)
+{
+	protrender.lock();
+	render_pool.erase(render_pool.begin()+renderid);
+	protrender.unlock();
+}
+
+
+slateareascreen *viewport::get_renderob(long int renderid)
+{
+	return render_pool[renderid];
+}
+
+void viewport::rendering()
+{
+	int count=0;
+	slateareascreen *temp=0;
+	while (isondestruction==false)
+	{
+		protrender.lock();
+		for(count=0;count<render_pool.size();count++)
+		{
+			temp=render_pool[count];
+			
+			if (temp->isstatic ())
+			{
+				render(temp);
+				render_pool.erase(render_pool.begin()+count);
+			} else if (temp->isdirty ())
+				render(temp);
+		}
+		protrender.unlock();
+	}
+}
+
+void viewport::kickstarter_renderthread (viewport *renderingob)
+{
+	//renderingob->rendering();
 }

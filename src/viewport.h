@@ -61,17 +61,17 @@ public:
 	int get_viewport_beg_y();
 	bool get_isondestruction();
 
-	long int add_renderob(slateareascreen *renderob);
+	void add_renderob(slateareascreen *renderob);
 	void remove_renderob(long int renderid);
 	slateareascreen *get_renderob(long int renderid);
-	virtual void render(slatearea *renderob)=0; 
+	void rendering();
+	virtual void render(slateareascreen *renderob)=0; 
 
 	virtual void update_slice_info()=0;
 	virtual slatearea *create_area(slate *parent_slate)=0;
-	
 
 protected:
-	
+	static void kickstarter_renderthread (viewport *renderingob);
 private:
 	int horizontal_tiles=-1;
 	int vertical_tiles=-1;
@@ -86,11 +86,11 @@ private:
 	long int max_avail_slates=0; //=slice*slice
 	vector<slate*> slate_pool; //leftwing first, then diag then top wing
 
-	deque<slateareascreen> render_pool;
-	atomic<int> amount_render;
+	deque<slateareascreen*> render_pool;
+
 	
 
-	mutex lockrender;
+	mutex protrender;
 	thread renderthread;
 	//deque<slatetype*> slatetype_pool;
 	master *mroot;
@@ -111,8 +111,13 @@ private:
 		//next to last slice
 		int nto_last_slice_filled=0;
 		long int id_nto_last_beg=0;
+
+
+	
 	friend master;
 };
+
+
 
 #endif // _VIEWPORT_H_
 

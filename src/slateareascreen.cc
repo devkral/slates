@@ -10,6 +10,7 @@ using namespace std;
 slateareascreen::slateareascreen(master *parent_mastert)
 {
 	parent_master=parent_mastert;
+	dirty=true;
 }
 
 slateareascreen::~slateareascreen()

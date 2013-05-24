@@ -6,7 +6,7 @@
 
 #include "slate.h"
 class slate;
-//#include <slatetype.h>
+//#include <slateareascreen.h>
 class slateareascreen;
 class lockslate;
 class emptyslate;
@@ -54,7 +54,7 @@ public:
 	void set_childslatearea(slatearea *replace);
 	
 protected:
-	slatetype *child=0;
+	slateareascreen *child=0;
 	bool hasinputhandle=false;
 private:
 	deque< deque<slate*> > connectedslates; //outer vector y inner x
@@ -64,14 +64,7 @@ private:
 	//give this over to windowlist
 	int width=1; //in slates
 	int height=1; //in slates
-//	friend slateobject;
 };
-
-
-void kickstarter_drawthread(slatetype *parent)
-{
-	parent->draw_function ();
-}
 
 #endif // _SLATEAREA_H_
 

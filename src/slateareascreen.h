@@ -12,6 +12,7 @@ class slatearea;
 #include "constdef.h"
 
 #include <thread>
+#include <atomic>
 using namespace std;
 
 
@@ -20,7 +21,7 @@ class slateareascreen
 public:
 
 	slateareascreen(master *parent_mastert);
-	virtual ~slatetype();
+	virtual ~slateareascreen();
 
 	virtual void handle_event(void *event); //needn't to be implemented if there is an other solution
 	//be carefull: if not called by input don't send something to an alleventhandler
@@ -39,18 +40,17 @@ public:
 	slatearea *get_slatearea();
 	//virtual void set_visibility(bool t)=0;
 	virtual bool isstatic();
+	virtual bool isdirty();
 	long int get_renderid();
 	void set_renderid(long int id);
 	virtual char TYPE()=0;
 protected:
 	slatearea *parent=0;
-	atomic<bool> dirty;
 private:
 	master *parent_master=0;
 	long int renderid=-1;
 
 };
-extern void kickstarter_drawthread(slatetype *parent);
 
 #endif // _SLATEAREASCREEN_H_
 
