@@ -6,7 +6,6 @@
 
 #include "slate.h"
 class slate;
-//#include <slateareascreen.h>
 class slateareascreen;
 class lockslate;
 class emptyslate;
@@ -36,31 +35,29 @@ public:
 	//void resizerightlowercorner(int x_delta, int y_delta);
 	void update();
 	slateareascreen *get_screen();
+	void set_screen(slateareascreen *replace);
 	
-	virtual slateareascreen *create_lockslate()=0;
 	virtual slateareascreen *create_emptyslate()=0;
 
 	virtual void handle_input(void *initializer)=0;
 	
 	void handle_event(void  *event);
 		
-	void lock();
-	void unlock();
+	void setlock(int lockstate);
 	
 	int get_x();
 	int get_y();
 	bool isfilled();
-	bool get_isondestruction ();
-	void set_childslatearea(slatearea *replace);
+	bool get_isdestroying ();
+	void update_isfilled();
 	
 protected:
 	slateareascreen *child=0;
 	bool hasinputhandle=false;
 private:
 	deque< deque<slate*> > connectedslates; //outer vector y inner x
-	char lockstate=0; //0 normal 1 lock, 2 always_unlock,  (3 private_normal, 4 private_locked: not implemented)
-	
-	bool isondestruction=false;
+	bool filledold=false;
+	bool isdestroying=false;
 	//give this over to windowlist
 	int width=1; //in slates
 	int height=1; //in slates

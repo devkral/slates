@@ -4,6 +4,10 @@
 #include "viewport.h"
 
 
+#include "slateareascreen.h"
+#include "slate.h"
+#include "master.h"
+
 long int calcidslate(long int x, long int y)
 {
 	long int diagrefpoint;
@@ -33,14 +37,13 @@ viewport::viewport(master *master_parent,int viewportidtemp)
 
 viewport::~viewport()
 {
-	isondestruction=true;
+	isdestroying=true;
 }
 void viewport::cleanup()
 {
-	isondestruction=true;
+	isdestroying=true;
 	slateid_prot.lock();
-	async_destroy_slates(max_avail_slates);
-	max_avail_slates=0;
+	async_destroy_slates(slate_pool.size()-1);
 }
 
 int viewport::get_viewport_width()
@@ -50,9 +53,9 @@ int viewport::get_viewport_width()
 	else
 		return horizontal_tiles;
 }
-bool viewport::get_isondestruction()
+bool viewport::get_isdestroying()
 {
-	return isondestruction;
+	return isdestroying;
 }
 
 int viewport::get_viewport_height()
@@ -116,7 +119,7 @@ slate *viewport::get_slate(int x, int y)
 		return 0;
 	}
 	int validate=calcidslate(x, y);
-	if (validate>=max_avail_slates)
+	if (validate>=slate_pool.size())
 	{
 		cerr << "Error: x or y greater than available slates, x:" << x << " y:" << y << endl;
 		return 0;
@@ -127,7 +130,7 @@ slate *viewport::get_slate(int x, int y)
 
 slate *viewport::get_slate_by_id(long int id)
 {
-	if (id<0 || id>=max_avail_slates)
+	if (id<0 || id>=slate_pool.size())
 	{
 		cerr << "Error: id out of range " << id  << endl;
 		return 0;
@@ -138,10 +141,10 @@ slate *viewport::get_slate_by_id(long int id)
 
 void viewport::update_slates()
 {	
-	if (get_isondestruction())
+	if (get_isdestroying())
 		return;
 	protrender.lock();
-	for (long int count=0;count<max_avail_slates;count++)
+	for (long int count=0;count<slate_pool.size();count++)
 	{
 		slate_pool[count]->update();
 	}
@@ -156,7 +159,7 @@ void async_create_slates_intern(slate *placeholderpointer)
 
 void viewport::async_create_slates()
 {
-	if (get_isondestruction())
+	if (get_isdestroying())
 		return;
 	vector<thread> temppool;
 	int temp_x, temp_y;
@@ -170,7 +173,7 @@ void viewport::async_create_slates()
 		temppool.push_back(thread(async_create_slates_intern,placeholderpointer));
 		slate_idcount++;
 	}
-	while (slate_idcount<max_avail_slates)
+	while (slate_idcount<slate_pool.size())
 	{
 		temp_y=(cache_last_diag_point_id+(slices-1))-slate_idcount; //sure???
 		temp_x=slices-1;
@@ -226,12 +229,12 @@ int viewport::count_filled_slots(int sliceid)
 
 void viewport::addslice()
 {
-	if (get_isondestruction())
+	if (get_isdestroying())
 		return;
 	if(slateid_prot.try_lock())
 	{
 		slices++;
-		max_avail_slates=slices*slices;
+		//max_avail_slates=slices*slices;
 		cache_nto_last_diag_point_id=cache_last_diag_point_id;
 		cache_last_diag_point_id=slices*slices-slices;
 		id_nto_last_beg=id_last_beg;
@@ -250,7 +253,7 @@ void viewport::addslice()
 
 int viewport::removeslice()
 {
-	if (get_isondestruction() || last_slice_filled>0 || nto_last_slice_filled >= (slices-1)+(slices-1)) //just one free slot
+	if (get_isdestroying() || last_slice_filled>0 || nto_last_slice_filled >= (slices-1)+(slices-1)) //just one free slot
 	{
 		return SL_destroy_failed;
 	}
@@ -258,7 +261,7 @@ int viewport::removeslice()
 	{
 		async_destroy_slates(slices+slices-1); //=(slices+1)+(slices+1)-1
 		slices--;
-		max_avail_slates=slices*slices;
+		//max_avail_slates=slices*slices;
 		cache_last_diag_point_id=cache_nto_last_diag_point_id;
 		cache_nto_last_diag_point_id=(slices-1)*(slices-1)-(slices-1);
 		id_last_beg=id_nto_last_beg;
@@ -278,48 +281,26 @@ master *viewport::get_master()
 	return mroot;
 }
 
-void lock_intern(slate *temp)
-{
-	temp->lock();
-}
 
 void viewport::lock()
 {
-	if (get_isondestruction())
+	if (get_isdestroying())
 		return;
-	vector<thread> temppool;
-	for (long int count=0;count<amount_filled_slates;count++)
+	for (long int count=0;count<slate_pool.size();count++)
 	{
 		if (slate_pool[count]->isorigin())
-			temppool.push_back(thread(lock_intern,slate_pool[count]));
+			slate_pool[count]->setlock(1);
 	}
-	while (temppool.empty()==false)
-	{
-		temppool.back().join();
-		temppool.pop_back();
-	}
-}
-
-void unlock_intern(slate *temp)
-{
-	temp->unlock();
 }
 
 void viewport::unlock()
 {
-	if (get_isondestruction())
+	if (get_isdestroying())
 		return;
-	vector<thread> temppool;
-	for (long int count=0;count<amount_filled_slates;count++)
+	for (long int count=0;count<slate_pool.size();count++)
 	{
 		if (slate_pool[count]->isorigin())
-			temppool.push_back(thread(unlock_intern,slate_pool[count]));
-		
-	}
-	while (temppool.empty()==false)
-	{
-		temppool.back().join();
-		temppool.pop_back();
+			slate_pool[count]->setlock(0);
 	}
 }
 
@@ -332,10 +313,10 @@ void viewport::fill_slate_intern(long int id)
 	else if (id>=id_nto_last_beg)
 			nto_last_slice_filled++;
 	
-	if (amount_filled_slates>=max_avail_slates)
+	if (amount_filled_slates>=slate_pool.size()-1)
 	{
-		if (amount_filled_slates>max_avail_slates)
-			cerr << "Debug: amount_filled_slates " << amount_filled_slates-max_avail_slates << "bigger than max_avail_slates" << endl; 
+		if (amount_filled_slates>=slate_pool.size())
+			cerr << "Debug: amount_filled_slates " << amount_filled_slates-slate_pool.size()+1 << "bigger than slate_pool" << endl; 
 		addslice();
 	}
 }
@@ -371,7 +352,7 @@ void handle_event_intern(slate *slateob, void *event)
 void viewport::handle_event(void *event)
 {
 	vector<thread> threadpool_events;
-	for (long int count=0;count<max_avail_slates;count++)
+	for (long int count=0;count<slate_pool.size();count++)
 	{
 		if (slate_pool[count]->isorigin())
 		{
@@ -391,13 +372,14 @@ void viewport::handle_event(void *event)
 void viewport::add_renderob(slateareascreen *renderob)
 {
 	protrender.lock();
+	renderob->set_renderid (render_pool.size()); //nice hack: size must be one less before adding
 	render_pool.push_back(renderob);
-	renderob->set_renderid (render_pool.size()-1);
 	protrender.unlock();
 }
 void viewport::remove_renderob(long int renderid)
 {
 	protrender.lock();
+	render_pool[renderid]->set_renderid (-1);
 	render_pool.erase(render_pool.begin()+renderid);
 	protrender.unlock();
 }
@@ -412,7 +394,7 @@ void viewport::rendering()
 {
 	int count=0;
 	slateareascreen *temp=0;
-	while (isondestruction==false)
+	while (isdestroying==false)
 	{
 		protrender.lock();
 		for(count=0;count<render_pool.size();count++)
@@ -423,6 +405,7 @@ void viewport::rendering()
 			{
 				render(temp);
 				render_pool.erase(render_pool.begin()+count);
+				temp->set_renderid (-1);
 			} else if (temp->isdirty ())
 				render(temp);
 		}
@@ -432,5 +415,5 @@ void viewport::rendering()
 
 void viewport::kickstarter_renderthread (viewport *renderingob)
 {
-	//renderingob->rendering();
+	renderingob->rendering();
 }

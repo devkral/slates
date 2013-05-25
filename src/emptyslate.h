@@ -2,7 +2,7 @@
 
 #ifndef _EMPTYSLATEO_H_
 #define _EMPTYSLATEO_H_
-#include "slatetype.h"
+#include "slateareascreen.h"
 class slatetype;
 
 #include "constdef.h"
@@ -20,8 +20,10 @@ public:
 protected:
 
 private:
-	//virtual slatetype *create_windowslatetype()=0;
-	//virtual slatetype *create_sysslatetype()=0;
+	//virtual slateareascreen *create_windowslate()=0;
+	//virtual slateareascreen *create_sysslate()=0;
+	//virtual slateareascreen *create_configslate()=0;
+	//virtual slateareascreen *create_groupslate()=0;
 };
 
 

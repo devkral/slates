@@ -27,10 +27,10 @@ public:
 	void cleanup();
 	void init();
 	bool isfilled();
+	void update_isfilled(bool state);
 	master *get_master();
 	viewport *get_viewport();
-	void lock();
-	void unlock();
+	void setlock(int lockstate);
 	void create_area();
 	void replace_area(slatearea *newarea);
 	void update();

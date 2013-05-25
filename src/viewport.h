@@ -2,11 +2,8 @@
 
 #ifndef _VIEWPORT_H_
 #define _VIEWPORT_H_
-#include "master.h"
 class master;
-#include "slate.h"
 class slate;
-#include "slateareascreen.h"
 class slateareascreen;
 
 class slatearea;
@@ -16,9 +13,8 @@ class slatearea;
 #include <vector>
 #include <deque>
 #include <iostream>
-#include <atomic>
 #include <mutex>
-
+#include <thread>
 
 
 using namespace std;
@@ -59,7 +55,7 @@ public:
 	int get_viewport_height();
 	int get_viewport_beg_x();
 	int get_viewport_beg_y();
-	bool get_isondestruction();
+	bool get_isdestroying();
 
 	void add_renderob(slateareascreen *renderob);
 	void remove_renderob(long int renderid);
@@ -81,9 +77,9 @@ private:
 	int slices=0;
 	long int slate_idcount=0;
 	mutex slateid_prot;
-	atomic<long int> amount_filled_slates;
-	bool isondestruction=false;
-	long int max_avail_slates=0; //=slice*slice
+	long int amount_filled_slates;
+	bool isdestroying=false;
+	//long int max_avail_slates=0; //=slice*slice=size-1 of slate_pool
 	vector<slate*> slate_pool; //leftwing first, then diag then top wing
 
 	deque<slateareascreen*> render_pool;

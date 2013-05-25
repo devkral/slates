@@ -5,6 +5,8 @@
 
 #include "lockslate.h"
 class lockslate;
+#include <slateareascreen.h>
+
 
 slatearea::slatearea(slate *parent_slate)
 {
@@ -15,7 +17,7 @@ slatearea::slatearea(slate *parent_slate)
 
 slatearea::~slatearea()
 {
-	isondestruction=true;
+	isdestroying=true;
 }
 
 void slatearea::init()
@@ -25,10 +27,10 @@ void slatearea::init()
 
 void slatearea::cleanup()
 {
-	isondestruction=true;
+	isdestroying=true;
 	if (child)
 	{
-		child->cleanup();
+		//child->cleanup();
 		delete child;
 		child=0;
 	}
@@ -46,17 +48,11 @@ bool slatearea::isfilled()
 		return false;
 }
 
-bool slatearea::get_isondestruction ()
+bool slatearea::get_isdestroying ()
 {
-	return isondestruction;
+	return isdestroying;
 }
 
-bool slatearea::get_isvisible ()
-{
-	if (isondestruction==true)
-		return false;
-	return isvisible;
-}
 slate *slatearea::get_origin()
 {
 	return connectedslates[0][0];
@@ -66,6 +62,12 @@ master *slatearea::get_master()
 {
 	return get_origin()->get_master();
 }
+
+viewport *slatearea::get_viewport()
+{
+	get_origin()->get_viewport ();
+}
+
 
 void slatearea::handle_event(void  *event)
 {
@@ -81,43 +83,21 @@ void slatearea::update()
 		get_y()>=get_origin()->get_viewport()->get_viewport_height()+get_origin ()->get_viewport()->get_viewport_beg_y())
 	{
 		if (child->isstatic ()==false)
-			get_master->remove_renderob(child);
+			get_viewport()->remove_renderob(child->get_renderid ());
 	}
 
 	else
 	{
 		//if (child->isstatic ()==false)
-		get_master->add_renderob(child);
+		get_viewport()->add_renderob(child);
 		//else
 		//	get_master->render(child);
 	}
-	update_screen();
+	child->update();
 }
-void slatearea::set_childslatearea(slatearea *parent_slatearea)
+void slatearea::setlock(int lockstate)
 {
-	child->set_slatearea(parent_slatearea);
-}
-
-void slatearea::lock()
-{
-	if (lockstate==0)
-	{
-		create_lockslate ();
-		lockstate+=1;
-	}
-}
-
-void slatearea::unlock()
-{
-	if (lockstate==1)
-	{
-		
-		lockslate *temp=(lockslate*)child;
-		child=temp->unlock();
-		delete temp;
-		temp=0;
-		lockstate-=1;
-	}
+	child->setlock(lockstate);
 }
 
 int slatearea::get_x()
@@ -127,6 +107,26 @@ int slatearea::get_x()
 int slatearea::get_y()
 {
 	get_origin()->get_y();
+}
+void slatearea::set_screen(slateareascreen *replacement)
+{
+	filledold=isfilled();
+	child=replacement;
+	update_isfilled();
+}
+slateareascreen *slatearea::get_screen()
+{
+	return child;
+}
+
+void slatearea::update_isfilled()
+{
+	if (filledold!=isfilled())
+	{
+		for (int county=0;county<connectedslates.size();county++)
+			for (int countx=0;countx<connectedslates[county].size();countx++)
+				connectedslates[county][countx]->update_isfilled(isfilled());
+	}
 }
 
 

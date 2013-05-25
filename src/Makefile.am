@@ -39,8 +39,6 @@ slates_SOURCES += \
 	groupslate.h \
 	configslate.cc \
 	configslate.h \
-	lockslate.cc \
-	lockslate.h \
 	emptyslate.cc \
 	emptyslate.h
 	windowslate.cc \
@@ -86,8 +84,6 @@ slates_SOURCES += sdlbackend/sdlbackend.cc \
 	sdlbackend/sdlbackend.h \
 	sdlbackend/sdl_viewport.cc \
 	sdlbackend/sdl_viewport.h \
-	sdlbackend/sdl_lockslateo.cc \
-	sdlbackend/sdl_lockslateo.h \
 	sdlbackend/sdl_emptyslateo.cc \
 	sdlbackend/sdl_emptyslateo.h \
 	sdlbackend/sdl_screenobject.cc \

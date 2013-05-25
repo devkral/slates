@@ -59,8 +59,16 @@ void slate::replace_area(slatearea *newarea)
 		delete child;
 	}
 	child=newarea;
-	
 }
+
+void slate::update_isfilled(bool state)
+{
+	if (state)
+		parent_viewport->fill_slate_intern(slateid);
+	else
+		parent_viewport->empty_slate_intern(slateid);
+}
+
 
 /**
 void slate::emptyslate_nonunique()
@@ -83,16 +91,10 @@ void slate::update()
 	child->update();
 }
 
-void slate::lock()
+void slate::setlock(int lockstate)
 {
-	child->lock();
+	child->setlock(lockstate);
 }
-
-void slate::unlock()
-{
-	child->unlock();
-}
-
 
 int slate::get_x()
 {
