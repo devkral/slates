@@ -3,6 +3,7 @@ unify getxy get_xy
 implement running programs as children  //is there a lib?
 implement program selector
 overlap to close
+implement overlay (e.g.green color for swap, move etc)
 
 ++just one renderthread per display
 ++++every windowtype just implements the architecture

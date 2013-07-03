@@ -44,14 +44,15 @@ public:
 
 	void swap_slatearea (slatearea *newparent); //just works if same viewport
 	slatearea *get_slatearea ();
-	
+
 protected:
-	
+
 private:
 	master *parent_master=0;
 	long int renderid=-1;
 	char curlockstate=0; //0 normal 1 lock, 2 always_unlock,  (3 private_normal, 4 private_locked: not implemented)
 	slatearea *parent=0;
+	//TODO: Overlay for move/swap/etc
 
 };
 
