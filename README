@@ -5,5 +5,3 @@ REQUIREMENTS:
 c++11 compatible compiler (=not visual studio)
 sdl2 (=hg version);
 
-to test:
-anjuta works at best
