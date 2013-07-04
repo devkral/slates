@@ -3,7 +3,7 @@
 
 #include "windowslate.h"
 
-windowslate::windowslate(slate *parent_slate, void *screenob) : slateareascreen()
+windowslate::windowslate(string programpath,slatearea parentt, master *parent_mastert) : slateareascreen(parentt, parent_mastert)
 {
 
 }

@@ -39,6 +39,8 @@ public:
 	tviewport(master *masteridd, int ownidd);
 	~tviewport();
 	slate *create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp);
+	void render(slateareascreen *renderob);
+	
 protected:
 	void update_slice_change();
 	

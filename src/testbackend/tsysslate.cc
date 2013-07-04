@@ -17,29 +17,42 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEMPTYSLATEO_H_
-#define _TEMPTYSLATEO_H_
-#include "emptyslateo.h"
-class emptyslateo;
-#include "tscreenobject.h"
-class tscreenobject;
+#include "tsysslateo.h"
 
+#include <iostream>
 
-#include "constdef.h"
+using namespace std;
 
-class temptyslateo : public emptyslateo 
+tsysslateo::tsysslateo(slate *parent_slate, void *screenob) : sysslate(parent_slate,screenob)
 {
-public:
-	temptyslateo(slate *parent_slate, void *screenob);
-	~temptyslateo();
-	void draw();
-	void cleanup_handler ();
-	void draw_function ();
-protected:
+	cerr << "Create tsysslateo\n";
+	screen_object=new tpscreen;
+}
 
-private:
+tsysslateo::~tsysslateo()
+{
+	cerr << "Destroy tsysslateo\n";
+}
 
-};
+void tsysslateo::draw()
+{
+	if (isdrawn==false)
+	{
+		isdrawn=true;
+		cerr << "Draw tsysslateo\n";
+		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
+	}
+	else
+	{
+		cerr << "Update tsysslateo\n";
+	}
+}
 
-#endif // _EMPTYSLATEO_H_
+void tsysslateo::cleanup_handler ()
+{
+	delete to_tps(screen_object);
+}
 
+void tsysslateo::draw_function ()
+{
+}

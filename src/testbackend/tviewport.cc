@@ -54,5 +54,10 @@ void tviewport::destroy_mscreen_ob()
 
 void tviewport::update_slice_change()
 {
+	cout << "slice updated\n";
+}
 
+void tviewport::render(slateareascreen *renderob)
+{
+	cout << "renderob updated\n";
 }

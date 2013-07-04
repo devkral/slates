@@ -14,16 +14,12 @@ class slatearea;
 class lockslate : public slateareascreen
 {
 public:
-	lockslate(master *parent_mastert);
+	lockslate(slatearea parentt,master *parent_mastert);
 	~lockslate();
 	char TYPE();
-	virtual void lock(slateareascreen *lockedobject)=0;
-	virtual slateareascreen *unlock()=0;
 protected:
-	slateareascreen *lockedob=0;
 
 private:
-	void sendunlock();
 };
 
 #endif // _LOCKSLATEO_H_

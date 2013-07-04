@@ -20,57 +20,16 @@
 #ifndef _TSLATEAREA_H_
 #define _TSLATEAREA_H_
 
-#include "slate.h"
-class slate;
-//#include <slatetype.h>
-class slatetype;
-//class lockslateo;
-#include "viewport.h"
-class viewport;
-
-
-#include <deque>
+#include "slatearea.h"
 
 using namespace std;
 
-class slatearea
+class tslatearea
 {
 public:
-	slatearea(slate *parent_slate);
-	virtual ~slatearea();
-
-	void move(int x, int y);  //swaps origin
-	slate *get_origin();
-	
-	void resize(int w, int h);
-	//void resizeleftuppercorner(int x_delta, int y_delta);
-	//void resizerightlowercorner(int x_delta, int y_delta);
-	void update();
-	virtual void *get_screen()=0;
-	virtual void update_screen()=0;
-
-	void handle_event(void  *event);
+	tslatearea(slate *parent_slate);
+	slateareascreen *create_emptyslate();
 	void handle_input(void *initializer);
-		
-	void lock();
-	void unlock();
-	
-	int get_x();
-	int get_y();
-	bool isfilled();
-	bool get_isvisible();
-	
-protected:
-
-private:
-	deque< deque<slate*> > connectedslates; //outer vector y inner x
-	char lockstate=0; //0 normal 1 lock, 2 always_unlock,  (3 private_normal, 4 private_locked: not implemented)
-	bool isvisible=false;
-	slatetype *child=0;
-	//overgive this in windowlist
-	int width=1; //in slates
-	int height=1; //in slates
-//	friend slateobject;
 };
 
 #endif // _SLATEAREA_H_

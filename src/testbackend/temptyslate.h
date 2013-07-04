@@ -17,39 +17,29 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TSCREENOBJECT_H_
-#define _TSCREENOBJECT_H_
-
-#include <iostream>
-using namespace std;
-
-
-typedef struct tviewportscreen_{
-	~tviewportscreen_()
-	{
-		cerr << "tvs I'm gone\n";
-		delete canvas;
-	}
-	char *canvas;
-	
-	
-}tviewportscreen;
-
-typedef struct tpscreen_{
-	~tpscreen_()
-	{
-		cerr << "tps I'm gone\n";
-	}
-	int x;
-	int y;
-	int w;
-	int h;
-	
-}tpscreen;
-
-extern tviewportscreen *to_tvs(void* in);
-extern tpscreen *to_tps(void* in);
+#ifndef _TEMPTYSLATE_H_
+#define _TEMPTYSLATE_H_
+#include "emptyslate.h"
+class emptyslate;
+#include "tscreenareascreen.h"
+class tscreenareascreen;
 
 
-#endif // _TSCREENOBJECT_H_
+#include "constdef.h"
+
+class temptyslate : public emptyslate 
+{
+public:
+	temptyslate(slate *parent_slate, void *screenob);
+	~temptyslate();
+	void draw();
+	void cleanup_handler ();
+	void draw_function ();
+protected:
+
+private:
+
+};
+
+#endif // _EMPTYSLATEO_H_
 

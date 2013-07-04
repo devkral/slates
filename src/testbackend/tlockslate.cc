@@ -17,44 +17,32 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "temptyslateo.h"
-
+#include "tlockslate.h"
 
 #include <iostream>
 
 using namespace std;
 
-
-temptyslateo::temptyslateo(slate *parent_slate, void *screenob) : emptyslateo(parent_slate,screenob)
+tlockslate::tlockslate(slate *parent_slate, void *screenob) : lockslateo(parent_slate,screenob)
 {
-	cerr << "Create temptyslateo\n";
+	cerr << "Create tlockslate\n";
 	screen_object=new tpscreen;
 }
 
-temptyslateo::~temptyslateo()
+tlockslate::~tlockslate()
 {
-	cerr << "Destroy temptyslateo\n";
-}
-void temptyslateo::draw()
-{
-	if (isdrawn==false)
-	{
-		isdrawn=true;
-		cerr << "Draw temptyslateo\n";
-		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
-	}
-	else
-	{
-		cerr << "Update temptyslateo\n";
-	}
+	cerr << "Destroy tlockslateo\n";
 }
 
 
-void temptyslateo::cleanup_handler ()
+void tlockslateo::unlock()
+{
+	cerr << "check password\n";
+	(*connectedslates)[0][0]->getmaster()->unlock((char*)"test");
+
+}
+
+void tlockslateo::cleanup_handler ()
 {
 	delete to_tps(screen_object);
-}
-
-void temptyslateo::draw_function ()
-{
 }

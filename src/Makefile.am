@@ -2,6 +2,8 @@
 
 ## Created by Anjuta
 
+AUTOMAKE_OPTIONS = subdir-objects
+
 
 AM_CPPFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\""$(localedir)"\" \
@@ -58,8 +60,8 @@ slates_SOURCES += testbackend/testbackend.cc \
 	testbackend/tlockslateo.h \
 	testbackend/temptyslateo.cc \
 	testbackend/temptyslateo.h \
-	testbackend/tscreenobject.cc \
-	testbackend/tscreenobject.h \
+	testbackend/tslateareascreen.cc \
+	testbackend/tslateareascreen.h \
 	testbackend/tslatearea.cc \
 	testbackend/tslatearea.h
 endif

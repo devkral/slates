@@ -11,9 +11,10 @@
 
 using namespace std;
 
-slateareascreen::slateareascreen(master *parent_mastert)
+slateareascreen::slateareascreen(slatearea parentt, master *parent_mastert)
 {
 	parent_master=parent_mastert;
+	parent=parentt;
 }
 
 slateareascreen::~slateareascreen()

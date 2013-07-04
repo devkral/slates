@@ -11,10 +11,10 @@ class slateareascreen;
 #include "constdef.h"
 
 
-class sysslateo: public slateareascreen 
+class sysslate: public slateareascreen 
 {
 public:
-	sysslate();
+	sysslate(slatearea parentt,master *parent_mastert);
 	~sysslate();
 	char TYPE();
 protected:

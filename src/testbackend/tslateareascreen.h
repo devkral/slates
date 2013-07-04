@@ -17,43 +17,39 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "twindowslateo.h"
+#ifndef _TSLATEAREASCREEN_H_
+#define _TSLATEAREASCREEN_H_
 
 #include <iostream>
-
 using namespace std;
 
-twindowslateo::twindowslateo(slate *parent_slate, void *screenob) : windowslateo(parent_slate,screenob)
-{
-	cerr << "Create twindowslateo\n";
-	screen_object=new tpscreen;
-}
 
-twindowslateo::~twindowslateo()
-{
-	cerr << "Destroy twindowslateo\n";
-}
-
-void twindowslateo::draw()
-{
-	if (isdrawn==false)
+typedef struct tviewportscreen_{
+	~tviewportscreen_()
 	{
-		isdrawn=true;
-		cerr << "Draw tsysslateo\n";
-		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
+		cerr << "tvs I'm gone\n";
+		delete canvas;
 	}
-	else
+	char *canvas;
+	
+	
+}tviewportscreen;
+
+typedef struct tpscreen_{
+	~tpscreen_()
 	{
-		cerr << "Update tsysslateo\n";
+		cerr << "tps I'm gone\n";
 	}
-}
+	int x;
+	int y;
+	int w;
+	int h;
+	
+}tpscreen;
+
+extern tviewportscreen *to_tvs(void* in);
+extern tpscreen *to_tps(void* in);
 
 
-void twindowslateo::cleanup_handler ()
-{
-	delete to_tps(screen_object);
-}
+#endif // _TSCREENOBJECT_H_
 
-void twindowslateo::draw_function ()
-{
-}

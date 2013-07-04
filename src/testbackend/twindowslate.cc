@@ -17,29 +17,19 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TLOCKSLATEO_H_
-#define _TLOCKSLATEO_H_
+#include "twindowslateo.h"
 
-#include "lockslateo.h"
-class lockslateo;
-#include "tscreenobject.h"
-class tscreenobject;
+#include <iostream>
 
-#include "constdef.h"
+using namespace std;
 
-class tlockslateo: public lockslateo 
+twindowslateo::twindowslateo(slate *parent_slate, void *screenob) : windowslateo(parent_slate,screenob)
 {
-public:
-	tlockslateo(slate *parent_slate, void *screenob);
-	~tlockslateo();
-	void draw();
-	void cleanup_handler ();
-	void draw_function ();
-protected:
+	cerr << "Create twindowslateo\n";
+	screen_object=new tpscreen;
+}
 
-private:
-	void unlock();
-};
-
-#endif // _LOCKSLATEO_H_
-
+twindowslateo::~twindowslateo()
+{
+	cerr << "Destroy twindowslateo\n";
+}

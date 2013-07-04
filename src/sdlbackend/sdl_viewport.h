@@ -47,6 +47,7 @@ public:
 	slate *get_slate_mouse(int x, int y);
 	void *get_viewportscreen();
 	void update_slice_info();
+	void render();
 	slatearea *create_area(slate *parent_slate);
 	
 protected:

@@ -3,7 +3,7 @@
 
 #include "lockslate.h"
 
-lockslate::lockslate(master *parent_mastert) : slateareascreen(parent_mastert)
+lockslate::lockslate(slatearea parentt, master *parent_mastert) : slateareascreen(parentt,parent_mastert)
 {
 	
 }
@@ -22,10 +22,7 @@ lockslate::~lockslate()
 }*/
 
 
-
-
-char slateareascreen::TYPE()
+char lockslate::TYPE()
 {
 	return TYPE_locked;
 }
-

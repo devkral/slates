@@ -17,42 +17,27 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "tsysslateo.h"
+#ifndef _TLOCKSLATE_H_
+#define _TLOCKSLATE_H_
 
-#include <iostream>
+#include "lockslate.h"
+class lockslate;
+#include "tscreenareascreen.h"
+class tscreenareascreen;
 
-using namespace std;
+#include "constdef.h"
 
-tsysslateo::tsysslateo(slate *parent_slate, void *screenob) : sysslateo(parent_slate,screenob)
+class tlockslate: public lockslate 
 {
-	cerr << "Create tsysslateo\n";
-	screen_object=new tpscreen;
-}
+public:
+	tlockslate(slate *parent_slate, void *screenob);
+	~tlockslate();
+	
+protected:
 
-tsysslateo::~tsysslateo()
-{
-	cerr << "Destroy tsysslateo\n";
-}
+private:
+	void unlock();
+};
 
-void tsysslateo::draw()
-{
-	if (isdrawn==false)
-	{
-		isdrawn=true;
-		cerr << "Draw tsysslateo\n";
-		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
-	}
-	else
-	{
-		cerr << "Update tsysslateo\n";
-	}
-}
+#endif // _LOCKSLATE_H_
 
-void tsysslateo::cleanup_handler ()
-{
-	delete to_tps(screen_object);
-}
-
-void tsysslateo::draw_function ()
-{
-}
