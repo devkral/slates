@@ -24,7 +24,7 @@
 
 using namespace std;
 
-class tslatearea
+class tslatearea : public slatearea
 {
 public:
 	tslatearea(slate *parent_slate);

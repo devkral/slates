@@ -23,26 +23,22 @@
 
 using namespace std;
 
-tlockslate::tlockslate(slate *parent_slate, void *screenob) : lockslateo(parent_slate,screenob)
+tlockslate::tlockslate(slatearea *parentt, master *parent_mastert) : lockslate(parentt,parent_mastert)
 {
 	cerr << "Create tlockslate\n";
-	screen_object=new tpscreen;
 }
 
 tlockslate::~tlockslate()
 {
-	cerr << "Destroy tlockslateo\n";
+	cerr << "Destroy tlockslate\n";
 }
 
 
-void tlockslateo::unlock()
+bool tlockslate::isstatic()
 {
-	cerr << "check password\n";
-	(*connectedslates)[0][0]->getmaster()->unlock((char*)"test");
-
+	return true;
 }
-
-void tlockslateo::cleanup_handler ()
+bool tlockslate::isdirty()
 {
-	delete to_tps(screen_object);
+	return true;
 }

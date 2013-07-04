@@ -20,24 +20,21 @@
 #ifndef _TSYSSLATEO_H_
 #define _TSYSSLATEO_H_
 
-#include "sysslateo.h"
-class sysslateo;
-#include "tscreenobject.h"
-class tscreenobject;
+#include "sysslate.h"
+class sysslate;
+#include "tslateareascreen.h"
+class tslateareascreen;
 
 
 
 #include "constdef.h"
 
 
-class tsysslateo: public sysslateo 
+class tsysslate: public sysslateo
 {
 public:
-	tsysslateo(slate *parent_slate, void *screenob);
-	~tsysslateo();
-	void draw();
-	void cleanup_handler ();
-	void draw_function ();
+	tsysslate(slatearea *parentt, master *parent_mastert);
+	~tsysslate();
 protected:
 
 private:

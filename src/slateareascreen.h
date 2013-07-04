@@ -18,7 +18,7 @@ class slateareascreen
 {
 public:
 
-	slateareascreen(slatearea parentt, master *parent_mastert);
+	slateareascreen(slatearea *parentt, master *parent_mastert);
 	virtual ~slateareascreen();
 
 	virtual void handle_event(void *event); //needn't to be implemented if there is an other solution
@@ -26,8 +26,8 @@ public:
 	//virtual void handle_input(void *initializer); //needn't to be implemented if there is an other solution
 	virtual void update()=0;
 	master *get_master();
-	virtual bool isstatic();
-	virtual bool isdirty();
+	virtual bool isstatic()=0;
+	virtual bool isdirty()=0;
 	virtual bool islocked();
 	void setlock(int lockstate);
 	long int get_renderid();

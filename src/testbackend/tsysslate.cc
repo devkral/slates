@@ -17,42 +17,19 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "tsysslateo.h"
+#include "tsysslate.h"
 
 #include <iostream>
 
 using namespace std;
 
-tsysslateo::tsysslateo(slate *parent_slate, void *screenob) : sysslate(parent_slate,screenob)
+tsysslate::tsysslate(slatearea *parentt, master *parent_mastert) : sysslate(parentt, parent_mastert)
 {
-	cerr << "Create tsysslateo\n";
-	screen_object=new tpscreen;
+	cerr << "Create tsysslate\n";
 }
 
-tsysslateo::~tsysslateo()
+tsysslate::~tsysslate()
 {
-	cerr << "Destroy tsysslateo\n";
+	cerr << "Destroy tsysslate\n";
 }
 
-void tsysslateo::draw()
-{
-	if (isdrawn==false)
-	{
-		isdrawn=true;
-		cerr << "Draw tsysslateo\n";
-		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
-	}
-	else
-	{
-		cerr << "Update tsysslateo\n";
-	}
-}
-
-void tsysslateo::cleanup_handler ()
-{
-	delete to_tps(screen_object);
-}
-
-void tsysslateo::draw_function ()
-{
-}

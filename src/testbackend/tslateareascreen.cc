@@ -17,7 +17,7 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "tscreenobject.h"
+#include "tslateareascreen.h"
 
 #include <iostream>
 

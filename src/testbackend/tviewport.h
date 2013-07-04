@@ -21,10 +21,8 @@
 #define _TVIEWPORT_H_
 #include "viewport.h"
 class viewport;
-#include "tslate.h"
-class tslate;
-#include "tscreenobject.h"
-class tscreenobject;
+#include "tslateareascreen.h"
+class tslateareascreen;
 
 #include "constdef.h"
 
@@ -40,13 +38,11 @@ public:
 	~tviewport();
 	slate *create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp);
 	void render(slateareascreen *renderob);
-	
+	slatearea *create_area(slate *parent_slate);
 protected:
-	void update_slice_change();
+	void update_slice_info();
 	
 private:
-	void destroy_mscreen_ob();
-	void create_mscreen_ob();
 };
 
 #endif // _VIEWPORT_H_

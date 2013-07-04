@@ -14,7 +14,7 @@ class slateareascreen;
 class windowslate : public slateareascreen
 {
 public:
-	windowslate(string programpath,slatearea parentt, master *parent_mastert);
+	windowslate(string programpath,slatearea *parentt, master *parent_mastert);
 	~windowslate();
 	char TYPE();
 protected:

@@ -37,6 +37,8 @@ slates_SOURCES = \
 
 
 slates_SOURCES += \
+	lockslate.cc \
+	lockslate.h \
 	groupslate.cc \
 	groupslate.h \
 	configslate.cc \
@@ -56,10 +58,10 @@ slates_SOURCES += testbackend/testbackend.cc \
 	testbackend/testbackend.h \
 	testbackend/tviewport.cc \
 	testbackend/tviewport.h \
-	testbackend/tlockslateo.cc \
-	testbackend/tlockslateo.h \
-	testbackend/temptyslateo.cc \
-	testbackend/temptyslateo.h \
+	testbackend/tlockslate.cc \
+	testbackend/tlockslate.h \
+	testbackend/temptyslate.cc \
+	testbackend/temptyslate.h \
 	testbackend/tslateareascreen.cc \
 	testbackend/tslateareascreen.h \
 	testbackend/tslatearea.cc \

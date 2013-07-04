@@ -34,7 +34,7 @@
 #endif
 
 
-#define DEFAULT_BACKEND 1
+#define DEFAULT_BACKEND 3
 
 /**
  * Backends
@@ -97,7 +97,7 @@ int main (int argc, char *argv[])
 		case 5: returnvalue=waylandmain(argc, argv);
 			break;
 #endif
-		default: std::cerr << "Error: no backend\n"; returnvalue=1;
+		default: std::cerr << "Error: backend doesn't exist\n"; returnvalue=1;
 	}
 
 	return returnvalue;

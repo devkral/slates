@@ -1,8 +1,8 @@
 // Licence see COPYING
 
 
-#ifndef _LOCKSLATEO_H_
-#define _LOCKSLATEO_H_
+#ifndef _LOCKSLATE_H_
+#define _LOCKSLATE_H_
 
 #include "slateareascreen.h"
 class slateareascreen;
@@ -14,7 +14,7 @@ class slatearea;
 class lockslate : public slateareascreen
 {
 public:
-	lockslate(slatearea parentt,master *parent_mastert);
+	lockslate(slatearea *parentt,master *parent_mastert);
 	~lockslate();
 	char TYPE();
 protected:
@@ -22,5 +22,5 @@ protected:
 private:
 };
 
-#endif // _LOCKSLATEO_H_
+#endif // _LOCKSLATE_H_
 

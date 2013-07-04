@@ -18,8 +18,6 @@
  */
 
 #include "testbackend.h"
-#include "tscreenobject.h"
-
 
 #include <iostream>
 #include <system_error>

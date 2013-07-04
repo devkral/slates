@@ -22,7 +22,7 @@
 
 #include "lockslate.h"
 class lockslate;
-#include "tscreenareascreen.h"
+#include "tslateareascreen.h"
 class tscreenareascreen;
 
 #include "constdef.h"
@@ -30,9 +30,11 @@ class tscreenareascreen;
 class tlockslate: public lockslate 
 {
 public:
-	tlockslate(slate *parent_slate, void *screenob);
+	tlockslate(slatearea *parentt, master *parent_mastert);
 	~tlockslate();
 	
+	bool isstatic();
+	bool isdirty();
 protected:
 
 private:

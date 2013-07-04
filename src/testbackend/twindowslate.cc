@@ -23,13 +23,12 @@
 
 using namespace std;
 
-twindowslateo::twindowslateo(slate *parent_slate, void *screenob) : windowslateo(parent_slate,screenob)
+twindowslateo::twindowslateo(slatearea *parentt, master *parent_mastert) : windowslate(parentt, parent_mastert)
 {
-	cerr << "Create twindowslateo\n";
-	screen_object=new tpscreen;
+	cerr << "Create twindowslate\n";
 }
 
 twindowslateo::~twindowslateo()
 {
-	cerr << "Destroy twindowslateo\n";
+	cerr << "Destroy twindowslate\n";
 }

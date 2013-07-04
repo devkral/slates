@@ -18,14 +18,15 @@
  */
 
 #include "tslatearea.h"
+#include "temptyslate.h"
 
-void tslatearea::tslatearea(slate *parent_slate) : slatearea(parent_slate)
+tslatearea::tslatearea(slate *parent_slate) : slatearea(parent_slate)
 {
 	
 }
 
 
-slateareascreen tslatearea::*create_emptyslate()
+slateareascreen *tslatearea::create_emptyslate()
 {
 	return new temptyslate(this,get_master());
 }

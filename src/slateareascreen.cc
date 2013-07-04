@@ -11,7 +11,7 @@
 
 using namespace std;
 
-slateareascreen::slateareascreen(slatearea parentt, master *parent_mastert)
+slateareascreen::slateareascreen(slatearea *parentt, master *parent_mastert)
 {
 	parent_master=parent_mastert;
 	parent=parentt;
@@ -45,14 +45,7 @@ bool slateareascreen::islocked()
 	return false;
 }
 
-bool slateareascreen::isstatic()
-{
-	return true;
-}
-bool slateareascreen::isdirty()
-{
-	return true;
-}
+
 
 long int slateareascreen::get_renderid()
 {

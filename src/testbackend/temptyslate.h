@@ -21,7 +21,7 @@
 #define _TEMPTYSLATE_H_
 #include "emptyslate.h"
 class emptyslate;
-#include "tscreenareascreen.h"
+#include "tslateareascreen.h"
 class tscreenareascreen;
 
 
@@ -30,11 +30,11 @@ class tscreenareascreen;
 class temptyslate : public emptyslate 
 {
 public:
-	temptyslate(slate *parent_slate, void *screenob);
+	temptyslate(slatearea *parentt, master *parent_mastert);
 	~temptyslate();
-	void draw();
-	void cleanup_handler ();
-	void draw_function ();
+	void update();
+	bool isstatic();
+	bool isdirty();
 protected:
 
 private:

@@ -17,26 +17,22 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TWINDOWSLATEO_H_
-#define _TWINDOWSLATEO_H_
+#ifndef _TWINDOWSLATE_H_
+#define _TWINDOWSLATE_H_
 
-#include "windowslateo.h"
-class windowslateo;
-#include "tscreenobject.h"
-class tscreenobject;
+#include "windowslate.h"
+class windowslate;
+#include "tslateareaslate.h"
+class tslateareaslate;
 
 #include "constdef.h"
 
 
-class twindowslateo : public windowslateo
+class twindowslate : public windowslate
 {
 public:
-	twindowslateo(slate *parent_slate, void *screenob);
-	~twindowslateo();
-	void draw();
-	void cleanup_handler ();
-	void draw_function ();
-	void update_slice_change();
+	twindowslate(slatearea *parentt, master *parent_mastert);
+	~twindowslate();
 protected:
 
 private:

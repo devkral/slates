@@ -2,7 +2,7 @@
 
 #include "sysslate.h"
 
-sysslate::sysslate(slatearea parentt,master *parent_mastert) : slateareascreen(parentt,parent_mastert)
+sysslate::sysslate(slatearea *parentt,master *parent_mastert) : slateareascreen(parentt,parent_mastert)
 {
 
 

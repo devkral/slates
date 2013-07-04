@@ -3,14 +3,14 @@
 #ifndef _EMPTYSLATEO_H_
 #define _EMPTYSLATEO_H_
 #include "slateareascreen.h"
-class slatetype;
-
+class slateareascreen;
+class slatearea;
 #include "constdef.h"
 
 class emptyslate : public slateareascreen 
 {
 public:
-	emptyslate(master *parent_mastert);
+	emptyslate(slatearea *parentt, master *parent_mastert);
 	~emptyslate();
 	
 	//int fillslate(string progname); //own content

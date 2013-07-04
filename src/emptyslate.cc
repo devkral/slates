@@ -3,7 +3,7 @@
 
 #include "emptyslate.h"
 
-emptyslate::emptyslate(master *parent_mastert) : slateareascreen(parent_mastert)
+emptyslate::emptyslate(slatearea *parentt, master *parent_mastert) : slateareascreen(parentt,parent_mastert)
 {
 
 }

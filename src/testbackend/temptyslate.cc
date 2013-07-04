@@ -17,7 +17,7 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "temptyslateo.h"
+#include "temptyslate.h"
 
 
 #include <iostream>
@@ -25,36 +25,25 @@
 using namespace std;
 
 
-temptyslate::temptyslate(slate *parent_slate, void *screenob) : emptyslate(parent_slate,screenob)
+temptyslate::temptyslate(slatearea *parentt, master *parent_mastert) : emptyslate(parentt, parent_mastert)
 {
 	cerr << "Create temptyslateo\n";
-	screen_object=new tpscreen;
 }
 
 temptyslate::~temptyslate()
 {
 	cerr << "Destroy temptyslateo\n";
 }
-void temptyslate::draw()
+void temptyslate::update()
 {
-	if (isdrawn==false)
-	{
-		isdrawn=true;
-		cerr << "Draw temptyslateo\n";
-		drawthread=thread(kickstarter_drawthread, (slateobject *)this);
-	}
-	else
-	{
-		cerr << "Update temptyslateo\n";
-	}
+
 }
 
-
-void temptyslate::cleanup_handler ()
+bool temptyslate::isstatic()
 {
-	delete to_tps(screen_object);
+	return true;
 }
-
-void temptyslate::draw_function ()
+bool temptyslate::isdirty()
 {
+	return true;
 }
