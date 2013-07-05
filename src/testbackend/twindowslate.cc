@@ -17,18 +17,18 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "twindowslateo.h"
+#include "twindowslate.h"
 
 #include <iostream>
 
 using namespace std;
 
-twindowslateo::twindowslateo(slatearea *parentt, master *parent_mastert) : windowslate(parentt, parent_mastert)
+twindowslate::twindowslate(slatearea *parentt, master *parent_mastert) : windowslate(parentt, parent_mastert)
 {
 	cerr << "Create twindowslate\n";
 }
 
-twindowslateo::~twindowslateo()
+twindowslate::~twindowslate()
 {
 	cerr << "Destroy twindowslate\n";
 }

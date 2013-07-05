@@ -9,7 +9,7 @@ AM_CPPFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\""$(localedir)"\" \
 	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
 	-DPACKAGE_DATA_DIR=\""$(pkgdatadir)"\" \
-	$(GTKMM_CFLAGS) \
+	$(X_CFLAGS) \
 	$(SDL2_CFLAGS) \
 	$(SLATES_CFLAGS)
 
@@ -62,26 +62,12 @@ slates_SOURCES += testbackend/testbackend.cc \
 	testbackend/tlockslate.h \
 	testbackend/temptyslate.cc \
 	testbackend/temptyslate.h \
-	testbackend/tslateareascreen.cc \
-	testbackend/tslateareascreen.h \
+	testbackend/tsysslate.cc \
+	testbackend/tsysslate.h \
 	testbackend/tslatearea.cc \
 	testbackend/tslatearea.h
 endif
 
-if IS_COMPILED_WITH_GTKMM
-slates_SOURCES +=  gtkmmbackend/gtkmmbackend.cc \
-	gtkmmbackend/gtkmmbackend.h \
-	gtkmmbackend/gtkmm_viewport.cc \
-	gtkmmbackend/gtkmm_viewport.h \
-	gtkmmbackend/gtkmm_lockslateo.cc \
-	gtkmmbackend/gtkmm_lockslateo.h \
-	gtkmmbackend/gtkmm_emptyslateo.cc \
-	gtkmmbackend/gtkmm_emptyslateo.h \
-	gtkmmbackend/gtkmm_screenobject.cc \
-	gtkmmbackend/gtkmm_screenobject.h \
-	gtkmmbackend/gtkmm_slatearea.cc \
-	gtkmmbackend/gtkmm_slatearea.h
-endif
 
 if IS_COMPILED_WITH_SDL
 slates_SOURCES += sdlbackend/sdlbackend.cc \
@@ -97,6 +83,18 @@ slates_SOURCES += sdlbackend/sdlbackend.cc \
 endif
 
 if IS_COMPILED_WITH_X
+	slates_SOURCES += Xbackend/xbackend.cc \
+	Xbackend/xbackend.h \
+	Xbackend/xviewport.cc \
+	Xbackend/xviewport.h \
+	Xbackend/xlockslate.cc \
+	Xbackend/xlockslate.h \
+	Xbackend/xemptyslate.cc \
+	Xbackend/xemptyslate.h \
+	Xbackend/xsysslate.cc \
+	Xbackend/xsysslate.h \
+	Xbackend/xslatearea.cc \
+	Xbackend/xslatearea.h
 #slates_SOURCES += 
 
 endif
@@ -109,7 +107,7 @@ endif
 slates_CXXFLAGS = -std=c++11
 
 slates_LDADD = \
-    $(GTKMM_LIBS) \
+    $(X_LIBS) \
     $(SDL2_LIBS) \
     $(SLATES_LIBS)
 

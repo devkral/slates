@@ -45,5 +45,5 @@ protected:
 private:
 };
 
-#endif // _VIEWPORT_H_
+#endif // _TVIEWPORT_H_
 

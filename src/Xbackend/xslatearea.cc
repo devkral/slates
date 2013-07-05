@@ -17,39 +17,22 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TSLATEAREASCREEN_H_
-#define _TSLATEAREASCREEN_H_
+#include "xslatearea.h"
+#include "temptyslate.h"
 
-#include <iostream>
-using namespace std;
+xslatearea::xslatearea(slate *parent_slate) : slatearea(parent_slate)
+{
+	
+}
 
 
-typedef struct tviewportscreen_{
-	~tviewportscreen_()
-	{
-		cerr << "tvs I'm gone\n";
-		delete canvas;
-	}
-	char *canvas;
+slateareascreen *xslatearea::create_emptyslate()
+{
+	return new temptyslate(this,get_master());
+}
+
+void xslatearea::handle_input(void *initializer)
+{
 	
 	
-}tviewportscreen;
-
-typedef struct tpscreen_{
-	~tpscreen_()
-	{
-		cerr << "tps I'm gone\n";
-	}
-	int x;
-	int y;
-	int w;
-	int h;
-	
-}tpscreen;
-
-extern tviewportscreen *to_tvs(void* in);
-extern tpscreen *to_tps(void* in);
-
-
-#endif // _TSCREENOBJECT_H_
-
+}

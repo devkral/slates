@@ -18,8 +18,8 @@
  */
 
 
-#ifndef _TESTBACKEND_H_
-#define _TESTBACKEND_H_
+#ifndef _XBACKEND_H_
+#define _XBACKEND_H_
 
 #include "master.h"
 class master;
@@ -27,11 +27,11 @@ class master;
 class tviewport;
 
 
-class testbackend : public master
+class xbackend : public master
 {
 public:
-	testbackend(int argc, char* argv[]);
-	~testbackend();
+	xbackend(int argc, char* argv[]);
+	~xbackend();
 	void inputhandler_function();
 	int handle_masterevent(void *event);
 
@@ -39,6 +39,6 @@ private:
 	viewport *create_viewport_intern(master *masteridd, int ownidd);
 };
 
-int testmain(int argc ,char *argv[]);
+int xmain(int argc ,char *argv[]);
 
-#endif // _TESTBACKEND_H_
+#endif // _XBACKEND_H_

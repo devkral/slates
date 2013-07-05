@@ -17,18 +17,18 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "tslateareascreen.h"
+#include "xwindowslate.h"
 
 #include <iostream>
 
 using namespace std;
 
-tviewportscreen *to_tvs(void* in)
+xwindowslate::xwindowslate(slatearea *parentt, master *parent_mastert) : windowslate(parentt, parent_mastert)
 {
-	return (tviewportscreen*)in;
+	cerr << "Create xwindowslate\n";
 }
 
-tpscreen *to_tps(void* in)
+xwindowslate::~xwindowslate()
 {
-	return (tpscreen*)in;
+	cerr << "Destroy xwindowslate\n";
 }

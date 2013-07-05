@@ -9,12 +9,6 @@
 #endif //_CONFIG_H_
 
 
-//#ifdef test
-#ifdef COMPILED_WITH_GTKMM
-#include "gtkmmbackend/gtkmmbackend.h"
-#endif
-
-
 #ifdef COMPILED_WITH_SDL
 #include "sdlbackend/sdlbackend.h"
 #endif
@@ -30,7 +24,7 @@
 #endif
 
 #ifdef COMPILED_WITH_X
-#include "Xbackend/Xbackend.h"
+#include "Xbackend/xbackend.h"
 #endif
 
 
@@ -65,36 +59,28 @@ int main (int argc, char *argv[])
 	{
 		sel=1;
 	}
-	if (testoptions=="gtkmm" || testoptions=="2")
-	{
-		sel=2;
-	}
 	if (testoptions=="test" || testoptions=="3")
 	{
-		sel=3;
+		sel=2;
 	}
 	
 	int returnvalue;
 	switch (sel)
 	{
 #ifdef COMPILED_WITH_SDL
-		case 1: returnvalue=sdlmain(argc, argv);
+		case 1: returnvalue=sdlbackend(argc, argv);
 			break;
 #endif
-#ifdef COMPILED_WITH_GTKMM
-		case 2: returnvalue=gtkmmmain(argc, argv);
-			break;
-#endif	
 #ifdef COMPILED_WITH_TESTBACKEND
-		case 3: returnvalue=testmain(argc, argv);
+		case 2: returnvalue=testbackend(argc, argv);
 			break;
 #endif
 #ifdef COMPILED_WITH_X
-		case 4: returnvalue=Xmain(argc, argv);
+		case 3: returnvalue=xbackend(argc, argv);
 			break;
 #endif	
 #ifdef COMPILED_WITH_WAYLANDBACKEND
-		case 5: returnvalue=waylandmain(argc, argv);
+		case 4: returnvalue=waylandbackend(argc, argv);
 			break;
 #endif
 		default: std::cerr << "Error: backend doesn't exist\n"; returnvalue=1;

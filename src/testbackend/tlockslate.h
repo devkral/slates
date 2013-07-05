@@ -41,5 +41,5 @@ private:
 	void unlock();
 };
 
-#endif // _LOCKSLATE_H_
+#endif // _TLOCKSLATE_H_
 

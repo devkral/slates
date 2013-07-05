@@ -41,5 +41,5 @@ private:
 
 };
 
-#endif // _EMPTYSLATEO_H_
+#endif // _TEMPTYSLATEO_H_
 

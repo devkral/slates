@@ -39,5 +39,5 @@ private:
 	
 };
 
-#endif // _WINDOWSLATEO_H_
+#endif // _TWINDOWSLATE_H_
 

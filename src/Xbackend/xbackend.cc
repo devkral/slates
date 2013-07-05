@@ -17,7 +17,7 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "testbackend.h"
+#include "xbackend.h"
 
 #include <iostream>
 #include <system_error>
@@ -26,39 +26,37 @@ using namespace std;
 
 
 
-viewport *testbackend::create_viewport_intern(master *masteridd, int ownidd)
+viewport *xbackend::create_viewport_intern(master *masteridd, int ownidd)
 {
 	return new tviewport(masteridd,ownidd);
 }
 
-testbackend::testbackend(int argc, char* argv[])
+xbackend::xbackend(int argc, char* argv[])
 {
-	cerr << "Create testmaster\n";
 	createviewport();
 }
 
-testbackend::~testbackend()
+xbackend::~xbackend()
 {
-	cerr << "Destroy testmaster\n";
 	cleanup();
 }
-void testbackend::inputhandler_function()
+void xbackend::inputhandler_function()
 {
 
 
 }
-int testbackend::handle_masterevent(void *event)
+int testmaster::handle_masterevent(void *event)
 {
 	return MASTER_UNHANDLED;
 }
 
 
 
-int testmain(int argc ,char *argv[])
+int xmain(int argc ,char *argv[])
 {
 	try
 	{
-		testbackend(argc,argv);
+		xbackend(argc,argv);
 	}
 	catch (const std::system_error& error)
 	{
@@ -75,7 +73,6 @@ int testmain(int argc ,char *argv[])
 		cerr << "An Error: happened\n";
 		return 1;
 	}
-	cout << "100: " << calcidslate(100,100) << " 5: " << calcidslate(5,5) << endl;
 
 	return 0;
 }

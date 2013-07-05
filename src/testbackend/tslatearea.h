@@ -32,5 +32,5 @@ public:
 	void handle_input(void *initializer);
 };
 
-#endif // _SLATEAREA_H_
+#endif // _TSLATEAREA_H_
 

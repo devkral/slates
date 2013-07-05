@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*-  */
 /*
  * slates
- * Copyright (C) 2012 alex <devkral@web.de>
+ * Copyright (C) 2013 alex <devkral@web.de>
  * 
  * slates is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -17,28 +17,33 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _XVIEWPORT_H_
+#define _XVIEWPORT_H_
+#include "viewport.h"
+class viewport;
+#include "tslateareascreen.h"
+class tslateareascreen;
 
-#ifndef _TESTBACKEND_H_
-#define _TESTBACKEND_H_
-
-#include "master.h"
-class master;
-#include "tviewport.h"
-class tviewport;
+#include "constdef.h"
 
 
-class testbackend : public master
+
+using namespace std;
+
+
+class xviewport : public viewport
 {
 public:
-	testbackend(int argc, char* argv[]);
-	~testbackend();
-	void inputhandler_function();
-	int handle_masterevent(void *event);
-
+	xviewport(master *masteridd, int ownidd);
+	~xviewport();
+	slate *create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp);
+	void render(slateareascreen *renderob);
+	slatearea *create_area(slate *parent_slate);
+protected:
+	void update_slice_info();
+	
 private:
-	viewport *create_viewport_intern(master *masteridd, int ownidd);
 };
 
-int testmain(int argc ,char *argv[]);
+#endif // _XVIEWPORT_H_
 
-#endif // _TESTBACKEND_H_

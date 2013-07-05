@@ -17,8 +17,8 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TSYSSLATEO_H_
-#define _TSYSSLATEO_H_
+#ifndef _TSYSSLATE_H_
+#define _TSYSSLATE_H_
 
 #include "sysslate.h"
 class sysslate;
@@ -30,7 +30,7 @@ class tslateareascreen;
 #include "constdef.h"
 
 
-class tsysslate: public sysslateo
+class tsysslate: public sysslate
 {
 public:
 	tsysslate(slatearea *parentt, master *parent_mastert);
