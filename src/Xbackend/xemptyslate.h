@@ -21,8 +21,6 @@
 #define _XEMPTYSLATE_H_
 #include "emptyslate.h"
 class emptyslate;
-#include "tslateareascreen.h"
-class tscreenareascreen;
 
 class xemptyslate : public emptyslate 
 {

@@ -22,8 +22,6 @@
 
 #include "sysslate.h"
 class sysslate;
-#include "tslateareascreen.h"
-class tslateareascreen;
 
 
 

@@ -33,9 +33,9 @@
 /**
  * Backends
  * 1 sdl
- * 2 gtkmm
- * 3 test
- * /
+ * 2 test
+ * 3 x
+ */
 
 
 /**
@@ -46,8 +46,10 @@
 
 #include <iostream>
 #include <string>
+
 using namespace std;
-   
+
+
 int main (int argc, char *argv[])
 {
 	
@@ -59,9 +61,13 @@ int main (int argc, char *argv[])
 	{
 		sel=1;
 	}
-	if (testoptions=="test" || testoptions=="3")
+	if (testoptions=="test" || testoptions=="2")
 	{
 		sel=2;
+	}
+	if (testoptions=="X" || testoptions=="3")
+	{
+		sel=3;
 	}
 	
 	int returnvalue;

@@ -45,7 +45,7 @@ void xbackend::inputhandler_function()
 
 
 }
-int testmaster::handle_masterevent(void *event)
+int xbackend::handle_masterevent(void *event)
 {
 	return MASTER_UNHANDLED;
 }

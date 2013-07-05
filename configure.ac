@@ -3,6 +3,7 @@ dnl Created by Anjuta application wizard.
 
 AC_INIT([slates],[0.1])
 
+ AC_PROG_CXX([clang++ g++])
 
 AC_CONFIG_HEADERS([config.h])
 

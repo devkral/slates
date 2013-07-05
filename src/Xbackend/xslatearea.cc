@@ -18,7 +18,7 @@
  */
 
 #include "xslatearea.h"
-#include "temptyslate.h"
+#include "xemptyslate.h"
 
 xslatearea::xslatearea(slate *parent_slate) : slatearea(parent_slate)
 {
@@ -28,7 +28,7 @@ xslatearea::xslatearea(slate *parent_slate) : slatearea(parent_slate)
 
 slateareascreen *xslatearea::create_emptyslate()
 {
-	return new temptyslate(this,get_master());
+	return new xemptyslate(this,get_master());
 }
 
 void xslatearea::handle_input(void *initializer)
