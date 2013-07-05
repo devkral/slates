@@ -22,12 +22,8 @@
 
 #include "sysslate.h"
 class sysslate;
-#include "tslateareascreen.h"
-class tslateareascreen;
 
 
-
-#include "constdef.h"
 
 
 class tsysslate: public sysslate

@@ -15,6 +15,6 @@ windowslate::~windowslate()
 
 char windowslate::TYPE()
 {
-	return TYPE_windowslate;
+	return TYPE_filled;
 }
 

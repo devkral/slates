@@ -25,7 +25,6 @@ class lockslate;
 #include "tslateareascreen.h"
 class tscreenareascreen;
 
-#include "constdef.h"
 
 class xlockslate: public lockslate 
 {

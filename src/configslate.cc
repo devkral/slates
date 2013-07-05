@@ -3,6 +3,6 @@
 
 #include "configslate.h"
 
-#include "confreader.h"
+#include "configbackend.h"
 
 

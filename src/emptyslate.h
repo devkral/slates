@@ -5,7 +5,7 @@
 #include "slateareascreen.h"
 class slateareascreen;
 class slatearea;
-#include "constdef.h"
+#include "configbackend.h"
 
 class emptyslate : public slateareascreen 
 {

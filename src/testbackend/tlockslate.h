@@ -22,10 +22,7 @@
 
 #include "lockslate.h"
 class lockslate;
-#include "tslateareascreen.h"
-class tscreenareascreen;
 
-#include "constdef.h"
 
 class tlockslate: public lockslate 
 {

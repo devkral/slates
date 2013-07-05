@@ -10,7 +10,7 @@ class viewport;
 #include "slatearea.h"
 class slatearea;
 
-#include "constdef.h"
+#include "configbackend.h"
 
 #include <memory>
 #include <thread>

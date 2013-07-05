@@ -1,52 +1,39 @@
-/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*-  */
-/*
- * slates
- * Copyright (C) 2013 alex <devkral@web.de>
- * Permission is hereby granted, free of charge,
- * to any person obtaining a copy of this software
- * and associated documentation files (the "Software"),
- * to deal in the Software without restriction,
- * including without limitation the rights to use,
- * copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit
- * persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall
- * be included in all copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
- * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
- * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
- * THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
+// License see COPYING
 
-#define __DEBUG_OUTPUT_CONFIGPARSER__
- 
- 
-#include "confreader.h"
+#include "configbackend.h"
+
 #include <fstream>
-#ifdef __DEBUG_OUTPUT_CONFIGPARSER__
 #include <iostream>
-#endif
 #include <cctype>
 #include <cstring>
 
 
-confreader::confreader(string file)
+configbackend::configbackend(string file)
 {
 	filename=file;
-	fstream tempout(filename.c_str(),ios_base::out);
-	tempout.close();
+	init();
+}
+configbackend::configbackend()
+{
+	configbackend((string)slateconfigfilename);
 }
 
-confreader::~confreader()
+configbackend::~configbackend()
 {
 	
 }
+
+void configbackend::init()
+{
+	confrwlock.lock();
+	fstream tempout(filename.c_str(),ios_base::out);
+	tempout.close();
+	
+
+	
+	confrwlock.unlock();
+}
+
 
 void reset(parsedob *ob)
 {
@@ -89,9 +76,7 @@ int parseline2(fstream *confstr, parsedob *ob, int state, int paraphrases)
 	int nextchar=confstr->get();
 	if (nextchar!='\n' && nextchar!=EOF)
 	{
-#ifdef __DEBUG_OUTPUT_CONFIGPARSER__
 		cerr << "Error: Line too long; max length: " << buffersize << "\n";
-#endif
 		return 1;
 	}
 	
@@ -166,8 +151,9 @@ int parseline2(fstream *confstr, parsedob *ob, int state, int paraphrases)
 
 
 
-void confreader::set_single_variable(string varname, string varvalue)
+void configbackend::set_single_variable(string varname, string varvalue)
 {
+	confrwlock.lock();
 	string searchtemp="";
 	string new_var_line=varname+"="+varvalue+"\n";
 	string fullfilestring="";
@@ -211,21 +197,24 @@ void confreader::set_single_variable(string varname, string varvalue)
 		confstr.write(new_var_line.c_str(),new_var_line.length());
 		confstr.close();
 	}
+	confrwlock.unlock();
 }
 
 
-void confreader::add_variable(string varname, string varvalue)
+void configbackend::add_variable(string varname, string varvalue)
 {
+	confrwlock.lock();
 	fstream confstr;
 	string new_var_line=varname+"="+varvalue+"\n";
 	confstr.open(filename.c_str(),ios_base::out | ios_base::app);
 	confstr.write(new_var_line.c_str(),new_var_line.length());
 	confstr.close();
-
+	confrwlock.unlock();
 }
 
-void confreader::del_variable(string varname, string varvalue)
+void configbackend::del_variable(string varname, string varvalue)
 {
+	confrwlock.lock();
 	string searchtemp="";
 	string fullfilestring="";
 	parsedob parsed;
@@ -246,10 +235,12 @@ void confreader::del_variable(string varname, string varvalue)
 	confstr.open(filename.c_str(),ios_base::out | ios_base::trunc);
 	confstr.write(fullfilestring.c_str(),fullfilestring.length());
 	confstr.close();
+	confrwlock.unlock();
 }
 
-string confreader::get_variable(string varname)
+string configbackend::get_variable(string varname)
 {
+	confrwlock.lock();
 	string collect="";
 	parsedob parsed;
 	int status=0;
@@ -268,6 +259,7 @@ string confreader::get_variable(string varname)
 	confstr.close();
 	if (collect.find("\n")!=EOF)
 		collect=collect.erase(collect.rfind("\n"));
+	confrwlock.unlock();
 	return collect;
 }
 

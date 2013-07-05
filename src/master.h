@@ -10,7 +10,7 @@ class slateobject;
 //#include "slateobject.h"
 //class slateobject;
 
-#include "constdef.h"
+#include "configbackend.h"
 
 #include <vector>
 #include <thread>
@@ -26,7 +26,7 @@ public:
 	master();
 	virtual ~master();
 	void createviewport();
-	virtual viewport *create_viewport_intern(master *masteridd, int ownidd)=0;
+	virtual viewport *create_viewport_intern(master *master_parent, int ownidd)=0;
 	void destroyviewport();
 	void cleanup();
 	void swapcontent(int viewportid1, long int slateid1,int viewportid2, long int slateid2);

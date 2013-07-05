@@ -23,17 +23,16 @@ slates_SOURCES = \
 	main.cc \
 	master.cc \
 	master.h \
-	constdef.h \
 	viewport.cc \
 	viewport.h \
 	slate.cc \
 	slate.h \
-	confreader.cc \
-	confreader.h \
 	slatearea.cc \
 	slatearea.h  \
 	slateareascreen.cc \
-	slateareascreen.h
+	slateareascreen.h \
+	configbackend.cc \
+	configbackend.h
 
 
 slates_SOURCES += \
@@ -44,7 +43,7 @@ slates_SOURCES += \
 	configslate.cc \
 	configslate.h \
 	emptyslate.cc \
-	emptyslate.h
+	emptyslate.h \
 	windowslate.cc \
 	windowslate.h \
 	sysslate.cc \
@@ -83,7 +82,7 @@ slates_SOURCES += sdlbackend/sdlbackend.cc \
 endif
 
 if IS_COMPILED_WITH_X
-	slates_SOURCES += Xbackend/xbackend.cc \
+slates_SOURCES += Xbackend/xbackend.cc \
 	Xbackend/xbackend.h \
 	Xbackend/xviewport.cc \
 	Xbackend/xviewport.h \
@@ -95,8 +94,6 @@ if IS_COMPILED_WITH_X
 	Xbackend/xsysslate.h \
 	Xbackend/xslatearea.cc \
 	Xbackend/xslatearea.h
-#slates_SOURCES += 
-
 endif
 
 if IS_COMPILED_WITH_WAYLAND

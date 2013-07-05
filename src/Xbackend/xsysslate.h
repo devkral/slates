@@ -27,7 +27,7 @@ class tslateareascreen;
 
 
 
-#include "constdef.h"
+#include "configbackend.h"
 
 
 class xsysslate: public sysslate

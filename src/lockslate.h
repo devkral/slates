@@ -9,7 +9,7 @@ class slateareascreen;
 //#include "slatearea.h"
 class slatearea;
 
-#include "constdef.h"
+#include "configbackend.h"
 
 class lockslate : public slateareascreen
 {

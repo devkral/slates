@@ -24,7 +24,6 @@ class viewport;
 #include "tslateareascreen.h"
 class tslateareascreen;
 
-#include "constdef.h"
 
 
 

@@ -23,8 +23,6 @@
 
 #include "master.h"
 class master;
-#include "tviewport.h"
-class tviewport;
 
 
 class xbackend : public master
@@ -39,6 +37,7 @@ private:
 	viewport *create_viewport_intern(master *masteridd, int ownidd);
 };
 
-int xmain(int argc ,char *argv[]);
+ int xmain(int argc ,char *argv[])
+
 
 #endif // _XBACKEND_H_

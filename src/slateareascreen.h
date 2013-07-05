@@ -9,7 +9,7 @@ class master;
 class slate;
 class slatearea;
 
-#include "constdef.h"
+#include "configbackend.h"
 
 using namespace std;
 

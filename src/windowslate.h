@@ -8,7 +8,7 @@
 #include "slateareascreen.h"
 class slateareascreen;
 
-#include "constdef.h"
+#include "configbackend.h"
 
 
 class windowslate : public slateareascreen

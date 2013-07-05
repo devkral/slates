@@ -28,7 +28,7 @@ using namespace std;
 
 viewport *xbackend::create_viewport_intern(master *masteridd, int ownidd)
 {
-	return new tviewport(masteridd,ownidd);
+	return new xviewport(masteridd,ownidd);
 }
 
 xbackend::xbackend(int argc, char* argv[])

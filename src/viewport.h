@@ -8,7 +8,7 @@ class slateareascreen;
 
 class slatearea;
 
-#include "constdef.h"
+#include "configbackend.h"
 
 #include <vector>
 #include <deque>

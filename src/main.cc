@@ -68,19 +68,19 @@ int main (int argc, char *argv[])
 	switch (sel)
 	{
 #ifdef COMPILED_WITH_SDL
-		case 1: returnvalue=sdlbackend(argc, argv);
+		case 1: returnvalue=sdlmain(argc, argv);
 			break;
 #endif
 #ifdef COMPILED_WITH_TESTBACKEND
-		case 2: returnvalue=testbackend(argc, argv);
+		case 2: returnvalue=testmain(argc, argv);
 			break;
 #endif
 #ifdef COMPILED_WITH_X
-		case 3: returnvalue=xbackend(argc, argv);
+		case 3: returnvalue=xmain(argc, argv);
 			break;
 #endif	
 #ifdef COMPILED_WITH_WAYLANDBACKEND
-		case 4: returnvalue=waylandbackend(argc, argv);
+		case 4: returnvalue=waylandmain(argc, argv);
 			break;
 #endif
 		default: std::cerr << "Error: backend doesn't exist\n"; returnvalue=1;

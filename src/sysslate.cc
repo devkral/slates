@@ -16,6 +16,6 @@ sysslate::~sysslate()
 
 char sysslate::TYPE()
 {
-	return TYPE_sysslate;
+	return TYPE_filled;
 }
 

@@ -8,7 +8,7 @@
 class slateareascreen;
 
 
-#include "constdef.h"
+#include "configbackend.h"
 
 
 class sysslate: public slateareascreen 

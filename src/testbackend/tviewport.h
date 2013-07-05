@@ -21,10 +21,7 @@
 #define _TVIEWPORT_H_
 #include "viewport.h"
 class viewport;
-#include "tslateareascreen.h"
-class tslateareascreen;
 
-#include "constdef.h"
 
 
 

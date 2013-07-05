@@ -21,11 +21,7 @@
 #define _TEMPTYSLATE_H_
 #include "emptyslate.h"
 class emptyslate;
-#include "tslateareascreen.h"
-class tscreenareascreen;
 
-
-#include "constdef.h"
 
 class temptyslate : public emptyslate 
 {
