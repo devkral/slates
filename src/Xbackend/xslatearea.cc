@@ -22,7 +22,7 @@
 
 xslatearea::xslatearea(slate *parent_slate) : slatearea(parent_slate)
 {
-	
+
 }
 
 

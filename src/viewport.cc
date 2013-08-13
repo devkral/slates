@@ -173,7 +173,7 @@ void viewport::async_create_slates()
 		temppool.push_back(thread(async_create_slates_intern,placeholderpointer));
 		slate_idcount++;
 	}
-	while (slate_idcount<slate_pool.size())
+	while (slate_idcount<slices*slices) //don't use slate_pool.size() endless loop
 	{
 		temp_y=(cache_last_diag_point_id+(slices-1))-slate_idcount; //sure???
 		temp_x=slices-1;
@@ -188,6 +188,7 @@ void viewport::async_create_slates()
 		temppool.back().join();
 		temppool.pop_back();
 	}
+		
 }
 
 
@@ -316,7 +317,7 @@ void viewport::fill_slate_intern(long int id)
 	if (amount_filled_slates>=slate_pool.size()-1)
 	{
 		if (amount_filled_slates>=slate_pool.size())
-			cerr << "Debug: amount_filled_slates " << amount_filled_slates-slate_pool.size()+1 << "bigger than slate_pool" << endl; 
+			cerr << "Debug: amount_filled_slates " << amount_filled_slates << "bigger than slate_pool" << endl; 
 		addslice();
 	}
 }
@@ -368,52 +369,3 @@ void viewport::handle_event(void *event)
 }
 
 
-
-void viewport::add_renderob(slateareascreen *renderob)
-{
-	protrender.lock();
-	renderob->set_renderid (render_pool.size()); //nice hack: size must be one less before adding
-	render_pool.push_back(renderob);
-	protrender.unlock();
-}
-void viewport::remove_renderob(long int renderid)
-{
-	protrender.lock();
-	render_pool[renderid]->set_renderid (-1);
-	render_pool.erase(render_pool.begin()+renderid);
-	protrender.unlock();
-}
-
-
-slateareascreen *viewport::get_renderob(long int renderid)
-{
-	return render_pool[renderid];
-}
-
-void viewport::rendering()
-{
-	int count=0;
-	slateareascreen *temp=0;
-	while (isdestroying==false)
-	{
-		protrender.lock();
-		for(count=0;count<render_pool.size();count++)
-		{
-			temp=render_pool[count];
-			
-			if (temp->isstatic ())
-			{
-				render(temp);
-				render_pool.erase(render_pool.begin()+count);
-				temp->set_renderid (-1);
-			} else if (temp->isdirty ())
-				render(temp);
-		}
-		protrender.unlock();
-	}
-}
-
-void viewport::kickstarter_renderthread (viewport *renderingob)
-{
-	renderingob->rendering();
-}

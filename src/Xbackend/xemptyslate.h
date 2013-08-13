@@ -21,8 +21,13 @@
 #define _XEMPTYSLATE_H_
 #include "emptyslate.h"
 class emptyslate;
+#include "xbackend.h"
+class xmaster;
+#include "xviewport.h"
+class xhelperclass;
+#include <xcb/xcb.h>
 
-class xemptyslate : public emptyslate 
+class xemptyslate : public emptyslate, xhelperclass
 {
 public:
 	xemptyslate(slatearea *parentt, master *parent_mastert);
@@ -30,10 +35,17 @@ public:
 	void update();
 	bool isstatic();
 	bool isdirty();
+
+
+	uint32_t mask= XCB_GC_FOREGROUND | XCB_GC_GRAPHICS_EXPOSURES;
+	uint32_t values[2];
+	xcb_rectangle_t      r = { 20, 20, 60, 60 };
+	xcb_gcontext_t context;
+	
 protected:
 
 private:
-
+	const char *title="test";
 };
 
 #endif // _TEMPTYSLATEO_H_

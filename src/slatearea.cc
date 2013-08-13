@@ -65,7 +65,7 @@ master *slatearea::get_master()
 
 viewport *slatearea::get_viewport()
 {
-	get_origin()->get_viewport ();
+	return get_origin()->get_viewport ();
 }
 
 
@@ -102,12 +102,29 @@ void slatearea::setlock(int lockstate)
 
 int slatearea::get_x()
 {
-	get_origin()->get_x();
+	return get_origin()->get_x();
 }
 int slatearea::get_y()
 {
-	get_origin()->get_y();
+	return get_origin()->get_y();
 }
+
+int slatearea::get_w()
+{
+	int temp=get_x()+width-(get_origin ()->get_viewport()->get_viewport_width()+get_origin ()->get_viewport()->get_viewport_beg_x());
+	if(temp>0)
+		return width-temp;
+	return width;
+}
+
+int slatearea::get_h()
+{
+	int temp=get_y()+height-(get_origin ()->get_viewport()->get_viewport_height()+get_origin ()->get_viewport()->get_viewport_beg_y());
+	if(temp>0)
+		return height-temp;
+	return height;
+}
+
 void slatearea::set_screen(slateareascreen *replacement)
 {
 	filledold=isfilled();

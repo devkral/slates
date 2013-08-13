@@ -21,15 +21,28 @@
 #define _XSLATEAREA_H_
 
 #include "slatearea.h"
+#include <xcb/xcb.h>
 
 using namespace std;
 
-class xslatearea : public slatearea
+class xhelperclass
 {
 public:
-	xslatearea(slate *parent_slate);
-	slateareascreen *create_emptyslate();
-	void handle_input(void *initializer);
+	xcb_window_t window;
+};
+
+
+
+class xslatearea : public slatearea
+{
+	public:
+		xslatearea(slate *parent_slate);
+		//~xslatearea();
+		slateareascreen *create_emptyslate();
+		void handle_input(void *initializer);
+		
+	private:
+		
 };
 
 #endif // _XSLATEAREA_H_

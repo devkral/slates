@@ -3,7 +3,7 @@ dnl Created by Anjuta application wizard.
 
 AC_INIT([slates],[0.1])
 
- AC_PROG_CXX([clang++ g++])
+AC_PROG_CXX([clang++ g++])
 
 AC_CONFIG_HEADERS([config.h])
 
@@ -57,7 +57,7 @@ else
 fi
 
 #-lXdamage -lXcomposite -lX11 -lXrender
-PKG_CHECK_MODULES(X, [xdamage xcomposite x11 xrender], [buildxbackend="yes"] , [buildxbackend="no"] )
+PKG_CHECK_MODULES(X, [xcb], [buildxbackend="yes"] , [buildxbackend="no"] )
 
 #buildxbackend="no"
 

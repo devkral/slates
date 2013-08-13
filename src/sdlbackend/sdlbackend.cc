@@ -69,15 +69,14 @@ sdl_master::sdl_master(int argc, char* argv[]) : master()
 {
 	for (int count=0; count<SDL_GetNumVideoDisplays(); count++) //SDL_GetNumVideoDisplays
 		createviewport();
-	hasinputhandle=true;
 	inputhandler_function();
-	//inputthread.join();
 }
 
 sdl_master::~sdl_master()
 {
-	//~master();
 	cout << "Destroy sdlmaster\n";
+	hasinputhandle=false;
+	
 	cleanup();
 	SDL_Quit();
 }

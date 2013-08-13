@@ -118,3 +118,53 @@ slatearea *sdl_viewport::create_area(slate *parent_slate)
 	
 	return (slatearea *)temp2 ;
 }
+
+void viewport::add_renderob(slateareascreen *renderob)
+{
+	protrender.lock();
+	renderob->set_renderid (render_pool.size()); //nice hack: size must be one less before adding
+	render_pool.push_back(renderob);
+	protrender.unlock();
+}
+void viewport::remove_renderob(long int renderid)
+{
+	protrender.lock();
+	render_pool[renderid]->set_renderid (-1);
+	render_pool.erase(render_pool.begin()+renderid);
+	protrender.unlock();
+}
+
+
+slateareascreen *viewport::get_renderob(long int renderid)
+{
+	return render_pool[renderid];
+}
+
+void viewport::rendering()
+{
+	int count=0;
+	slateareascreen *temp=0;
+	while (isdestroying==false)
+	{
+		protrender.lock();
+		for(count=0;count<render_pool.size();count++)
+		{
+			temp=render_pool[count];
+			
+			if (temp->isstatic ())
+			{
+				render(temp);
+				render_pool.erase(render_pool.begin()+count);
+				temp->set_renderid (-1);
+			} else if (temp->isdirty ())
+				render(temp);
+		}
+		protrender.unlock();
+	}
+}
+
+void viewport::kickstarter_renderthread (viewport *renderingob)
+{
+	renderingob->rendering();
+}
+

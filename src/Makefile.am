@@ -48,7 +48,6 @@ slates_SOURCES += \
 	windowslate.h \
 	sysslate.cc \
 	sysslate.h
-	
 
 
 
@@ -71,14 +70,12 @@ endif
 if IS_COMPILED_WITH_SDL
 slates_SOURCES += sdlbackend/sdlbackend.cc \
 	sdlbackend/sdlbackend.h \
-	sdlbackend/sdl_viewport.cc \
-	sdlbackend/sdl_viewport.h \
-	sdlbackend/sdl_emptyslateo.cc \
-	sdlbackend/sdl_emptyslateo.h \
-	sdlbackend/sdl_screenobject.cc \
-	sdlbackend/sdl_screenobject.h \
-	sdlbackend/sdl_slatearea.cc \
-	sdlbackend/sdl_slatearea.h 
+	sdlbackend/sdlviewport.cc \
+	sdlbackend/sdlviewport.h \
+	sdlbackend/sdlemptyslate.cc \
+	sdlbackend/sdlemptyslate.h \
+	sdlbackend/sdlslatearea.cc \
+	sdlbackend/sdlslatearea.h 
 endif
 
 if IS_COMPILED_WITH_X
@@ -101,7 +98,7 @@ if IS_COMPILED_WITH_WAYLAND
 
 endif
 
-slates_CXXFLAGS = -std=c++11
+slates_CXXFLAGS = -std=c++11 -pthread
 
 slates_LDADD = \
     $(X_LIBS) \

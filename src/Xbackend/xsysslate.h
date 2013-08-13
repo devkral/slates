@@ -23,12 +23,13 @@
 #include "sysslate.h"
 class sysslate;
 
-
+#include "xslatearea.h"
+class xhelperclass;
 
 #include "configbackend.h"
 
 
-class xsysslate: public sysslate
+class xsysslate: public sysslate,xhelperclass
 {
 public:
 	xsysslate(slatearea *parentt, master *parent_mastert);

@@ -39,7 +39,6 @@ public:
 	
 	virtual slateareascreen *create_emptyslate()=0;
 
-	//should invocate master event
 	virtual void handle_input(void *initializer)=0;
 	
 	void handle_event(void  *event);
@@ -48,6 +47,8 @@ public:
 	
 	int get_x();
 	int get_y();
+	int get_w();
+	int get_h();
 	bool isfilled();
 	bool get_isdestroying ();
 	void update_isfilled();

@@ -1,5 +1,11 @@
 // Licence see COPYING
 
+/**
+ * viewport should be a monitor or something where windows can be shown fullscreen
+ * 
+ * */
+
+
 #ifndef _VIEWPORT_H_
 #define _VIEWPORT_H_
 class master;
@@ -57,17 +63,12 @@ public:
 	int get_viewport_beg_y();
 	bool get_isdestroying();
 
-	void add_renderob(slateareascreen *renderob);
-	void remove_renderob(long int renderid);
-	slateareascreen *get_renderob(long int renderid);
-	void rendering();
-	virtual void render(slateareascreen *renderob)=0; 
 
 	virtual void update_slice_info()=0;
 	virtual slatearea *create_area(slate *parent_slate)=0;
 
 protected:
-	static void kickstarter_renderthread (viewport *renderingob);
+	mutex protrender; //is locked while slates update
 private:
 	int horizontal_tiles=-1;
 	int vertical_tiles=-1;
@@ -79,15 +80,14 @@ private:
 	mutex slateid_prot;
 	long int amount_filled_slates;
 	bool isdestroying=false;
-	//long int max_avail_slates=0; //=slice*slice=size-1 of slate_pool
+	//long int max_avail_slates=0; //=slice*slice-1=size-1 of slate_pool
 	vector<slate*> slate_pool; //leftwing first, then diag then top wing
 
 	deque<slateareascreen*> render_pool;
 
 	
 
-	mutex protrender;
-	thread renderthread;
+	
 	//deque<slatetype*> slatetype_pool;
 	master *mroot;
 	

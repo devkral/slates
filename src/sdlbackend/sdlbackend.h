@@ -50,6 +50,7 @@ protected:
 	
 private:
 	viewport *create_viewport_intern(master *masteridd, int ownidd);
+	bool hasinputhandle=true;
 };
 
 int sdlmain(int argc, char *argv[]);

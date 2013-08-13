@@ -47,11 +47,16 @@ public:
 	slate *get_slate_mouse(int x, int y);
 	void *get_viewportscreen();
 	void update_slice_info();
-	void render();
 	slatearea *create_area(slate *parent_slate);
+	void add_renderob(slateareascreen *renderob);
+	void remove_renderob(long int renderid);
+	slateareascreen *get_renderob(long int renderid);
+	void rendering();
+	void render(sdl_slateareascreen *renderob)=0; 
 	
 protected:
-	
+	static void kickstarter_renderthread (viewport *renderingob);
+	thread renderthread;
 	sdl_viewportcanvas *viewport_screen;
 	
 private:

@@ -19,7 +19,7 @@
 
 #include "xemptyslate.h"
 
-
+#include <cstring>
 #include <iostream>
 
 using namespace std;
@@ -27,7 +27,24 @@ using namespace std;
 
 xemptyslate::xemptyslate(slatearea *parentt, master *parent_mastert) : emptyslate(parentt, parent_mastert)
 {
-	cerr << "Create xemptyslateo\n";
+	std::cout << "Enter xemptyslate\n"; 
+   /* schwarzen Grafikkontext erzeugen */
+	context = xcb_generate_id(((xmaster*) get_master () )->con);
+	values[0] = ((xviewport*) get_slatearea ()->get_viewport ()) ->screen->black_pixel;
+	values[1] = 0;
+
+	
+	xcb_create_gc(((xmaster *) get_master())->con,context, ((xviewport*) get_slatearea ()->get_viewport ()) ->screen->root, mask, values);
+
+	window = xcb_generate_id(((xmaster *) get_master())->con);
+	
+	//init with stub values
+	xcb_create_window(((xmaster *) get_master())->con,
+	                  ((xviewport*) get_slatearea ()->get_viewport ()) ->screen->root_depth,
+	                  window, ((xviewport*) get_slatearea ()->get_viewport ()) ->screen->root,
+                   1, 1, 100, 100, 1,
+                   XCB_WINDOW_CLASS_INPUT_OUTPUT, ((xviewport*) get_slatearea ()->get_viewport ()) ->screen->root_visual,
+                   mask, values);
 }
 
 xemptyslate::~xemptyslate()
@@ -36,7 +53,18 @@ xemptyslate::~xemptyslate()
 }
 void xemptyslate::update()
 {
+	//enter real values
+    xcb_change_property (((xmaster *) get_master())->con,
+                             XCB_PROP_MODE_REPLACE,
+                             window,
+                             XCB_ATOM_WM_NAME,
+                             XCB_ATOM_STRING,
+                             8,
+                             strlen (title),
+                             title );
+	
 
+	
 }
 
 bool xemptyslate::isstatic()

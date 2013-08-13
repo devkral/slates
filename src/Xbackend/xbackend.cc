@@ -1,51 +1,91 @@
-/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*-  */
-/*
- * slates
- * Copyright (C) 2012 alex <devkral@web.de>
- * 
- * slates is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * slates is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License along
- * with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+
+//contains code from https://gitorious.org/qt-window-manager/qt-window-manager/blobs/master/main.cpp
+
+
 
 #include "xbackend.h"
 
 #include <iostream>
+#include <unistd.h>
 #include <system_error>
-
+#include <cstring>
+#include <csignal>
 using namespace std;
 
 
 
-viewport *xbackend::create_viewport_intern(master *masteridd, int ownidd)
+viewport *xmaster::create_viewport_intern(master *masteridd, int ownidd, void *monitor)
 {
-	return new xviewport(masteridd,ownidd);
+	return new xviewport(masteridd,ownidd, (xcb_screen_t *) monitor);
+	//xcb_setup_roots_iterator( xcb_get_setup(c) ).data );
 }
 
-xbackend::xbackend(int argc, char* argv[])
+
+void signalcleanup(int )
 {
-	createviewport();
+	exit(1);
 }
 
-xbackend::~xbackend()
+xmaster::xmaster(int argc, char* argv[])
+{
+	
+	signal (SIGINT,signalcleanup);
+    /* Verbindung zum X-Server öffnen */
+	//http://xcb.freedesktop.org/manual/group__XCB__RandR__API.html
+	//http://xcb.freedesktop.org/PublicApi/#index2h2
+
+	/**if ((display = XOpenDisplay(0)) == NULL)
+	{
+		std::cerr << "Cannot open display\n"; 
+		exit(1);
+	}*/
+	if((con = xcb_connect(0, &numbermonitors)) == 0) {
+		printf("Cannot get a connection\n");
+		exit(1);
+	}
+	
+	xcb_screen_iterator_t iter = xcb_setup_roots_iterator( xcb_get_setup(con) );
+	if (numbermonitors==0) //if running a wm
+		numbermonitors=1;   //for test purposes
+
+	for (int i = 0; i < numbermonitors; ++i) {
+		createviewport(iter.data);
+		xcb_screen_next (&iter);
+    }
+	inputhandler_function ();
+	//inputthread.join();
+	
+}
+
+xmaster::~xmaster()
 {
 	cleanup();
+	xcb_disconnect(con);
 }
-void xbackend::inputhandler_function()
+void xmaster::inputhandler_function()
 {
-
-
+	
+	xcb_generic_event_t *e;
+	while (inputhandling)
+	{
+		 e = xcb_wait_for_event(con);
+		switch (e->response_type & ~0x80)
+		{
+			case XCB_EXPOSE:    /* draw or redraw the window */
+				//xcb_poly_fill_rectangle(con, window, g,  1, &r);
+				//xcb_flush(con);
+				break;
+			case XCB_KEY_PRESS:  /* beenden, wenn eine Taste gedrückt wird */
+				inputhandling = false;
+				break;
+		 }
+		free(e);
+		e=0;
+		sleep(4);
+	}
 }
-int xbackend::handle_masterevent(void *event)
+
+int xmaster::handle_masterevent(void *event)
 {
 	return MASTER_UNHANDLED;
 }
@@ -56,7 +96,7 @@ int xmain(int argc ,char *argv[])
 {
 	try
 	{
-		xbackend(argc,argv);
+		xmaster(argc,argv);
 	}
 	catch (const std::system_error& error)
 	{

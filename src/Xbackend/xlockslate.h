@@ -23,8 +23,11 @@
 #include "lockslate.h"
 class lockslate;
 
+#include "xslatearea.h"
+class xhelperclass;
 
-class xlockslate: public lockslate 
+
+class xlockslate: public lockslate,xhelperclass
 {
 public:
 	xlockslate(slatearea *parentt, master *parent_mastert);

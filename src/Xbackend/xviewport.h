@@ -21,8 +21,12 @@
 #define _XVIEWPORT_H_
 #include "viewport.h"
 class viewport;
-
-
+#include "xbackend.h"
+class xmaster;
+#include "xslatearea.h"
+class xslatearea;
+#include "slateareascreen.h"
+class slateareascreen;
 
 
 using namespace std;
@@ -31,11 +35,15 @@ using namespace std;
 class xviewport : public viewport
 {
 public:
-	xviewport(master *masteridd, int ownidd);
+	xviewport(master *masteridd, int ownidd,xcb_screen_t *s);
 	~xviewport();
 	slate *create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp);
 	void render(slateareascreen *renderob);
 	slatearea *create_area(slate *parent_slate);
+
+	
+	xcb_screen_t *screen;
+	
 protected:
 	void update_slice_info();
 	

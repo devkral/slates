@@ -6,21 +6,19 @@
 
 using namespace std;
 
-#ifdef UNIX
+
 bool checkpassword(char *password)
 {
+#ifdef UNIX
+
 	cerr << "password not implemented yet\n";
 	return true;
-}
 #elif WINDOWS
 
-bool checkpassword(char *password)
-{
 	cerr << "password not implemented yet\n";
 	return true;
-}
 #endif
-
+}
 
 
 master::master()
@@ -33,23 +31,30 @@ master::~master()
 
 }
 
+int master::countviewports()
+{
+	return viewport_pool.size();
+}
+
+
 void master::cleanup()
 {
-	stop_handling_input();
 	while (viewport_pool.empty()!=true)
 		destroyviewport();
 }
 
 void master::swapcontent(int viewportid1, long int slateid1,int viewportid2, long int slateid2)
 {
-	//viewport_pool[viewportid1]->slate_pool[slateid1]->swap_childobject(viewport_pool[viewportid2]->slate_pool[slateid2]);
+	slateareascreen *temp=viewport_pool[viewportid1]->slate_pool[slateid1]->get_slatearea()->get_screen();
+	viewport_pool[viewportid1]->slate_pool[slateid1]->get_slatearea()->set_screen(viewport_pool[viewportid2]->slate_pool[slateid2]->get_slatearea()->get_screen());
+	viewport_pool[viewportid2]->slate_pool[slateid2]->get_slatearea()->set_screen(temp)	;
 }
 
 
 //validate before calling
-void master::createviewport()
+void master::createviewport(void *monitor)
 {
-	viewport_pool.push_back(create_viewport_intern(this,viewport_idcount));
+	viewport_pool.push_back(create_viewport_intern(this,viewport_idcount,monitor));
 	viewport_pool[viewport_idcount]->addslice();
 	viewport_idcount++;
 }
@@ -109,22 +114,6 @@ bool master::unlock_slates (char *password)
 		return false;
 }
 
-
-
-void master::start_handling_input()
-{
-	hasinputhandle=true;
-	inputthread=thread(kickstarter_inputthread,(master *)this);
-}
-
-void master::stop_handling_input()
-{
-	if (hasinputhandle)
-	{
-		hasinputhandle=false;
-		inputthread.join();
-	}
-}
 void handle_event_intern(viewport *viewportobject, void *event)
 {
 	viewportobject->handle_event(event);
@@ -149,11 +138,4 @@ int master::handle_event(void *event)
 		}
 	}
 	return status;
-}
-
-
-void kickstarter_inputthread(master *parent_object)
-{
-	parent_object->inputhandler_function();
-
 }
