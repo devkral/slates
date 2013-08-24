@@ -65,13 +65,21 @@ xmaster::~xmaster()
 void xmaster::inputhandler_function()
 {
 	
-	xcb_generic_event_t *e;
+	xcb_generic_event_t *event=0;
 	while (inputhandling)
 	{
-		 e = xcb_wait_for_event(con);
-		switch (e->response_type & ~0x80)
+		event = xcb_wait_for_event(con);
+		handle_event( (void *)event);
+		free(event);
+	}
+}
+
+int xmaster::handle_masterevent(void *event)
+{
+		switch (((xcb_generic_event_t *)event)->response_type & ~0x80)
 		{
 			case XCB_EXPOSE:    /* draw or redraw the window */
+				return MASTER_UNHANDLED;
 				//xcb_poly_fill_rectangle(con, window, g,  1, &r);
 				//xcb_flush(con);	/* show window */
 	//xcb_window_t find out how to manipulate
@@ -83,20 +91,25 @@ void xmaster::inputhandler_function()
 				break;
 			case XCB_KEY_PRESS:  /* beenden, wenn eine Taste gedrückt wird */
 				inputhandling = false;
+				return MASTER_QUIT;
 				break;
 		 }
-		free(e);
-		e=0;
-		sleep(4);
-	}
-}
 
-int xmaster::handle_masterevent(void *event)
-{
 	return MASTER_UNHANDLED;
 }
 
-
+int xmaster::handle_event(void *event)
+{
+	int status=handle_masterevent(event);
+	if (status==MASTER_UNHANDLED)
+	{
+		for (long int count=0; count<amount_viewports(); count++)
+		{
+			viewport_pool[count]->handle_event(event);
+		}
+	}
+	return status;
+}
 
 int xmain(int argc ,char *argv[])
 {

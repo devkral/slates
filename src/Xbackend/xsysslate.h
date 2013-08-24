@@ -23,7 +23,7 @@
 #include "sysslate.h"
 class sysslate;
 
-#include "xslatearea.h"
+#include "xroutines.h"
 class xhelperclass;
 
 #include "configbackend.h"

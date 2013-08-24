@@ -21,15 +21,8 @@
 #define _XSLATEAREA_H_
 
 #include "slatearea.h"
-#include <xcb/xcb.h>
 
 using namespace std;
-
-class xhelperclass
-{
-public:
-	xcb_window_t window;
-};
 
 
 

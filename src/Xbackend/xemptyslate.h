@@ -23,9 +23,9 @@
 class emptyslate;
 #include "xbackend.h"
 class xmaster;
-#include "xviewport.h"
+#include "xroutines.h"
 class xhelperclass;
-#include <xcb/xcb.h>
+
 
 class xemptyslate : public emptyslate, xhelperclass
 {
@@ -37,10 +37,18 @@ public:
 	bool isdirty();
 
 	xcb_gcontext_t black;
-	uint32_t mask= XCB_GC_FOREGROUND | XCB_GC_GRAPHICS_EXPOSURES;
-	uint32_t values[2];
+	uint32_t initmask=  XCB_CW_BACK_PIXEL | XCB_CW_EVENT_MASK;
+	uint32_t initvalues[2];
 	xcb_rectangle_t      r = { 20, 20, 60, 60 };
 	xcb_gcontext_t context;
+	void handle_event(void *event);
+
+	  /* geometric objects */
+/**   xcb_point_t points[] = {
+    {10, 10},
+    {10, 20},
+    {20, 10},
+    {20, 20}};*/
 	
 protected:
 

@@ -31,7 +31,7 @@ master::~master()
 
 }
 
-int master::countviewports()
+int master::amount_viewports()
 {
 	return viewport_pool.size();
 }
@@ -106,7 +106,7 @@ void unlock_intern(viewport *viewp)
 void master::unlock()
 {
 	vector<thread> threadpool_unlock;
-	for (long int count=0; count<viewport_idcount; count++)
+	for (long int count=0; count<amount_viewports(); count++)
 		threadpool_unlock.push_back( thread(unlock_intern,viewport_pool[count]));
 	while (threadpool_unlock.empty()==false)
 	{
@@ -139,7 +139,7 @@ int master::handle_event(void *event)
 	if (status==MASTER_UNHANDLED)
 	{
 		vector<thread> threadpool_events;
-		for (long int count=0; count<viewport_idcount; count++)
+		for (long int count=0; count<amount_viewports(); count++)
 		{
 			threadpool_events.push_back( thread(handle_event_intern,viewport_pool[count],event));
 		}

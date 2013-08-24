@@ -23,7 +23,7 @@
 #include "lockslate.h"
 class lockslate;
 
-#include "xslatearea.h"
+#include "xroutines.h"
 class xhelperclass;
 
 

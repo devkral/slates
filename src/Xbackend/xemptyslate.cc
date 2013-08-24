@@ -22,6 +22,8 @@
 #include <cstring>
 #include <iostream>
 
+
+
 using namespace std;
 
 
@@ -31,10 +33,10 @@ xemptyslate::xemptyslate(slatearea *parentt, master *parent_mastert) : emptyslat
    /* schwarzen Grafikkontext erzeugen */
 	context = xcb_generate_id(((xmaster*) get_master () )->con);
 	black = xcb_generate_id(((xmaster*) get_master () )->con);
-	values[0] = ((xviewport*) get_slatearea ()->get_viewport ()) ->screen->black_pixel;
-	values[1] = 0;
+	initvalues[0] = ((xviewport*) get_slatearea ()->get_viewport ()) ->screen->white_pixel;
+	initvalues[1] = 0;
 	
-	xcb_create_gc(((xmaster *) get_master())->con,context, ((xviewport*) get_slatearea ()->get_viewport ()) ->screen->root, mask, values);
+	xcb_create_gc(((xmaster *) get_master())->con,context, ((xviewport*) get_slatearea ()->get_viewport ()) ->screen->root, initmask, initvalues);
 
 	window = xcb_generate_id(((xmaster *) get_master())->con);
 
@@ -47,11 +49,11 @@ xemptyslate::xemptyslate(slatearea *parentt, master *parent_mastert) : emptyslat
                    0, 0, 1000, 1000, 1,
                    XCB_WINDOW_CLASS_INPUT_OUTPUT,
 	                  ((xviewport*) get_slatearea ()->get_viewport ()) ->screen->root_visual,
-	                  0,NULL);
+	                  initmask,initvalues);
                   // mask, values);
 	
 	xcb_map_window(((xmaster*)get_master ())->con,window);
-	xcb_create_gc (((xmaster *) get_master())->con, black, window, mask, values);
+	//xcb_create_gc (((xmaster *) get_master())->con, black, window, initmask, values);
 	xcb_flush (((xmaster*)get_master ())-> con);
 	//renderthread=thread(xviewport::kickstarter_renderthread,(viewport *)this);
 }
@@ -75,6 +77,22 @@ void xemptyslate::update()
 
 	
 }
+void xemptyslate::handle_event(void *event)
+{
+	switch (((xcb_generic_event_t *)event)->response_type & ~0x80)
+	{
+		case XCB_EXPOSE:
+			/* We draw the points */
+      //xcb_poly_point (((xmaster *) get_master())->con, XCB_COORD_MODE_ORIGIN, window, black, 4, points);
+			xcb_flush (((xmaster*)get_master ())-> con);
+			break;
+		default:
+			break;
+			
+	}
+
+}
+
 
 bool xemptyslate::isstatic()
 {

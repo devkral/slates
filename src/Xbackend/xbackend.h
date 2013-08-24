@@ -21,6 +21,7 @@ public:
 
 	xcb_connection_t *con;
 	xcb_connection_t *display;
+	int handle_event(void *event);
 	
 private:
 	viewport *create_viewport_intern(master *masteridd, int ownidd, void *monitor);

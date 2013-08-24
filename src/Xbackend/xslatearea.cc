@@ -22,19 +22,26 @@
 
 xslatearea::xslatearea(slate *parent_slate) : slatearea(parent_slate)
 {
-	
-	
+		
 }
 
 
 slateareascreen *xslatearea::create_emptyslate()
 {
-	cout << "Create empty xemptyslate\n";
 	return new xemptyslate(this,get_master());
 }
 
 void xslatearea::handle_input(void *initializer)
 {
-	
+child->handle_event (initializer);
+	/**
+	switch (((xcb_generic_event_t *)initializer)->response_type & ~0x80)
+	{
+		case XCB_EXPOSE:
+			((xhelperclass*)child)->window;
+			break;
+		default:
+			
+	}*/
 	
 }
