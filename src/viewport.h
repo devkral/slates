@@ -63,12 +63,16 @@ public:
 	int get_viewport_beg_y();
 	bool get_isdestroying();
 
+	void add_renderob(slateareascreen *renderob);
+	void remove_renderob(long int renderid);
+	slateareascreen *get_renderob(long int renderid);
 
 	virtual void update_slice_info()=0;
 	virtual slatearea *create_area(slate *parent_slate)=0;
 
 protected:
 	mutex protrender; //is locked while slates update
+	deque<slateareascreen*> render_pool; //pool with windows which must be rendered
 private:
 	int horizontal_tiles=-1;
 	int vertical_tiles=-1;
@@ -83,7 +87,7 @@ private:
 	//long int max_avail_slates=0; //=slice*slice-1=size-1 of slate_pool
 	vector<slate*> slate_pool; //leftwing first, then diag then top wing
 
-	deque<slateareascreen*> render_pool;
+	
 
 	
 

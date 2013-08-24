@@ -22,12 +22,14 @@
 
 xslatearea::xslatearea(slate *parent_slate) : slatearea(parent_slate)
 {
-
+	
+	
 }
 
 
 slateareascreen *xslatearea::create_emptyslate()
 {
+	cout << "Create empty xemptyslate\n";
 	return new xemptyslate(this,get_master());
 }
 

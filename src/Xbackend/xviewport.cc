@@ -24,6 +24,7 @@ class xslatearea;
 #include <iostream>
 #include <cstdlib>
 #include <unistd.h>
+
 using namespace std;
 
 
@@ -35,9 +36,13 @@ xviewport::xviewport(master *masteridd, int ownidd,xcb_screen_t *s) : viewport(m
 	void_cook = xcb_change_window_attributes_checked(((xmaster *)get_master())->con, screen->root,
 		    XCB_CW_EVENT_MASK, &evmask);
 
-	xcb_map_window(((xmaster*)get_master ())->con,screen->root);
-	renderthread=thread(xviewport::kickstarter_renderthread,(viewport *)this);
-	
+
+  printf ("Informations of screen %ld:\n", screen->root);
+  printf ("  width.........: %d\n", screen->width_in_pixels);
+  printf ("  height........: %d\n", screen->height_in_pixels);
+  printf ("  white pixel...: %ld\n", screen->white_pixel);
+  printf ("  black pixel...: %ld\n", screen->black_pixel);
+  printf ("\n");
 
 		
   //    uint32_t             mask;
@@ -64,17 +69,6 @@ void xviewport::update_slice_info()
 {
 	cout << "slice info update\n";
 	
-}
-
-void xviewport::render(slateareascreen *renderob)
-{
-	/* show window */
-	//xcb_window_t find out how to manipulate
-	xcb_map_window(((xmaster*)get_master ())->con, ((xhelperclass *)renderob)->window);
-
-	/* force */
-	xcb_flush(((xmaster*)get_master ())->con);
-	sleep(4);
 }
 
 slatearea *xviewport::create_area(slate *parent_slate)

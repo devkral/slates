@@ -38,7 +38,6 @@ public:
 	xviewport(master *masteridd, int ownidd,xcb_screen_t *s);
 	~xviewport();
 	slate *create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp);
-	void render(slateareascreen *renderob);
 	slatearea *create_area(slate *parent_slate);
 
 	

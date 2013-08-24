@@ -17,25 +17,25 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "sdl_slatearea.h"
+#include "sdlslatearea.h"
 
-sdl_slatearea::sdl_slatearea(slate *parent_slate, sdl_slateareacanvas *canvastemp) : slatearea(parent_slate)
+sdlslatearea::sdlslatearea(slate *parent_slate, sdl_slateareacanvas *canvastemp) : slatearea(parent_slate)
 {
 	screen=canvastemp;
 }
 
-sdl_slatearea::~sdl_slatearea()
+sdlslatearea::~sdlslatearea()
 {
 	delete screen;
 	screen=0;
 }
 
-void *sdl_slatearea::get_screen()
+void *sdlslatearea::get_screen()
 {
 	return (void*)screen;
 }
 
-void sdl_slatearea::update_screen()
+void sdlslatearea::update_screen()
 {
 	screen->updaterect(
 			        (get_origin ()->get_x())*(screen->viewportcanvas->widget_w-screen->viewportcanvas->beg_x),
@@ -44,7 +44,7 @@ void sdl_slatearea::update_screen()
 		 (screen->viewportcanvas->widget_h - screen->viewportcanvas->beg_y));
 }
 
-void sdl_slatearea::create_lockslatetype()
+void sdlslatearea::create_lockslatetype()
 {
 	sdl_lockslateo *temp=new sdl_lockslateo(get_master());
 	temp->set_slatearea(this);
@@ -53,7 +53,7 @@ void sdl_slatearea::create_lockslatetype()
 	child=temp;
 }
 
-void sdl_slatearea::create_emptyslatetype()
+void sdlslatearea::create_emptyslatetype()
 {
 	emptyslateo *temp=new sdl_emptyslateo(get_master());
 	temp->set_slatearea(this);

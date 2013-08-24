@@ -17,7 +17,7 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "sdl_emptyslateo.h"
+#include "sdlemptyslate.h"
 
 #include "sdlbackend.h"
 #include <iostream>
@@ -25,13 +25,13 @@
 using namespace std;
 
 
-sdl_emptyslateo::sdl_emptyslateo(master *parent_mastert) : emptyslateo(parent_mastert)
+sdlemptyslate::sdlemptyslate(master *parent_mastert) : emptyslate(parent_mastert)
 {
 	update_interval=100;
 
 }
 
-sdl_emptyslateo::~sdl_emptyslateo()
+sdlemptyslate::~sdlemptyslate()
 {
 	if (emptysur)
 	{
@@ -45,7 +45,7 @@ sdl_emptyslateo::~sdl_emptyslateo()
 	}
 }
 
-void sdl_emptyslateo::update()
+void sdlemptyslate::update()
 {
 	//cout << "Update empty\n";
 	if (parent->get_isondestruction()==true)
@@ -77,7 +77,7 @@ void sdl_emptyslateo::update()
 }
 
 
-void sdl_emptyslateo::handle_event (void *event, bool called_by_input)
+void sdlemptyslate::handle_event (void *event, bool called_by_input)
 {
 
 	if (called_by_input==true && SDL_GetModState()&(KMOD_GUI|KMOD_CTRL))
@@ -131,7 +131,7 @@ void sdl_emptyslateo::handle_event (void *event, bool called_by_input)
 
 }
 
-void sdl_emptyslateo::handle_input (void *initializer)
+void sdlemptyslate::handle_input (void *initializer)
 {
 	hasinputhandle=true;
 	event=*((SDL_Event*)initializer);
@@ -147,7 +147,7 @@ void sdl_emptyslateo::handle_input (void *initializer)
 }
 
 
-void sdl_emptyslateo::draw_function ()
+void sdlemptyslate::draw_function ()
 {
 	while(isdrawn==true)
 	{
@@ -167,7 +167,7 @@ void sdl_emptyslateo::draw_function ()
 	}
 }
 
-void sdl_emptyslateo::set_slatearea(slatearea *set)
+void sdlemptyslate::set_slatearea(slatearea *set)
 {
 	interact_with_draw.lock();
 	parent=set;

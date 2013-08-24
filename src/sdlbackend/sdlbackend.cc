@@ -33,7 +33,7 @@
 
 using namespace std;
 
-void sdl_master::inputhandler_function()
+void sdlmaster::inputhandler_function()
 {
 	SDL_Event event;
 	while (hasinputhandle)
@@ -60,19 +60,19 @@ void sdl_master::inputhandler_function()
 }
 
 
-viewport *sdl_master::create_viewport_intern(master *masteridd, int ownidd)
+viewport *sdlmaster::create_viewport_intern(master *masteridd, int ownidd)
 {
 	return new sdl_viewport(masteridd,ownidd);
 }
 
-sdl_master::sdl_master(int argc, char* argv[]) : master()
+sdlmaster::sdlmaster(int argc, char* argv[]) : master()
 {
 	for (int count=0; count<SDL_GetNumVideoDisplays(); count++) //SDL_GetNumVideoDisplays
 		createviewport();
 	inputhandler_function();
 }
 
-sdl_master::~sdl_master()
+sdlmaster::~sdlmaster()
 {
 	cout << "Destroy sdlmaster\n";
 	hasinputhandle=false;
@@ -81,7 +81,7 @@ sdl_master::~sdl_master()
 	SDL_Quit();
 }
 
-int sdl_master::handle_masterevent(void *event)
+int sdlmaster::handle_masterevent(void *event)
 {
 	int ishandled=MASTER_UNHANDLED;
 	if(protectmaster_eventhandle.try_lock_for(defaulttimeout))

@@ -36,7 +36,7 @@ public:
 	bool isstatic();
 	bool isdirty();
 
-
+	xcb_gcontext_t black;
 	uint32_t mask= XCB_GC_FOREGROUND | XCB_GC_GRAPHICS_EXPOSURES;
 	uint32_t values[2];
 	xcb_rectangle_t      r = { 20, 20, 60, 60 };

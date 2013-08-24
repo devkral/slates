@@ -30,21 +30,30 @@ xemptyslate::xemptyslate(slatearea *parentt, master *parent_mastert) : emptyslat
 	std::cout << "Enter xemptyslate\n"; 
    /* schwarzen Grafikkontext erzeugen */
 	context = xcb_generate_id(((xmaster*) get_master () )->con);
+	black = xcb_generate_id(((xmaster*) get_master () )->con);
 	values[0] = ((xviewport*) get_slatearea ()->get_viewport ()) ->screen->black_pixel;
 	values[1] = 0;
-
 	
 	xcb_create_gc(((xmaster *) get_master())->con,context, ((xviewport*) get_slatearea ()->get_viewport ()) ->screen->root, mask, values);
 
 	window = xcb_generate_id(((xmaster *) get_master())->con);
-	
+
+	//	                  ((xviewport*) get_slatearea ()->get_viewport ()) ->screen->root_depth,
 	//init with stub values
 	xcb_create_window(((xmaster *) get_master())->con,
-	                  ((xviewport*) get_slatearea ()->get_viewport ()) ->screen->root_depth,
-	                  window, ((xviewport*) get_slatearea ()->get_viewport ()) ->screen->root,
-                   1, 1, 100, 100, 1,
-                   XCB_WINDOW_CLASS_INPUT_OUTPUT, ((xviewport*) get_slatearea ()->get_viewport ()) ->screen->root_visual,
-                   mask, values);
+	                  XCB_COPY_FROM_PARENT,
+	                  window,
+	                  ((xviewport*) get_slatearea ()->get_viewport ()) ->screen->root,
+                   0, 0, 1000, 1000, 1,
+                   XCB_WINDOW_CLASS_INPUT_OUTPUT,
+	                  ((xviewport*) get_slatearea ()->get_viewport ()) ->screen->root_visual,
+	                  0,NULL);
+                  // mask, values);
+	
+	xcb_map_window(((xmaster*)get_master ())->con,window);
+	xcb_create_gc (((xmaster *) get_master())->con, black, window, mask, values);
+	xcb_flush (((xmaster*)get_master ())-> con);
+	//renderthread=thread(xviewport::kickstarter_renderthread,(viewport *)this);
 }
 
 xemptyslate::~xemptyslate()

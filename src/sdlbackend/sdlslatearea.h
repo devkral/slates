@@ -25,24 +25,23 @@ class slatearea;
 class slate;
 
 
-#include "sdl_emptyslateo.h"
-class sdl_emptyslateo;
+#include "sdlemptyslate.h"
+class sdl_emptyslate;
 
-#include "sdl_lockslateo.h"
-class sdl_lockslateo;
+#include "sdllockslate.h"
+class sdllockslate;
 
 
 #include "constdef.h"
-#include "sdl_screenobject.h"
 
 
 using namespace std;
 
-class sdl_slatearea : public slatearea
+class sdlslatearea : public slatearea
 {
 public:
-	sdl_slatearea(slate *parent_slate, sdl_slateareacanvas *canvastemp);
-	~sdl_slatearea();
+	sdlslatearea(slate *parent_slate, sdl_slateareacanvas *canvastemp);
+	~sdlslatearea();
 
 	void *get_screen();
 	void update_screen();
@@ -52,7 +51,6 @@ public:
 
 	
 protected:
-	sdl_slateareacanvas *screen;
 private:
 	
 };

@@ -19,10 +19,8 @@
 
 #ifndef _SDL_EMPTYSLATEO_H_
 #define _SDL_EMPTYSLATEO_H_
-#include "emptyslateo.h"
-class emptyslateo;
-#include "sdl_screenobject.h"
-class sdl_screenobject;
+#include "emptyslate.h"
+class emptyslate;
 
 
 #include <mutex>
@@ -32,11 +30,11 @@ class sdl_screenobject;
 
 
 
-class sdl_emptyslateo : public emptyslateo
+class sdlemptyslate : public emptyslate
 {
 public:
-	sdl_emptyslateo(master *parent_mastert);
-	~sdl_emptyslateo();
+	sdlemptyslate(master *parent_mastert);
+	~sdlemptyslate();
 	void update();
 	void cleanup_handler ();
 	void set_slatearea(slatearea *in);

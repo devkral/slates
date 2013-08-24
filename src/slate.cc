@@ -50,6 +50,7 @@ void slate::create_area()
 	if (child!=0)
 		delete child;
 	child=get_viewport()->create_area(this);
+	child->init();
 }
 
 void slate::replace_area(slatearea *newarea)

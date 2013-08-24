@@ -43,11 +43,24 @@ void master::cleanup()
 		destroyviewport();
 }
 
+
+viewport *master::get_viewport_by_id(int viewportid)
+{
+	return viewport_pool[viewportid];
+
+}
+
+
+slate *master::get_slate_by_id(int viewportid, long int slateid)
+{
+	return get_viewport_by_id(viewportid)->get_slate_by_id(slateid);
+}
+
 void master::swapcontent(int viewportid1, long int slateid1,int viewportid2, long int slateid2)
 {
-	slateareascreen *temp=viewport_pool[viewportid1]->slate_pool[slateid1]->get_slatearea()->get_screen();
-	viewport_pool[viewportid1]->slate_pool[slateid1]->get_slatearea()->set_screen(viewport_pool[viewportid2]->slate_pool[slateid2]->get_slatearea()->get_screen());
-	viewport_pool[viewportid2]->slate_pool[slateid2]->get_slatearea()->set_screen(temp)	;
+	slateareascreen *temp=get_slate_by_id(viewportid1,slateid1)->get_slatearea()->get_screen();
+	get_slate_by_id(viewportid1,slateid1)->get_slatearea()->set_screen(get_slate_by_id(viewportid2,slateid2)->get_slatearea()->get_screen());
+	get_slate_by_id(viewportid2,slateid2)->get_slatearea()->set_screen(temp);
 }
 
 

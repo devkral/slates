@@ -73,7 +73,13 @@ void xmaster::inputhandler_function()
 		{
 			case XCB_EXPOSE:    /* draw or redraw the window */
 				//xcb_poly_fill_rectangle(con, window, g,  1, &r);
-				//xcb_flush(con);
+				//xcb_flush(con);	/* show window */
+	//xcb_window_t find out how to manipulate
+	//xcb_map_window(((xmaster*)get_master ())->con, ((xhelperclass *)renderob)->window);
+
+	/* force */
+	//xcb_flush(((xmaster*)get_master ())->con);
+	//sleep(4);
 				break;
 			case XCB_KEY_PRESS:  /* beenden, wenn eine Taste gedrückt wird */
 				inputhandling = false;

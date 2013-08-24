@@ -17,7 +17,7 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "sdl_viewport.h"
+#include "sdlviewport.h"
 
 
 
@@ -29,7 +29,7 @@
 using namespace std;
 
 
-sdl_viewport::sdl_viewport(master *masteridd, int ownidd) : viewport(masteridd,ownidd)
+sdlviewport::sdlviewport(master *masteridd, int ownidd) : viewport(masteridd,ownidd)
 {
 	cerr << "Create sdl_viewport\n";
 	viewport_screen=new sdl_viewportcanvas(2);
@@ -67,20 +67,20 @@ sdl_viewport::sdl_viewport(master *masteridd, int ownidd) : viewport(masteridd,o
 
 
 
-sdl_viewport::~sdl_viewport()
+sdlviewport::~sdlviewport()
 {
 	delete viewport_screen;
 	viewport_screen=0;
 }
 
 
-long int sdl_viewport::id_slate_mouse(int x, int y)
+long int sdlviewport::id_slate_mouse(int x, int y)
 {
 	if (x<0 || y<0)
 		return xy_negative;
 	return calcidslate(x/viewport_screen->widget_w, y/viewport_screen->widget_h);
 }
-slate *sdl_viewport::get_slate_mouse(int x, int y)
+slate *sdlviewport::get_slate_mouse(int x, int y)
 {
 	long int id= id_slate_mouse(x, y);
 	if (id<0)
@@ -90,7 +90,7 @@ slate *sdl_viewport::get_slate_mouse(int x, int y)
 }
 
 
-void sdl_viewport::update_slice_info()
+void sdlviewport::update_slice_info()
 {
 	viewport_screen->widget_w=viewport_screen->dispbounds.w/get_viewport_width();
 	viewport_screen->widget_h=viewport_screen->dispbounds.h/get_viewport_height();
@@ -106,11 +106,11 @@ void sdl_viewport::update_slice_info()
 }
 
 
-void *sdl_viewport::get_viewportscreen()
+void *sdlviewport::get_viewportscreen()
 {
 	return (void*)viewport_screen;
 }
-slatearea *sdl_viewport::create_area(slate *parent_slate)
+slatearea *sdlviewport::create_area(slate *parent_slate)
 {
 	sdl_slateareacanvas *temp=new sdl_slateareacanvas(viewport_screen);
 	sdl_slatearea *temp2=new sdl_slatearea(parent_slate,temp);
@@ -119,32 +119,13 @@ slatearea *sdl_viewport::create_area(slate *parent_slate)
 	return (slatearea *)temp2 ;
 }
 
-void viewport::add_renderob(slateareascreen *renderob)
-{
-	protrender.lock();
-	renderob->set_renderid (render_pool.size()); //nice hack: size must be one less before adding
-	render_pool.push_back(renderob);
-	protrender.unlock();
-}
-void viewport::remove_renderob(long int renderid)
-{
-	protrender.lock();
-	render_pool[renderid]->set_renderid (-1);
-	render_pool.erase(render_pool.begin()+renderid);
-	protrender.unlock();
-}
 
 
-slateareascreen *viewport::get_renderob(long int renderid)
-{
-	return render_pool[renderid];
-}
-
-void viewport::rendering()
+void sdlviewport::rendering()
 {
 	int count=0;
 	slateareascreen *temp=0;
-	while (isdestroying==false)
+	while (get_isdestroying()==false)
 	{
 		protrender.lock();
 		for(count=0;count<render_pool.size();count++)
@@ -161,9 +142,10 @@ void viewport::rendering()
 		}
 		protrender.unlock();
 	}
+	//sleep 
 }
 
-void viewport::kickstarter_renderthread (viewport *renderingob)
+void sdlviewport::kickstarter_renderthread (viewport *renderingob)
 {
 	renderingob->rendering();
 }

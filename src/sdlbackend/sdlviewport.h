@@ -48,9 +48,6 @@ public:
 	void *get_viewportscreen();
 	void update_slice_info();
 	slatearea *create_area(slate *parent_slate);
-	void add_renderob(slateareascreen *renderob);
-	void remove_renderob(long int renderid);
-	slateareascreen *get_renderob(long int renderid);
 	void rendering();
 	void render(sdl_slateareascreen *renderob)=0; 
 	

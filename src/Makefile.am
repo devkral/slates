@@ -81,6 +81,8 @@ endif
 if IS_COMPILED_WITH_X
 slates_SOURCES += Xbackend/xbackend.cc \
 	Xbackend/xbackend.h \
+	Xbackend/xroutines.cc \
+	Xbackend/xroutines.h \
 	Xbackend/xviewport.cc \
 	Xbackend/xviewport.h \
 	Xbackend/xlockslate.cc \

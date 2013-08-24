@@ -369,3 +369,23 @@ void viewport::handle_event(void *event)
 }
 
 
+void viewport::add_renderob(slateareascreen *renderob)
+{
+	protrender.lock();
+	renderob->set_renderid (render_pool.size()); //nice hack: size must be one less before adding
+	render_pool.push_back(renderob);
+	protrender.unlock();
+}
+void viewport::remove_renderob(long int renderid)
+{
+	protrender.lock();
+	render_pool[renderid]->set_renderid (-1);
+	render_pool.erase(render_pool.begin()+renderid);
+	protrender.unlock();
+}
+
+
+slateareascreen *viewport::get_renderob(long int renderid)
+{
+	return render_pool[renderid];
+}

@@ -31,6 +31,8 @@ public:
 	void createviewport(void *monitor=0);
 	void destroyviewport();
 	void cleanup();
+	viewport *get_viewport_by_id (int id);
+	slate *get_slate_by_id(int idview, long int idslate);
 	void swapcontent(int viewportid1, long int slateid1,int viewportid2, long int slateid2);
 	int countviewports(); //in short: get all screens
 	
