@@ -19,7 +19,10 @@ uint8_t emptyslate::TYPE()
 }
 
 
-
+string emptyslate::get_label_open_menu()
+{
+	return "Open Menu"; //use new ?? I don't think so
+}
 
 /**
 void slate::empty_emptyslate()

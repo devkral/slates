@@ -12,6 +12,7 @@ class emptyslate : public slateareascreen
 public:
 	emptyslate(slatearea *parentt, master *parent_mastert);
 	~emptyslate();
+	virtual string get_label_open_menu();
 	
 	//int fillslate(string progname); //own content
 	//int fillsysslate();

@@ -36,11 +36,8 @@ public:
 	bool isstatic();
 	bool isdirty();
 
-	xcb_gcontext_t black;
-	uint32_t initmask= XCB_CW_BACK_PIXEL | XCB_CW_EVENT_MASK;
-	uint32_t initvalues[2];
-	xcb_rectangle_t      r = { 20, 20, 60, 60 };
-	xcb_gcontext_t context;
+
+	
 	void handle_event(void *event);
 
 	  /* geometric objects */
@@ -56,6 +53,15 @@ private:
 	uint32_t *position_values; // = { 200, 300 };
 	uint32_t *size_values;
 	const char *title="test";
+
+	xcb_gcontext_t black;
+	uint32_t initmask= XCB_CW_BACK_PIXEL | XCB_CW_EVENT_MASK;
+	uint32_t initvalues[2];
+	xcb_rectangle_t      r = { 20, 20, 60, 60 };
+	xcb_gcontext_t defaultcontext;
+	xcb_font_t font;
+	uint32_t gc_values[3];
+	char *font_name=(char *)"7x13";
 };
 
 #endif // _TEMPTYSLATEO_H_

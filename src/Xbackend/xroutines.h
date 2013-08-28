@@ -18,11 +18,14 @@
  */
 
 
-#include <xcb/xcb.h>
-
 #ifndef _XROUTINES_H_
 #define _XROUTINES_H_
 
+
+#include <xcb/xcb.h>
+#include <string>
+
+using namespace std;
 
 class xhelperclass
 {
@@ -30,6 +33,23 @@ public:
 	xcb_drawable_t window;
 };
 
+extern int testCookie (xcb_void_cookie_t cookie,
+                xcb_connection_t *connection,
+                std::string errMessage );
+
+
+extern xcb_gc_t
+    getFontGC (xcb_connection_t *connection,
+               xcb_screen_t     *screen,
+               xcb_window_t      window,
+               const char       *fontName );
+
+extern void button_draw (xcb_connection_t *c,
+             xcb_screen_t     *screen,
+             xcb_window_t      window,
+             int16_t           x1,
+             int16_t           y1,
+             const char       *label);
 
 void init_key_actions();
 void set_default_key_actions();

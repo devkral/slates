@@ -117,8 +117,17 @@ uint16_t xmaster::handle_masterevent(void *event)
 		case XCB_KEY_PRESS:  /* beenden, wenn eine Taste gedrückt wird */
 			/**where are the keysequences declared*/
 			//inputhandling = false;
-			return QUIT_DE;
 			break;
+		case XCB_KEY_RELEASE: {
+                        xcb_key_release_event_t *kr = (xcb_key_release_event_t *)event;
+
+                        switch (kr->detail) {
+                            /* ESC */
+                            case 9:
+                                return QUIT_DE;
+                        }
+                    }
+		break;
 		case XCB_EXPOSE:
 			xcb_flush (con);
 			return EVENT_HANDLED_INTERN;
@@ -145,7 +154,6 @@ uint16_t xmaster::handle_masterevent(void *event)
 			case XCB_CLIENT_MESSAGE:
 				if((*(xcb_client_message_event_t*)event).data.data32[0] == (*closereply).atom)
 				{
-					inputhandling = false;
 					return QUIT_DE;
 				}
 				break;
