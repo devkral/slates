@@ -14,7 +14,7 @@ lockslate::~lockslate()
 }
 
 
-char lockslate::TYPE()
+uint8_t lockslate::TYPE()
 {
 	return TYPE_locked;
 }

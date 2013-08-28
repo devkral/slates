@@ -16,10 +16,11 @@ public:
 	testmaster(int argc, char* argv[]);
 	~testmaster();
 	void inputhandler_function();
-	int handle_masterevent(void *event);
+	uint16_t handle_masterevent(void *event);
+	int32_t get_focused_viewport();
 
 private:
-	viewport *create_viewport_intern(master *masteridd, int ownidd, void *t);
+	viewport *create_viewport_intern(master *masteridd, int32_t ownidd, void *t);
 };
 
 int testmain(int argc ,char *argv[]);

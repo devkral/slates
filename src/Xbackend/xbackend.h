@@ -3,7 +3,7 @@
 #ifndef _XBACKEND_H_
 #define _XBACKEND_H_
 
-#include <xcb/xcb.h>
+#include "xroutines.h"
 
 #include "master.h"
 class master;
@@ -17,16 +17,18 @@ public:
 	xmaster(int argc, char* argv[]);
 	~xmaster();
 	void inputhandler_function();
-	int handle_masterevent(void *event);
+	int32_t get_focused_viewport();
+	uint16_t handle_masterevent(void *event);
 
 	xcb_connection_t *con;
 	xcb_connection_t *display;
-	int handle_event(void *event);
+	//uint16_t handle_event(void *event);
 	
 private:
-	viewport *create_viewport_intern(master *masteridd, int ownidd, void *monitor);
-	
-	int numbermonitors=0;
+	viewport *create_viewport_intern(master *masteridd, int32_t ownidd, void *monitor);
+	xcb_intern_atom_cookie_t closecookie;
+	xcb_intern_atom_reply_t* closereply;
+	int32_t numbermonitors=0;
 	bool inputhandling = true;
 	
 };

@@ -30,6 +30,11 @@ void tviewport::render(slateareascreen *renderob)
 	cout << "renderob updated\n";
 }
 
+int32_t tviewport::get_focused_slate()
+{
+	return 0;
+}
+
 slatearea *tviewport::create_area(slate *parent_slate)
 {
 	return (slatearea*) new tslatearea(parent_slate);

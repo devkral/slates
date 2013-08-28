@@ -16,7 +16,7 @@ class lockslate : public slateareascreen
 public:
 	lockslate(slatearea *parentt,master *parent_mastert);
 	~lockslate();
-	char TYPE();
+	uint8_t TYPE();
 protected:
 
 private:

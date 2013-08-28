@@ -37,7 +37,7 @@ public:
 	bool isdirty();
 
 	xcb_gcontext_t black;
-	uint32_t initmask=  XCB_CW_BACK_PIXEL | XCB_CW_EVENT_MASK;
+	uint32_t initmask= XCB_CW_BACK_PIXEL | XCB_CW_EVENT_MASK;
 	uint32_t initvalues[2];
 	xcb_rectangle_t      r = { 20, 20, 60, 60 };
 	xcb_gcontext_t context;
@@ -53,6 +53,8 @@ public:
 protected:
 
 private:
+	uint32_t *position_values; // = { 200, 300 };
+	uint32_t *size_values;
 	const char *title="test";
 };
 

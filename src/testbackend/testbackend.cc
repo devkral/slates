@@ -9,7 +9,7 @@ using namespace std;
 
 
 
-viewport *testmaster::create_viewport_intern(master *masteridd, int ownidd,void *monitor=0)
+viewport *testmaster::create_viewport_intern(master *masteridd, int32_t ownidd,void *monitor=0)
 {
 	return new tviewport(masteridd,ownidd);
 }
@@ -30,12 +30,15 @@ void testmaster::inputhandler_function()
 
 
 }
-int testmaster::handle_masterevent(void *event)
+uint16_t testmaster::handle_masterevent(void *event)
 {
-	return MASTER_UNHANDLED;
+	return EXP_ALL_VIEW;
 }
 
-
+int32_t testmaster::get_focused_viewport()
+{
+	return 0;
+}
 
 int testmain(int argc ,char *argv[])
 {

@@ -83,9 +83,10 @@ void slatearea::update()
 		get_y()>=get_origin()->get_viewport()->get_viewport_height()+get_origin ()->get_viewport()->get_viewport_beg_y())
 	{
 		if (child->isstatic ()==false)
+		{
 			get_viewport()->remove_renderob(child->get_renderid ());
+		}
 	}
-
 	else
 	{
 		//if (child->isstatic ()==false)

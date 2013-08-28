@@ -35,7 +35,6 @@ class xslatearea : public slatearea
 		void handle_input(void *initializer);
 		
 	private:
-		
 };
 
 #endif // _XSLATEAREA_H_

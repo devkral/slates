@@ -37,10 +37,11 @@ using namespace std;
 #define xy_negative -4
 #define xy_out_of_range -4
 
-#define MASTER_HANDLED 1
+//will be replaced
+/**#define MASTER_HANDLED 1
 #define MASTER_UNHANDLED 2
 #define MASTER_QUIT 3
-#define MASTER_TIMEDOUT 4
+#define MASTER_TIMEDOUT 4*/
 
 #define TYPE_empty 1
 #define TYPE_locked 2
@@ -54,6 +55,22 @@ typedef struct _parsedob
 	
 }parsedob;
 
+
+
+//actions
+#define ADD_SLICE 0
+#define REMOVE_SLICE 1
+#define EXP_ALL_VIEW 2
+#define EXP_FOCUS_VIEW 3
+#define EXP_FOCUS_SLATE 4
+#define ACTIVATE_LOCK 5
+#define RELOAD_DE 6
+#define QUIT_DE 7
+#define EVENT_HANDLED_INTERN 8 //handled internally
+#define TIMEOUT 9 //maybe but include
+//implemented???
+#define resize_slatearea 11
+#define move_slatearea 12
 
 
 

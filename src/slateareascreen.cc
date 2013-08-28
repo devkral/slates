@@ -27,13 +27,18 @@ master *slateareascreen::get_master()
 	return parent_master;
 }
 
+viewport *slateareascreen::get_viewport()
+{
+	return get_slatearea ()->get_viewport ();
+}
+
 void slateareascreen::handle_event(void *event)
 {
 
 }
 
 
-void slateareascreen::setlock(int _lockstate)
+void slateareascreen::setlock(uint8_t _lockstate)
 {
 	curlockstate=_lockstate;
 }
@@ -47,11 +52,11 @@ bool slateareascreen::islocked()
 
 
 
-long int slateareascreen::get_renderid()
+int32_t slateareascreen::get_renderid()
 {
 	return renderid;
 }
-void slateareascreen::set_renderid(long int id)
+void slateareascreen::set_renderid(int32_t id)
 {
 	if (renderid!=-1 && id!=-1 )
 		std::cerr << "Error: renderid dirty\n";
@@ -64,7 +69,7 @@ void slateareascreen::swap_slatearea (slatearea *newparent)
 	if (parent->get_viewport()!=newparent->get_viewport())
 	{
 		parent->get_viewport()->remove_renderob (renderid);
-		long int rivalid= newparent->get_screen()->get_renderid();
+		int32_t rivalid= newparent->get_screen()->get_renderid();
 		if (rivalid!=-1)
 			parent->get_viewport()->remove_renderob (rivalid);
 		newparent->get_viewport()->add_renderob (this);

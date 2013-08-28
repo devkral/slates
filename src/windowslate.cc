@@ -13,7 +13,7 @@ windowslate::~windowslate()
 
 }
 
-char windowslate::TYPE()
+uint8_t windowslate::TYPE()
 {
 	return TYPE_filled;
 }

@@ -30,18 +30,22 @@ using namespace std;
 
 xviewport::xviewport(master *masteridd, int ownidd,xcb_screen_t *s) : viewport(masteridd,ownidd)
 {
-	const uint32_t evmask = XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT |XCB_EVENT_MASK_ENTER_WINDOW;
+	evmask[0]= XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT |XCB_EVENT_MASK_ENTER_WINDOW;
+	evmask[1]=0 ;/**XCB_EVENT_MASK_EXPOSURE  | XCB_EVENT_MASK_BUTTON_PRESS   |
+                                    XCB_EVENT_MASK_BUTTON_RELEASE | XCB_EVENT_MASK_POINTER_MOTION |
+                                    XCB_EVENT_MASK_KEY_PRESS      | XCB_EVENT_MASK_KEY_RELEASE;*/
 	xcb_void_cookie_t void_cook;
 	screen=s;
 	void_cook = xcb_change_window_attributes_checked(((xmaster *)get_master())->con, screen->root,
-		    XCB_CW_EVENT_MASK, &evmask);
+		    XCB_CW_EVENT_MASK, evmask);
 
+	//xcb_change_property(con, XCB_PROP_MODE_REPLACE, screen->root, EWMH._NET_WM_STATE, XCB_ATOM_ATOM, 32, 1, &(EWMH._NET_WM_STATE_FULLSCREEN));
 
-  printf ("Informations of screen %ld:\n", screen->root);
+//printf ("Informations of screen %ld:\n", screen->root);
   printf ("  width.........: %d\n", screen->width_in_pixels);
   printf ("  height........: %d\n", screen->height_in_pixels);
-  printf ("  white pixel...: %ld\n", screen->white_pixel);
-  printf ("  black pixel...: %ld\n", screen->black_pixel);
+//printf ("  white pixel...: %ld\n", screen->white_pixel);
+//printf ("  black pixel...: %ld\n", screen->black_pixel);
   printf ("\n");
 
 		
@@ -61,15 +65,25 @@ xviewport::xviewport(master *masteridd, int ownidd,xcb_screen_t *s) : viewport(m
 
 xviewport::~xviewport()
 {
-	free(screen);
+	//free(screen); //causes error, double free, freed in master?
 }
 
 
 void xviewport::update_slice_info()
 {
-	cout << "slice info update\n";
+	slate_width_p=screen->width_in_pixels/get_viewport_width();
+	slate_height_p=screen->height_in_pixels/get_viewport_height();
+	cout << slate_width_p << " " << slate_height_p << endl;
+	update_slates ();
+	cout << "survived" << endl;
 	
 }
+
+int32_t xviewport::get_focused_slate()
+{
+	return 0;
+}
+
 
 slatearea *xviewport::create_area(slate *parent_slate)
 {

@@ -15,7 +15,7 @@ public:
 	
 	//int fillslate(string progname); //own content
 	//int fillsysslate();
-	char TYPE();
+	uint8_t TYPE();
 	
 protected:
 

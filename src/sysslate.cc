@@ -14,7 +14,7 @@ sysslate::~sysslate()
 
 }
 
-char sysslate::TYPE()
+uint8_t sysslate::TYPE()
 {
 	return TYPE_filled;
 }

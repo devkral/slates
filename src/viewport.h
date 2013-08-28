@@ -27,45 +27,47 @@ using namespace std;
 
 
 
-extern long int calcidslate(long int x, long int y);
+extern int32_t calcidslate(int32_t x, int32_t y);
 
 class viewport
 {
 public:
-	viewport(master *master_parent, int viewportidtemp);
+	viewport(master *master_parent, int32_t viewportidtemp);
 	virtual ~viewport();
-	slate *get_slate(int x, int y);
-	slate *get_slate_by_id(long int id);
+	slate *get_slate(int32_t x, int32_t y);
+	slate *get_slate_by_id(int32_t id);
 	void addslice();
-	int removeslice();
-	int count_filled_slots(int sliceid);
-	void fill_slate_intern(long int id); //counter 
-	void empty_slate_intern(long int id); //counter don't confuse with emptyslate
-	void handle_event(void *event);
+	int16_t removeslice();
+	int32_t count_filled_slots(int32_t sliceid);
+	void fill_slate_intern(int32_t id); //counter 
+	void empty_slate_intern(int32_t id); //counter don't confuse with emptyslate
+	void handle_event(void *event, uint8_t receiver); //0=all, 1 focused, 2 active rendered
 	void cleanup();
 	void lock();
 	void unlock();
 	
 	void update_slates();
-	void async_destroy_slates(long int amount);
+	void async_destroy_slates(int32_t amount);
 	void async_create_slates();
 	
 	master *get_master();
 
-	int get_viewport_id();
-	int get_slices();
+	int32_t get_viewport_id();
+	int32_t get_slices();
 
-	void set_viewport_size(int width, int height); //unit slates
-	void set_viewport_begin(int x, int y); //unit slates
-	int get_viewport_width();
-	int get_viewport_height();
-	int get_viewport_beg_x();
-	int get_viewport_beg_y();
+	void set_viewport_size(int32_t width, int32_t height); //unit slates
+	void set_viewport_begin(int32_t x, int32_t y); //unit slates
+	int32_t get_viewport_width();
+	int32_t get_viewport_height();
+	int32_t get_viewport_beg_x();
+	int32_t get_viewport_beg_y();
 	bool get_isdestroying();
 
 	void add_renderob(slateareascreen *renderob);
-	void remove_renderob(long int renderid);
-	slateareascreen *get_renderob(long int renderid);
+	void remove_renderob(int32_t renderid);
+	slateareascreen *get_renderob(int32_t renderid);
+
+	virtual int32_t get_focused_slate()=0; 
 
 	virtual void update_slice_info()=0;
 	virtual slatearea *create_area(slate *parent_slate)=0;
@@ -74,24 +76,22 @@ protected:
 	mutex protrender; //is locked while slates update
 	deque<slateareascreen*> render_pool; //pool with windows which must be rendered
 private:
-	int horizontal_tiles=-1;
-	int vertical_tiles=-1;
-	int view_beg_slate_x=0;
-	int view_beg_slate_y=0;
-	int viewportid;
-	int slices=0;
-	long int slate_idcount=0;
+	int32_t horizontal_tiles=-1;
+	int32_t vertical_tiles=-1;
+	int32_t view_beg_slate_x=0;
+	int32_t view_beg_slate_y=0;
+	int32_t viewportid;
+	int32_t slices=0;
+	int32_t slate_idcount=0; 
 	mutex slateid_prot;
-	long int amount_filled_slates;
+	int32_t amount_filled_slates;
 	bool isdestroying=false;
 	//long int max_avail_slates=0; //=slice*slice-1=size-1 of slate_pool
 	vector<slate*> slate_pool; //leftwing first, then diag then top wing
 
 	
 
-	
 
-	
 	//deque<slatetype*> slatetype_pool;
 	master *mroot;
 	
@@ -100,17 +100,17 @@ private:
 	void unlock_all_intern();
 	
 	//cache
-	long int cache_last_diag_point_id=0;
-	long int cache_nto_last_diag_point_id=0;
+	int32_t cache_last_diag_point_id=0;
+	int32_t cache_nto_last_diag_point_id=0;
 	
 	//autoremove last slice
 		//last slice
-		int last_slice_filled=0;
-		long int id_last_beg=0;
+		int32_t last_slice_filled=0;
+		int32_t id_last_beg=0;
 
 		//next to last slice
-		int nto_last_slice_filled=0;
-		long int id_nto_last_beg=0;
+		int32_t nto_last_slice_filled=0;
+		int32_t id_nto_last_beg=0;
 
 
 	

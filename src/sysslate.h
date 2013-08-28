@@ -16,7 +16,7 @@ class sysslate: public slateareascreen
 public:
 	sysslate(slatearea *parentt,master *parent_mastert);
 	~sysslate();
-	char TYPE();
+	uint8_t TYPE();
 protected:
 
 private:

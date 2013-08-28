@@ -13,7 +13,7 @@ emptyslate::~emptyslate()
 
 }
 
-char emptyslate::TYPE()
+uint8_t emptyslate::TYPE()
 {
 	return TYPE_empty;
 }

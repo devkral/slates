@@ -8,11 +8,11 @@
 #include "slate.h"
 #include "master.h"
 
-long int calcidslate(long int x, long int y)
+int32_t calcidslate(int32_t x,int32_t y)
 {
-	long int diagrefpoint;
-	long int fromrefpoint;
-	long int result;
+	int32_t diagrefpoint;
+	int32_t fromrefpoint;
+	int32_t result;
 	if (x<y)
 	{
 		diagrefpoint=y*y+y;  //begin from zero so (y+1)*(y+1)-y-1
@@ -28,7 +28,7 @@ long int calcidslate(long int x, long int y)
 	return result;
 }
 
-viewport::viewport(master *master_parent,int viewportidtemp)
+viewport::viewport(master *master_parent,int32_t viewportidtemp)
 {
 	viewportid=viewportidtemp;
 	mroot=master_parent;
@@ -46,7 +46,7 @@ void viewport::cleanup()
 	async_destroy_slates(slate_pool.size()-1);
 }
 
-int viewport::get_viewport_width()
+int32_t viewport::get_viewport_width()
 {
 	if (horizontal_tiles<=0)
 		return slices;
@@ -58,7 +58,7 @@ bool viewport::get_isdestroying()
 	return isdestroying;
 }
 
-int viewport::get_viewport_height()
+int32_t viewport::get_viewport_height()
 {
 	if (vertical_tiles<=0)
 		return slices;
@@ -85,12 +85,12 @@ void viewport::set_viewport_size(int width, int height)
 	update_slates();
 }
 
-int viewport::get_viewport_beg_x()
+int32_t viewport::get_viewport_beg_x()
 {
 	return view_beg_slate_x;
 }
 
-int viewport::get_viewport_beg_y()
+int32_t viewport::get_viewport_beg_y()
 {
 	return view_beg_slate_y;
 }
@@ -111,14 +111,14 @@ void viewport::set_viewport_begin(int x, int y)
 }
 
 
-slate *viewport::get_slate(int x, int y)
+slate *viewport::get_slate(int32_t x, int32_t y)
 {
 	if (x<0 || y<0)
 	{
 		cerr << "Error: x or y lower than 0, x:" << x << " y:" << y << endl;
 		return 0;
 	}
-	int validate=calcidslate(x, y);
+	int32_t validate=calcidslate(x, y);
 	if (validate>=slate_pool.size())
 	{
 		cerr << "Error: x or y greater than available slates, x:" << x << " y:" << y << endl;
@@ -128,7 +128,7 @@ slate *viewport::get_slate(int x, int y)
 
 }
 
-slate *viewport::get_slate_by_id(long int id)
+slate *viewport::get_slate_by_id(int32_t id)
 {
 	if (id<0 || id>=slate_pool.size())
 	{
@@ -142,9 +142,11 @@ slate *viewport::get_slate_by_id(long int id)
 void viewport::update_slates()
 {	
 	if (get_isdestroying())
+	{
 		return;
+	}
 	protrender.lock();
-	for (long int count=0;count<slate_pool.size();count++)
+	for (int32_t count=0;count<slate_pool.size();count++)
 	{
 		slate_pool[count]->update();
 	}
@@ -162,8 +164,8 @@ void viewport::async_create_slates()
 	if (get_isdestroying())
 		return;
 	vector<thread> temppool;
-	int temp_x, temp_y;
-	while (slate_idcount<slices*slices-slices)
+	int32_t temp_x, temp_y;
+	while (slate_idcount<slices*slices-slices && slate_idcount<INT32_MAX)
 	{
 		temp_y=slices-1;
 		temp_x=slate_idcount-id_last_beg;
@@ -173,7 +175,7 @@ void viewport::async_create_slates()
 		temppool.push_back(thread(async_create_slates_intern,placeholderpointer));
 		slate_idcount++;
 	}
-	while (slate_idcount<slices*slices) //don't use slate_pool.size() endless loop
+	while (slate_idcount<slices*slices && slate_idcount<INT32_MAX) //don't use slate_pool.size() endless loop
 	{
 		temp_y=(cache_last_diag_point_id+(slices-1))-slate_idcount; //sure???
 		temp_x=slices-1;
@@ -181,6 +183,11 @@ void viewport::async_create_slates()
 		slate_pool.push_back(placeholderpointer);
 		temppool.push_back(thread(async_create_slates_intern,placeholderpointer));
 		slate_idcount++;
+	}
+
+	if (slate_idcount==INT32_MAX)
+	{
+		cerr << "Reached maximal amount of slates.\n";
 	}
 	
 	while (temppool.empty()==false)
@@ -202,10 +209,10 @@ void async_destroy_slates_intern(slate *targob)
 	}
 }
 
-void viewport::async_destroy_slates(long int amount)
+void viewport::async_destroy_slates(int32_t amount)
 {
 	vector<thread> temppool;
-	for (long int count=0;count<amount;count++)
+	for (int32_t count=0;count<amount;count++)
 	{
 		temppool.push_back(thread(async_destroy_slates_intern,slate_pool.back()));
 		slate_pool.pop_back();
@@ -218,10 +225,10 @@ void viewport::async_destroy_slates(long int amount)
 	}
 }
 
-int viewport::count_filled_slots(int sliceid)
+int32_t viewport::count_filled_slots(int32_t sliceid)
 {
-	int temp=0;
-	long int count=0;
+	int32_t temp=0;
+	int32_t count=0;
 	for (count=0;count<sliceid+sliceid;count++) //slices+slices+1 but begins with 0 so not needed
 		if (slate_pool[sliceid+sliceid-count]->isfilled()==true)
 			temp++;
@@ -252,7 +259,7 @@ void viewport::addslice()
 	}
 }
 
-int viewport::removeslice()
+int16_t viewport::removeslice()
 {
 	if (get_isdestroying() || last_slice_filled>0 || nto_last_slice_filled >= (slices-1)+(slices-1)) //just one free slot
 	{
@@ -287,7 +294,7 @@ void viewport::lock()
 {
 	if (get_isdestroying())
 		return;
-	for (long int count=0;count<slate_pool.size();count++)
+	for (int32_t count=0;count<slate_pool.size();count++)
 	{
 		if (slate_pool[count]->isorigin())
 			slate_pool[count]->setlock(1);
@@ -298,14 +305,14 @@ void viewport::unlock()
 {
 	if (get_isdestroying())
 		return;
-	for (long int count=0;count<slate_pool.size();count++)
+	for (int32_t count=0;count<slate_pool.size();count++)
 	{
 		if (slate_pool[count]->isorigin())
 			slate_pool[count]->setlock(0);
 	}
 }
 
-void viewport::fill_slate_intern(long int id)
+void viewport::fill_slate_intern(int32_t id)
 {
 	amount_filled_slates++;
 	
@@ -322,7 +329,7 @@ void viewport::fill_slate_intern(long int id)
 	}
 }
 
-void viewport::empty_slate_intern(long int id)
+void viewport::empty_slate_intern(int32_t id)
 {
 	amount_filled_slates--;
 	if (id>=id_last_beg)
@@ -336,56 +343,76 @@ void viewport::empty_slate_intern(long int id)
 	
 }
 
-int viewport::get_viewport_id()
+int32_t viewport::get_viewport_id()
 {
 	return viewportid;
 }
 
-int viewport::get_slices()
+int32_t viewport::get_slices()
 {
 	return slices;
 }
 
-void handle_event_intern(slate *slateob, void *event)
+void handle_event_intern(slatearea *slateareaob, void *event)
 {
-	slateob->handle_event(event);
+	slateareaob->handle_event(event);
 }
-void viewport::handle_event(void *event)
+void viewport::handle_event(void *event, uint8_t receiver)
 {
-	vector<thread> threadpool_events;
-	for (long int count=0;count<slate_pool.size();count++)
+	if (receiver==0)
 	{
-		if (slate_pool[count]->isorigin())
+		vector<thread> threadpool_events;
+		for (int32_t count=0;count<slate_pool.size();count++)
 		{
-			threadpool_events.push_back( thread(handle_event_intern,slate_pool[count],event));
+			if (slate_pool[count]->isorigin())
+			{
+				threadpool_events.push_back( thread(handle_event_intern,slate_pool[count]->get_slatearea(),event));
+			}
+		}
+		while (threadpool_events.empty()==false)
+		{
+			if (threadpool_events.back().joinable())
+				threadpool_events.back().join();
+			threadpool_events.pop_back();
 		}
 	}
-	while (threadpool_events.empty()==false)
+	if (receiver == 1)
 	{
-		if (threadpool_events.back().joinable())
-			threadpool_events.back().join();
-		threadpool_events.pop_back();
+		slate_pool[get_focused_slate ()]->handle_event(event);
+	}
+	if (receiver == 2)
+	{
+		vector<thread> threadpool_events;
+		for (int32_t count=0;count<render_pool.size();count++)
+		{
+			threadpool_events.push_back( thread(handle_event_intern,render_pool[count]->get_slatearea (),event));
+		}
+		while (threadpool_events.empty()==false)
+		{
+			if (threadpool_events.back().joinable())
+				threadpool_events.back().join();
+			threadpool_events.pop_back();
+		}
 	}
 }
 
 
+
+//lock in update
 void viewport::add_renderob(slateareascreen *renderob)
 {
-	protrender.lock();
 	renderob->set_renderid (render_pool.size()); //nice hack: size must be one less before adding
 	render_pool.push_back(renderob);
-	protrender.unlock();
 }
-void viewport::remove_renderob(long int renderid)
+//lock in update
+void viewport::remove_renderob(int32_t renderid)
 {
-	protrender.lock();
 	render_pool[renderid]->set_renderid (-1);
 	render_pool.erase(render_pool.begin()+renderid);
-	protrender.unlock();
 }
 
 
-slateareascreen *viewport::get_renderob(long int renderid)
+slateareascreen *viewport::get_renderob(int32_t renderid)
 {
 	return render_pool[renderid];
 }

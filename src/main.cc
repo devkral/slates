@@ -46,30 +46,68 @@
 
 #include <iostream>
 #include <string>
+#include <cstring>
 
 using namespace std;
-
+void help()
+{
+	cout << "Backends:\n" << "wayland,X,test,sdl\n";
+}
 
 int main (int argc, char *argv[])
 {
-	
-	string testoptions="";
-	if (argc>1)
-		testoptions=argv[1];
 	int sel=DEFAULT_BACKEND;
-	if (testoptions=="sdl" || testoptions=="1")
+	string testoptions="";
+	// options descriptor
+
+	int cindex=1;
+	while (cindex<argc-1) //-1 because cindex must be followed by argument
 	{
-		sel=1;
-	}
-	if (testoptions=="test" || testoptions=="2")
-	{
-		sel=2;
-	}
-	if (testoptions=="X" || testoptions=="3")
-	{
-		sel=3;
+		if (strcmp(argv[cindex],"--backend")==0)
+		{
+			if (argv[cindex+1]!=NULL)
+			{
+				testoptions=argv[cindex+1];
+			}
+		}
+		
+		cindex++;
 	}
 	
+	
+	
+	if (testoptions=="sdl")
+	{
+#ifdef COMPILED_WITH_SDL
+		sel=1;
+#else
+		cerr << "Not compiled with sdl support\n";
+#endif
+	}
+	if (testoptions=="test")
+	{
+#ifdef COMPILED_WITH_TESTBACKEND
+		sel=2;
+#else
+		cerr << "Not compiled with testbackend\n";
+#endif
+	}
+	if (testoptions=="X\n")
+	{
+#ifdef COMPILED_WITH_X
+		sel=3;
+#else
+		cerr << "Not compiled with X backend\n";
+#endif
+	}
+	if (testoptions=="wayland\n")
+	{
+#ifdef COMPILED_WITH_X
+		sel=4;
+#else
+		cerr << "Not compiled with wayland backend\n";
+#endif
+	}
 	int returnvalue;
 	switch (sel)
 	{

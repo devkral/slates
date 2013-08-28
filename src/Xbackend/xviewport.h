@@ -39,14 +39,17 @@ public:
 	~xviewport();
 	slate *create_slate_intern(viewport *parent, long int id,int position_xtemp,int position_ytemp);
 	slatearea *create_area(slate *parent_slate);
-
 	
 	xcb_screen_t *screen;
-	
+	int32_t get_focused_slate();
+	 uint16_t slate_width_p;
+     uint16_t slate_height_p;
 protected:
 	void update_slice_info();
+
 	
 private:
+	uint32_t evmask[2];
 };
 
 #endif // _XVIEWPORT_H_
