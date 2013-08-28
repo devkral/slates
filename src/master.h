@@ -5,23 +5,27 @@
 #include "viewport.h"
 class viewport;
 class slateobject;
-//#include "slate.h"
+#include "slate.h"
 //class slate;
-//#include "slateobject.h"
-//class slateobject;
 
 #include "configbackend.h"
 
 #include <vector>
-#include <thread>
-#include <mutex>
 
-
-#include "slate.h"
 
 using namespace std;
 
+class cleanup_exception
+{
 
+
+};
+
+class restart_exception
+{
+
+
+};
 
 class master
 {
@@ -30,6 +34,7 @@ public:
 	virtual ~master();
 	void createviewport(void *monitor=0);
 	void destroyviewport();
+	virtual void init(int argc, char *argv[])=0;
 	void cleanup();
 	viewport *get_viewport_by_id (int32_t  id);
 	slate *get_slate_by_id(int32_t idview, int32_t  idslate);

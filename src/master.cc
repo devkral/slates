@@ -186,7 +186,11 @@ uint16_t master::handle_event(void *event)
 	}
 	if (status==QUIT_DE)
 	{
-		exit(0); //handlers should be executed automatically
+		throw (new cleanup_exception);
+	}
+	if (status==RELOAD_DE)
+	{
+		throw (new restart_exception);
 	}
 	return status;
 }

@@ -14,8 +14,9 @@ class xviewport;
 class xmaster : public master
 {
 public:
-	xmaster(int argc, char* argv[]);
+	xmaster();
 	~xmaster();
+	void init(int argc, char* argv[]);
 	void inputhandler_function();
 	int32_t get_focused_viewport();
 	uint16_t handle_masterevent(void *event);

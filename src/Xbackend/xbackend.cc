@@ -24,12 +24,13 @@ viewport *xmaster::create_viewport_intern(master *masteridd, int32_t ownidd, voi
 
 void signalcleanup(int )
 {
-	exit(1);
+	throw (new cleanup_exception);
 }
 
+xmaster::xmaster(){};
 
 
-xmaster::xmaster(int argc, char* argv[])
+void xmaster::init(int argc, char* argv[])
 {
 	char *display=(char *)":0"; //display adress
 	signal (SIGINT,signalcleanup);
@@ -155,10 +156,19 @@ uint16_t xmaster::handle_masterevent(void *event)
 
 int xmain(int argc ,char *argv[])
 {
+	xmaster t;
 	try
 	{
-		xmaster(argc,argv);
+		t.init(argc,argv);
 	}
+	catch (cleanup_exception *exc)
+	{
+		return 0;
+	}
+	catch (restart_exception *exc)
+	{
+		return xmain(argc,argv);
+	}	
 	catch (const std::system_error& error)
 	{
 		cerr << "Caught error: " << error.what() << endl;
@@ -174,6 +184,6 @@ int xmain(int argc ,char *argv[])
 		cerr << "An Error: happened\n";
 		return 1;
 	}
-
+	
 	return 0;
 }

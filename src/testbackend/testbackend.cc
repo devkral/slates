@@ -13,8 +13,9 @@ viewport *testmaster::create_viewport_intern(master *masteridd, int32_t ownidd,v
 {
 	return new tviewport(masteridd,ownidd);
 }
+testmaster::testmaster(){};
 
-testmaster::testmaster(int argc, char* argv[])
+void testmaster::init(int argc, char* argv[])
 {
 	cerr << "Create testmaster\n";
 	createviewport(0);
@@ -42,9 +43,18 @@ int32_t testmaster::get_focused_viewport()
 
 int testmain(int argc ,char *argv[])
 {
+	testmaster t;
 	try
 	{
-		testmaster(argc,argv);
+		t.init(argc,argv);
+	}
+	catch (cleanup_exception *exc)
+	{
+		return 0;
+	}
+	catch (restart_exception *exc)
+	{
+		return testmain(argc,argv);
 	}
 	catch (const std::system_error& error)
 	{

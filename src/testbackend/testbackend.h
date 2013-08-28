@@ -13,8 +13,10 @@ class tviewport;
 class testmaster : public master
 {
 public:
-	testmaster(int argc, char* argv[]);
+	testmaster();
 	~testmaster();
+	
+	void init (int argc, char* argv[]);
 	void inputhandler_function();
 	uint16_t handle_masterevent(void *event);
 	int32_t get_focused_viewport();
