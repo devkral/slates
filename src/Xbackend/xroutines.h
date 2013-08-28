@@ -38,13 +38,24 @@ extern int testCookie (xcb_void_cookie_t cookie,
                 std::string errMessage );
 
 
-extern xcb_gc_t
-    getFontGC (xcb_connection_t *connection,
+xcb_gc_t getFontGC (xcb_connection_t *connection,
                xcb_screen_t     *screen,
                xcb_window_t      window,
                const char       *fontName );
 
-extern void button_draw (xcb_connection_t *c,
+xcb_gc_t gc_font_get (xcb_connection_t *c,
+             xcb_screen_t     *screen,
+             xcb_window_t      window,
+             const char       *font_name);
+
+void drawButton (xcb_connection_t *c,
+             xcb_screen_t     *screen,
+             xcb_window_t      window,
+             int16_t           x1,
+             int16_t           y1,
+             const char       *label);
+
+void button_test (xcb_connection_t *c,
              xcb_screen_t     *screen,
              xcb_window_t      window,
              int16_t           x1,

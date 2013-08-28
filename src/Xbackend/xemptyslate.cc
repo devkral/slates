@@ -102,12 +102,12 @@ void xemptyslate::update()
 
 	
 	const char *temp="test";//get_label_open_menu().c_str();
-	/**button_draw (((xmaster*)get_master ())->con,
+	drawButton (((xmaster*)get_master ())->con,
 	             ((xviewport*)get_viewport ()) ->screen,
              window,
-	             (int16_t)size_values[0]/2,
-	             (int16_t)size_values[1]/2,
-             temp);*/
+	             (int16_t)1, //(size_values[0]/2),
+	             (int16_t)1, //(size_values[1]/2),
+             temp);
 /*
 	xcb_void_cookie_t textCookie = xcb_image_text_8_checked (((xmaster*)get_master ())->con,
                                                                  strlen (temp),

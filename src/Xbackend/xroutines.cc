@@ -163,6 +163,14 @@ void drawButton (xcb_connection_t *connection,
 	};
 
 
+void button_test (xcb_connection_t *c,
+             xcb_screen_t     *screen,
+             xcb_window_t      window,
+             int16_t           x1,
+             int16_t           y1,
+             const char       *label)
+{
+};
 
 uint16_t set_key_actions()
 {
