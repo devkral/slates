@@ -37,7 +37,6 @@ public:
 	int16_t get_x();
 	int16_t get_y();
 	int32_t get_id();
-	void handle_input(void *initializer);
 	void handle_event(void *event);
 	
 	bool isorigin();

@@ -124,10 +124,6 @@ slatearea *slate::get_slatearea()
 	return child;
 }
 
-void slate::handle_input(void *initializer)
-{
-	child->handle_input(initializer);
-}
 
 void slate::handle_event(void *event)
 {

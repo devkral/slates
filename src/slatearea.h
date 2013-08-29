@@ -40,7 +40,7 @@ public:
 	
 	virtual slateareascreen *create_emptyslate()=0;
 
-	virtual void handle_input(void *initializer)=0;
+	//virtual void handle_input(void *initializer)=0;
 	
 	void handle_event(void  *event);
 		

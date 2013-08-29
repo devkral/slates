@@ -32,6 +32,8 @@ private:
 	int32_t numbermonitors=0;
 	bool inputhandling = true;
 	
+	int32_t focused_viewport=0;
+	
 };
 
  int xmain(int argc ,char *argv[]);

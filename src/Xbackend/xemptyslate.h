@@ -62,7 +62,8 @@ private:
 	xcb_gcontext_t defaultcontext;
 	xcb_font_t font;
 	uint32_t gc_values[3];
-	char *font_name=(char *)"7x13";
+	const char *font_name=(char *)"7x13";
+	bool already_rendered=false;
 };
 
 #endif // _TEMPTYSLATEO_H_

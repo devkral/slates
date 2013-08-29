@@ -62,15 +62,16 @@ typedef struct _parsedob
 #define EXP_ALL_VIEW 2
 #define EXP_FOCUS_VIEW 3
 #define EXP_FOCUS_SLATE 4
-#define ACTIVATE_LOCK 5
-#define RELOAD_DE 6
-#define QUIT_DE 7
-#define EVENT_HANDLED_INTERN 8 //handled internally
+#define EXP_ACTIVE_SLATES 5
+#define ACTIVATE_LOCK 6
+#define RELOAD_DE 7
+#define QUIT_DE 8
+#define EVENT_HANDLED_INTERN 9 //handled internally
 //implemented???
-#define FULLSCREEN 9 //also archived by scrolling
-#define UNFULLSCREEN 10
-#define RESIZE_SLATEAREA 11
-#define MOVE_SLATEAREA 12
+#define FULLSCREEN 10 //also archived by scrolling
+#define UNFULLSCREEN 11
+#define RESIZE_SLATEAREA 12
+#define MOVE_SLATEAREA 13
 
 
 

@@ -86,7 +86,7 @@ void slatearea::update()
 	}
 	else
 	{
-		if (child->get_renderid ()==-1)
+		if (child->get_renderid ()==-1 && child->isdirty())
 			get_viewport()->add_renderob(child);
 	}
 	child->update();

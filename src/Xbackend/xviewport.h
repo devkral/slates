@@ -42,14 +42,16 @@ public:
 	
 	xcb_screen_t *screen;
 	int32_t get_focused_slate();
-	 uint16_t slate_width_p;
-     uint16_t slate_height_p;
+	void set_focused_slate(int32_t view);
+	uint16_t slate_width_p;
+	uint16_t slate_height_p;
 protected:
 	void update_slice_info();
 
 	
 private:
 	uint32_t evmask[2];
+	int32_t focused_slate=0;
 };
 
 #endif // _XVIEWPORT_H_

@@ -75,15 +75,18 @@ void xviewport::update_slice_info()
 	slate_height_p=screen->height_in_pixels/get_viewport_height();
 	cout << slate_width_p << " " << slate_height_p << endl;
 	update_slates ();
-	cout << "survived" << endl;
 	
 }
 
 int32_t xviewport::get_focused_slate()
 {
-	return 0;
+	return focused_slate;
 }
 
+void xviewport::set_focused_slate(int32_t slateid)
+{
+	focused_slate=slateid;
+}
 
 slatearea *xviewport::create_area(slate *parent_slate)
 {

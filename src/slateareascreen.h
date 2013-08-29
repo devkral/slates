@@ -28,8 +28,7 @@ public:
 	virtual void update()=0;
 	master *get_master();
 	viewport *get_viewport();
-	virtual bool isstatic()=0;
-	virtual bool isdirty()=0;
+	virtual bool isdirty()=0; //shall be rendered
 	virtual bool islocked();
 	void setlock(uint8_t lockstate);
 	int32_t get_renderid(); //usable as check if rendered (-1=not rendered)

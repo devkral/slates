@@ -161,17 +161,31 @@ uint16_t master::handle_event(void *event)
 			threadpool_events.pop_back();
 		}
 	}
-	if (status==EXP_FOCUS_SLATE || status==EXP_FOCUS_VIEW)
+	if (status==EXP_ACTIVE_SLATES)
 	{
-		if (status==EXP_FOCUS_SLATE)
+		vector<thread> threadpool_events;
+		for (int32_t count=0; count<amount_viewports(); count++)
 		{
-			viewport_pool[get_focused_viewport ()]->handle_event(event,1);
+			threadpool_events.push_back( thread(handle_event_intern,viewport_pool[count],event,2));
 		}
-		else
+		while (threadpool_events.empty()==false)
 		{
-			viewport_pool[get_focused_viewport ()]->handle_event(event,0);
+			if (threadpool_events.back().joinable())
+				threadpool_events.back().join();
+			threadpool_events.pop_back();
 		}
 	}
+	if (status==EXP_FOCUS_VIEW)
+	{
+		viewport_pool[get_focused_viewport ()]->handle_event(event,0);	
+	}
+
+	if (status==EXP_FOCUS_SLATE)
+	{
+		viewport_pool[get_focused_viewport ()]->handle_event(event,1);
+	}
+
+	
 	if (status==ADD_SLICE)
 	{
 		viewport_pool[get_focused_viewport ()]->addslice();

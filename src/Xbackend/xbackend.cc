@@ -1,7 +1,4 @@
 
-//contains code from https://gitorious.org/qt-window-manager/qt-window-manager/blobs/master/main.cpp
-
-
 
 #include "xbackend.h"
 
@@ -129,8 +126,7 @@ uint16_t xmaster::handle_masterevent(void *event)
                     }
 		break;
 		case XCB_EXPOSE:
-			xcb_flush (con);
-			return EVENT_HANDLED_INTERN;
+			return EXP_ACTIVE_SLATES;
 			break;
 		case XCB_BUTTON_PRESS:  /* beenden, wenn eine Taste gedrückt wird */
 				bp= (xcb_button_press_event_t *)event;
