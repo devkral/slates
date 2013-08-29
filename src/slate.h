@@ -34,9 +34,9 @@ public:
 	void create_area();
 	void replace_area(slatearea *newarea);
 	void update();
-	int get_x();
-	int get_y();
-	int get_id();
+	int16_t get_x();
+	int16_t get_y();
+	int32_t get_id();
 	void handle_input(void *initializer);
 	void handle_event(void *event);
 	
@@ -47,9 +47,9 @@ public:
 protected:
 	mutex change_slate; //
 private:
-	int position_x;
-	int position_y;
-	long int slateid;
+	int16_t position_x;
+	int16_t position_y;
+	int32_t slateid;
 	viewport *parent_viewport=0;
 	slatearea *child=0;
 

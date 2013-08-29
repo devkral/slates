@@ -25,28 +25,34 @@
 #include <xcb/xcb.h>
 #include <string>
 
+#include "configbackend.h"
 using namespace std;
 
 class xhelperclass
 {
 public:
-	xcb_drawable_t window;
+	xcb_window_t window;
 };
 
-extern int testCookie (xcb_void_cookie_t cookie,
+
+
+
+
+int testCookie (xcb_void_cookie_t cookie,
                 xcb_connection_t *connection,
                 std::string errMessage );
 
+    void    drawText (xcb_connection_t *connection,
+              xcb_screen_t     *screen,
+              xcb_window_t      window,
+              int16_t           x1,
+              int16_t           y1,
+              const char       *label );
 
 xcb_gc_t getFontGC (xcb_connection_t *connection,
                xcb_screen_t     *screen,
                xcb_window_t      window,
                const char       *fontName );
-
-xcb_gc_t gc_font_get (xcb_connection_t *c,
-             xcb_screen_t     *screen,
-             xcb_window_t      window,
-             const char       *font_name);
 
 void drawButton (xcb_connection_t *c,
              xcb_screen_t     *screen,
@@ -55,15 +61,9 @@ void drawButton (xcb_connection_t *c,
              int16_t           y1,
              const char       *label);
 
-void button_test (xcb_connection_t *c,
-             xcb_screen_t     *screen,
-             xcb_window_t      window,
-             int16_t           x1,
-             int16_t           y1,
-             const char       *label);
 
-void init_key_actions();
-void set_default_key_actions();
+void init_key_actions(configbackend *);
+void set_default_key_actions(configbackend *);
 
 
 #endif //_XROUTINES_H_

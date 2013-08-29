@@ -6,7 +6,6 @@
 #include <string>
 #include <mutex>
 #include <cassert>
-#include <unordered_map>
 
 using namespace std;
 
@@ -67,10 +66,11 @@ typedef struct _parsedob
 #define RELOAD_DE 6
 #define QUIT_DE 7
 #define EVENT_HANDLED_INTERN 8 //handled internally
-#define TIMEOUT 9 //maybe but include
 //implemented???
-#define resize_slatearea 11
-#define move_slatearea 12
+#define FULLSCREEN 9 //also archived by scrolling
+#define UNFULLSCREEN 10
+#define RESIZE_SLATEAREA 11
+#define MOVE_SLATEAREA 12
 
 
 
@@ -105,12 +105,12 @@ class configbackend
 		string filename;
 		mutex confrwlock;
 
-		unordered_map<string,string> defaultvars={
+	/**	unordered_map<string,string> defaultvars={
 			{"theme","/usr/share/grub/themes/starfield/starfield.png"},
 			{"border","3"},
 			{"scollup",""},
 			{"scolldown",""}
-		};
+		};*/
 };
 
 #endif // _CONFIGBACKEND_H_

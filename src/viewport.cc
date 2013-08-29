@@ -8,11 +8,11 @@
 #include "slate.h"
 #include "master.h"
 
-int32_t calcidslate(int32_t x,int32_t y)
+int32_t calcidslate(int16_t x,int16_t y)
 {
 	int32_t diagrefpoint;
 	int32_t fromrefpoint;
-	int32_t result;
+	int16_t result;
 	if (x<y)
 	{
 		diagrefpoint=y*y+y;  //begin from zero so (y+1)*(y+1)-y-1
@@ -46,7 +46,7 @@ void viewport::cleanup()
 	async_destroy_slates(slate_pool.size()-1);
 }
 
-int32_t viewport::get_viewport_width()
+int16_t viewport::get_viewport_width()
 {
 	if (horizontal_tiles<=0)
 		return slices;
@@ -58,7 +58,7 @@ bool viewport::get_isdestroying()
 	return isdestroying;
 }
 
-int32_t viewport::get_viewport_height()
+int16_t viewport::get_viewport_height()
 {
 	if (vertical_tiles<=0)
 		return slices;
@@ -66,7 +66,7 @@ int32_t viewport::get_viewport_height()
 		return vertical_tiles;
 }
 
-void viewport::set_viewport_size(int width, int height)
+void viewport::set_viewport_size(int16_t width, int16_t height)
 {
 	if (width>=slices)
 		horizontal_tiles=-1;
@@ -85,17 +85,17 @@ void viewport::set_viewport_size(int width, int height)
 	update_slates();
 }
 
-int32_t viewport::get_viewport_beg_x()
+int16_t viewport::get_viewport_beg_x()
 {
 	return view_beg_slate_x;
 }
 
-int32_t viewport::get_viewport_beg_y()
+int16_t viewport::get_viewport_beg_y()
 {
 	return view_beg_slate_y;
 }
 
-void viewport::set_viewport_begin(int x, int y)
+void viewport::set_viewport_begin(int16_t x, int16_t y)
 {
 	if (x<0)
 		view_beg_slate_x=0;
@@ -111,7 +111,7 @@ void viewport::set_viewport_begin(int x, int y)
 }
 
 
-slate *viewport::get_slate(int32_t x, int32_t y)
+slate *viewport::get_slate(int16_t x, int16_t y)
 {
 	if (x<0 || y<0)
 	{
@@ -164,8 +164,8 @@ void viewport::async_create_slates()
 	if (get_isdestroying())
 		return;
 	vector<thread> temppool;
-	int32_t temp_x, temp_y;
-	while (slate_idcount<slices*slices-slices && slate_idcount<INT32_MAX)
+	int16_t temp_x, temp_y;
+	while (slate_idcount<slices*slices-slices && slate_idcount<INT16_MAX*INT16_MAX)
 	{
 		temp_y=slices-1;
 		temp_x=slate_idcount-id_last_beg;
@@ -175,7 +175,7 @@ void viewport::async_create_slates()
 		temppool.push_back(thread(async_create_slates_intern,placeholderpointer));
 		slate_idcount++;
 	}
-	while (slate_idcount<slices*slices && slate_idcount<INT32_MAX) //don't use slate_pool.size() endless loop
+	while (slate_idcount<slices*slices && slate_idcount<INT16_MAX*INT16_MAX) //don't use slate_pool.size() endless loop
 	{
 		temp_y=(cache_last_diag_point_id+(slices-1))-slate_idcount; //sure???
 		temp_x=slices-1;
@@ -185,7 +185,7 @@ void viewport::async_create_slates()
 		slate_idcount++;
 	}
 
-	if (slate_idcount==INT32_MAX)
+	if (slate_idcount==INT16_MAX*INT16_MAX)
 	{
 		cerr << "Reached maximal amount of slates.\n";
 	}
@@ -225,7 +225,7 @@ void viewport::async_destroy_slates(int32_t amount)
 	}
 }
 
-int32_t viewport::count_filled_slots(int32_t sliceid)
+int32_t viewport::count_filled_slots(int16_t sliceid)
 {
 	int32_t temp=0;
 	int32_t count=0;
@@ -348,7 +348,7 @@ int32_t viewport::get_viewport_id()
 	return viewportid;
 }
 
-int32_t viewport::get_slices()
+int16_t viewport::get_slices()
 {
 	return slices;
 }

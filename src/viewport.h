@@ -27,18 +27,18 @@ using namespace std;
 
 
 
-extern int32_t calcidslate(int32_t x, int32_t y);
+extern int32_t calcidslate(int16_t x, int16_t y);
 
 class viewport
 {
 public:
 	viewport(master *master_parent, int32_t viewportidtemp);
 	virtual ~viewport();
-	slate *get_slate(int32_t x, int32_t y);
+	slate *get_slate(int16_t x, int16_t y);
 	slate *get_slate_by_id(int32_t id);
 	void addslice();
 	int16_t removeslice();
-	int32_t count_filled_slots(int32_t sliceid);
+	int32_t count_filled_slots(int16_t sliceid);
 	void fill_slate_intern(int32_t id); //counter 
 	void empty_slate_intern(int32_t id); //counter don't confuse with emptyslate
 	void handle_event(void *event, uint8_t receiver); //0=all, 1 focused, 2 active rendered
@@ -53,14 +53,14 @@ public:
 	master *get_master();
 
 	int32_t get_viewport_id();
-	int32_t get_slices();
+	int16_t get_slices();
 
-	void set_viewport_size(int32_t width, int32_t height); //unit slates
-	void set_viewport_begin(int32_t x, int32_t y); //unit slates
-	int32_t get_viewport_width();
-	int32_t get_viewport_height();
-	int32_t get_viewport_beg_x();
-	int32_t get_viewport_beg_y();
+	void set_viewport_size(int16_t width, int16_t height); //unit slates
+	void set_viewport_begin(int16_t x, int16_t y); //unit slates
+	int16_t get_viewport_width();
+	int16_t get_viewport_height();
+	int16_t get_viewport_beg_x();
+	int16_t get_viewport_beg_y();
 	bool get_isdestroying();
 
 	void add_renderob(slateareascreen *renderob);
@@ -76,12 +76,12 @@ protected:
 	mutex protrender; //is locked while slates update
 	deque<slateareascreen*> render_pool; //pool with windows which must be rendered
 private:
-	int32_t horizontal_tiles=-1;
-	int32_t vertical_tiles=-1;
-	int32_t view_beg_slate_x=0;
-	int32_t view_beg_slate_y=0;
+	int16_t horizontal_tiles=-1;
+	int16_t vertical_tiles=-1;
+	int16_t view_beg_slate_x=0;
+	int16_t view_beg_slate_y=0;
 	int32_t viewportid;
-	int32_t slices=0;
+	int16_t slices=0;
 	int32_t slate_idcount=0; 
 	mutex slateid_prot;
 	int32_t amount_filled_slates;

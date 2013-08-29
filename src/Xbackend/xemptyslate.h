@@ -57,7 +57,8 @@ private:
 	xcb_gcontext_t black;
 	uint32_t initmask= XCB_CW_BACK_PIXEL | XCB_CW_EVENT_MASK;
 	uint32_t initvalues[2];
-	xcb_rectangle_t      r = { 20, 20, 60, 60 };
+	//xcb_rectangle_t      r = { 20, 20, 60, 60 };
+	
 	xcb_gcontext_t defaultcontext;
 	xcb_font_t font;
 	uint32_t gc_values[3];

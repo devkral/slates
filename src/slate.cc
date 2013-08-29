@@ -97,12 +97,12 @@ void slate::setlock(int lockstate)
 	child->setlock(lockstate);
 }
 
-int slate::get_x()
+int16_t slate::get_x()
 {
 	return position_x;
 }
 
-int slate::get_y()
+int16_t slate::get_y()
 {
 	return position_y;
 }
@@ -115,7 +115,7 @@ bool slate::isorigin()
 		return false;
 
 }
-int slate::get_id()
+int32_t slate::get_id()
 {
 	return slateid;
 }

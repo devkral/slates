@@ -25,12 +25,13 @@ public:
 	virtual ~slatearea();
 	void cleanup();
 	void init();
-	void move(int x, int y);  //swaps origin
 	slate *get_origin();
 	master *get_master();
 	viewport *get_viewport();
+
 	
-	void resize(int w, int h);
+	//void move(int16_t x, int16_t y);  //swaps origin
+	//void resize(int16_t w, int16_t h);
 	//void resizeleftuppercorner(int x_delta, int y_delta);
 	//void resizerightlowercorner(int x_delta, int y_delta);
 	void update();
@@ -43,12 +44,12 @@ public:
 	
 	void handle_event(void  *event);
 		
-	void setlock(int lockstate);
+	void setlock(uint8_t lockstate);
 	
-	int get_x();
-	int get_y();
-	int get_w();
-	int get_h();
+	int32_t get_x();
+	int32_t get_y();
+	int32_t get_w();
+	int32_t get_h();
 	bool isfilled();
 	bool get_isdestroying ();
 	void update_isfilled();
@@ -61,8 +62,8 @@ private:
 	bool filledold=false;
 	bool isdestroying=false;
 	//give this over to windowlist
-	int width=1; //in slates
-	int height=1; //in slates
+	int32_t width=1; //in slates
+	int32_t height=1; //in slates
 };
 
 #endif // _SLATEAREA_H_

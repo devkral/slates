@@ -82,6 +82,7 @@ void xemptyslate::update()
 	if (get_renderid()==-1)
 	{
 		xcb_unmap_window(((xmaster*)get_master ())->con,window);
+		return;
 	}
 	else
 		xcb_map_window(((xmaster*)get_master ())->con,window);
@@ -99,14 +100,14 @@ void xemptyslate::update()
 	xcb_configure_window (((xmaster*)get_master ())->con, window, XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT, size_values_new);
 	free(size_values);
 	size_values=size_values_new;
-
+xcb_flush (((xmaster*)get_master ())-> con);
 	
 	const char *temp="test";//get_label_open_menu().c_str();
 	drawButton (((xmaster*)get_master ())->con,
 	             ((xviewport*)get_viewport ()) ->screen,
              window,
-	             (int16_t)1, //(size_values[0]/2),
-	             (int16_t)1, //(size_values[1]/2),
+	             (int16_t)(size_values[0]/2),
+	             (int16_t)(size_values[1]/2),
              temp);
 /*
 	xcb_void_cookie_t textCookie = xcb_image_text_8_checked (((xmaster*)get_master ())->con,
@@ -140,10 +141,18 @@ void xemptyslate::handle_event(void *event)
 {
 	switch (((xcb_generic_event_t *)event)->response_type & ~0x80)
 	{
-		case XCB_EXPOSE:
-			/* We draw the points */
-      //xcb_poly_point (((xmaster *) get_master())->con, XCB_COORD_MODE_ORIGIN, window, black, 4, points);
-			xcb_flush (((xmaster*)get_master ())-> con);
+		case XCB_KEY_RELEASE: {
+			xcb_key_release_event_t *kr = (xcb_key_release_event_t *)event;
+
+                        switch (kr->detail) {
+                            /* ESC */
+                            case 9:
+                               break;
+                        }
+			}
+			break;
+		case XCB_BUTTON_PRESS:
+			//open menu
 			break;
 		default:
 			break;

@@ -82,21 +82,16 @@ void slatearea::update()
 		get_x()>=get_origin ()->get_viewport()->get_viewport_width()+get_origin ()->get_viewport()->get_viewport_beg_x() ||
 		get_y()>=get_origin()->get_viewport()->get_viewport_height()+get_origin ()->get_viewport()->get_viewport_beg_y())
 	{
-		if (child->isstatic ()==false)
-		{
-			get_viewport()->remove_renderob(child->get_renderid ());
-		}
+		get_viewport()->remove_renderob(child->get_renderid ());
 	}
 	else
 	{
-		//if (child->isstatic ()==false)
-		get_viewport()->add_renderob(child);
-		//else
-		//	get_master->render(child);
+		if (child->get_renderid ()==-1)
+			get_viewport()->add_renderob(child);
 	}
 	child->update();
 }
-void slatearea::setlock(int lockstate)
+void slatearea::setlock(uint8_t lockstate)
 {
 	child->setlock(lockstate);
 }
@@ -148,12 +143,12 @@ void slatearea::update_isfilled()
 }
 
 
-void slatearea::move(int x, int y)
+/**void slatearea::move(int16_t x, int16_t y)
 {
-	//get_origin()->get_viewport()->ge;
+	get_viewport()->
 }
 
 void slatearea::resize(int w, int h)
 {
 
-}
+}*/

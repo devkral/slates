@@ -19,7 +19,6 @@
 
 
 #include "xroutines.h"
-#include "configbackend.h"
 #include <cstring>
 #include <iostream>
 
@@ -36,52 +35,28 @@ int testCookie (xcb_void_cookie_t cookie,
 	return 0;
 }
 
+    void    drawText (xcb_connection_t *connection,
+              xcb_screen_t     *screen,
+              xcb_window_t      window,
+              int16_t           x1,
+              int16_t           y1,
+              const char       *label )
+    {
 
-xcb_gc_t gc_font_get (xcb_connection_t *c,
-             xcb_screen_t     *screen,
-             xcb_window_t      window,
-             const char       *font_name)
-{
-	uint32_t             value_list[3];
-	xcb_void_cookie_t    cookie_font;
-	xcb_void_cookie_t    cookie_gc;
-	xcb_generic_error_t *error;
-	xcb_font_t           font;
-	xcb_gcontext_t       gc;
-	uint32_t             mask;
+        xcb_gcontext_t gc = getFontGC (connection, screen, window, "7x13");
+        xcb_void_cookie_t textCookie = xcb_image_text_8_checked (connection,
+                                                                 strlen (label),
+                                                                 window,
+                                                                 gc,
+                                                                 x1,
+                                                                 y1,
+                                                                 label );
+        testCookie(textCookie, connection, "can't paste text");
 
-	font = xcb_generate_id (c);
-	cookie_font = xcb_open_font_checked (c, font,
-                                       strlen (font_name),
-                                       font_name);
+        xcb_void_cookie_t gcCookie = xcb_free_gc (connection, gc);
+        testCookie (gcCookie, connection, "can't free gc");
+    }
 
-	if (testCookie( cookie_font,c,"ERROR: can't open font")==-1)
-	    return (xcb_gc_t)-1;
-	
-	gc = xcb_generate_id (c);
-	mask = XCB_GC_FOREGROUND | XCB_GC_BACKGROUND | XCB_GC_FONT;
-	value_list[0] = screen->black_pixel;
-	value_list[1] = screen->white_pixel;
-	value_list[2] = font;
-	cookie_gc = xcb_create_gc_checked (c, gc, window, mask, value_list);
-	error = xcb_request_check (c, cookie_gc);
-	if (error)
-	{
-		cerr << "ERROR: can't create gc\n";
-		return (xcb_gc_t)-1;
-	}
-
-	cookie_font = xcb_close_font_checked (c, font);
-	error = xcb_request_check (c, cookie_font);
-	error = xcb_request_check (c, cookie_gc);
-	if (error)
-	{
-		cerr << "ERROR: can't close font\n";
-		return (xcb_gc_t)-1;
-	}
-
-	return (xcb_gc_t)gc;
-}
 
 xcb_gc_t getFontGC (xcb_connection_t *connection,
                xcb_screen_t     *screen,
@@ -141,6 +116,8 @@ void drawButton (xcb_connection_t *connection,
         points[4].y = y1; 
 
         xcb_gcontext_t gc = getFontGC (connection, screen, window, "7x13");
+		uint32_t		gcv[1]={screen->black_pixel};
+		xcb_change_gc(connection,gc, XCB_GC_FOREGROUND, gcv);
         xcb_void_cookie_t lineCookie = xcb_poly_line_checked (connection,
                                                               XCB_COORD_MODE_ORIGIN,
                                                               window,
@@ -160,30 +137,23 @@ void drawButton (xcb_connection_t *connection,
 
         xcb_void_cookie_t gcCookie = xcb_free_gc (connection, gc);
         testCookie (gcCookie, connection, "can't free gc");
+		cerr << "Works?\n";
 	};
 
 
-void button_test (xcb_connection_t *c,
-             xcb_screen_t     *screen,
-             xcb_window_t      window,
-             int16_t           x1,
-             int16_t           y1,
-             const char       *label)
-{
-};
 
 uint16_t set_key_actions()
 {
 	return 0;
 }
 
-void init_key_actions()
+void init_key_actions(configbackend *in)
 {
-
+	
 
 }
 
-void set__default_key_actions()
+void set__default_key_actions(configbackend *in)
 {
-
+	in->set_single_variable("X_exitkey","9"); //esc
 }
