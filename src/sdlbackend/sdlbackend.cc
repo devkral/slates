@@ -24,7 +24,7 @@
 
 
 #include "sdlbackend.h"
-#include "confreader.h"
+#include "configbackend.h"
 
 #include <iostream>
 #include <cstdlib>
@@ -36,24 +36,12 @@ using namespace std;
 void sdlmaster::inputhandler_function()
 {
 	SDL_Event event;
-	while (hasinputhandle)
+	while (1)
 	{
 		SDL_WaitEvent(&event);
 		do
 		{
-			switch( event.type )
-			{
-				case SDL_QUIT: hasinputhandle=false;
-					break;
-				case SDL_MOUSEMOTION:{
-					slate* temp=((sdl_viewport*)viewport_pool[0])->get_slate_mouse(event.motion.x,event.motion.y);
-					if (temp!=0)
-						temp->handle_input(&event);
-					break;}
-				default:{
-					handle_masterevent(&event);
-					break;}
-			}
+			handle_event ((void *)&event);
 		} while (SDL_PollEvent (&event));
 		//SDL_Delay(100);
 	}
@@ -62,11 +50,14 @@ void sdlmaster::inputhandler_function()
 
 viewport *sdlmaster::create_viewport_intern(master *masteridd, int ownidd)
 {
-	return new sdl_viewport(masteridd,ownidd);
+	return new sdlviewport(masteridd,ownidd);
 }
 
-sdlmaster::sdlmaster(int argc, char* argv[]) : master()
+sdlmaster::sdlmaster(){};
+
+sdlmaster::init (int argc, char* argv[])
 {
+	SDL_init();
 	for (int count=0; count<SDL_GetNumVideoDisplays(); count++) //SDL_GetNumVideoDisplays
 		createviewport();
 	inputhandler_function();
@@ -81,9 +72,9 @@ sdlmaster::~sdlmaster()
 	SDL_Quit();
 }
 
-int sdlmaster::handle_masterevent(void *event)
+uint16_t handle_masterevent(void *event);
 {
-	int ishandled=MASTER_UNHANDLED;
+	int ishandled=0;
 	if(protectmaster_eventhandle.try_lock_for(defaulttimeout))
 	{
 		switch (((SDL_Event*)event)->type)
@@ -159,18 +150,19 @@ int sdlmaster::handle_masterevent(void *event)
 
 int sdlmain(int argc, char *argv[])
 {
-#ifndef NONCATCHSDL
+	sdlmaster t;
 	try
 	{
-#endif
-		if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
-		{
-		    throw ("Error: could not initialize SDL");
-		}
-		
-		sdl_master(argc,argv);
-#ifndef NONCATCHSDL
+		t.init(argc,argv);
 	}
+	catch (cleanup_exception *exc)
+	{
+		return 0;
+	}
+	catch (restart_exception *exc)
+	{
+		return sdlmain(argc,argv);
+	}	
 	catch (const std::system_error& error)
 	{
 		cerr << "Caught error: " << error.what() << endl;
@@ -185,6 +177,5 @@ int sdlmain(int argc, char *argv[])
 		cerr << "An Error: happened\n";
 		return 1;
 	}
-#endif	
 	return 0;
 }

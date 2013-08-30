@@ -23,19 +23,19 @@
 
 using namespace std;
 
-sdl_lockslateo::sdl_lockslateo(master *parent_mastert) : lockslateo(parent_mastert)
+sdllockslate::sdllockslate(master *parent_mastert) : lockslate(parent_mastert)
 {
 	cerr << "Create sdl_lockslateo\n";
 	update_interval=3000;
 }
 
-sdl_lockslateo::~sdl_lockslateo()
+sdllockslate::~sdllockslate()
 {
-	cerr << "Destroy sdl_lockslateo\n";
+	cerr << "Destroy sdllockslate\n";
 }
 
 
-void sdl_lockslateo::update()
+void sdllockslate::update()
 {
 	if (parent->get_isondestruction()==true)
 		return;
@@ -65,26 +65,20 @@ void sdl_lockslateo::update()
 }
 
 
-void sdl_lockslateo::handle_event (void *event, bool called_by_input)
+void sdllockslate::handle_event (void *event, bool called_by_input)
 {
-	if (called_by_input==true && SDL_GetModState()&(KMOD_GUI|KMOD_CTRL))
-	{
-		int status=get_master()->handle_event(event);
-		if (status==MASTER_QUIT)
+		if (parent->get_isvisible()==true && interact_with_draw.try_lock_for(defaulttimeout))
 		{
-			hasinputhandle=false;
+			to_sdlslatearea (parent->get_screen())->viewportcanvas->drawmutex.lock();
+			SDL_RenderCopy(to_sdlslatearea (parent->get_screen())->viewportcanvas->globalrender, locktex, 0, &to_sdlslatearea (parent->get_screen())->slatebox);
+			SDL_RenderPresent(to_sdlslatearea (parent->get_screen())->viewportcanvas->globalrender);
+			to_sdlslatearea (parent->get_screen())->viewportcanvas->drawmutex.unlock();
+
+			interact_with_draw.unlock();
 		}
-	}
-	else if (called_by_input==true && ((SDL_Event*)event)->key.keysym.sym==SDLK_ESCAPE)
-	{
-		hasinputhandle=false;
-		get_master()->handle_masterevent(event);
-	}
-	else
-	{
-		switch( ((SDL_Event*)event)->type )
+	switch( ((SDL_Event*)event)->type )
 		{
-			case SDL_QUIT: hasinputhandle=false;
+			case SDL_QUIT:
 				get_master()->handle_masterevent(event); //message master
 			break;
 			case SDL_MOUSEBUTTONDOWN:
@@ -118,45 +112,10 @@ void sdl_lockslateo::handle_event (void *event, bool called_by_input)
 
 }
 
-void sdl_lockslateo::handle_input (void *initializer)
-{
-	hasinputhandle=true;
-	cout << "lockslate ready to serve\n"; 
-	event=*((SDL_Event*)initializer);
-	do
-	{
-		SDL_WaitEvent(&event);
-		do
-		{
-			handle_event(&event,true);
-		} while (SDL_PollEvent (&event));
-		SDL_Delay(update_interval/2);
-	}while (hasinputhandle);	
-}
 
 
-void sdl_lockslateo::draw_function ()
-{
-	while(isdrawn==true)
-	{
 
-		//interact_with_draw.lock();
-		
-		if (parent->get_isvisible()==true && interact_with_draw.try_lock_for(defaulttimeout))
-		{
-			to_sdlslatearea (parent->get_screen())->viewportcanvas->drawmutex.lock();
-			SDL_RenderCopy(to_sdlslatearea (parent->get_screen())->viewportcanvas->globalrender, locktex, 0, &to_sdlslatearea (parent->get_screen())->slatebox);
-			SDL_RenderPresent(to_sdlslatearea (parent->get_screen())->viewportcanvas->globalrender);
-			to_sdlslatearea (parent->get_screen())->viewportcanvas->drawmutex.unlock();
-
-			interact_with_draw.unlock();
-		}
-		SDL_Delay(update_interval);
-	}
-}
-
-
-string sdl_lockslateo::enter_password ()
+string sdllockslateo::enter_password ()
 {
 	bool done=false;
 	SDL_Event textevent;
@@ -170,20 +129,20 @@ string sdl_lockslateo::enter_password ()
 
 }
 
-slatetype *sdl_lockslateo::unlock()
+slatetype *sdllockslate::unlock()
 {
 	return lockedob;
 }
-bool sdl_lockslateo::isempty()
+bool sdllockslate::isempty()
 {
 	return true;
 }
 
-void sdl_lockslateo::lock(slatetype *locked)
+void sdllockslate::lock(slatetype *locked)
 {
 	lockedob=locked;
 }
-void sdl_lockslateo::set_slatearea(slatearea *set)
+void sdllockslate::set_slatearea(slatearea *set)
 {
 	parent=set;
 }

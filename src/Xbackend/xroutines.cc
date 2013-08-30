@@ -91,6 +91,41 @@ xcb_gc_t getFontGC (xcb_connection_t *connection,
 	return (xcb_gc_t)gc;
 }
 
+
+
+xcb_gc_t getFontGC2 (xcb_connection_t *connection,
+               xcb_screen_t     *screen,
+               xcb_window_t      window,
+               xcb_colormap_t      colors[2],
+               const char       *fontName )
+{
+	xcb_font_t font = xcb_generate_id (connection);
+	xcb_void_cookie_t fontCookie = xcb_open_font_checked (connection,
+                                                              font,
+                                                              strlen (fontName),
+                                                              fontName );
+	testCookie (fontCookie, connection, "can't open font");
+
+	xcb_gcontext_t gc = xcb_generate_id (connection);
+	uint32_t  mask = XCB_GC_FOREGROUND | XCB_GC_BACKGROUND | XCB_GC_FONT;
+	uint32_t value_list[3];
+	value_list[0] = colors[0];
+	value_list[1] = colors[1];
+	value_list[2] = font;
+
+	xcb_void_cookie_t gcCookie = xcb_create_gc_checked (connection,
+                                                            gc,
+                                                            window,
+                                                            mask,
+                                                            value_list );
+	testCookie (gcCookie, connection, "can't create gc");
+
+	fontCookie = xcb_close_font_checked (connection, font);
+	testCookie (fontCookie, connection, "can't close font");
+
+	return (xcb_gc_t)gc;
+}
+
 void drawButton (xcb_connection_t *connection,
                 xcb_screen_t     *screen,
                 xcb_window_t      window,
@@ -115,7 +150,12 @@ void drawButton (xcb_connection_t *connection,
         points[4].x = x1; 
         points[4].y = y1; 
 
-        xcb_gcontext_t gc = getFontGC (connection, screen, window, "7x13");
+
+		
+		xcb_colormap_t      colors[2];
+		colors[0]=screen->black_pixel;
+		colors[1]=screen->white_pixel;
+        xcb_gcontext_t gc = getFontGC2 (connection, screen, window,colors, "7x13");
 		uint32_t		gcv[1]={screen->black_pixel};
 		xcb_change_gc(connection,gc, XCB_GC_FOREGROUND, gcv);
         xcb_void_cookie_t lineCookie = xcb_poly_line_checked (connection,
@@ -137,7 +177,6 @@ void drawButton (xcb_connection_t *connection,
 
         xcb_void_cookie_t gcCookie = xcb_free_gc (connection, gc);
         testCookie (gcCookie, connection, "can't free gc");
-		cerr << "Works?\n";
 	};
 
 

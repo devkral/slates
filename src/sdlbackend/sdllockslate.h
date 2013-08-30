@@ -20,38 +20,30 @@
 #ifndef _SDL_LOCKSLATEO_H_
 #define _SDL_LOCKSLATEO_H_
 
-#include "lockslateo.h"
-class lockslateo;
-#include "sdl_screenobject.h"
-class sdl_screenobject;
+#include "lockslate.h"
+class lockslate;
 
 #include <string>
 #include <mutex>
 
 
-#include "constdef.h"
 
-class sdl_lockslateo: public lockslateo
+class sdllockslate: public lockslate
 {
 public:
-	sdl_lockslateo(master *parent);
-	~sdl_lockslateo();
+	sdllockslate(slatearea *parentt, master *parent_mastert);
+	~sdllockslate();
 	void update();
 	void draw_function ();
-	void handle_input(void *initializer);
-	void handle_event(void *event, bool called_by_input);
+	void handle_event(void *event);
 	string enter_password ();
-	void set_slatearea(slatearea *);
 	//void set_visibility(bool t);
-	void lock(slatetype *);
-	slatetype *unlock();
 	bool isempty();
 
 protected:
 	int update_interval;
 	SDL_Event event;
 
-	bool specialcondition=false;
 	SDL_Surface *locksur=0;
 	SDL_Texture *locktex=0;
 	Uint32 green=0;

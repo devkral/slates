@@ -27,8 +27,11 @@
 
 
 using namespace std;
+int32_t sdlviewport::get_focused_slate()
+{
+	; 
 
-
+}
 sdlviewport::sdlviewport(master *masteridd, int ownidd) : viewport(masteridd,ownidd)
 {
 	cerr << "Create sdl_viewport\n";
@@ -119,34 +122,4 @@ slatearea *sdlviewport::create_area(slate *parent_slate)
 	return (slatearea *)temp2 ;
 }
 
-
-
-void sdlviewport::rendering()
-{
-	int count=0;
-	slateareascreen *temp=0;
-	while (get_isdestroying()==false)
-	{
-		protrender.lock();
-		for(count=0;count<render_pool.size();count++)
-		{
-			temp=render_pool[count];
-			
-			if (temp->isstatic ())
-			{
-				render(temp);
-				render_pool.erase(render_pool.begin()+count);
-				temp->set_renderid (-1);
-			} else if (temp->isdirty ())
-				render(temp);
-		}
-		protrender.unlock();
-	}
-	//sleep 
-}
-
-void sdlviewport::kickstarter_renderthread (viewport *renderingob)
-{
-	renderingob->rendering();
-}
 

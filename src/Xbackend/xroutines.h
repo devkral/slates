@@ -26,6 +26,7 @@
 #include <string>
 
 #include "configbackend.h"
+
 using namespace std;
 
 class xhelperclass
@@ -54,6 +55,17 @@ xcb_gc_t getFontGC (xcb_connection_t *connection,
                xcb_window_t      window,
                const char       *fontName );
 
+xcb_gc_t getFontGC2 (xcb_connection_t *connection,
+               xcb_screen_t     *screen,
+               xcb_window_t      window,
+               xcb_colormap_t      colors[2],
+               const char       *fontName );
+/**
+xcb_gc_t getFontGC2 (xviewport *blub,
+               xcb_window_t      window,
+                    uint32_t color_list[2],
+               const char       *fontName );
+*/
 void drawButton (xcb_connection_t *c,
              xcb_screen_t     *screen,
              xcb_window_t      window,

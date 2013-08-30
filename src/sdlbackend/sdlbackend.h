@@ -27,8 +27,8 @@
 #define _SDLBACKEND_H_
 
 #include "master.h"
-#include "sdl_viewport.h"
-class sdl_viewport;
+#include "sdlviewport.h"
+class sdlviewport;
 
 
 #include "SDL.h"
@@ -39,13 +39,13 @@ using namespace std;
 
 
 
-class sdl_master : public master
+class sdlmaster : public master
 {
 public:
-	sdl_master(int argc, char* argv[]);
-	~sdl_master();
+	sdlmaster(int argc, char* argv[]);
+	~sdlmaster();
 	void inputhandler_function();
-	int handle_masterevent(void *event);
+	uint16_t handle_masterevent(void *event);
 protected:
 	
 private:

@@ -74,8 +74,10 @@ slates_SOURCES += sdlbackend/sdlbackend.cc \
 	sdlbackend/sdlviewport.h \
 	sdlbackend/sdlemptyslate.cc \
 	sdlbackend/sdlemptyslate.h \
+	sdlbackend/sdllockslate.cc \
+	sdlbackend/sdllockslate.h \
 	sdlbackend/sdlslatearea.cc \
-	sdlbackend/sdlslatearea.h 
+	sdlbackend/sdlslatearea.h
 endif
 
 if IS_COMPILED_WITH_X

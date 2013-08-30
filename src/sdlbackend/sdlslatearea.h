@@ -32,15 +32,13 @@ class sdl_emptyslate;
 class sdllockslate;
 
 
-#include "constdef.h"
-
 
 using namespace std;
 
 class sdlslatearea : public slatearea
 {
 public:
-	sdlslatearea(slate *parent_slate, sdl_slateareacanvas *canvastemp);
+	sdlslatearea(slate *parent_slate);
 	~sdlslatearea();
 
 	void *get_screen();

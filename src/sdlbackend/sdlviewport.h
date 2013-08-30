@@ -22,14 +22,10 @@
 #include "viewport.h"
 class viewport;
 
-#include "sdl_slatearea.h"
-class sdl_slatearea;
-
-#include "sdl_screenobject.h"
-class sdl_screenobject;
+#include "sdlslatearea.h"
+class sdlslatearea;
 
 
-#include "constdef.h"
 
 
 
@@ -38,23 +34,21 @@ class sdl_screenobject;
 using namespace std;
 
 
-class sdl_viewport : public viewport
+class sdlviewport : public viewport
 {
 public:
-	sdl_viewport(master *masteridd, int ownidd);
-	~sdl_viewport();
+	sdlviewport(master *masteridd, int ownidd);
+	~sdlviewport();
 	long int id_slate_mouse(int x, int y);
 	slate *get_slate_mouse(int x, int y);
+	int32_t get_focused_slate(); 
 	void *get_viewportscreen();
 	void update_slice_info();
 	slatearea *create_area(slate *parent_slate);
-	void rendering();
-	void render(sdl_slateareascreen *renderob)=0; 
 	
 protected:
 	static void kickstarter_renderthread (viewport *renderingob);
 	thread renderthread;
-	sdl_viewportcanvas *viewport_screen;
 	
 private:
 	
@@ -62,6 +56,5 @@ private:
 };
 
 
-void kickstarter_renderthread(sdl_viewport *parent_object);
-#endif // _VIEWPORT_H_
 
+#endif // _SDL_VIEWPORT_H_

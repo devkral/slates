@@ -22,6 +22,7 @@
 #include "emptyslate.h"
 class emptyslate;
 
+#include "SDL.h"
 
 #include <mutex>
 
@@ -51,8 +52,8 @@ protected:
 	//static???
 	SDL_Surface *emptysur=0;
 	SDL_Texture *emptytex=0;
-	Uint32 white=0;
-	Uint32 black=0;
+	uint32_t white=0;
+	uint32_t black=0;
 
 private:
 };
