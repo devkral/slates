@@ -26,7 +26,7 @@ class slate;
 
 
 #include "sdlemptyslate.h"
-class sdl_emptyslate;
+class sdlemptyslate;
 
 #include "sdllockslate.h"
 class sdllockslate;
@@ -41,11 +41,10 @@ public:
 	sdlslatearea(slate *parent_slate);
 	~sdlslatearea();
 
-	void *get_screen();
-	void update_screen();
+	
 	
 	void create_lockslatetype();
-	void create_emptyslatetype();
+	slateareascreen *create_emptyslate();
 
 	
 protected:

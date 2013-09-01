@@ -61,7 +61,7 @@ public:
 	int16_t get_viewport_height();
 	int16_t get_viewport_beg_x();
 	int16_t get_viewport_beg_y();
-	bool get_isdestroying();
+	bool get_isdestroying(); //superseeded by exceptions?
 
 	void add_renderob(slateareascreen *renderob);
 	void remove_renderob(int32_t renderid);

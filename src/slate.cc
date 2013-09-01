@@ -16,7 +16,8 @@ slate::~slate()
 }
 void slate::init()
 {
-	create_area();
+	child=get_viewport()->create_area(this);
+	child->init();
 }
 
 void slate::cleanup()
@@ -45,26 +46,31 @@ viewport *slate::get_viewport()
 	return parent_viewport;
 }
 
-void slate::create_area()
+//fills with default slatearea
+//used if resize shrinks area and for init
+void slate::free_slate()
 {
-	if (child!=0)
-		delete child;
-	child=get_viewport()->create_area(this);
-	child->init();
+	init();
+	update_isfilled(false);
 }
 
-void slate::replace_area(slatearea *newarea)
+//resize only
+//emptyslates shouldn't be resizable
+void slate::annect_slate(slatearea *newarea)
 {
-	if (child!=0)
+	if (child)
 	{
+		child->cleanup();
 		delete child;
 	}
 	child=newarea;
+	update_isfilled(true);
 }
 
-void slate::update_isfilled(bool state)
+//newstate filled
+void slate::update_isfilled(bool newstate)
 {
-	if (state)
+	if (newstate)
 		parent_viewport->fill_slate_intern(slateid);
 	else
 		parent_viewport->empty_slate_intern(slateid);

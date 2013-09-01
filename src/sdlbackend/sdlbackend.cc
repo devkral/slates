@@ -47,17 +47,16 @@ void sdlmaster::inputhandler_function()
 	}
 }
 
-
-viewport *sdlmaster::create_viewport_intern(master *masteridd, int ownidd)
+viewport *sdlmaster::create_viewport_intern(master *masteridd, int ownidd, void *monitor)
 {
 	return new sdlviewport(masteridd,ownidd);
 }
 
 sdlmaster::sdlmaster(){};
 
-sdlmaster::init (int argc, char* argv[])
+void sdlmaster::init (int argc, char* argv[])
 {
-	SDL_init();
+	SDL_Init(SDL_INIT_EVERYTHING);
 	for (int count=0; count<SDL_GetNumVideoDisplays(); count++) //SDL_GetNumVideoDisplays
 		createviewport();
 	inputhandler_function();
@@ -65,35 +64,37 @@ sdlmaster::init (int argc, char* argv[])
 
 sdlmaster::~sdlmaster()
 {
-	cout << "Destroy sdlmaster\n";
-	hasinputhandle=false;
-	
+	cout << "Destroy sdlmaster\n";	
 	cleanup();
 	SDL_Quit();
 }
 
-uint16_t handle_masterevent(void *event);
+
+int32_t sdlmaster::get_focused_viewport ()
 {
-	int ishandled=0;
-	if(protectmaster_eventhandle.try_lock_for(defaulttimeout))
+	return 0;
+}
+
+uint16_t sdlmaster::handle_masterevent(void *event)
+{
+	uint16_t return_val=EXP_FOCUS_SLATE;
+	switch (((SDL_Event*)event)->type)
 	{
-		switch (((SDL_Event*)event)->type)
-		{
-			case SDL_QUIT: hasinputhandle=false;
-				ishandled=MASTER_QUIT;
+		case SDL_QUIT: 
+			return_val=QUIT_DE;
 				break;
 
-			case SDL_KEYDOWN:
+		case SDL_KEYDOWN:
 				if (((SDL_Event*)event)->key.keysym.sym==SDLK_a )
 				{
-					viewport_pool[0]->addslice();
-					ishandled=MASTER_HANDLED;
+					viewport_pool[get_focused_viewport()]->addslice();
+					return_val=EVENT_HANDLED_INTERN;
 				}
 				if (((SDL_Event*)event)->key.keysym.sym==SDLK_b )
 				{
-					if (viewport_pool[0]->removeslice()==SL_destroy_failed)
+					if (viewport_pool[get_focused_viewport()]->removeslice()==SL_DESTROY_FAILED)
 						cerr << "Destroy failed\n";
-					ishandled=MASTER_HANDLED;
+					return_val=EVENT_HANDLED_INTERN;
 				}
 				if (((SDL_Event*)event)->key.keysym.sym==SDLK_c )
 				{
@@ -108,9 +109,9 @@ uint16_t handle_masterevent(void *event);
 				}
 				if (((SDL_Event*)event)->key.keysym.sym==SDLK_r )
 				{
-					viewport_pool[0]->update_slice_info();
-					viewport_pool[0]->async_update_slates();
-					ishandled=MASTER_HANDLED;
+					//viewport_pool[get_focused_viewport()]->update_slice_info();
+					//flush
+					return_val=EXP_ACTIVE_SLATES;
 				}
 				if ((SDL_GetModState()&KMOD_CTRL) && (SDL_GetModState()&KMOD_ALT) && (SDL_GetModState()&KMOD_SHIFT))
 				{
@@ -120,8 +121,7 @@ uint16_t handle_masterevent(void *event);
 				
 				if (((SDL_Event*)event)->key.keysym.sym==SDLK_ESCAPE )
 				{
-					hasinputhandle=false;
-					ishandled=MASTER_QUIT;
+					return_val=QUIT_DE;
 				}
 
 				break;
@@ -132,50 +132,50 @@ uint16_t handle_masterevent(void *event);
 						int width=(viewport_pool[0]->get_viewport_width())-((SDL_Event*)event)->wheel.x;
 						int height=(viewport_pool[0]->get_viewport_height())-((SDL_Event*)event)->wheel.y;
 						viewport_pool[0]->set_viewport_size(width, height);
-						ishandled=MASTER_HANDLED;
+						return_val=EVENT_HANDLED_INTERN;
 					}
 				
 					break;
 				}
 	
 		}
-		protectmaster_eventhandle.unlock();
-	}
-	else
-		ishandled=MASTER_TIMEDOUT;
-	return ishandled;
+	return return_val;
 }
 
 //#define NONCATCHSDL 1
 
 int sdlmain(int argc, char *argv[])
 {
-	sdlmaster t;
+	sdlmaster *t=new sdlmaster();
+	int return_var=0;
 	try
 	{
-		t.init(argc,argv);
+		t->init(argc,argv);
 	}
 	catch (cleanup_exception *exc)
 	{
-		return 0;
+		return_var=0;
 	}
 	catch (restart_exception *exc)
 	{
-		return sdlmain(argc,argv);
+		delete t;
+		return_var=sdlmain(argc,argv);
 	}	
 	catch (const std::system_error& error)
 	{
 		cerr << "Caught error: " << error.what() << endl;
+		return_var=1;
 	}	
 	catch (char  *errorstring)
 	{
 		cerr << "Caught error string:" << errorstring << " happened\n";
-		return 1;
+		return_var=1;
 	}
 	catch (...)
 	{
 		cerr << "An Error: happened\n";
-		return 1;
+		return_var=1;
 	}
-	return 0;
+	
+	return return_var;
 }

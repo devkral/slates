@@ -27,6 +27,7 @@
 #define _SDLBACKEND_H_
 
 #include "master.h"
+class master;
 #include "sdlviewport.h"
 class sdlviewport;
 
@@ -42,15 +43,16 @@ using namespace std;
 class sdlmaster : public master
 {
 public:
-	sdlmaster(int argc, char* argv[]);
+	sdlmaster();
+	void init(int argc, char* argv[]);
 	~sdlmaster();
 	void inputhandler_function();
+	int32_t get_focused_viewport ();
 	uint16_t handle_masterevent(void *event);
 protected:
 	
 private:
-	viewport *create_viewport_intern(master *masteridd, int ownidd);
-	bool hasinputhandle=true;
+	viewport *create_viewport_intern(master *masteridd, int ownidd, void *monitor);
 };
 
 int sdlmain(int argc, char *argv[]);

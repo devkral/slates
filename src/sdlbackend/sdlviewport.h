@@ -39,16 +39,24 @@ class sdlviewport : public viewport
 public:
 	sdlviewport(master *masteridd, int ownidd);
 	~sdlviewport();
-	long int id_slate_mouse(int x, int y);
-	slate *get_slate_mouse(int x, int y);
+	int32_t id_slate_mouse(int16_t x, int16_t y);
+	slate *get_slate_mouse(int16_t x, int16_t y);
 	int32_t get_focused_slate(); 
-	void *get_viewportscreen();
 	void update_slice_info();
 	slatearea *create_area(slate *parent_slate);
+
+
+	uint32_t slate_width=-1, slate_height=-1;
+
+		
+	SDL_Surface background_IMG;
+	SDL_Texture *background_IMG_tex;
 	
+	SDL_Renderer *globalrender;
+	SDL_DisplayMode curdisplaymode;
+	SDL_Rect dispbounds;
+	SDL_Window *viewportwindow=0;
 protected:
-	static void kickstarter_renderthread (viewport *renderingob);
-	thread renderthread;
 	
 private:
 	

@@ -1,7 +1,8 @@
 // Licence see COPYING
 
-#ifndef _EMPTYSLATEO_H_
-#define _EMPTYSLATEO_H_
+#ifndef _EMPTYSLATE_H_
+#define _EMPTYSLATE_H_
+
 #include "slateareascreen.h"
 class slateareascreen;
 class slatearea;

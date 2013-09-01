@@ -29,11 +29,15 @@ public:
 	master *get_master();
 	viewport *get_viewport();
 
+
+	//direction is flag 1 for North, 2 for East, 4 for South, 8 for West !!! bitshift!!!  default east south others implemented later
+	//use 0 by default until other mechanics are implemented
+	void reposition(int16_t x, int16_t y,int16_t w, int16_t h); 
+	int8_t reposition_check(int16_t x, int16_t y,int16_t w, int16_t h); 
 	
 	//void move(int16_t x, int16_t y);  //swaps origin
-	//void resize(int16_t w, int16_t h);
-	//void resizeleftuppercorner(int x_delta, int y_delta);
-	//void resizerightlowercorner(int x_delta, int y_delta);
+	//void resizeluppercorner(int16_t w, int16_t h);
+	//void resizerlowercorner(int16_t w, int16_t h);
 	void update();
 	slateareascreen *get_screen();
 	void set_screen(slateareascreen *replace);
@@ -46,10 +50,10 @@ public:
 		
 	void setlock(uint8_t lockstate);
 	
-	int32_t get_x();
-	int32_t get_y();
-	int32_t get_w();
-	int32_t get_h();
+	int16_t get_x();
+	int16_t get_y();
+	int16_t get_w();
+	int16_t get_h();
 	bool isfilled();
 	bool get_isdestroying ();
 	void update_isfilled();
@@ -62,8 +66,8 @@ private:
 	bool filledold=false;
 	bool isdestroying=false;
 	//give this over to windowlist
-	int32_t width=1; //in slates
-	int32_t height=1; //in slates
+	int16_t width=1; //in slates
+	int16_t height=1; //in slates
 };
 
 #endif // _SLATEAREA_H_

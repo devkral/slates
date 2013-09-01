@@ -25,9 +25,8 @@
 using namespace std;
 
 
-sdlemptyslate::sdlemptyslate(master *parent_mastert) : emptyslate(parent_mastert)
+sdlemptyslate::sdlemptyslate(slatearea *parentt, master *parent_mastert) : emptyslate(parentt, parent_mastert)
 {
-	update_interval=100;
 
 }
 
@@ -48,9 +47,8 @@ sdlemptyslate::~sdlemptyslate()
 void sdlemptyslate::update()
 {
 	//cout << "Update empty\n";
-	if (parent->get_isondestruction()==true)
+	if (get_slatearea ()->get_isdestroying()==true)
 		return;
-	interact_with_draw.lock();
 	//{
 
 		if (emptysur)
@@ -58,28 +56,27 @@ void sdlemptyslate::update()
 			SDL_FreeSurface (emptysur);
 			emptysur=0;
 		}
-		emptysur=SDL_CreateRGBSurface (0,to_sdlslatearea (parent->get_screen())->slatebox.w,to_sdlslatearea (parent->get_screen())->slatebox.h,32,0,0,0,0);
+		//emptysur=SDL_CreateRGBSurface (0,((sdlslatearea *) get_slatearea ())->slatebox.w,to_sdlslatearea (parent->get_screen())->slatebox.h,32,0,0,0,0);
 		if (!emptysur)
 			return;
 		
 		white=SDL_MapRGBA (emptysur->format, 255,255,255,255);
 		black=SDL_MapRGBA (emptysur->format, 0,0,0,255);
-		SDL_FillRect (emptysur, &to_sdlslatearea (parent->get_screen())->slatebox,white);
+		//SDL_FillRect (emptysur, &to_sdlslatearea (parent->get_screen())->slatebox,white);
 		if (emptytex)
 		{
 			SDL_DestroyTexture (emptytex);
 			emptytex=0;
 		}
-		emptytex=SDL_CreateTextureFromSurface (to_sdlslatearea (parent->get_screen())->viewportcanvas->globalrender,emptysur);
+		//emptytex=SDL_CreateTextureFromSurface (to_sdlslatearea (parent->get_screen())->viewportcanvas->globalrender,emptysur);
 
-		interact_with_draw.unlock();
 	//}
 }
 
 
 void sdlemptyslate::handle_event (void *event, bool called_by_input)
 {
-
+/**
 	if (called_by_input==true && SDL_GetModState()&(KMOD_GUI|KMOD_CTRL))
 	{
 		int status=get_master()->handle_event(event);
@@ -116,60 +113,21 @@ void sdlemptyslate::handle_event (void *event, bool called_by_input)
 				if (((SDL_Event*)event)->motion.x<to_sdlslatearea (parent->get_screen())->slatebox.x ||
 					((SDL_Event*)event)->motion.y<to_sdlslatearea (parent->get_screen())->slatebox.y)
 				{	
-					hasinputhandle=false;
 				}
 				if (((SDL_Event*)event)->motion.x>to_sdlslatearea (parent->get_screen())->slatebox.x+to_sdlslatearea (parent->get_screen())->slatebox.w ||
 					((SDL_Event*)event)->motion.y>to_sdlslatearea (parent->get_screen())->slatebox.y+to_sdlslatearea (parent->get_screen())->slatebox.h)
 				{
-					hasinputhandle=false;
 				}
 			}
 			break;
 		}
 			
 	}
-
+*/
 }
 
-void sdlemptyslate::handle_input (void *initializer)
+bool sdlemptyslate::isdirty()
 {
-	hasinputhandle=true;
-	event=*((SDL_Event*)initializer);
-	do
-	{
-		SDL_WaitEvent(&event);
-		do
-		{
-			handle_event(&event,true);
-		} while (SDL_PollEvent (&event));
-		SDL_Delay(update_interval/2);
-	}while (hasinputhandle);	
+	return true;
 }
 
-
-void sdlemptyslate::draw_function ()
-{
-	while(isdrawn==true)
-	{
-
-		//interact_with_draw.lock();
-		
-		if (parent->get_isvisible()==true && interact_with_draw.try_lock_for(defaulttimeout))
-		{
-			to_sdlslatearea (parent->get_screen())->viewportcanvas->drawmutex.lock();
-			SDL_RenderCopy(to_sdlslatearea (parent->get_screen())->viewportcanvas->globalrender, emptytex, 0, &to_sdlslatearea (parent->get_screen())->slatebox);
-			SDL_RenderPresent(to_sdlslatearea (parent->get_screen())->viewportcanvas->globalrender);
-			to_sdlslatearea (parent->get_screen())->viewportcanvas->drawmutex.unlock();
-
-			interact_with_draw.unlock();
-		}
-		SDL_Delay(update_interval);
-	}
-}
-
-void sdlemptyslate::set_slatearea(slatearea *set)
-{
-	interact_with_draw.lock();
-	parent=set;
-	interact_with_draw.unlock();
-}

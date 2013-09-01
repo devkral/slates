@@ -263,7 +263,7 @@ int16_t viewport::removeslice()
 {
 	if (get_isdestroying() || last_slice_filled>0 || nto_last_slice_filled >= (slices-1)+(slices-1)) //just one free slot
 	{
-		return SL_destroy_failed;
+		return SL_DESTROY_FAILED;
 	}
 	if(slateid_prot.try_lock())
 	{
@@ -280,9 +280,9 @@ int16_t viewport::removeslice()
 		update_slice_info();
 		update_slates();
 		slateid_prot.unlock();
-		return OP_success;
+		return OP_SUCCESS;
 	}
-	return SL_destroy_failed;
+	return SL_DESTROY_FAILED;
 }
 master *viewport::get_master()
 {

@@ -43,35 +43,37 @@ int32_t testmaster::get_focused_viewport()
 
 int testmain(int argc ,char *argv[])
 {
-	testmaster t;
+
+	testmaster *t=new testmaster();
+	int return_var=0;
 	try
 	{
-		t.init(argc,argv);
+		t->init(argc,argv);
 	}
 	catch (cleanup_exception *exc)
 	{
-		return 0;
+		return_var=0;
 	}
 	catch (restart_exception *exc)
 	{
-		return testmain(argc,argv);
-	}
+		delete t;
+		return_var=testmain(argc,argv);
+	}	
 	catch (const std::system_error& error)
 	{
 		cerr << "Caught error: " << error.what() << endl;
-		return 1;
+		return_var=1;
 	}	
 	catch (char  *errorstring)
 	{
 		cerr << "Caught error string:" << errorstring << " happened\n";
-		return 1;
+		return_var=1;
 	}
 	catch (...)
 	{
 		cerr << "An Error: happened\n";
-		return 1;
+		return_var=1;
 	}
-	cout << "100: " << calcidslate(100,100) << " 5: " << calcidslate(5,5) << endl;
-
-	return 0;
+	
+	return return_var;
 }

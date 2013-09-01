@@ -30,11 +30,11 @@ using namespace std;
 #endif
 
 
-#define OP_success 0
-#define SL_destroy_failed -2
-#define SL_not_empty -3 //used in slate
-#define xy_negative -4
-#define xy_out_of_range -4
+#define OP_SUCCESS 0
+#define SL_DESTROY_FAILED -2
+#define SL_NOT_EMPTY -3 //used in slate
+#define POS_NEG -4
+#define POS_OUT_OF_RANGE -5
 
 //will be replaced
 /**#define MASTER_HANDLED 1

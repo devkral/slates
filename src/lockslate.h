@@ -1,14 +1,11 @@
 // Licence see COPYING
 
-
 #ifndef _LOCKSLATE_H_
 #define _LOCKSLATE_H_
 
 #include "slateareascreen.h"
 class slateareascreen;
-//#include "slatearea.h"
 class slatearea;
-
 #include "configbackend.h"
 
 class lockslate : public slateareascreen

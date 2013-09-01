@@ -31,8 +31,6 @@ public:
 	master *get_master();
 	viewport *get_viewport();
 	void setlock(int lockstate);
-	void create_area();
-	void replace_area(slatearea *newarea);
 	void update();
 	int16_t get_x();
 	int16_t get_y();
@@ -40,8 +38,10 @@ public:
 	void handle_event(void *event);
 	
 	bool isorigin();
+	
+	void free_slate();
+	void annect_slate(slatearea *newarea);
 	slatearea *get_slatearea();
-	void set_slatearea(slatearea *parent);
 	
 protected:
 	mutex change_slate; //

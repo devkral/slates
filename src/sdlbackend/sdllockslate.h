@@ -20,12 +20,13 @@
 #ifndef _SDL_LOCKSLATEO_H_
 #define _SDL_LOCKSLATEO_H_
 
+#include "sdlslatearea.h"
 #include "lockslate.h"
 class lockslate;
 
 #include <string>
 #include <mutex>
-
+#include "SDL.h"
 
 
 class sdllockslate: public lockslate
@@ -34,21 +35,16 @@ public:
 	sdllockslate(slatearea *parentt, master *parent_mastert);
 	~sdllockslate();
 	void update();
-	void draw_function ();
 	void handle_event(void *event);
 	string enter_password ();
-	//void set_visibility(bool t);
-	bool isempty();
 
 protected:
-	int update_interval;
 	SDL_Event event;
 
 	SDL_Surface *locksur=0;
 	SDL_Texture *locktex=0;
 	Uint32 green=0;
 private:
-	timed_mutex interact_with_draw;
 };
 
 #endif // _LOCKSLATEO_H_

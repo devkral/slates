@@ -19,44 +19,21 @@
 
 #include "sdlslatearea.h"
 
-sdlslatearea::sdlslatearea(slate *parent_slate, sdl_slateareacanvas *canvastemp) : slatearea(parent_slate)
+sdlslatearea::sdlslatearea(slate *parent_slate) : slatearea(parent_slate)
 {
-	screen=canvastemp;
+	
 }
 
 sdlslatearea::~sdlslatearea()
 {
-	delete screen;
-	screen=0;
 }
 
-void *sdlslatearea::get_screen()
-{
-	return (void*)screen;
-}
 
-void sdlslatearea::update_screen()
-{
-	screen->updaterect(
-			        (get_origin ()->get_x())*(screen->viewportcanvas->widget_w-screen->viewportcanvas->beg_x),
-			       (get_origin()->get_y())*(screen->viewportcanvas->widget_h-screen->viewportcanvas->beg_y),
-		(screen->viewportcanvas->widget_w - screen->viewportcanvas->beg_x),
-		 (screen->viewportcanvas->widget_h - screen->viewportcanvas->beg_y));
-}
 
-void sdlslatearea::create_lockslatetype()
-{
-	sdl_lockslateo *temp=new sdl_lockslateo(get_master());
-	temp->set_slatearea(this);
-	temp->init();
-	temp->lock(child);
-	child=temp;
-}
 
-void sdlslatearea::create_emptyslatetype()
+
+slateareascreen *sdlslatearea::create_emptyslate()
 {
-	emptyslateo *temp=new sdl_emptyslateo(get_master());
-	temp->set_slatearea(this);
-	temp->init();
-	child=temp;
+	emptyslate *temp=new sdlemptyslate(this,get_master());
+	return temp;
 }

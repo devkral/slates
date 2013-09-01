@@ -160,34 +160,37 @@ uint16_t xmaster::handle_masterevent(void *event)
 
 int xmain(int argc ,char *argv[])
 {
-	xmaster t;
+
+	xmaster *t=new xmaster();
+	int return_var=0;
 	try
 	{
-		t.init(argc,argv);
+		t->init(argc,argv);
 	}
 	catch (cleanup_exception *exc)
 	{
-		return 0;
+		return_var=0;
 	}
 	catch (restart_exception *exc)
 	{
-		return xmain(argc,argv);
+		delete t;
+		return_var=xmain(argc,argv);
 	}	
 	catch (const std::system_error& error)
 	{
 		cerr << "Caught error: " << error.what() << endl;
-		return 1;
+		return_var=1;
 	}	
 	catch (char  *errorstring)
 	{
 		cerr << "Caught error string:" << errorstring << " happened\n";
-		return 1;
+		return_var=1;
 	}
 	catch (...)
 	{
 		cerr << "An Error: happened\n";
-		return 1;
+		return_var=1;
 	}
 	
-	return 0;
+	return return_var;
 }

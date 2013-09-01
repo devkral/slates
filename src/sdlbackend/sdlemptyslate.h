@@ -34,13 +34,14 @@ class emptyslate;
 class sdlemptyslate : public emptyslate
 {
 public:
-	sdlemptyslate(master *parent_mastert);
+	sdlemptyslate(slatearea *parentt, master *parent_mastert);
 	~sdlemptyslate();
 	void update();
 	void cleanup_handler ();
 	void set_slatearea(slatearea *in);
-	void handle_input(void *initializer);
+	void create_emptyslate ();
 	void handle_event(void *event, bool called_by_input);
+	bool isdirty();
 protected:
 
 //	sdlempty widget;
