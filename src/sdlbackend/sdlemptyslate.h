@@ -49,7 +49,7 @@ protected:
 	int update_interval;
 
 	
-	static timed_mutex	
+	//static timed_mutex	
 
 	SDL_Window *ewindow=0;
 	SDL_Renderer *erender=0;

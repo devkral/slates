@@ -8,6 +8,8 @@
 #include "slate.h"
 #include "master.h"
 
+#define _NO_ASYNC_ 1
+
 int32_t calcidslate(int16_t x,int16_t y)
 {
 	int32_t diagrefpoint;
@@ -172,16 +174,25 @@ void viewport::async_create_slates()
 		//warning synchronize this in both while loops
 		slate *placeholderpointer=new slate(this,slate_idcount,temp_x,temp_y); 
 		slate_pool.push_back(placeholderpointer);
+#ifndef _NO_ASYNC_
 		temppool.push_back(thread(async_create_slates_intern,placeholderpointer));
+#else
+		async_create_slates_intern(placeholderpointer);
+#endif
 		slate_idcount++;
 	}
+	
 	while (slate_idcount<slices*slices && slate_idcount<INT16_MAX*INT16_MAX) //don't use slate_pool.size() endless loop
 	{
 		temp_y=(cache_last_diag_point_id+(slices-1))-slate_idcount; //sure???
 		temp_x=slices-1;
 		slate *placeholderpointer=new slate(this,slate_idcount,temp_x,temp_y); 
 		slate_pool.push_back(placeholderpointer);
+#ifndef _NO_ASYNC_
 		temppool.push_back(thread(async_create_slates_intern,placeholderpointer));
+#else
+		async_create_slates_intern(placeholderpointer);
+#endif
 		slate_idcount++;
 	}
 
@@ -189,13 +200,15 @@ void viewport::async_create_slates()
 	{
 		cerr << "Reached maximal amount of slates.\n";
 	}
-	
+
+#ifndef _NO_ASYNC_
 	while (temppool.empty()==false)
 	{
 		temppool.back().join();
 		temppool.pop_back();
 	}
-		
+#endif
+	
 }
 
 
@@ -214,15 +227,21 @@ void viewport::async_destroy_slates(int32_t amount)
 	vector<thread> temppool;
 	for (int32_t count=0;count<amount;count++)
 	{
+#ifndef _NO_ASYNC_
 		temppool.push_back(thread(async_destroy_slates_intern,slate_pool.back()));
+#else
+		async_destroy_slates_intern(slate_pool.back());
+#endif
 		slate_pool.pop_back();
 		slate_idcount--;
 	}
+#ifndef _NO_ASYNC_
 	while (temppool.empty()==false)
 	{
 		temppool.back().join();
 		temppool.pop_back();
 	}
+#endif
 }
 
 slate *  viewport::get_focused_slate()
