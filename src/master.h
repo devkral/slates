@@ -42,7 +42,8 @@ public:
 	int32_t amount_viewports(); //in short: get all screens
 
 	virtual int32_t get_focused_viewport()=0; 
-	
+
+	virtual bool is_system_mode()=0; //e.g. is border active
 	void lock();
 	bool unlock_slates(char *password);
 	virtual uint16_t handle_event(void *event); //sometimes a better handler is needed

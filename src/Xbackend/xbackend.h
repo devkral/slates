@@ -20,7 +20,7 @@ public:
 	void inputhandler_function();
 	int32_t get_focused_viewport();
 	uint16_t handle_masterevent(void *event);
-
+	bool is_system_mode();
 	xcb_connection_t *con;
 	xcb_connection_t *display;
 	//uint16_t handle_event(void *event);

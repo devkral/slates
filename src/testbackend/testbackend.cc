@@ -26,6 +26,13 @@ testmaster::~testmaster()
 	cerr << "Destroy testmaster\n";
 	cleanup();
 }
+
+bool testmaster::is_system_mode()
+{
+	
+	return true;
+}
+
 void testmaster::inputhandler_function()
 {
 

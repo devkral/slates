@@ -74,6 +74,10 @@ typedef struct _parsedob
 #define MOVE_SLATEAREA 13
 
 
+//slates
+#define ISBORDER -3
+
+
 
 #ifndef slateconfigfilename
 #define slateconfigfilename "~/.slates"

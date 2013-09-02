@@ -20,6 +20,7 @@ public:
 	void inputhandler_function();
 	uint16_t handle_masterevent(void *event);
 	int32_t get_focused_viewport();
+	bool is_system_mode();
 
 private:
 	viewport *create_viewport_intern(master *masteridd, int32_t ownidd, void *t);

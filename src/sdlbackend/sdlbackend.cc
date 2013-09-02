@@ -58,7 +58,9 @@ void sdlmaster::init (int argc, char* argv[])
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	for (int count=0; count<SDL_GetNumVideoDisplays(); count++) //SDL_GetNumVideoDisplays
+	{
 		createviewport();
+	}
 	inputhandler_function();
 }
 
@@ -68,7 +70,11 @@ sdlmaster::~sdlmaster()
 	cleanup();
 	SDL_Quit();
 }
-
+bool sdlmaster::is_system_mode()
+{
+	
+	return true;
+}
 
 int32_t sdlmaster::get_focused_viewport ()
 {
@@ -77,24 +83,42 @@ int32_t sdlmaster::get_focused_viewport ()
 
 uint16_t sdlmaster::handle_masterevent(void *event)
 {
-	uint16_t return_val=EXP_FOCUS_SLATE;
+	uint16_t return_val;
+	if (SDL_GetModState ()&KMOD_CTRL && SDL_GetModState ()&(KMOD_ALT|KMOD_SHIFT))
+	{
+		return_val=EXP_ALL_VIEW;
+	}else
+	{
+		return_val=EXP_FOCUS_SLATE;
+	}
+
 	switch (((SDL_Event*)event)->type)
 	{
 		case SDL_QUIT: 
 			return_val=QUIT_DE;
-				break;
-
+			break;
+		case SDL_WINDOWEVENT: 
+			((sdlviewport*)viewport_pool[get_focused_viewport ()])->draw_viewwindow();
+			return_val=EXP_ACTIVE_SLATES;
+			break;
+		case SDL_MOUSEBUTTONDOWN:
+			return_val=EXP_FOCUS_SLATE;
+			break;
+		case SDL_MOUSEBUTTONUP:
+			return_val=EXP_FOCUS_SLATE;
+			break;
+		case SDL_MOUSEMOTION:
+			return_val=EXP_FOCUS_SLATE;
+			break;
 		case SDL_KEYDOWN:
-				if (((SDL_Event*)event)->key.keysym.sym==SDLK_a )
+			{
+				if (((SDL_Event*)event)->key.keysym.sym==SDLK_a && is_system_mode())
 				{
-					viewport_pool[get_focused_viewport()]->addslice();
-					return_val=EVENT_HANDLED_INTERN;
+						return_val=ADD_SLICE;
 				}
-				if (((SDL_Event*)event)->key.keysym.sym==SDLK_b )
+				if (((SDL_Event*)event)->key.keysym.sym==SDLK_b && is_system_mode())
 				{
-					if (viewport_pool[get_focused_viewport()]->removeslice()==SL_DESTROY_FAILED)
-						cerr << "Destroy failed\n";
-					return_val=EVENT_HANDLED_INTERN;
+					return_val=REMOVE_SLICE;
 				}
 				if (((SDL_Event*)event)->key.keysym.sym==SDLK_c )
 				{
@@ -107,36 +131,39 @@ uint16_t sdlmaster::handle_masterevent(void *event)
 					to_sdlslatearea(temp->get_screen())->slatebox.h-=4;
 					ishandled=MASTER_HANDLED;*/
 				}
-				if (((SDL_Event*)event)->key.keysym.sym==SDLK_r )
+				if (((SDL_Event*)event)->key.keysym.sym==SDLK_r && SDL_GetModState ()&KMOD_CTRL &&
+				    SDL_GetModState ()&KMOD_SHIFT    && is_system_mode())
 				{
-					//viewport_pool[get_focused_viewport()]->update_slice_info();
-					//flush
-					return_val=EXP_ACTIVE_SLATES;
+					return_val=RELOAD_DE;
 				}
-				if ((SDL_GetModState()&KMOD_CTRL) && (SDL_GetModState()&KMOD_ALT) && (SDL_GetModState()&KMOD_SHIFT))
+				if (((SDL_Event*)event)->key.keysym.sym==SDLK_r &&
+				    SDL_GetModState ()&KMOD_CTRL  && is_system_mode())
 				{
-					viewport_pool[0]->set_viewport_size(viewport_pool[0]->get_viewport_height(), viewport_pool[0]->get_viewport_width());
-				}		
+					viewport_pool[get_focused_viewport()]->update_slice_info();
+				}
 
 				
 				if (((SDL_Event*)event)->key.keysym.sym==SDLK_ESCAPE )
 				{
 					return_val=QUIT_DE;
 				}
-
-				break;
-			case SDL_MOUSEWHEEL:
+				if (((SDL_Event*)event)->key.keysym.sym==SDLK_q && SDL_GetModState ()&KMOD_CTRL && SDL_GetModState ()&KMOD_SHIFT)
 				{
-					if ((SDL_GetModState()&KMOD_CTRL) && (SDL_GetModState()&KMOD_ALT))
-					{
-						int width=(viewport_pool[0]->get_viewport_width())-((SDL_Event*)event)->wheel.x;
-						int height=(viewport_pool[0]->get_viewport_height())-((SDL_Event*)event)->wheel.y;
-						viewport_pool[0]->set_viewport_size(width, height);
-						return_val=EVENT_HANDLED_INTERN;
-					}
-				
-					break;
+					return_val=QUIT_DE;
 				}
+			}
+			break;
+		case SDL_MOUSEWHEEL:
+			{
+				if ((SDL_GetModState()&KMOD_CTRL) && (SDL_GetModState()&KMOD_ALT))
+				{
+					int width=(viewport_pool[0]->get_viewport_width())-((SDL_Event*)event)->wheel.x;
+					int height=(viewport_pool[0]->get_viewport_height())-((SDL_Event*)event)->wheel.y;
+					viewport_pool[0]->set_viewport_size(width, height);
+					return_val=EVENT_HANDLED_INTERN;
+				}
+			}
+			break;
 	
 		}
 	return return_val;

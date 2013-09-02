@@ -357,6 +357,7 @@ void handle_event_intern(slatearea *slateareaob, void *event)
 {
 	slateareaob->handle_event(event);
 }
+
 void viewport::handle_event(void *event, uint8_t receiver)
 {
 	if (receiver==0)
@@ -378,7 +379,11 @@ void viewport::handle_event(void *event, uint8_t receiver)
 	}
 	if (receiver == 1)
 	{
-		slate_pool[get_focused_slate ()]->handle_event(event);
+		if (get_focused_slate ()>=0)
+			slate_pool[get_focused_slate ()]->handle_event(event);
+		else
+			cerr << "Error: negative slate. Message for someone? malformed slate_id: " << get_focused_slate () << "\n";
+			//void handle_viewport_event(event);
 	}
 	if (receiver == 2)
 	{

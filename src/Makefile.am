@@ -70,6 +70,8 @@ endif
 if IS_COMPILED_WITH_SDL
 slates_SOURCES += sdlbackend/sdlbackend.cc \
 	sdlbackend/sdlbackend.h \
+	sdlbackend/sdlroutines.cc \
+	sdlbackend/sdlroutines.h \
 	sdlbackend/sdlviewport.cc \
 	sdlbackend/sdlviewport.h \
 	sdlbackend/sdlemptyslate.cc \

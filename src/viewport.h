@@ -42,6 +42,7 @@ public:
 	void fill_slate_intern(int32_t id); //counter 
 	void empty_slate_intern(int32_t id); //counter don't confuse with emptyslate
 	void handle_event(void *event, uint8_t receiver); //0=all, 1 focused, 2 active rendered
+	//virtual void handle_viewport_event(void *eventin)=0;
 	void cleanup();
 	void lock();
 	void unlock();
@@ -67,6 +68,7 @@ public:
 	void remove_renderob(int32_t renderid);
 	slateareascreen *get_renderob(int32_t renderid);
 
+	//don't forget negative BORDERSLATE
 	virtual int32_t get_focused_slate()=0; 
 
 	virtual void update_slice_info()=0;

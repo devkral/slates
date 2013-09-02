@@ -30,14 +30,10 @@ public:
 	viewport *get_viewport();
 
 
-	//direction is flag 1 for North, 2 for East, 4 for South, 8 for West !!! bitshift!!!  default east south others implemented later
-	//use 0 by default until other mechanics are implemented
+
 	void reposition(int16_t x, int16_t y,int16_t w, int16_t h); 
 	int8_t reposition_check(int16_t x, int16_t y,int16_t w, int16_t h); 
 	
-	//void move(int16_t x, int16_t y);  //swaps origin
-	//void resizeluppercorner(int16_t w, int16_t h);
-	//void resizerlowercorner(int16_t w, int16_t h);
 	void update();
 	slateareascreen *get_screen();
 	void set_screen(slateareascreen *replace);
@@ -48,7 +44,7 @@ public:
 	
 	void handle_event(void  *event);
 		
-	void setlock(uint8_t lockstate);
+	void setlock(uint8_t lockstate); //0 unlocked, 1 locked, (2 do not lock not implemented) (3 lock on unfocus not implemented)
 	
 	int16_t get_x();
 	int16_t get_y();

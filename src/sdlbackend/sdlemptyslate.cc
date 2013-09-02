@@ -27,21 +27,27 @@ using namespace std;
 
 sdlemptyslate::sdlemptyslate(slatearea *parentt, master *parent_mastert) : emptyslate(parentt, parent_mastert)
 {
+	cerr << "Create sdlemptyslate\n";
+	windowbounds.x=get_slatearea ()->get_x ()*((sdlviewport *) get_viewport ())->slate_width;
+	windowbounds.y=get_slatearea ()->get_y ()*((sdlviewport *) get_viewport ())->slate_height;
+	windowbounds.w=get_slatearea ()->get_w ()*((sdlviewport *) get_viewport ())->slate_width;
+	windowbounds.h=get_slatearea ()->get_h ()*((sdlviewport *) get_viewport ())->slate_height;
+	ewindow=SDL_CreateWindow("Slates", windowbounds.x, windowbounds.y,
+			           windowbounds.w, windowbounds.h,SDL_WINDOW_BORDERLESS);//SDL_WINDOW_BORDERLESS
+	if (((sdlviewport*)get_viewport ())->hw_accel())
+		erender=SDL_CreateRenderer (ewindow,-1,SDL_RENDERER_ACCELERATED);
+	else
+		erender=SDL_CreateRenderer (ewindow,-1,SDL_RENDERER_SOFTWARE);
 
-}
+	
+	//SDL_FreeSurface (epicture);
+}	   
 
 sdlemptyslate::~sdlemptyslate()
 {
-	if (emptysur)
-	{
-		SDL_FreeSurface (emptysur);
-		emptysur=0;
-	}
-	if (emptytex)
-	{
-		SDL_DestroyTexture (emptytex);
-		emptytex=0;
-	}
+	SDL_DestroyRenderer (erender);
+	SDL_DestroyWindow (ewindow);
+	SDL_DestroyTexture (emptytex);
 }
 
 void sdlemptyslate::update()
@@ -49,81 +55,70 @@ void sdlemptyslate::update()
 	//cout << "Update empty\n";
 	if (get_slatearea ()->get_isdestroying()==true)
 		return;
-	//{
+	windowbounds.x=get_slatearea ()->get_x ()*((sdlviewport *) get_viewport ())->slate_width;
+	windowbounds.y=get_slatearea ()->get_y ()*((sdlviewport *) get_viewport ())->slate_height;
+	windowbounds.w=get_slatearea ()->get_w ()*((sdlviewport *) get_viewport ())->slate_width;
+	windowbounds.h=get_slatearea ()->get_h ()*((sdlviewport *) get_viewport ())->slate_height;
 
-		if (emptysur)
-		{
-			SDL_FreeSurface (emptysur);
-			emptysur=0;
-		}
-		//emptysur=SDL_CreateRGBSurface (0,((sdlslatearea *) get_slatearea ())->slatebox.w,to_sdlslatearea (parent->get_screen())->slatebox.h,32,0,0,0,0);
-		if (!emptysur)
-			return;
-		
-		white=SDL_MapRGBA (emptysur->format, 255,255,255,255);
-		black=SDL_MapRGBA (emptysur->format, 0,0,0,255);
-		//SDL_FillRect (emptysur, &to_sdlslatearea (parent->get_screen())->slatebox,white);
-		if (emptytex)
-		{
-			SDL_DestroyTexture (emptytex);
-			emptytex=0;
-		}
-		//emptytex=SDL_CreateTextureFromSurface (to_sdlslatearea (parent->get_screen())->viewportcanvas->globalrender,emptysur);
 
-	//}
+	SDL_SetWindowPosition(ewindow,windowbounds.x,windowbounds.y);
+	SDL_SetWindowSize(ewindow,windowbounds.w,windowbounds.h);
+	
+	if (emptytex)
+		SDL_DestroyTexture (emptytex);
+	emptytex=SDL_CreateTexture (erender,
+	                                                          ((sdlviewport*)get_viewport ())->viewdisplaymode.format,
+	                                                           SDL_TEXTUREACCESS_STREAMING,
+	                                                            windowbounds.w,
+																windowbounds.h);
+	
+	
+	SDL_Surface *epicture=IMG_Load("themes/exampleemptyslate.png");
+	SDL_Surface *emptysur=SDL_CreateRGBSurface (0,windowbounds.w,windowbounds.h,32,0,0,0,0);
+	SDL_LockTexture(emptytex, &windowbounds, &emptysur->pixels, &emptysur->pitch);
+	SDL_BlitSurface(epicture,0,emptysur,0);
+	SDL_UnlockTexture(emptytex);
+	SDL_FreeSurface (emptysur);
+	
+	SDL_RenderCopy(erender,emptytex, 0, 0);
+	SDL_RenderPresent(erender);
 }
 
 
-void sdlemptyslate::handle_event (void *event, bool called_by_input)
+void sdlemptyslate::handle_event (void *event)
 {
-/**
-	if (called_by_input==true && SDL_GetModState()&(KMOD_GUI|KMOD_CTRL))
+
+	switch( ((SDL_Event*)event)->type )
 	{
-		int status=get_master()->handle_event(event);
-		if (status==MASTER_QUIT)
-		{
-			hasinputhandle=false;
-		}
-	}
-	else if (called_by_input==true && ((SDL_Event*)event)->key.keysym.sym==SDLK_ESCAPE)
-	{
-		hasinputhandle=false;
-		get_master()->handle_masterevent(event);
-	}
-	else
-	{
-		switch( ((SDL_Event*)event)->type )
-		{
-			case SDL_QUIT: hasinputhandle=false;
-				get_master()->handle_masterevent(event); //message master
-			break;
-			case SDL_MOUSEBUTTONDOWN:
-				if (((SDL_Event*)event)->button.button==SDL_BUTTON_LEFT)
-				{
-					cout << "Replace by lockobject\n";
-					parent->lock();
-				}
-			break;
-			case SDL_KEYDOWN:
-			break;
-			case SDL_MOUSEMOTION: 
-				
-			if (called_by_input==true && specialcondition==false)
+		case SDL_WINDOWEVENT:
+			if ( ((SDL_Event*)event)->window.windowID==SDL_GetWindowID(ewindow))
 			{
-				if (((SDL_Event*)event)->motion.x<to_sdlslatearea (parent->get_screen())->slatebox.x ||
-					((SDL_Event*)event)->motion.y<to_sdlslatearea (parent->get_screen())->slatebox.y)
-				{	
-				}
-				if (((SDL_Event*)event)->motion.x>to_sdlslatearea (parent->get_screen())->slatebox.x+to_sdlslatearea (parent->get_screen())->slatebox.w ||
-					((SDL_Event*)event)->motion.y>to_sdlslatearea (parent->get_screen())->slatebox.y+to_sdlslatearea (parent->get_screen())->slatebox.h)
+				switch(  ((SDL_Event*)event)->window.event)
 				{
+					case SDL_WINDOWEVENT_ENTER:
+						{
+							((sdlviewport *)get_viewport ())->set_focused_slate (get_slatearea ()->get_origin ()->get_id());
+						}
+						break;
+					case SDL_WINDOWEVENT_LEAVE:
+					{
+						//(sdlviewport *)get_viewport ())->set_focused_slate (BORDERSLATE
+					}
 				}
+				update();
+				
 			}
 			break;
-		}
-			
+		case SDL_MOUSEBUTTONDOWN:
+			/**if (((SDL_Event*)event)->button.button==SDL_BUTTON_LEFT)
+			{
+				get_slatearea ()->setlock(0);
+			}*/
+			break;
+		case SDL_KEYDOWN:
+			break;
 	}
-*/
+
 }
 
 bool sdlemptyslate::isdirty()

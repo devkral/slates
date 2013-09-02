@@ -39,27 +39,31 @@ class sdlviewport : public viewport
 public:
 	sdlviewport(master *masteridd, int ownidd);
 	~sdlviewport();
-	int32_t id_slate_mouse(int16_t x, int16_t y);
-	slate *get_slate_mouse(int16_t x, int16_t y);
+	/**int32_t id_slate_mouse(int16_t x, int16_t y);
+	slate *get_slate_mouse(int16_t x, int16_t y);*/
 	int32_t get_focused_slate(); 
 	void update_slice_info();
 	slatearea *create_area(slate *parent_slate);
 
-
+	void set_focused_slate(int32_t slateid);
+	
 	uint32_t slate_width=-1, slate_height=-1;
 
-		
-	SDL_Surface background_IMG;
+	bool hw_accel();
+	
+	void draw_viewwindow();
+	
+	SDL_Surface *background_IMG;
 	SDL_Texture *background_IMG_tex;
 	
-	SDL_Renderer *globalrender;
-	SDL_DisplayMode curdisplaymode;
+	SDL_Renderer *viewportrender;
+	SDL_DisplayMode viewdisplaymode;
 	SDL_Rect dispbounds;
 	SDL_Window *viewportwindow=0;
 protected:
 	
 private:
-	
+	int32_t focused_slate=0;
 	
 };
 

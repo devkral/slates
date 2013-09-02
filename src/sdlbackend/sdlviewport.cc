@@ -35,29 +35,48 @@ sdlviewport::sdlviewport(master *masteridd, int ownidd) : viewport(masteridd,own
 	bool justmaximize=true;
 	if (justmaximize)
 		viewportwindow=SDL_CreateWindow("Slates", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-			           dispbounds.w, dispbounds.h,SDL_WINDOW_MAXIMIZED);
+			           dispbounds.w, dispbounds.h,SDL_WINDOW_MAXIMIZED);//|SDL_WINDOW_BORDERLESS);
 	else
 		viewportwindow=SDL_CreateWindow("Slates", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-			           dispbounds.w, dispbounds.h,SDL_WINDOW_FULLSCREEN);
-	SDL_GetCurrentDisplayMode(get_viewport_id (),&curdisplaymode);
+			           dispbounds.w, dispbounds.h,SDL_WINDOW_FULLSCREEN|SDL_WINDOW_BORDERLESS);
+	
+	SDL_GetCurrentDisplayMode(get_viewport_id (),&viewdisplaymode);
+	if (hw_accel())
+		viewportrender=SDL_CreateRenderer(viewportwindow,-1,SDL_RENDERER_ACCELERATED);//SDL_RENDERER_SOFTWARE);//|SDL_RENDERER_PRESENTVSYNC);//);
+	else
+		viewportrender=SDL_CreateRenderer(viewportwindow,-1,SDL_RENDERER_SOFTWARE);//SDL_RENDERER_SOFTWARE);//|SDL_RENDERER_PRESENTVSYNC);//SDL_RENDERER_ACCELERATED);
 
-	globalrender=SDL_CreateRenderer(viewportwindow,-1,SDL_RENDERER_SOFTWARE);//|SDL_RENDERER_PRESENTVSYNC);//SDL_RENDERER_ACCELERATED);
 
-	/**viewport_screen->viewport_tex=SDL_CreateTexture (viewport_screen->globalrender,
-	                                                           viewport_screen->curdisplaymode.format,
+	SDL_SetRenderDrawColor(viewportrender, 255, 0, 0, 255);
+	SDL_RenderClear (viewportrender);
+	SDL_RenderPresent (viewportrender);
+	
+	background_IMG_tex=SDL_CreateTexture (viewportrender,
+	                                                          viewdisplaymode.format,
 	                                                           SDL_TEXTUREACCESS_STREAMING,
-	                                                            viewport_screen->dispbounds.w,
-																viewport_screen->dispbounds.h);*/
-	background_IMG=*IMG_Load("themes/samplebackground.png");
-/**	if (background_IMG_tex!=0)
+	                                                            dispbounds.w,
+																dispbounds.h);
+	//http://stackoverflow.com/questions/12506979/what-is-the-point-of-an-sdl2-texture
+	if (background_IMG_tex)
 	{
-		to_sdlviewport(viewport_screen)->viewport_tex=SDL_CreateTextureFromSurface (to_sdlviewport(viewport_screen)->globalrender,to_sdlviewport(viewport_screen)->viewport);
-		SDL_RenderCopy(to_sdlviewport(viewport_screen)->globalrender,to_sdlviewport(viewport_screen)->viewport_tex, 0, 0);
-		SDL_RenderPresent(to_sdlviewport(viewport_screen)->globalrender);
+		background_IMG=IMG_Load("themes/examplebackground.png");
+		
+		
+		if (background_IMG)
+		{
+			SDL_Surface *tempsur=SDL_CreateRGBSurface (0,dispbounds.w,dispbounds.h,32,0,0,0,0);
+			SDL_LockTexture(background_IMG_tex, &dispbounds, &tempsur->pixels, &tempsur->pitch);
+			SDL_BlitSurface(background_IMG,0,tempsur,0);
+			// paint into surface pixels
+			SDL_UnlockTexture(background_IMG_tex);
+			draw_viewwindow();
+		}
+		else
+			cerr << "Couldn't load theme.\n";
 		//SDL_UpdateTexture(to_sdmac(viewport_screen)->viewport_tex,0,to_sdmac(viewport_screen)->viewport->pixels,to_sdmac(viewport_screen)->viewport->pitch);
 	}
 	else
-		cerr << "Couldn't load theme.\n";*/
+		cerr << "Couldn't load texture.\n";
 	
 }
 
@@ -66,11 +85,31 @@ sdlviewport::sdlviewport(master *masteridd, int ownidd) : viewport(masteridd,own
 
 sdlviewport::~sdlviewport()
 {
-	free(globalrender);
-	free( viewportwindow);
+	
+	SDL_DestroyTexture (background_IMG_tex);
+	SDL_FreeSurface (background_IMG);
+	SDL_DestroyRenderer (viewportrender);
+	SDL_DestroyWindow ( viewportwindow);
+}
+
+void sdlviewport::set_focused_slate(int32_t slateid)
+{
+	focused_slate=slateid;
 }
 
 
+bool sdlviewport::hw_accel()
+{
+	return true;
+}
+
+void sdlviewport::draw_viewwindow()
+{
+	SDL_RenderCopy(viewportrender,background_IMG_tex, 0, 0);
+	SDL_RenderPresent(viewportrender);
+}
+
+/**
 int32_t sdlviewport::id_slate_mouse(int16_t x, int16_t y)
 {
 	if (x<0 || y<0)
@@ -84,7 +123,7 @@ slate *sdlviewport::get_slate_mouse(int16_t x, int16_t y)
 		return 0;
 	return get_slate_by_id(id);
 
-}
+}*/
 
 
 void sdlviewport::update_slice_info()
@@ -95,7 +134,7 @@ void sdlviewport::update_slice_info()
 
 int32_t sdlviewport::get_focused_slate()
 {
-	return 0; 
+	return focused_slate; 
 
 }
 

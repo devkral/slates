@@ -79,6 +79,12 @@ xmaster::~xmaster()
 	xcb_disconnect(con);
 }
 
+bool xmaster::is_system_mode()
+{
+	
+	return true;
+}
+
 int32_t xmaster::get_focused_viewport()
 {
 	return 0;

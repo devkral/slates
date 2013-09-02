@@ -2,7 +2,7 @@
 /*
  * slates
  * Copyright (C) 2013 alex <devkral@web.de>
- *
+ * 
  * slates is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or
@@ -17,46 +17,7 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SDL_EMPTYSLATEO_H_
-#define _SDL_EMPTYSLATEO_H_
-#include "emptyslate.h"
-class emptyslate;
+
 #include "sdlroutines.h"
-
-
-#include <mutex>
-
-
-
-
-
-
-class sdlemptyslate : public emptyslate
-{
-public:
-	sdlemptyslate(slatearea *parentt, master *parent_mastert);
-	~sdlemptyslate();
-	void update();
-	void cleanup_handler ();
-	void set_slatearea(slatearea *in);
-	void create_emptyslate ();
-	void handle_event(void *event);
-	bool isdirty();
-protected:
-
-//	sdlempty widget;
-	int update_interval;
-
-	
-	//static???	
-	SDL_Texture *emptytex=0;
-	SDL_Window *ewindow=0;
-	SDL_Renderer *erender=0;
-	SDL_Rect windowbounds;
-
-private:
-	//SDL_Surface *epicture;
-};
-
-#endif // _EMPTYSLATEO_H_
+#include <iostream>
 
