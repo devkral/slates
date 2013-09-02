@@ -27,7 +27,8 @@ class emptyslate;
 #include <mutex>
 
 
-
+	static SDL_Texture *emptytex=0;
+	static SDL_Surface *epicture=0;
 
 
 
@@ -48,13 +49,14 @@ protected:
 	int update_interval;
 
 	
-	//static???	
-	SDL_Texture *emptytex=0;
+	static timed_mutex	
+
 	SDL_Window *ewindow=0;
 	SDL_Renderer *erender=0;
 	SDL_Rect windowbounds;
 
 private:
+	bool wasinit=false;
 	
 	//SDL_Surface *epicture;
 };

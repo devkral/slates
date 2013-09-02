@@ -29,16 +29,10 @@
 using namespace std;
 sdlviewport::sdlviewport(master *masteridd, int ownidd) : viewport(masteridd,ownidd)
 {
-	cerr << "Create sdl_viewport\n";
-	//SDL_CreateWindowAndRenderer(
+	cerr << "Create sdlviewport\n";
 	SDL_GetDisplayBounds(get_viewport_id(), &dispbounds);
-	bool justmaximize=true;
-	if (justmaximize)
-		viewportwindow=SDL_CreateWindow("Slates", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-			           dispbounds.w, dispbounds.h,SDL_WINDOW_MAXIMIZED);//|SDL_WINDOW_BORDERLESS);
-	else
-		viewportwindow=SDL_CreateWindow("Slates", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-			           dispbounds.w, dispbounds.h,SDL_WINDOW_FULLSCREEN|SDL_WINDOW_BORDERLESS);
+	viewportwindow=SDL_CreateWindow("Slates", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+		           dispbounds.w, dispbounds.h,SDL_WINDOW_FULLSCREEN|SDL_WINDOW_BORDERLESS);
 	
 	SDL_GetCurrentDisplayMode(get_viewport_id (),&viewdisplaymode);
 	if (hw_accel())
