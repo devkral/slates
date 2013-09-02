@@ -55,6 +55,7 @@ protected:
 	SDL_Rect windowbounds;
 
 private:
+	
 	//SDL_Surface *epicture;
 };
 

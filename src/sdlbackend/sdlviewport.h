@@ -41,7 +41,7 @@ public:
 	~sdlviewport();
 	/**int32_t id_slate_mouse(int16_t x, int16_t y);
 	slate *get_slate_mouse(int16_t x, int16_t y);*/
-	int32_t get_focused_slate(); 
+	int32_t get_focused_slate_id(); 
 	void update_slice_info();
 	slatearea *create_area(slate *parent_slate);
 

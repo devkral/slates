@@ -18,7 +18,7 @@ public:
 	~xmaster();
 	void init(int argc, char* argv[]);
 	void inputhandler_function();
-	int32_t get_focused_viewport();
+	int32_t get_focused_viewport_id();
 	uint16_t handle_masterevent(void *event);
 	bool is_system_mode();
 	xcb_connection_t *con;

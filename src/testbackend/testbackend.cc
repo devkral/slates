@@ -43,7 +43,7 @@ uint16_t testmaster::handle_masterevent(void *event)
 	return EXP_ALL_VIEW;
 }
 
-int32_t testmaster::get_focused_viewport()
+int32_t testmaster::get_focused_viewport_id()
 {
 	return 0;
 }

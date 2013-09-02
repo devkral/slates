@@ -132,7 +132,7 @@ void sdlviewport::update_slice_info()
 	slate_height=dispbounds.h/get_viewport_height();
 }
 
-int32_t sdlviewport::get_focused_slate()
+int32_t sdlviewport::get_focused_slate_id()
 {
 	return focused_slate; 
 

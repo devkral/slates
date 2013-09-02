@@ -78,7 +78,7 @@ void xviewport::update_slice_info()
 	
 }
 
-int32_t xviewport::get_focused_slate()
+int32_t xviewport::get_focused_slate_id()
 {
 	return focused_slate;
 }

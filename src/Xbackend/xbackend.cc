@@ -85,7 +85,7 @@ bool xmaster::is_system_mode()
 	return true;
 }
 
-int32_t xmaster::get_focused_viewport()
+int32_t xmaster::get_focused_viewport_id()
 {
 	return 0;
 }

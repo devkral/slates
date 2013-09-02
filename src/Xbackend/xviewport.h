@@ -41,7 +41,7 @@ public:
 	slatearea *create_area(slate *parent_slate);
 	
 	xcb_screen_t *screen;
-	int32_t get_focused_slate();
+	int32_t get_focused_slate_id();
 	void set_focused_slate(int32_t view);
 	uint16_t slate_width_p;
 	uint16_t slate_height_p;

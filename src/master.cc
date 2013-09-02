@@ -91,6 +91,11 @@ void master::destroyviewport()
 	viewport_idcount--;
 }
 
+viewport *master::get_focused_viewport()
+{
+	return viewport_pool[get_focused_viewport_id ()];
+}
+
 void lock_intern(viewport *viewp)
 {
 	viewp->lock();
@@ -177,22 +182,22 @@ uint16_t master::handle_event(void *event)
 	}
 	if (status==EXP_FOCUS_VIEW)
 	{
-		viewport_pool[get_focused_viewport ()]->handle_event(event,0);	
+		get_focused_viewport ()->handle_event(event,0);	
 	}
 
 	if (status==EXP_FOCUS_SLATE)
 	{
-		viewport_pool[get_focused_viewport ()]->handle_event(event,1);
+		get_focused_viewport ()->handle_event(event,1);
 	}
 
 	
 	if (status==ADD_SLICE)
 	{
-		viewport_pool[get_focused_viewport ()]->addslice();
+		get_focused_viewport ()->addslice();
 	}
 	if (status==REMOVE_SLICE)
 	{
-		viewport_pool[get_focused_viewport ()]->removeslice();
+		get_focused_viewport ()->removeslice();
 	}
 	if (status==ACTIVATE_LOCK)
 	{

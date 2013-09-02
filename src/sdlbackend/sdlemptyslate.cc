@@ -63,6 +63,7 @@ void sdlemptyslate::update()
 
 	SDL_SetWindowPosition(ewindow,windowbounds.x,windowbounds.y);
 	SDL_SetWindowSize(ewindow,windowbounds.w,windowbounds.h);
+
 	
 	if (emptytex)
 		SDL_DestroyTexture (emptytex);
@@ -96,14 +97,17 @@ void sdlemptyslate::handle_event (void *event)
 				switch(  ((SDL_Event*)event)->window.event)
 				{
 					case SDL_WINDOWEVENT_ENTER:
-						{
-							((sdlviewport *)get_viewport ())->set_focused_slate (get_slatearea ()->get_origin ()->get_id());
-						}
-						break;
+					{
+						((sdlslatearea*)get_slatearea ())->isfocused=true;
+						((sdlviewport *)get_viewport ())->set_focused_slate (get_slatearea ()->get_origin ()->get_id());
+					}
+					break;
 					case SDL_WINDOWEVENT_LEAVE:
 					{
-						//(sdlviewport *)get_viewport ())->set_focused_slate (BORDERSLATE
+						((sdlslatearea*)get_slatearea ())->isfocused=false;
 					}
+					break;
+						
 				}
 				update();
 				

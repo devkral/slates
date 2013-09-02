@@ -225,6 +225,11 @@ void viewport::async_destroy_slates(int32_t amount)
 	}
 }
 
+slate *  viewport::get_focused_slate()
+{
+	return slate_pool[get_focused_slate_id()];
+}
+
 int32_t viewport::count_filled_slots(int16_t sliceid)
 {
 	int32_t temp=0;
@@ -379,10 +384,10 @@ void viewport::handle_event(void *event, uint8_t receiver)
 	}
 	if (receiver == 1)
 	{
-		if (get_focused_slate ()>=0)
-			slate_pool[get_focused_slate ()]->handle_event(event);
+		if (get_focused_slate_id ()>=0)
+			get_focused_slate ()->handle_event(event);
 		else
-			cerr << "Error: negative slate. Message for someone? malformed slate_id: " << get_focused_slate () << "\n";
+			cerr << "Error: negative slate. Message for someone? malformed slate_id: " << get_focused_slate_id () << "\n";
 			//void handle_viewport_event(event);
 	}
 	if (receiver == 2)

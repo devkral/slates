@@ -45,7 +45,7 @@ public:
 	
 	void create_lockslatetype();
 	slateareascreen *create_emptyslate();
-
+	bool isfocused=false;
 	
 protected:
 private:

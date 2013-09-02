@@ -72,11 +72,13 @@ sdlmaster::~sdlmaster()
 }
 bool sdlmaster::is_system_mode()
 {
-	
-	return true;
+	if (((sdlslatearea*)get_focused_viewport ()->get_focused_slate()->get_slatearea())->isfocused)
+		return false;
+	else
+		return true;
 }
 
-int32_t sdlmaster::get_focused_viewport ()
+int32_t sdlmaster::get_focused_viewport_id ()
 {
 	return 0;
 }
@@ -98,7 +100,7 @@ uint16_t sdlmaster::handle_masterevent(void *event)
 			return_val=QUIT_DE;
 			break;
 		case SDL_WINDOWEVENT: 
-			((sdlviewport*)viewport_pool[get_focused_viewport ()])->draw_viewwindow();
+			((sdlviewport*)get_focused_viewport ())->draw_viewwindow();
 			return_val=EXP_ACTIVE_SLATES;
 			break;
 		case SDL_MOUSEBUTTONDOWN:
@@ -139,7 +141,7 @@ uint16_t sdlmaster::handle_masterevent(void *event)
 				if (((SDL_Event*)event)->key.keysym.sym==SDLK_r &&
 				    SDL_GetModState ()&KMOD_CTRL  && is_system_mode())
 				{
-					viewport_pool[get_focused_viewport()]->update_slice_info();
+					get_focused_viewport()->update_slice_info();
 				}
 
 				
@@ -159,7 +161,7 @@ uint16_t sdlmaster::handle_masterevent(void *event)
 				{
 					int width=(viewport_pool[0]->get_viewport_width())-((SDL_Event*)event)->wheel.x;
 					int height=(viewport_pool[0]->get_viewport_height())-((SDL_Event*)event)->wheel.y;
-					viewport_pool[0]->set_viewport_size(width, height);
+					get_focused_viewport()->set_viewport_size(width, height);
 					return_val=EVENT_HANDLED_INTERN;
 				}
 			}

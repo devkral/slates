@@ -30,7 +30,7 @@ void tviewport::render(slateareascreen *renderob)
 	cout << "renderob updated\n";
 }
 
-int32_t tviewport::get_focused_slate()
+int32_t tviewport::get_focused_slate_id()
 {
 	return 0;
 }

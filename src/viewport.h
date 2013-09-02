@@ -69,7 +69,8 @@ public:
 	slateareascreen *get_renderob(int32_t renderid);
 
 	//don't forget negative BORDERSLATE
-	virtual int32_t get_focused_slate()=0; 
+	virtual int32_t get_focused_slate_id()=0;
+	slate * get_focused_slate();
 
 	virtual void update_slice_info()=0;
 	virtual slatearea *create_area(slate *parent_slate)=0;

@@ -41,8 +41,9 @@ public:
 	void swapcontent(int32_t viewportid1, int32_t slateid1,int32_t viewportid2, int32_t slateid2);
 	int32_t amount_viewports(); //in short: get all screens
 
-	virtual int32_t get_focused_viewport()=0; 
-
+	virtual int32_t get_focused_viewport_id()=0; 
+	viewport * get_focused_viewport();
+	
 	virtual bool is_system_mode()=0; //e.g. is border active
 	void lock();
 	bool unlock_slates(char *password);
