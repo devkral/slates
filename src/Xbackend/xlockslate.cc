@@ -23,7 +23,7 @@
 
 using namespace std;
 
-xlockslate::xlockslate(slatearea *parentt, master *parent_mastert) : lockslate(parentt,parent_mastert)
+xlockslate::xlockslate(slateareascreen *oldchild,slatearea *parentt, master *parent_mastert) : lockslate(oldchild,parentt,parent_mastert)
 {
 	cerr << "Create xlockslate\n";
 }
@@ -33,10 +33,9 @@ xlockslate::~xlockslate()
 	cerr << "Destroy xlockslate\n";
 }
 
-
-bool xlockslate::isstatic()
+void xlockslate::update()
 {
-	return true;
+	//return true;
 }
 bool xlockslate::isdirty()
 {

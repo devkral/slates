@@ -19,7 +19,7 @@ slateareascreen::slateareascreen(slatearea *parentt, master *parent_mastert)
 
 slateareascreen::~slateareascreen()
 {
-
+	get_viewport()->remove_renderob (get_renderid());
 }
 
 master *slateareascreen::get_master()

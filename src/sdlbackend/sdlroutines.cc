@@ -20,4 +20,30 @@
 
 #include "sdlroutines.h"
 #include <iostream>
+#include <mutex>
 
+static mutex rendsync;
+void SDL_CreateWindowAndRendererSync (SDL_Window** win, SDL_Renderer** rend, SDL_Rect *windowbounds)
+{
+	rendsync.lock();
+	*win=SDL_CreateWindow("Slates", windowbounds->x, windowbounds->y,
+	           windowbounds->w, windowbounds->h,SDL_WINDOW_BORDERLESS);//SDL_WINDOW_BORDERLESS
+	if (hw_accel())
+		*rend=SDL_CreateRenderer (*win,-1,SDL_RENDERER_ACCELERATED);
+	else
+		*rend=SDL_CreateRenderer (*win,-1,SDL_RENDERER_SOFTWARE);
+	rendsync.unlock();
+}
+
+static mutex destroysync;
+void SDL_DestroyWindowAndRendererSync (SDL_Window* win, SDL_Renderer* rend)
+{
+	destroysync.lock();
+	SDL_DestroyRenderer (rend);
+	SDL_DestroyWindow (win);
+	destroysync.unlock();
+}
+bool hw_accel()
+{
+	return false;
+}

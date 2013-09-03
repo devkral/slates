@@ -32,9 +32,10 @@ class lockslate;
 class sdllockslate: public lockslate
 {
 public:
-	sdllockslate(slatearea *parentt, master *parent_mastert);
+	sdllockslate(slateareascreen *oldchild,slatearea *parentt, master *parent_mastert);
 	~sdllockslate();
 	void update();
+	bool isdirty();
 	void handle_event(void *event);
 	string enter_password ();
 

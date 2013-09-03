@@ -30,10 +30,9 @@ class xhelperclass;
 class xlockslate: public lockslate,xhelperclass
 {
 public:
-	xlockslate(slatearea *parentt, master *parent_mastert);
+	xlockslate(slateareascreen *oldchild,slatearea *parentt, master *parent_mastert);
 	~xlockslate();
-	
-	bool isstatic();
+	void update();
 	bool isdirty();
 protected:
 

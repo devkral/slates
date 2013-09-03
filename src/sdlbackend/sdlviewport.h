@@ -49,7 +49,6 @@ public:
 	
 	uint32_t slate_width=-1, slate_height=-1;
 
-	bool hw_accel();
 	
 	void draw_viewwindow();
 	

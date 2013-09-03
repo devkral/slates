@@ -21,6 +21,7 @@
 #define _XSLATEAREA_H_
 
 #include "slatearea.h"
+#include "xlockslate.h"
 
 using namespace std;
 
@@ -30,7 +31,8 @@ class xslatearea : public slatearea
 {
 	public:
 		xslatearea(slate *parent_slate);
-		//~xslatearea();
+		~xslatearea();
+		slateareascreen *create_lockslate();
 		slateareascreen *create_emptyslate();
 		void handle_input(void *initializer);
 		

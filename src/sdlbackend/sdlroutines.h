@@ -30,8 +30,9 @@
 
 using namespace std;
 
-
-
+void SDL_CreateWindowAndRendererSync (SDL_Window** win, SDL_Renderer** rend, SDL_Rect *windowbounds);
+void SDL_DestroyWindowAndRendererSync (SDL_Window* win, SDL_Renderer* rend);
+bool hw_accel();
 
 
 #endif //_SDLROUTINES_H_

@@ -30,41 +30,40 @@ sdlemptyslate::sdlemptyslate(slatearea *parentt, master *parent_mastert) : empty
 	cerr << "Create sdlemptyslate\n";
 	windowbounds.x=(Sint16)(get_slatearea ()->get_x ()*((sdlviewport *) get_viewport ())->slate_width + ((sdlslatearea* )get_slatearea ())->border);
 	windowbounds.y=(Sint16)(get_slatearea ()->get_y ()*((sdlviewport *) get_viewport ())->slate_height + ((sdlslatearea* )get_slatearea ())->border);
-	windowbounds.w=(Uint16)(get_slatearea ()->get_w ()*((sdlviewport *) get_viewport ())->slate_width - ((sdlslatearea* )get_slatearea ())->border-3);
-	windowbounds.h=(Uint16)(get_slatearea ()->get_h ()*((sdlviewport *) get_viewport ())->slate_height - ((sdlslatearea* )get_slatearea ())->border-3);
+	windowbounds.w=(Uint16)(get_slatearea ()->get_w ()*((sdlviewport *) get_viewport ())->slate_width - ((sdlslatearea* )get_slatearea ())->border);
+	windowbounds.h=(Uint16)(get_slatearea ()->get_h ()*((sdlviewport *) get_viewport ())->slate_height - ((sdlslatearea* )get_slatearea ())->border);
 
-	cerr << windowbounds.x << " " << windowbounds.y << " " << windowbounds.w << " " << windowbounds.h << endl;
-	ewindow=SDL_CreateWindow("Slates", windowbounds.x, windowbounds.y,
-			           windowbounds.w, windowbounds.h,SDL_WINDOW_BORDERLESS);//SDL_WINDOW_BORDERLESS
-	
-	if (((sdlviewport*)get_viewport ())->hw_accel())
-		erender=SDL_CreateRenderer (ewindow,-1,SDL_RENDERER_ACCELERATED);
-	else
-		erender=SDL_CreateRenderer (ewindow,-1,SDL_RENDERER_SOFTWARE);
+	SDL_CreateWindowAndRendererSync(&ewindow,&erender,&windowbounds);
 
-	if (!epicture)
+
+	if (emptyusecount==0)
 		epicture=IMG_Load("themes/exampleemptyslate2.png");
-}	   
+	emptyusecount++;
+}
 
 sdlemptyslate::~sdlemptyslate()
 {
-	SDL_DestroyRenderer (erender);
-	SDL_DestroyWindow (ewindow);
-	SDL_DestroyTexture (emptytex);
-	SDL_FreeSurface (epicture);
+	emptyusecount--;
+	SDL_DestroyWindowAndRendererSync(ewindow,erender);
+	if (emptyusecount<=0)
+	{
+		SDL_DestroyTexture (emptytex);
+		SDL_FreeSurface (epicture);
+	}
 }
 
 void sdlemptyslate::update()
 {
 	if (get_slatearea ()->get_isdestroying()==true)
 		return;
+	//renderprot.lock();
 	//cerr << windowbounds.x << " " << windowbounds.y << " " << windowbounds.w << " " << windowbounds.h << endl;
 	SDL_Rect oldwindowbounds=windowbounds;
 
 	windowbounds.x=(Sint16)(get_slatearea ()->get_x ()*((sdlviewport *) get_viewport ())->slate_width + ((sdlslatearea* )get_slatearea ())->border);
 	windowbounds.y=(Sint16)(get_slatearea ()->get_y ()*((sdlviewport *) get_viewport ())->slate_height + ((sdlslatearea* )get_slatearea ())->border);
-	windowbounds.w=(Uint16)(get_slatearea ()->get_w ()*((sdlviewport *) get_viewport ())->slate_width - ((sdlslatearea* )get_slatearea ())->border-3);
-	windowbounds.h=(Uint16)(get_slatearea ()->get_h ()*((sdlviewport *) get_viewport ())->slate_height - ((sdlslatearea* )get_slatearea ())->border-3);
+	windowbounds.w=(Uint16)(get_slatearea ()->get_w ()*((sdlviewport *) get_viewport ())->slate_width - ((sdlslatearea* )get_slatearea ())->border);
+	windowbounds.h=(Uint16)(get_slatearea ()->get_h ()*((sdlviewport *) get_viewport ())->slate_height - ((sdlslatearea* )get_slatearea ())->border);
 
 
 	SDL_SetWindowPosition(ewindow,windowbounds.x,windowbounds.y);
@@ -98,6 +97,7 @@ void sdlemptyslate::update()
 	SDL_RenderPresent(erender);
 	
 	wasinit=true;
+	//renderprot.unlock();
 }
 
 
@@ -131,11 +131,14 @@ void sdlemptyslate::handle_event (void *event)
 					default:
 						if (!wasinit)
 							update();
-
+						else
+						{
+							SDL_RenderCopy(erender,emptytex, 0, 0);
+							SDL_RenderPresent(erender);
+						}
 						break;
 				}
-				SDL_RenderCopy(erender,emptytex, 0, 0);
-				SDL_RenderPresent(erender);
+
 			}
 			break;
 		case SDL_MOUSEBUTTONDOWN:

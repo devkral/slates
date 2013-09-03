@@ -23,6 +23,7 @@ slatearea::~slatearea()
 void slatearea::init()
 {
 	child=create_emptyslate();
+	get_viewport ()->add_renderob (child);
 }
 
 void slatearea::cleanup()
@@ -68,7 +69,16 @@ viewport *slatearea::get_viewport()
 
 void slatearea::handle_event(void  *event)
 {
-	child->handle_event(event);
+	try
+	{
+		child->handle_event(event);
+	}
+	catch (slateareascreen *newchild)
+	{
+		delete child;
+		set_screen(newchild);
+		update();
+	}
 }
 
 
@@ -83,14 +93,31 @@ void slatearea::update()
 	}
 	else
 	{
-		if (child->get_renderid ()==-1 && child->isdirty())
+		if (child->get_renderid ()==-1 && child->isdirty() && !child->islocked())
 			get_viewport()->add_renderob(child);
 	}
 	child->update();
-}
+}  
 void slatearea::setlock(uint8_t lockstate)
 {
-	child->setlock(lockstate);
+	//child->setlock(lockstate);
+	if (lockstate==1 && child->TYPE ()!=TYPE_locked)
+	{
+		get_viewport ()->remove_renderob (child->get_renderid ());
+		child->setlock(lockstate);
+		child=create_lockslate ();
+		get_viewport ()->add_renderob (child);
+	}else if (lockstate==0 && child->TYPE ()==TYPE_locked)
+	{
+		get_viewport ()->remove_renderob (child->get_renderid ());
+		slateareascreen *tempchild=child;
+		child=((lockslate *)tempchild)->unlock();
+		delete tempchild;
+		child->setlock(lockstate);
+		get_viewport ()->add_renderob (child);
+	}
+	else
+		child->setlock(lockstate);
 }
 
 int16_t slatearea::get_x()

@@ -42,7 +42,6 @@ public:
 	void fill_slate_intern(int32_t id); //counter 
 	void empty_slate_intern(int32_t id); //counter don't confuse with emptyslate
 	void handle_event(void *event, uint8_t receiver); //0=all, 1 focused, 2 active rendered
-	//virtual void handle_viewport_event(void *eventin)=0;
 	void cleanup();
 	void lock();
 	void unlock();
@@ -76,6 +75,7 @@ public:
 	virtual slatearea *create_area(slate *parent_slate)=0;
 
 protected:
+	int32_t safe_slice=slices; //is max slice where it is safe to handle events
 	mutex protrender; //is locked while slates update
 	deque<slateareascreen*> render_pool; //pool with windows which must be rendered
 private:

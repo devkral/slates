@@ -23,7 +23,7 @@
 
 using namespace std;
 
-sdllockslate::sdllockslate(slatearea *parentt,master *parent_mastert) : lockslate(parentt,parent_mastert)
+sdllockslate::sdllockslate(slateareascreen *oldchild,slatearea *parentt,master *parent_mastert) : lockslate(oldchild,parentt,parent_mastert)
 {
 	cerr << "Create sdllockslate\n";
 }
@@ -69,7 +69,10 @@ void sdllockslate::handle_event (void *event)
 
 }
 
-
+bool sdllockslate::isdirty()
+{
+	return true;
+}
 
 
 string sdllockslate::enter_password ()

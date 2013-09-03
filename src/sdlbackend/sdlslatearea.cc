@@ -28,7 +28,11 @@ sdlslatearea::~sdlslatearea()
 {
 }
 
-
+slateareascreen *sdlslatearea::create_lockslate()
+{
+	lockslate *temp=new sdllockslate(child,this,get_master());
+	return temp;
+}
 
 
 

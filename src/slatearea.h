@@ -18,6 +18,7 @@ class viewport;
 
 using namespace std;
 
+
 class slatearea
 {
 public:
@@ -39,10 +40,11 @@ public:
 	void set_screen(slateareascreen *replace);
 	
 	virtual slateareascreen *create_emptyslate()=0;
+	virtual slateareascreen *create_lockslate()=0;
 
 	//virtual void handle_input(void *initializer)=0;
 	
-	void handle_event(void  *event);
+	virtual void handle_event(void  *event);
 		
 	void setlock(uint8_t lockstate); //0 unlocked, 1 locked, (2 do not lock not implemented) (3 lock on unfocus not implemented)
 	

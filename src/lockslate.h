@@ -11,12 +11,14 @@ class slatearea;
 class lockslate : public slateareascreen
 {
 public:
-	lockslate(slatearea *parentt,master *parent_mastert);
+	lockslate(slateareascreen *oldchild, slatearea *parentt,master *parent_mastert);
 	~lockslate();
+	slateareascreen  *unlock();
 	uint8_t TYPE();
 protected:
-
+	slateareascreen *restore_child=0;
 private:
+	
 };
 
 #endif // _LOCKSLATE_H_

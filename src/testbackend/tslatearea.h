@@ -4,6 +4,7 @@
 #define _TSLATEAREA_H_
 
 #include "slatearea.h"
+#include "tlockslate.h"
 
 using namespace std;
 
@@ -11,8 +12,8 @@ class tslatearea : public slatearea
 {
 public:
 	tslatearea(slate *parent_slate);
+	slateareascreen *create_lockslate();
 	slateareascreen *create_emptyslate();
-	void handle_input(void *initializer);
 };
 
 #endif // _TSLATEAREA_H_

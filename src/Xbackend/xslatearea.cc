@@ -24,7 +24,14 @@ xslatearea::xslatearea(slate *parent_slate) : slatearea(parent_slate)
 {
 		
 }
-
+xslatearea::~xslatearea()
+{
+		
+}
+slateareascreen *xslatearea::create_lockslate()
+{
+	return new xlockslate(child,this,get_master());
+}
 
 slateareascreen *xslatearea::create_emptyslate()
 {

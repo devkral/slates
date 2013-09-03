@@ -222,6 +222,7 @@ void async_destroy_slates_intern(slate *targob)
 	}
 }
 
+
 void viewport::async_destroy_slates(int32_t amount)
 {
 	vector<thread> temppool;
@@ -243,6 +244,7 @@ void viewport::async_destroy_slates(int32_t amount)
 	}
 #endif
 }
+
 
 slate *  viewport::get_focused_slate()
 {
@@ -379,11 +381,14 @@ int16_t viewport::get_slices()
 
 void handle_event_intern(slatearea *slateareaob, void *event)
 {
-	slateareaob->handle_event(event);
+	if (slateareaob)
+		slateareaob->handle_event(event);
 }
 
 void viewport::handle_event(void *event, uint8_t receiver)
 {
+	/**if(!slateid_prot.try_lock())
+		return;*/
 	if (receiver==0)
 	{
 		vector<thread> threadpool_events;
@@ -391,15 +396,21 @@ void viewport::handle_event(void *event, uint8_t receiver)
 		{
 			if (slate_pool[count]->isorigin())
 			{
+#ifndef _NO_ASYNC_
 				threadpool_events.push_back( thread(handle_event_intern,slate_pool[count]->get_slatearea(),event));
+#else
+				handle_event_intern(slate_pool[count]->get_slatearea(),event);
+#endif
 			}
 		}
+#ifndef _NO_ASYNC_
 		while (threadpool_events.empty()==false)
 		{
 			if (threadpool_events.back().joinable())
 				threadpool_events.back().join();
 			threadpool_events.pop_back();
 		}
+#endif
 	}
 	if (receiver == 1)
 	{
@@ -414,18 +425,23 @@ void viewport::handle_event(void *event, uint8_t receiver)
 		vector<thread> threadpool_events;
 		for (int32_t count=0;count<render_pool.size();count++)
 		{
+#ifndef _NO_ASYNC_
 			threadpool_events.push_back( thread(handle_event_intern,render_pool[count]->get_slatearea (),event));
+#else
+			handle_event_intern(slate_pool[count]->get_slatearea(),event);
+#endif
 		}
+#ifndef _NO_ASYNC_
 		while (threadpool_events.empty()==false)
 		{
 			if (threadpool_events.back().joinable())
 				threadpool_events.back().join();
 			threadpool_events.pop_back();
 		}
+#endif
 	}
+	//slateid_prot.unlock();
 }
-
-
 
 //lock in update
 void viewport::add_renderob(slateareascreen *renderob)
@@ -436,6 +452,8 @@ void viewport::add_renderob(slateareascreen *renderob)
 //lock in update
 void viewport::remove_renderob(int32_t renderid)
 {
+	if(renderid==-1)
+		return;
 	render_pool[renderid]->set_renderid (-1);
 	render_pool.erase(render_pool.begin()+renderid);
 }

@@ -43,7 +43,7 @@ public:
 
 	
 	
-	void create_lockslatetype();
+	slateareascreen *create_lockslate();
 	slateareascreen *create_emptyslate();
 	bool isfocused=false;
 	int16_t border=3;

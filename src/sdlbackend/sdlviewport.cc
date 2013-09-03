@@ -92,10 +92,7 @@ void sdlviewport::set_focused_slate(int32_t slateid)
 }
 
 
-bool sdlviewport::hw_accel()
-{
-	return true;
-}
+
 
 void sdlviewport::draw_viewwindow()
 {

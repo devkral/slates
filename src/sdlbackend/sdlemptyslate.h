@@ -24,13 +24,12 @@ class emptyslate;
 #include "sdlroutines.h"
 
 
-#include <mutex>
+//#include <mutex>
 
 
-	static SDL_Texture *emptytex=0;
-	static SDL_Surface *epicture=0;
-
-
+static SDL_Texture *emptytex=0;
+static SDL_Surface *epicture=0;
+static int32_t emptyusecount=0;
 
 class sdlemptyslate : public emptyslate
 {
@@ -38,7 +37,6 @@ public:
 	sdlemptyslate(slatearea *parentt, master *parent_mastert);
 	~sdlemptyslate();
 	void update();
-	void cleanup_handler ();
 	void set_slatearea(slatearea *in);
 	void create_emptyslate ();
 	void handle_event(void *event);
@@ -49,7 +47,7 @@ protected:
 	int update_interval;
 
 	
-	//static timed_mutex	
+	//mutex renderprot;	
 
 	SDL_Window *ewindow=0;
 	SDL_Renderer *erender=0;

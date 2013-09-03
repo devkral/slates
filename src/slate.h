@@ -51,6 +51,7 @@ private:
 	int32_t slateid;
 	viewport *parent_viewport=0;
 	slatearea *child=0;
+	bool isready=false;
 
 };
 #endif // _SLATE_H_

@@ -10,10 +10,9 @@ class lockslate;
 class tlockslate: public lockslate 
 {
 public:
-	tlockslate(slatearea *parentt, master *parent_mastert);
+	tlockslate(slateareascreen *oldchild,slatearea *parentt, master *parent_mastert);
 	~tlockslate();
-	
-	bool isstatic();
+	void update();
 	bool isdirty();
 protected:
 

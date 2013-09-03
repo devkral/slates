@@ -6,7 +6,7 @@
 
 using namespace std;
 
-tlockslate::tlockslate(slatearea *parentt, master *parent_mastert) : lockslate(parentt,parent_mastert)
+tlockslate::tlockslate(slateareascreen *oldchild,slatearea *parentt, master *parent_mastert) : lockslate(oldchild,parentt,parent_mastert)
 {
 	cerr << "Create tlockslate\n";
 }
@@ -17,9 +17,9 @@ tlockslate::~tlockslate()
 }
 
 
-bool tlockslate::isstatic()
+void tlockslate::update()
 {
-	return true;
+
 }
 bool tlockslate::isdirty()
 {
