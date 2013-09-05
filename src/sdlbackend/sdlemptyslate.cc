@@ -27,7 +27,6 @@ using namespace std;
 
 sdlemptyslate::sdlemptyslate(slatearea *parentt, master *parent_mastert) : emptyslate(parentt, parent_mastert)
 {
-	cerr << "Create sdlemptyslate\n";
 	windowbounds.x=(Sint16)(get_slatearea ()->get_x ()*((sdlviewport *) get_viewport ())->slate_width + ((sdlslatearea* )get_slatearea ())->border);
 	windowbounds.y=(Sint16)(get_slatearea ()->get_y ()*((sdlviewport *) get_viewport ())->slate_height + ((sdlslatearea* )get_slatearea ())->border);
 	windowbounds.w=(Uint16)(get_slatearea ()->get_w ()*((sdlviewport *) get_viewport ())->slate_width - ((sdlslatearea* )get_slatearea ())->border);
@@ -45,9 +44,10 @@ sdlemptyslate::~sdlemptyslate()
 {
 	emptyusecount--;
 	SDL_DestroyWindowAndRendererSync(ewindow,erender);
+	SDL_DestroyTexture (emptytex);
 	if (emptyusecount<=0)
 	{
-		SDL_DestroyTexture (emptytex);
+		//SDL_DestroyTexture (emptytex);
 		SDL_FreeSurface (epicture);
 	}
 }

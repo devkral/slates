@@ -8,7 +8,7 @@
 #include "slate.h"
 #include "master.h"
 
-#define _NO_ASYNC_ 1
+//#define _NO_ASYNC_ 1
 
 int32_t calcidslate(int16_t x,int16_t y)
 {
@@ -35,6 +35,7 @@ viewport::viewport(master *master_parent,int32_t viewportidtemp)
 	viewportid=viewportidtemp;
 	mroot=master_parent;
 	amount_filled_slates=0;
+	isdestroying=false;
 }
 
 viewport::~viewport()
@@ -331,11 +332,15 @@ void viewport::unlock()
 {
 	if (get_isdestroying())
 		return;
+	
+	protrender.lock();
 	for (int32_t count=0;count<slate_pool.size();count++)
 	{
 		if (slate_pool[count]->isorigin())
 			slate_pool[count]->setlock(0);
 	}
+
+	protrender.unlock();
 }
 
 void viewport::fill_slate_intern(int32_t id)
@@ -385,10 +390,19 @@ void handle_event_intern(slatearea *slateareaob, void *event)
 		slateareaob->handle_event(event);
 }
 
+//renders active slates, but strangely the table is corrupted
+void handle_event_intern2(slatearea *slateareaob, void *event)
+{
+	if (slateareaob)
+		slateareaob->handle_event(event);
+}
+
 void viewport::handle_event(void *event, uint8_t receiver)
 {
-	/**if(!slateid_prot.try_lock())
-		return;*/
+
+
+	
+	protrender.lock();
 	if (receiver==0)
 	{
 		vector<thread> threadpool_events;
@@ -420,15 +434,18 @@ void viewport::handle_event(void *event, uint8_t receiver)
 			cerr << "Error: negative slate. Message for someone? malformed slate_id: " << get_focused_slate_id () << "\n";
 			//void handle_viewport_event(event);
 	}
+	
 	if (receiver == 2)
 	{
+		if(!slateid_prot.try_lock())
+			return;
 		vector<thread> threadpool_events;
 		for (int32_t count=0;count<render_pool.size();count++)
 		{
 #ifndef _NO_ASYNC_
-			threadpool_events.push_back( thread(handle_event_intern,render_pool[count]->get_slatearea (),event));
+			threadpool_events.push_back( thread(handle_event_intern2,render_pool[count],event));
 #else
-			handle_event_intern(slate_pool[count]->get_slatearea(),event);
+			handle_event_intern2(render_pool[count],event);
 #endif
 		}
 #ifndef _NO_ASYNC_
@@ -438,13 +455,16 @@ void viewport::handle_event(void *event, uint8_t receiver)
 				threadpool_events.back().join();
 			threadpool_events.pop_back();
 		}
+		slateid_prot.unlock();
 #endif
 	}
-	//slateid_prot.unlock();
+
+	
+	protrender.unlock();	//
 }
 
 //lock in update
-void viewport::add_renderob(slateareascreen *renderob)
+void viewport::add_renderob(slatearea *renderob)
 {
 	renderob->set_renderid (render_pool.size()); //nice hack: size must be one less before adding
 	render_pool.push_back(renderob);
@@ -455,11 +475,12 @@ void viewport::remove_renderob(int32_t renderid)
 	if(renderid==-1)
 		return;
 	render_pool[renderid]->set_renderid (-1);
+	render_pool[renderid]=0;
 	render_pool.erase(render_pool.begin()+renderid);
 }
 
 
-slateareascreen *viewport::get_renderob(int32_t renderid)
+slatearea *viewport::get_renderob(int32_t renderid)
 {
 	return render_pool[renderid];
 }

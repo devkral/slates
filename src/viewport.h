@@ -21,6 +21,7 @@ class slatearea;
 #include <iostream>
 #include <mutex>
 #include <thread>
+#include <atomic>
 
 
 using namespace std;
@@ -41,7 +42,7 @@ public:
 	int32_t count_filled_slots(int16_t sliceid);
 	void fill_slate_intern(int32_t id); //counter 
 	void empty_slate_intern(int32_t id); //counter don't confuse with emptyslate
-	void handle_event(void *event, uint8_t receiver); //0=all, 1 focused, 2 active rendered
+	virtual void handle_event(void *event, uint8_t receiver); //0=all, 1 focused, 2 active rendered
 	void cleanup();
 	void lock();
 	void unlock();
@@ -63,9 +64,9 @@ public:
 	int16_t get_viewport_beg_y();
 	bool get_isdestroying(); //superseeded by exceptions?
 
-	void add_renderob(slateareascreen *renderob);
+	void add_renderob(slatearea *renderob);
 	void remove_renderob(int32_t renderid);
-	slateareascreen *get_renderob(int32_t renderid);
+	slatearea *get_renderob(int32_t renderid);
 
 	//don't forget negative BORDERSLATE
 	virtual int32_t get_focused_slate_id()=0;
@@ -77,7 +78,8 @@ public:
 protected:
 	int32_t safe_slice=slices; //is max slice where it is safe to handle events
 	mutex protrender; //is locked while slates update
-	deque<slateareascreen*> render_pool; //pool with windows which must be rendered
+	deque<slatearea*> render_pool; //pool with windows which must be rendered
+	vector<slate*> slate_pool; //leftwing first, then diag then top wing
 private:
 	int16_t horizontal_tiles=-1;
 	int16_t vertical_tiles=-1;
@@ -86,11 +88,10 @@ private:
 	int32_t viewportid;
 	int16_t slices=0;
 	int32_t slate_idcount=0; 
-	mutex slateid_prot;
+	mutex slateid_prot; //protects slateid
 	int32_t amount_filled_slates;
-	bool isdestroying=false;
+	atomic<bool> isdestroying;
 	//long int max_avail_slates=0; //=slice*slice-1=size-1 of slate_pool
-	vector<slate*> slate_pool; //leftwing first, then diag then top wing
 
 	
 

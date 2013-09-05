@@ -27,7 +27,7 @@ class emptyslate;
 //#include <mutex>
 
 
-static SDL_Texture *emptytex=0;
+//static SDL_Texture *emptytex=0;
 static SDL_Surface *epicture=0;
 static int32_t emptyusecount=0;
 
@@ -40,6 +40,7 @@ public:
 	void set_slatearea(slatearea *in);
 	void create_emptyslate ();
 	void handle_event(void *event);
+	
 	bool isdirty();
 protected:
 
@@ -48,7 +49,8 @@ protected:
 
 	
 	//mutex renderprot;	
-
+	SDL_Texture *emptytex=0;
+	
 	SDL_Window *ewindow=0;
 	SDL_Renderer *erender=0;
 	SDL_Rect windowbounds;

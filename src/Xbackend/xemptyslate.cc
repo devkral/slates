@@ -79,7 +79,7 @@ xemptyslate::~xemptyslate()
 }
 void xemptyslate::update()
 {
-	if (get_renderid()==-1)
+	if (get_slatearea ()->get_renderid()==-1)
 	{
 		xcb_unmap_window(((xmaster*)get_master ())->con,window);
 		return;

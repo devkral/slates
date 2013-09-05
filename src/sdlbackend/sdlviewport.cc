@@ -32,7 +32,7 @@ sdlviewport::sdlviewport(master *masteridd, int ownidd) : viewport(masteridd,own
 	cerr << "Create sdlviewport\n";
 	SDL_GetDisplayBounds(get_viewport_id(), &dispbounds);
 	viewportwindow=SDL_CreateWindow("Slates", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-		           dispbounds.w, dispbounds.h,SDL_WINDOW_FULLSCREEN|SDL_WINDOW_BORDERLESS);
+		           dispbounds.w, dispbounds.h,SDL_WINDOW_FULLSCREEN);//|SDL_WINDOW_BORDERLESS
 	
 	SDL_GetCurrentDisplayMode(get_viewport_id (),&viewdisplaymode);
 	if (hw_accel())

@@ -10,6 +10,7 @@ class lockslate;
 
 slatearea::slatearea(slate *parent_slate)
 {
+	isdestroying=false;
 	connectedslates.push_back( deque<slate*>() );
 	connectedslates[0].push_back(parent_slate);
 	
@@ -20,23 +21,46 @@ slatearea::~slatearea()
 	isdestroying=true;
 }
 
-void slatearea::init()
-{
-	child=create_emptyslate();
-	get_viewport ()->add_renderob (child);
-}
-
 void slatearea::cleanup()
 {
 	isdestroying=true;
+	get_viewport ()->remove_renderob (get_renderid ());
+
 	if (child)
 	{
 		//child->cleanup();
 		delete child;
 	}
-	if (get_viewport ()->get_isdestroying ()==false)
+	
+	if (get_viewport ()->get_isdestroying ()==false && (get_w()!=1 || get_h()!=1) )
+	{
 		reposition (get_x(),get_y(),1,1);
+	}
 }
+
+
+void slatearea::init()
+{
+	if (get_isdestroying ())
+		return;
+
+	child=create_emptyslate();
+	get_viewport ()->add_renderob (this);
+}
+
+
+int32_t slatearea::get_renderid()
+{
+	return renderid;
+}
+void slatearea::set_renderid(int32_t id)
+{
+	if (renderid!=-1 && id!=-1 )
+		std::cerr << "Error: renderid dirty\n";
+	cerr << id << "renderid\n";
+	//renderid=id;
+}
+
 
 bool slatearea::isfilled()
 {
@@ -69,6 +93,8 @@ viewport *slatearea::get_viewport()
 
 void slatearea::handle_event(void  *event)
 {
+	if (get_isdestroying ())
+		return;
 	try
 	{
 		child->handle_event(event);
@@ -84,37 +110,43 @@ void slatearea::handle_event(void  *event)
 
 void slatearea::update()
 {
+	if (get_isdestroying ())
+		return;
 	if (get_x()+width<=get_origin ()->get_viewport()->get_viewport_beg_x() ||
 		get_y()+height<=get_origin ()->get_viewport()->get_viewport_beg_y() ||
 		get_x()>=get_origin ()->get_viewport()->get_viewport_width()+get_origin ()->get_viewport()->get_viewport_beg_x() ||
 		get_y()>=get_origin()->get_viewport()->get_viewport_height()+get_origin ()->get_viewport()->get_viewport_beg_y())
 	{
-		get_viewport()->remove_renderob(child->get_renderid ());
+		get_viewport()->remove_renderob(get_renderid ());
 	}
 	else
 	{
-		if (child->get_renderid ()==-1 && child->isdirty() && !child->islocked())
-			get_viewport()->add_renderob(child);
+		if (get_renderid ()==-1 && child->isdirty() && !child->islocked())
+			get_viewport()->add_renderob(this);
 	}
 	child->update();
 }  
 void slatearea::setlock(uint8_t lockstate)
 {
+	if (get_isdestroying ())
+		return;
 	//child->setlock(lockstate);
 	if (lockstate==1 && child->TYPE ()!=TYPE_locked)
 	{
-		get_viewport ()->remove_renderob (child->get_renderid ());
+		//get_viewport ()->remove_renderob (get_renderid ());
 		child->setlock(lockstate);
 		child=create_lockslate ();
-		get_viewport ()->add_renderob (child);
+		if (get_renderid ()==-1)
+			get_viewport ()->add_renderob (this);
 	}else if (lockstate==0 && child->TYPE ()==TYPE_locked)
 	{
-		get_viewport ()->remove_renderob (child->get_renderid ());
+		//get_viewport ()->remove_renderob (get_renderid ());
 		slateareascreen *tempchild=child;
 		child=((lockslate *)tempchild)->unlock();
 		delete tempchild;
 		child->setlock(lockstate);
-		get_viewport ()->add_renderob (child);
+		if (get_renderid ()==-1)
+			get_viewport ()->add_renderob (this);
 	}
 	else
 		child->setlock(lockstate);
@@ -147,6 +179,8 @@ int16_t slatearea::get_h()
 
 void slatearea::set_screen(slateareascreen *replacement)
 {
+	if (get_isdestroying ())
+		return;
 	filledold=isfilled();
 	child=replacement;
 	update_isfilled();
@@ -178,6 +212,8 @@ void slatearea::update_isfilled()
 
 int8_t slatearea::reposition_check(int16_t x, int16_t y, int16_t w, int16_t h)
 {
+	if (get_isdestroying ())
+		return -1;
 	int16_t old_x=get_x();
 	int16_t old_y=get_y();
 	int16_t old_w=get_w();
@@ -238,6 +274,9 @@ int8_t slatearea::reposition_check(int16_t x, int16_t y, int16_t w, int16_t h)
 // do reposition_check before!
 void slatearea::reposition(int16_t x, int16_t y, int16_t w, int16_t h)
 {
+	if (get_isdestroying ())
+		return;
+
 	int16_t old_x=get_x();
 	int16_t old_y=get_y();
 	int16_t old_w=get_w();

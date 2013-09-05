@@ -48,7 +48,6 @@ public:
 	void set_focused_slate(int32_t slateid);
 	
 	uint32_t slate_width=-1, slate_height=-1;
-
 	
 	void draw_viewwindow();
 	

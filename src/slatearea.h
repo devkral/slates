@@ -4,6 +4,8 @@
 #ifndef _SLATEAREA_H_
 #define _SLATEAREA_H_
 
+#include <atomic>
+
 #include "slate.h"
 class slate;
 class slateareascreen;
@@ -55,17 +57,21 @@ public:
 	bool isfilled();
 	bool get_isdestroying ();
 	void update_isfilled();
+
+	int32_t get_renderid(); //usable as check if rendered (-1=not rendered)
+	void set_renderid(int32_t id);
 	
 protected:
 	slateareascreen *child=0;
-	bool hasinputhandle=false;
 private:
 	deque< deque<slate*> > connectedslates; //outer vector y inner x
 	bool filledold=false;
-	bool isdestroying=false;
+	atomic<bool> isdestroying;
 	//give this over to windowlist
 	int16_t width=1; //in slates
 	int16_t height=1; //in slates
+
+	int32_t renderid=-1;
 };
 
 #endif // _SLATEAREA_H_

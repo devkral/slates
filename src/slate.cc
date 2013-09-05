@@ -136,6 +136,6 @@ slatearea *slate::get_slatearea()
 
 void slate::handle_event(void *event)
 {
-	if(isready)
+	if(isready && child)
 		child->handle_event(event);
 }

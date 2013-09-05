@@ -31,8 +31,6 @@ public:
 	virtual bool isdirty()=0; //shall be rendered
 	virtual bool islocked();
 	void setlock(uint8_t lockstate);
-	int32_t get_renderid(); //usable as check if rendered (-1=not rendered)
-	void set_renderid(int32_t id);
 	virtual uint8_t TYPE()=0;
 
 	void swap_slatearea (slatearea *newparent); //just works if same viewport?, updated but not tested
@@ -42,7 +40,6 @@ protected:
 
 private:
 	master *parent_master=0;
-	int32_t renderid=-1;
 	uint8_t curlockstate=0; //0 normal 1 lock, 2 always_unlock,  (3 private_normal, 4 private_locked: not implemented)
 	slatearea *parent=0;
 	//TODO: Overlay for move/swap/etc
