@@ -31,8 +31,17 @@ sdlviewport::sdlviewport(master *masteridd, int16_t ownidd) : viewport(masteridd
 {
 	cerr << "Create sdlviewport\n";
 	SDL_GetDisplayBounds(get_viewport_id(), &dispbounds);
-	viewportwindow=SDL_CreateWindow("Slates", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-		           dispbounds.w, dispbounds.h,SDL_WINDOW_FULLSCREEN);//|SDL_WINDOW_BORDERLESS
+	viewportwindow=SDL_CreateWindow("Slates", 0, 0,
+		           dispbounds.w, dispbounds.h,SDL_WINDOW_FULLSCREEN);
+
+	/**
+	SDL_SysWMinfo *wminfo;
+	SDL_GetWindowWMInfo(viewportwindow, wminfo);
+	if (wminfo->subsystem==SDL_SYSWM_X11)
+	{
+		MoveWindowToScreen (wminfo,(int32_t)get_id());
+
+	}*/
 	
 	SDL_GetCurrentDisplayMode(get_viewport_id (),&viewdisplaymode);
 	if (hw_accel())
@@ -56,22 +65,14 @@ sdlviewport::sdlviewport(master *masteridd, int16_t ownidd) : viewport(masteridd
 		background_IMG=IMG_Load("themes/examplebackground.png");
 		
 		
-		if (background_IMG)
-		{
-			SDL_Surface *tempsur=SDL_CreateRGBSurface (0,dispbounds.w,dispbounds.h,32,0,0,0,0);
-			SDL_LockTexture(background_IMG_tex, &dispbounds, &tempsur->pixels, &tempsur->pitch);
-			SDL_BlitSurface(background_IMG,0,tempsur,0);
-			// paint into surface pixels
-			SDL_UnlockTexture(background_IMG_tex);
-			draw_viewwindow();
-		}
-		else
+		
+		if (!background_IMG)
 			cerr << "Couldn't load theme.\n";
 		//SDL_UpdateTexture(to_sdmac(viewport_screen)->viewport_tex,0,to_sdmac(viewport_screen)->viewport->pixels,to_sdmac(viewport_screen)->viewport->pitch);
 	}
-	else
+	if (!background_IMG_tex)
 		cerr << "Couldn't load texture.\n";
-	
+	draw_viewwindow();
 }
 
 
@@ -96,6 +97,9 @@ void sdlviewport::set_focused_slate(int32_t slateid)
 
 void sdlviewport::draw_viewwindow()
 {
+
+	//SDL_ShowWindow (viewportwindow);
+	//SDL_SetWindowFullscreen (viewportwindow,SDL_WINDOW_FULLSCREEN);
 	SDL_RenderCopy(viewportrender,background_IMG_tex, 0, 0);
 	SDL_RenderPresent(viewportrender);
 }
@@ -121,6 +125,15 @@ void sdlviewport::update_slice_info()
 {
 	slate_width=dispbounds.w/get_viewport_width();
 	slate_height=dispbounds.h/get_viewport_height();
+		if (background_IMG)
+		{
+			SDL_Surface *tempsur=SDL_CreateRGBSurface (0,dispbounds.w,dispbounds.h,32,0,0,0,0);
+			SDL_LockTexture(background_IMG_tex, &dispbounds, &tempsur->pixels, &tempsur->pitch);
+			SDL_BlitSurface(background_IMG,0,tempsur,0);
+			// paint into surface pixels
+			SDL_UnlockTexture(background_IMG_tex);
+			
+		}
 }
 
 int32_t sdlviewport::get_focused_slate_id()

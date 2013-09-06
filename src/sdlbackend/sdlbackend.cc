@@ -91,10 +91,7 @@ uint16_t sdlmaster::handle_masterevent(void *event)
 		return_val=EXP_ALL_VIEW;
 	}else
 	{
-		if (!is_system_mode())
-			return_val=EXP_FOCUS_SLATE;
-		else
-			return_val=EXP_ACTIVE_SLATES;
+		return_val=EXP_FOCUS_SLATE;
 	}
 	
 	switch (((SDL_Event*)event)->type)
@@ -125,33 +122,16 @@ uint16_t sdlmaster::handle_masterevent(void *event)
 				{
 					return_val=REMOVE_SLICE;
 				}
-				if (((SDL_Event*)event)->key.keysym.sym==SDLK_c )
-				{
-					/**slatearea *temp=(slatearea *)viewport_pool[0]->get_slate_by_id(0)->get_selfreference_pointer ();
-					assert(temp);
-					slatearea *temp1=(slatearea *)viewport_pool[1]->get_slate_by_id(0)->get_selfreference_pointer ();
-					slatearea *temp2=temp;
-					temp=temp1;
-					temp1=temp2;
-					to_sdlslatearea(temp->get_screen())->slatebox.h-=4;
-					ishandled=MASTER_HANDLED;*/
-				}
 				if (((SDL_Event*)event)->key.keysym.sym==SDLK_r && SDL_GetModState ()&KMOD_CTRL &&
 				    SDL_GetModState ()&KMOD_SHIFT    && is_system_mode())
 				{
 					return_val=RELOAD_DE;
-				}
-				if (((SDL_Event*)event)->key.keysym.sym==SDLK_r &&
+				}else if (((SDL_Event*)event)->key.keysym.sym==SDLK_r &&
 				    SDL_GetModState ()&KMOD_CTRL  && is_system_mode())
 				{
 					get_focused_viewport()->update_slice_info();
 				}
 
-				
-				if (((SDL_Event*)event)->key.keysym.sym==SDLK_ESCAPE )
-				{
-					return_val=QUIT_DE;
-				}
 				if (((SDL_Event*)event)->key.keysym.sym==SDLK_q && SDL_GetModState ()&KMOD_CTRL && SDL_GetModState ()&KMOD_SHIFT)
 				{
 					return_val=QUIT_DE;
@@ -160,7 +140,14 @@ uint16_t sdlmaster::handle_masterevent(void *event)
 			break;
 		case SDL_MOUSEWHEEL:
 			{
-				if ((SDL_GetModState()&KMOD_CTRL) && (SDL_GetModState()&KMOD_ALT))
+				
+				if ((SDL_GetModState()&KMOD_CTRL) && (SDL_GetModState()&KMOD_SHIFT))
+				{
+					int width=(viewport_pool[0]->get_viewport_width())-((SDL_Event*)event)->wheel.y;
+					int height=(viewport_pool[0]->get_viewport_height())-((SDL_Event*)event)->wheel.x;
+					get_focused_viewport()->set_viewport_size(width, height);
+					return_val=EVENT_HANDLED_INTERN;
+				}else if ((SDL_GetModState()&KMOD_CTRL)) // && (SDL_GetModState()&KMOD_ALT))
 				{
 					int width=(viewport_pool[0]->get_viewport_width())-((SDL_Event*)event)->wheel.x;
 					int height=(viewport_pool[0]->get_viewport_height())-((SDL_Event*)event)->wheel.y;

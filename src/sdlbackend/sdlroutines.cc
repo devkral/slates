@@ -21,6 +21,18 @@
 #include "sdlroutines.h"
 #include <iostream>
 #include <mutex>
+/**
+#ifdef COMPILED_WITH_X
+void MoveWindowToScreen (SDL_SysWMinfo* wininf, int32_t screen)
+{
+
+
+	
+}
+
+
+#endif
+*/
 
 static mutex rendsync;
 void SDL_CreateWindowAndRendererSync (SDL_Window** win, SDL_Renderer** rend, SDL_Rect *windowbounds)
@@ -34,6 +46,17 @@ void SDL_CreateWindowAndRendererSync (SDL_Window** win, SDL_Renderer** rend, SDL
 		*rend=SDL_CreateRenderer (*win,-1,SDL_RENDERER_SOFTWARE);
 	rendsync.unlock();
 }
+
+void SDL_CreateRendererSync (SDL_Window* win, SDL_Renderer** rend)
+{
+	rendsync.lock();
+	if (hw_accel())
+		*rend=SDL_CreateRenderer (win,-1,SDL_RENDERER_ACCELERATED);
+	else
+		*rend=SDL_CreateRenderer (win,-1,SDL_RENDERER_SOFTWARE);
+	rendsync.unlock();
+}
+
 
 //static mutex destroysync;
 void SDL_DestroyWindowAndRenderer (SDL_Window* win, SDL_Renderer* rend)

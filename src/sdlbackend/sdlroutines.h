@@ -21,8 +21,12 @@
 #ifndef _SDLROUTINES_H_
 #define _SDLROUTINES_H_
 
+#ifdef COMPILED_WITH_X
+#include <xcb/xcb.h>
+#endif
 
-#include "SDL.h"
+
+#include <SDL.h>
 #include <SDL2/SDL_image.h>
 #include <string>
 
@@ -30,7 +34,15 @@
 
 using namespace std;
 
+#ifdef COMPILED_WITH_X
+//void MoveWindowToScreen (SDL_SysWMinfo *wininf, int32_t screen);
+#endif
+
+
+
 void SDL_CreateWindowAndRendererSync (SDL_Window** win, SDL_Renderer** rend, SDL_Rect *windowbounds);
+void SDL_CreateRendererSync (SDL_Window* win, SDL_Renderer** rend);
+
 void SDL_DestroyWindowAndRenderer (SDL_Window* win, SDL_Renderer* rend);
 bool hw_accel();
 

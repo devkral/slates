@@ -58,6 +58,7 @@ public:
 	SDL_DisplayMode viewdisplaymode;
 	SDL_Rect dispbounds;
 	SDL_Window *viewportwindow=0;
+	//SDL_SysWMinfo *wminfo=0;
 protected:
 	
 private:

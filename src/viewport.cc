@@ -72,17 +72,32 @@ int16_t viewport::get_viewport_height()
 void viewport::set_viewport_size(int16_t width, int16_t height)
 {
 	if (width>=slices)
+	{
+		//if (horizontal_tiles==-1)
+		//	return;
 		horizontal_tiles=-1;
+	}
 	else if (width<1)
+	{
+		//if (horizontal_tiles==1)
+		//	return;
 		horizontal_tiles=1;
+	}
 	else
 		horizontal_tiles=width;
 
 	if (height>=slices)
+	{
+		//if (vertical_tiles==-1)
+		//	return;
 		vertical_tiles=-1;
+	}
 	else if (height<1)
+	{
+		//if (vertical_tiles==1)
+		//	return;
 		vertical_tiles=1;
-	else
+	}else
 		vertical_tiles=height;
 	update_slice_info();
 	update_slates();

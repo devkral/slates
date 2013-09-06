@@ -82,7 +82,7 @@ void master::createviewport(void *monitor)
 //validate before calling
 void master::destroyviewport(int16_t viewid)
 {
-	if (viewport_pool.size()-1<=viewid)
+	if (viewport_pool.size()<=viewid)
 	{
 		cerr << "viewid ( " << viewid << " ) out of range (  0-"  << viewport_pool.size()-1  <<  " )\n";
 		return;
