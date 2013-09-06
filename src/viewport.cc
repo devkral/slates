@@ -228,9 +228,6 @@ void viewport::async_destroy_slates(int32_t amount)
 	vector<thread> temppool;
 	for (int32_t count=0;count<amount;count++)
 	{
-		//segfaults if in thread => here
-		//will be called twice but this is ok
-		remove_renderob (slate_pool.back()->get_slatearea ()->get_renderid());
 #ifndef _NO_ASYNC_
 		temppool.push_back(thread(async_destroy_slates_intern,slate_pool.back()));
 #else
@@ -391,10 +388,10 @@ void handle_event_intern(slatearea *slateareaob, void *event)
 }
 
 //renders active slates, but strangely the table is corrupted
-void handle_event_intern2(slatearea *slateareaob, void *event)
+void handle_event_intern2(slate *slateob, void *event)
 {
-	if (slateareaob)
-		slateareaob->handle_event(event);
+	if (slateob)
+		slateob->handle_event(event);
 }
 
 void viewport::handle_event(void *event, uint8_t receiver)
@@ -425,27 +422,29 @@ void viewport::handle_event(void *event, uint8_t receiver)
 	}
 	if (receiver == 1)
 	{
-		if (get_focused_slate_id ()>=0)
+		if (get_focused_slate_id ()>=0 && get_focused_slate_id ()<=get_last_slate_id())
 			get_focused_slate ()->handle_event(event);
-		else
+		else if (get_focused_slate_id ()<0)
 			cerr << "Error: negative slate. Message for someone? malformed slate_id: " << get_focused_slate_id () << "\n";
-			//void handle_viewport_event(event);
-	}
-	
-	if (receiver == 2)
-	{
-//		if(!slateid_prot.try_lock())
-//			return;
-		vector<thread> threadpool_events;
-		//protrender.lock();
-		for (int32_t count=0;count<render_pool.size();count++)
+		else
 		{
-			//cerr << "id: " << count << endl;
+			cerr << "Invalid focused slate\n";
+		}
+	}
+
+	if (receiver==2)
+	{
+		vector<thread> threadpool_events;
+		for (int32_t count=0;count<slate_pool.size();count++)
+		{
+			if (slate_pool[count]->isactive())
+			{
 #ifndef _NO_ASYNC_
-			threadpool_events.push_back( thread(handle_event_intern2,render_pool[count],event));
+				threadpool_events.push_back( thread(handle_event_intern,slate_pool[count]->get_slatearea(),event));
 #else
-			handle_event_intern2(render_pool[count],event);
+				handle_event_intern(slate_pool[count]->get_slatearea(),event);
 #endif
+			}
 		}
 #ifndef _NO_ASYNC_
 		while (threadpool_events.empty()==false)
@@ -455,32 +454,12 @@ void viewport::handle_event(void *event, uint8_t receiver)
 			threadpool_events.pop_back();
 		}
 #endif
-		//protrender.unlock();
 	}
-}
-
-void viewport::add_renderob(slatearea *renderob)
-{
-	//protrender.lock();
-	renderob->set_renderid (render_pool.size()); //nice hack: size must be one less before adding
-	render_pool.push_back(renderob);
-	//protrender.unlock();
-}
-
-void viewport::remove_renderob(int32_t renderidint)
-{
-	if(renderidint==-1)
-		return;
 	
-	//protrender.lock();
-	slatearea *tempslatearea=render_pool[renderidint];
-	render_pool.erase(render_pool.begin()+renderidint);
-	tempslatearea->set_renderid (-1);
-	//protrender.unlock();
 }
 
-
-slatearea *viewport::get_renderob(int32_t renderidint)
+int32_t viewport::get_last_slate_id()
 {
-	return render_pool[renderidint];
+	return ((int32_t)slices)*((int32_t)slices)-1;
 }
+

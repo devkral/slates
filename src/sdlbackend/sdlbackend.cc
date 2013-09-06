@@ -72,7 +72,7 @@ sdlmaster::~sdlmaster()
 }
 bool sdlmaster::is_system_mode()
 {
-	if (((sdlslatearea*)get_focused_viewport ()->get_focused_slate()->get_slatearea())->isfocused)
+	if (get_focused_viewport ()->get_focused_slate_id()<=get_focused_viewport ()->get_last_slate_id() &&((sdlslatearea*)get_focused_viewport ()->get_focused_slate()->get_slatearea())->isfocused)
 		return false;
 	else
 		return true;
@@ -91,9 +91,12 @@ uint16_t sdlmaster::handle_masterevent(void *event)
 		return_val=EXP_ALL_VIEW;
 	}else
 	{
-		return_val=EXP_FOCUS_SLATE;
+		if (!is_system_mode())
+			return_val=EXP_FOCUS_SLATE;
+		else
+			return_val=EXP_ACTIVE_SLATES;
 	}
-
+	
 	switch (((SDL_Event*)event)->type)
 	{
 		case SDL_QUIT: 
@@ -104,13 +107,13 @@ uint16_t sdlmaster::handle_masterevent(void *event)
 			return_val=EXP_ACTIVE_SLATES;
 			break;
 		case SDL_MOUSEBUTTONDOWN:
-			return_val=EXP_FOCUS_SLATE;
+			//return_val=EXP_FOCUS_SLATE;
 			break;
 		case SDL_MOUSEBUTTONUP:
-			return_val=EXP_FOCUS_SLATE;
+			//return_val=EXP_FOCUS_SLATE;
 			break;
 		case SDL_MOUSEMOTION:
-			return_val=EXP_FOCUS_SLATE;
+			//return_val=EXP_FOCUS_SLATE;
 			break;
 		case SDL_KEYDOWN:
 			{
@@ -168,6 +171,7 @@ uint16_t sdlmaster::handle_masterevent(void *event)
 			break;
 	
 		}
+	
 	return return_val;
 }
 

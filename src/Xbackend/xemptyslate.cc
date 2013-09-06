@@ -75,11 +75,11 @@ xemptyslate::~xemptyslate()
     testCookie(gcCookie, ((xmaster *) get_master())->con, "can't free gc");
 	free(position_values);
 	free(size_values);
-	cerr << "Destroy xemptyslateo\n";
+	//cerr << "Destroy xemptyslate\n";
 }
 void xemptyslate::update()
 {
-	if (get_slatearea ()->get_renderid()==-1)
+	if (!get_slatearea ()->isactive ())
 	{
 		xcb_unmap_window(((xmaster*)get_master ())->con,window);
 		return;

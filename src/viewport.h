@@ -55,6 +55,7 @@ public:
 
 	int32_t get_viewport_id();
 	int16_t get_slices();
+	int32_t get_last_slate_id();
 
 	void set_viewport_size(int16_t width, int16_t height); //unit slates
 	void set_viewport_begin(int16_t x, int16_t y); //unit slates
@@ -64,9 +65,6 @@ public:
 	int16_t get_viewport_beg_y();
 	bool get_isdestroying(); //superseeded by exceptions?
 
-	void add_renderob(slatearea *renderob);
-	void remove_renderob(int32_t renderidint);
-	slatearea *get_renderob(int32_t renderidint);
 
 	//don't forget negative BORDERSLATE
 	virtual int32_t get_focused_slate_id()=0;
@@ -78,7 +76,6 @@ public:
 protected:
 	int32_t safe_slice=slices; //is max slice where it is safe to handle events
 	mutex protrender; //is locked while slates update
-	deque<slatearea*> render_pool; //pool with windows which must be rendered
 	vector<slate*> slate_pool; //leftwing first, then diag then top wing
 private:
 	int16_t horizontal_tiles=-1;

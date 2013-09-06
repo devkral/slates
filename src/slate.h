@@ -38,6 +38,7 @@ public:
 	void handle_event(void *event);
 	
 	bool isorigin();
+	bool isactive(); //renders
 	
 	void free_slate();
 	void annect_slate(slatearea *newarea);

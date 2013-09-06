@@ -22,7 +22,7 @@ void slate::init()
 
 void slate::cleanup()
 {
-	if (child!=0)
+	if (child)
 	{
 		child->cleanup();
 		delete child;
@@ -95,12 +95,14 @@ void slate::emptyslate_nonunique()
 
 void slate::update()
 {
-	child->update();
+	if (child)
+		child->update();
 }
 
 void slate::setlock(int lockstate)
 {
-	child->setlock(lockstate);
+	if (child)
+		child->setlock(lockstate);
 }
 
 int16_t slate::get_x()
@@ -119,8 +121,16 @@ bool slate::isorigin()
 		return true;
 	else
 		return false;
+}
+bool slate::isactive()
+{
+	if (isorigin () && child->isactive ())
+		return true;
+	else
+		return false;
 
 }
+
 int32_t slate::get_id()
 {
 	return slateid;
@@ -133,5 +143,6 @@ slatearea *slate::get_slatearea()
 
 void slate::handle_event(void *event)
 {
-	child->handle_event(event);
+	if (child)
+		child->handle_event(event);
 }

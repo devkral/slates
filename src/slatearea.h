@@ -55,6 +55,7 @@ public:
 	int16_t get_w();
 	int16_t get_h();
 	bool isfilled();
+	bool isactive();
 	bool get_isdestroying ();
 	void update_isfilled();
 
@@ -71,7 +72,7 @@ private:
 	int16_t width=1; //in slates
 	int16_t height=1; //in slates
 
-	int32_t renderid=-1;
+	bool activerendering;
 };
 
 #endif // _SLATEAREA_H_

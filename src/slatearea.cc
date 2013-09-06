@@ -19,12 +19,13 @@ slatearea::slatearea(slate *parent_slate)
 slatearea::~slatearea()
 {
 	isdestroying=true;
+	activerendering=false;
 }
 
 void slatearea::cleanup()
 {
 	isdestroying=true;
-	get_viewport ()->remove_renderob (get_renderid ());
+	activerendering=false;
 
 	if (child)
 	{
@@ -45,21 +46,10 @@ void slatearea::init()
 		return;
 
 	child=create_emptyslate();
-	get_viewport ()->add_renderob (this);
+	activerendering=true;
 }
 
 
-int32_t slatearea::get_renderid()
-{
-	return renderid;
-}
-void slatearea::set_renderid(int32_t id)
-{
-	if (renderid!=-1 && id!=-1 )
-		std::cerr << "Error: renderid dirty\n";
-	//cerr << id << "renderid\n";
-	renderid=id;
-}
 
 
 bool slatearea::isfilled()
@@ -68,6 +58,11 @@ bool slatearea::isfilled()
 		return true;
 	else
 		return false;
+}
+
+bool slatearea::isactive ()
+{
+	return activerendering;
 }
 
 bool slatearea::get_isdestroying ()
@@ -117,12 +112,12 @@ void slatearea::update()
 		get_x()>=get_origin ()->get_viewport()->get_viewport_width()+get_origin ()->get_viewport()->get_viewport_beg_x() ||
 		get_y()>=get_origin()->get_viewport()->get_viewport_height()+get_origin ()->get_viewport()->get_viewport_beg_y())
 	{
-		get_viewport()->remove_renderob(get_renderid ());
+		activerendering=false;
 	}
 	else
 	{
-		if (get_renderid ()==-1 && child->isdirty() && !child->islocked())
-			get_viewport()->add_renderob(this);
+		if (child->isdirty() && !child->islocked())
+			activerendering=true;
 	}
 	child->update();
 }  
@@ -136,8 +131,7 @@ void slatearea::setlock(uint8_t lockstate)
 		//get_viewport ()->remove_renderob (get_renderid ());
 		child->setlock(lockstate);
 		child=create_lockslate ();
-		if (get_renderid ()==-1)
-			get_viewport ()->add_renderob (this);
+		activerendering=true;
 	}else if (lockstate==0 && child->TYPE ()==TYPE_locked)
 	{
 		//get_viewport ()->remove_renderob (get_renderid ());
@@ -145,8 +139,7 @@ void slatearea::setlock(uint8_t lockstate)
 		child=((lockslate *)tempchild)->unlock();
 		delete tempchild;
 		child->setlock(lockstate);
-		if (get_renderid ()==-1)
-			get_viewport ()->add_renderob (this);
+		activerendering=true;
 	}
 	else
 		child->setlock(lockstate);
