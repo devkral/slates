@@ -28,3 +28,6 @@ other licences are explicitly marked
 
 at least until now backends are under GPL3
 
+PAM is under gpl2 and taken from slim (login manager)
+
+

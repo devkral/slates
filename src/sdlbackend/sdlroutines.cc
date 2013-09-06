@@ -35,13 +35,13 @@ void SDL_CreateWindowAndRendererSync (SDL_Window** win, SDL_Renderer** rend, SDL
 	rendsync.unlock();
 }
 
-static mutex destroysync;
-void SDL_DestroyWindowAndRendererSync (SDL_Window* win, SDL_Renderer* rend)
+//static mutex destroysync;
+void SDL_DestroyWindowAndRenderer (SDL_Window* win, SDL_Renderer* rend)
 {
-	destroysync.lock();
+	//destroysync.lock();
 	SDL_DestroyRenderer (rend);
 	SDL_DestroyWindow (win);
-	destroysync.unlock();
+	//destroysync.unlock();
 }
 bool hw_accel()
 {

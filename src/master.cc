@@ -61,6 +61,8 @@ void master::swapcontent(int16_t viewportid1, int32_t slateid1,int16_t viewporti
 	slateareascreen *temp=get_slate_by_id(viewportid1,slateid1)->get_slatearea()->get_screen();
 	get_slate_by_id(viewportid1,slateid1)->get_slatearea()->set_screen(get_slate_by_id(viewportid2,slateid2)->get_slatearea()->get_screen());
 	get_slate_by_id(viewportid2,slateid2)->get_slatearea()->set_screen(temp);
+	get_slate_by_id(viewportid1,slateid1)->get_slatearea()->update();
+	get_slate_by_id(viewportid2,slateid2)->get_slatearea()->update();
 }
 
 

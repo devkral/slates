@@ -49,8 +49,8 @@ protected:
 
 	
 	//mutex renderprot;	
+
 	SDL_Texture *emptytex=0;
-	
 	SDL_Window *ewindow=0;
 	SDL_Renderer *erender=0;
 	SDL_Rect windowbounds;

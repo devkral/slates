@@ -43,11 +43,10 @@ sdlemptyslate::sdlemptyslate(slatearea *parentt, master *parent_mastert) : empty
 sdlemptyslate::~sdlemptyslate()
 {
 	emptyusecount--;
-	SDL_DestroyWindowAndRendererSync(ewindow,erender);
+	SDL_DestroyWindowAndRenderer(ewindow,erender);
 	SDL_DestroyTexture (emptytex);
 	if (emptyusecount<=0)
 	{
-		//SDL_DestroyTexture (emptytex);
 		SDL_FreeSurface (epicture);
 	}
 }

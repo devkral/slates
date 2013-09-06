@@ -81,7 +81,6 @@ xmaster::~xmaster()
 
 bool xmaster::is_system_mode()
 {
-	
 	return true;
 }
 
