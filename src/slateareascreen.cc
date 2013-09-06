@@ -50,25 +50,27 @@ bool slateareascreen::islocked()
 	return false;
 }
 
-
-
-void slateareascreen::swap_slatearea (slatearea *newparent)
-{
-	parent->set_screen (newparent->get_screen());
-	if (get_slatearea ()->get_renderid()==-1 && newparent->get_renderid ()!=-1)
-	{
-		get_viewport()->add_renderob (newparent);
-		newparent->get_viewport()->remove_renderob (get_slatearea ()->get_renderid());
-	}
-	if (get_slatearea ()->get_renderid()!=-1 && newparent->get_renderid ()==-1)
-	{
-		get_viewport()->remove_renderob (newparent->get_renderid());
-		newparent->get_viewport()->add_renderob (get_slatearea ());
-	}
-	parent=newparent;
-	newparent->set_screen(this);
-}
 slatearea *slateareascreen::get_slatearea ()
 {
 	return parent;
 }
+
+/**
+void slateareascreen::swap_slatearea (slatearea *newparent)
+{
+	int32_t oldid=get_slatearea ()->get_renderid();
+	int32_t newid=newparent->get_renderid();
+	slatearea *oldparent=get_slatearea();
+	parent->set_screen (newparent->get_screen());
+	if (oldid==-1 && newid!=-1)
+	{
+		get_viewport()->add_renderob (newparent);
+		newparent->get_viewport()->remove_renderob (newid);
+	}
+	if (oldid!=-1 && newid==-1)
+	{
+		get_viewport()->remove_renderob (oldid);
+		newparent->get_viewport()->add_renderob (oldparent);
+	}
+	newparent->set_screen(this);
+}*/

@@ -18,12 +18,10 @@ void slate::init()
 {
 	child=get_viewport()->create_area(this);
 	child->init();
-	isready=true;
 }
 
 void slate::cleanup()
 {
-	isready=false;
 	if (child!=0)
 	{
 		child->cleanup();
@@ -97,8 +95,7 @@ void slate::emptyslate_nonunique()
 
 void slate::update()
 {
-	if(isready)
-		child->update();
+	child->update();
 }
 
 void slate::setlock(int lockstate)
@@ -136,6 +133,5 @@ slatearea *slate::get_slatearea()
 
 void slate::handle_event(void *event)
 {
-	if(isready && child)
-		child->handle_event(event);
+	child->handle_event(event);
 }

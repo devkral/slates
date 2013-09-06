@@ -31,7 +31,7 @@ master::~master()
 
 }
 
-int32_t master::amount_viewports()
+int16_t master::amount_viewports()
 {
 	return viewport_pool.size();
 }
@@ -40,23 +40,23 @@ int32_t master::amount_viewports()
 void master::cleanup()
 {
 	while (viewport_pool.empty()!=true)
-		destroyviewport();
+		destroyviewport(viewport_pool.size()-1);
 }
 
 
-viewport *master::get_viewport_by_id(int32_t viewportid)
+viewport *master::get_viewport_by_id(int16_t viewportid)
 {
 	return viewport_pool[viewportid];
 
 }
 
 
-slate *master::get_slate_by_id(int32_t viewportid, int32_t slateid)
+slate *master::get_slate_by_id(int16_t viewportid, int32_t slateid)
 {
 	return get_viewport_by_id(viewportid)->get_slate_by_id(slateid);
 }
 
-void master::swapcontent(int32_t viewportid1, int32_t slateid1,int32_t viewportid2, int32_t slateid2)
+void master::swapcontent(int16_t viewportid1, int32_t slateid1,int16_t viewportid2, int32_t slateid2)
 {
 	slateareascreen *temp=get_slate_by_id(viewportid1,slateid1)->get_slatearea()->get_screen();
 	get_slate_by_id(viewportid1,slateid1)->get_slatearea()->set_screen(get_slate_by_id(viewportid2,slateid2)->get_slatearea()->get_screen());
@@ -67,7 +67,7 @@ void master::swapcontent(int32_t viewportid1, int32_t slateid1,int32_t viewporti
 //validate before calling
 void master::createviewport(void *monitor)
 {
-	if (viewport_idcount==INT32_MAX)
+	if (viewport_idcount==INT16_MAX)
 	{
 		cerr << "Reached maximal amount of viewports.\n";
 		return;
@@ -78,17 +78,22 @@ void master::createviewport(void *monitor)
 }
 
 //validate before calling
-void master::destroyviewport()
+void master::destroyviewport(int16_t viewid)
 {
-	if (viewport_pool.size()==0)
+	if (viewport_pool.size()-1<=viewid)
 	{
-		cerr << "Tried to destroy viewport but viewport_pool empty\n";
+		cerr << "viewid ( " << viewid << " ) out of range (  0-"  << viewport_pool.size()-1  <<  " )\n";
 		return;
 	}
-	viewport_pool.back()->cleanup();
-	delete viewport_pool.back();
-	viewport_pool.pop_back();
-	viewport_idcount--;
+	
+	viewport_pool[viewid]->cleanup();
+	delete viewport_pool[viewid];
+	viewport_pool[viewid]=0;
+	while (!viewport_pool.empty() && viewport_pool.back()==0)
+	{
+		viewport_pool.pop_back();
+		viewport_idcount--;
+	}
 }
 
 viewport *master::get_focused_viewport()
@@ -115,13 +120,14 @@ void master::lock()
 }
 void unlock_intern(viewport *viewp)
 {
-	viewp->unlock();
+	if (viewp)
+		viewp->unlock();
 }
 
 void master::unlock()
 {
 	vector<thread> threadpool_unlock;
-	for (int32_t count=0; count<amount_viewports(); count++)
+	for (int16_t count=0; count<amount_viewports(); count++)
 		threadpool_unlock.push_back( thread(unlock_intern,viewport_pool[count]));
 	while (threadpool_unlock.empty()==false)
 	{
@@ -145,7 +151,8 @@ bool master::unlock_slates (char *password)
 
 void handle_event_intern(viewport *viewportobject, void *event, uint8_t receiver)
 {
-	viewportobject->handle_event(event,receiver);
+	if (viewportobject) //for gaps if viewport is removed
+		viewportobject->handle_event(event,receiver);
 
 }
 
@@ -155,7 +162,7 @@ uint16_t master::handle_event(void *event)
 	if (status==EXP_ALL_VIEW)
 	{
 		vector<thread> threadpool_events;
-		for (int32_t count=0; count<amount_viewports(); count++)
+		for (int16_t count=0; count<amount_viewports(); count++)
 		{
 			threadpool_events.push_back( thread(handle_event_intern,viewport_pool[count],event,0));
 		}
@@ -169,7 +176,7 @@ uint16_t master::handle_event(void *event)
 	if (status==EXP_ACTIVE_SLATES)
 	{
 		vector<thread> threadpool_events;
-		for (int32_t count=0; count<amount_viewports(); count++)
+		for (int16_t count=0; count<amount_viewports(); count++)
 		{
 			threadpool_events.push_back( thread(handle_event_intern,viewport_pool[count],event,2));
 		}

@@ -33,7 +33,7 @@ extern int32_t calcidslate(int16_t x, int16_t y);
 class viewport
 {
 public:
-	viewport(master *master_parent, int32_t viewportidtemp);
+	viewport(master *master_parent, int16_t viewportidtemp);
 	virtual ~viewport();
 	slate *get_slate(int16_t x, int16_t y);
 	slate *get_slate_by_id(int32_t id);
@@ -65,8 +65,8 @@ public:
 	bool get_isdestroying(); //superseeded by exceptions?
 
 	void add_renderob(slatearea *renderob);
-	void remove_renderob(int32_t renderid);
-	slatearea *get_renderob(int32_t renderid);
+	void remove_renderob(int32_t renderidint);
+	slatearea *get_renderob(int32_t renderidint);
 
 	//don't forget negative BORDERSLATE
 	virtual int32_t get_focused_slate_id()=0;
@@ -85,7 +85,7 @@ private:
 	int16_t vertical_tiles=-1;
 	int16_t view_beg_slate_x=0;
 	int16_t view_beg_slate_y=0;
-	int32_t viewportid;
+	int16_t viewportid;
 	int16_t slices=0;
 	int32_t slate_idcount=0; 
 	mutex slateid_prot; //protects slateid

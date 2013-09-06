@@ -24,7 +24,6 @@ public:
 
 	virtual void handle_event(void *event); //needn't to be implemented if there is an other solution
 	//be carefull: if not called by input don't send something to an alleventhandler
-	//virtual void handle_input(void *initializer); //needn't to be implemented if there is an other solution
 	virtual void update()=0;
 	master *get_master();
 	viewport *get_viewport();

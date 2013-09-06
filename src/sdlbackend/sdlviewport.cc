@@ -27,7 +27,7 @@
 
 
 using namespace std;
-sdlviewport::sdlviewport(master *masteridd, int ownidd) : viewport(masteridd,ownidd)
+sdlviewport::sdlviewport(master *masteridd, int16_t ownidd) : viewport(masteridd,ownidd)
 {
 	cerr << "Create sdlviewport\n";
 	SDL_GetDisplayBounds(get_viewport_id(), &dispbounds);

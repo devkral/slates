@@ -30,7 +30,7 @@ int32_t calcidslate(int16_t x,int16_t y)
 	return result;
 }
 
-viewport::viewport(master *master_parent,int32_t viewportidtemp)
+viewport::viewport(master *master_parent,int16_t viewportidtemp)
 {
 	viewportid=viewportidtemp;
 	mroot=master_parent;
@@ -148,12 +148,10 @@ void viewport::update_slates()
 	{
 		return;
 	}
-	protrender.lock();
 	for (int32_t count=0;count<slate_pool.size();count++)
 	{
 		slate_pool[count]->update();
 	}
-	protrender.unlock();
 }
 
 void async_create_slates_intern(slate *placeholderpointer)
@@ -166,6 +164,7 @@ void viewport::async_create_slates()
 {
 	if (get_isdestroying())
 		return;
+	
 	vector<thread> temppool;
 	int16_t temp_x, temp_y;
 	while (slate_idcount<slices*slices-slices && slate_idcount<INT16_MAX*INT16_MAX)
@@ -229,6 +228,9 @@ void viewport::async_destroy_slates(int32_t amount)
 	vector<thread> temppool;
 	for (int32_t count=0;count<amount;count++)
 	{
+		//segfaults if in thread => here
+		//will be called twice but this is ok
+		remove_renderob (slate_pool.back()->get_slatearea ()->get_renderid());
 #ifndef _NO_ASYNC_
 		temppool.push_back(thread(async_destroy_slates_intern,slate_pool.back()));
 #else
@@ -244,22 +246,6 @@ void viewport::async_destroy_slates(int32_t amount)
 		temppool.pop_back();
 	}
 #endif
-}
-
-
-slate *  viewport::get_focused_slate()
-{
-	return slate_pool[get_focused_slate_id()];
-}
-
-int32_t viewport::count_filled_slots(int16_t sliceid)
-{
-	int32_t temp=0;
-	int32_t count=0;
-	for (count=0;count<sliceid+sliceid;count++) //slices+slices+1 but begins with 0 so not needed
-		if (slate_pool[sliceid+sliceid-count]->isfilled()==true)
-			temp++;
-	return temp;
 }
 
 void viewport::addslice()
@@ -317,6 +303,23 @@ master *viewport::get_master()
 }
 
 
+
+slate *  viewport::get_focused_slate()
+{
+	return slate_pool[get_focused_slate_id()];
+}
+
+int32_t viewport::count_filled_slots(int16_t sliceid)
+{
+	int32_t temp=0;
+	int32_t count=0;
+	for (count=0;count<sliceid+sliceid;count++) //slices+slices+1 but begins with 0 so not needed
+		if (slate_pool[sliceid+sliceid-count]->isfilled()==true)
+			temp++;
+	return temp;
+}
+
+
 void viewport::lock()
 {
 	if (get_isdestroying())
@@ -333,14 +336,11 @@ void viewport::unlock()
 	if (get_isdestroying())
 		return;
 	
-	protrender.lock();
 	for (int32_t count=0;count<slate_pool.size();count++)
 	{
 		if (slate_pool[count]->isorigin())
 			slate_pool[count]->setlock(0);
 	}
-
-	protrender.unlock();
 }
 
 void viewport::fill_slate_intern(int32_t id)
@@ -399,10 +399,7 @@ void handle_event_intern2(slatearea *slateareaob, void *event)
 
 void viewport::handle_event(void *event, uint8_t receiver)
 {
-
-
 	
-	protrender.lock();
 	if (receiver==0)
 	{
 		vector<thread> threadpool_events;
@@ -437,11 +434,13 @@ void viewport::handle_event(void *event, uint8_t receiver)
 	
 	if (receiver == 2)
 	{
-		if(!slateid_prot.try_lock())
-			return;
+//		if(!slateid_prot.try_lock())
+//			return;
 		vector<thread> threadpool_events;
+		//protrender.lock();
 		for (int32_t count=0;count<render_pool.size();count++)
 		{
+			//cerr << "id: " << count << endl;
 #ifndef _NO_ASYNC_
 			threadpool_events.push_back( thread(handle_event_intern2,render_pool[count],event));
 #else
@@ -455,32 +454,33 @@ void viewport::handle_event(void *event, uint8_t receiver)
 				threadpool_events.back().join();
 			threadpool_events.pop_back();
 		}
-		slateid_prot.unlock();
 #endif
+		//protrender.unlock();
 	}
-
-	
-	protrender.unlock();	//
 }
 
-//lock in update
 void viewport::add_renderob(slatearea *renderob)
 {
+	//protrender.lock();
 	renderob->set_renderid (render_pool.size()); //nice hack: size must be one less before adding
 	render_pool.push_back(renderob);
+	//protrender.unlock();
 }
-//lock in update
-void viewport::remove_renderob(int32_t renderid)
+
+void viewport::remove_renderob(int32_t renderidint)
 {
-	if(renderid==-1)
+	if(renderidint==-1)
 		return;
-	render_pool[renderid]->set_renderid (-1);
-	render_pool[renderid]=0;
-	render_pool.erase(render_pool.begin()+renderid);
+	
+	//protrender.lock();
+	slatearea *tempslatearea=render_pool[renderidint];
+	render_pool.erase(render_pool.begin()+renderidint);
+	tempslatearea->set_renderid (-1);
+	//protrender.unlock();
 }
 
 
-slatearea *viewport::get_renderob(int32_t renderid)
+slatearea *viewport::get_renderob(int32_t renderidint)
 {
-	return render_pool[renderid];
+	return render_pool[renderidint];
 }

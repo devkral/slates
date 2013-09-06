@@ -37,7 +37,7 @@ using namespace std;
 class sdlviewport : public viewport
 {
 public:
-	sdlviewport(master *masteridd, int ownidd);
+	sdlviewport(master *masteridd, int16_t ownidd);
 	~sdlviewport();
 	/**int32_t id_slate_mouse(int16_t x, int16_t y);
 	slate *get_slate_mouse(int16_t x, int16_t y);*/

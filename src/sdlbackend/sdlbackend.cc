@@ -47,7 +47,7 @@ void sdlmaster::inputhandler_function()
 	}
 }
 
-viewport *sdlmaster::create_viewport_intern(master *masteridd, int ownidd, void *monitor)
+viewport *sdlmaster::create_viewport_intern(master *masteridd, int16_t ownidd, void *monitor)
 {
 	return new sdlviewport(masteridd,ownidd);
 }
@@ -78,7 +78,7 @@ bool sdlmaster::is_system_mode()
 		return true;
 }
 
-int32_t sdlmaster::get_focused_viewport_id ()
+int16_t sdlmaster::get_focused_viewport_id ()
 {
 	return 0;
 }

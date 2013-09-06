@@ -57,8 +57,8 @@ void slatearea::set_renderid(int32_t id)
 {
 	if (renderid!=-1 && id!=-1 )
 		std::cerr << "Error: renderid dirty\n";
-	cerr << id << "renderid\n";
-	//renderid=id;
+	//cerr << id << "renderid\n";
+	renderid=id;
 }
 
 

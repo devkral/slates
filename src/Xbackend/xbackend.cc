@@ -12,7 +12,7 @@ using namespace std;
 
 
 
-viewport *xmaster::create_viewport_intern(master *masteridd, int32_t ownidd, void *monitor)
+viewport *xmaster::create_viewport_intern(master *masteridd, int16_t ownidd, void *monitor)
 {
 	return new xviewport(masteridd,ownidd, (xcb_screen_t *) monitor);
 	//xcb_setup_roots_iterator( xcb_get_setup(c) ).data );
@@ -85,7 +85,7 @@ bool xmaster::is_system_mode()
 	return true;
 }
 
-int32_t xmaster::get_focused_viewport_id()
+int16_t xmaster::get_focused_viewport_id()
 {
 	return 0;
 }

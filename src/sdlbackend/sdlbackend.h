@@ -48,12 +48,12 @@ public:
 	~sdlmaster();
 	void inputhandler_function();
 	bool is_system_mode();
-	int32_t get_focused_viewport_id ();
+	int16_t get_focused_viewport_id ();
 	uint16_t handle_masterevent(void *event);
 protected:
 	
 private:
-	viewport *create_viewport_intern(master *masteridd, int ownidd, void *monitor);
+	viewport *create_viewport_intern(master *masteridd, int16_t ownidd, void *monitor);
 };
 
 int sdlmain(int argc, char *argv[]);
