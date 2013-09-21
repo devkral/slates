@@ -42,8 +42,8 @@ xviewport::xviewport(master *masteridd, int ownidd,xcb_screen_t *s) : viewport(m
 	//xcb_change_property(con, XCB_PROP_MODE_REPLACE, screen->root, EWMH._NET_WM_STATE, XCB_ATOM_ATOM, 32, 1, &(EWMH._NET_WM_STATE_FULLSCREEN));
 
 //printf ("Informations of screen %ld:\n", screen->root);
-  printf ("  width.........: %d\n", screen->width_in_pixels);
-  printf ("  height........: %d\n", screen->height_in_pixels);
+  //printf ("  width.........: %d\n", screen->width_in_pixels);
+ // printf ("  height........: %d\n", screen->height_in_pixels);
 //printf ("  white pixel...: %ld\n", screen->white_pixel);
 //printf ("  black pixel...: %ld\n", screen->black_pixel);
   printf ("\n");

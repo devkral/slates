@@ -6,6 +6,8 @@
 #include <string>
 #include <mutex>
 #include <cassert>
+#include <vector>
+#include <unordered_map>
 
 using namespace std;
 
@@ -86,20 +88,17 @@ typedef struct _parsedob
 
 
 // buffersize
-#define buffersize 256
+//#define buffersize 256
 
-
-#define deftheme (theme="")
-#define defborder (theme="")
-
-class configbackend
+/**
+class configbackendold
 {
 	public:
 		configbackend();
 		configbackend(string filename);
 		~configbackend();
 		void set_single_variable(string varname, string varvalue);
-		void add_variable(string varname, string varvalue);
+		void append_variable(string varname, string varvalue);
 		void del_variable(string varname, string varvalue="");
 		string get_variable(string varname);
 
@@ -110,13 +109,43 @@ class configbackend
 		string filename;
 		mutex confrwlock;
 
-	/**	unordered_map<string,string> defaultvars={
+};
+*/
+
+
+
+class configbackend
+{
+	public:
+		configbackend();
+		configbackend(string filename);
+		~configbackend();
+		void load();
+		void save();
+		vector<string> get_variable(string varname);
+		void reset_variable(string varname);
+		void set_variable(string varname,vector<string>,bool shall_append);
+		virtual void set_keybinding(string varname,string keycombination);
+		virtual string get_keybindaction(string input_string);
+	protected:
+
+	private:
+		void init();
+		string filename;
+		mutex confrwlock;
+		
+		unordered_multimap<string, string> config_runtime;
+		//unordered_multimap<string, string> keybinds;
+		const unordered_multimap<string, string> config_default={
 			{"theme","/usr/share/grub/themes/starfield/starfield.png"},
 			{"border","3"},
-			{"scollup",""},
+			{"key:d:*,k:*,b:4", "scollup"},
 			{"scolldown",""}
-		};*/
+		};
+
 };
+
+static configbackend *slates_config=0;
 
 #endif // _CONFIGBACKEND_H_
 

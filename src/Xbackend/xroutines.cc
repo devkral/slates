@@ -21,6 +21,33 @@
 #include "xroutines.h"
 #include <cstring>
 #include <iostream>
+#include <mutex>
+
+mutex protect_xid;
+
+uint32_t xcb_generate_id_sync(xcb_connection_t *con)
+{
+	protect_xid.lock();
+	uint32_t temp=xcb_generate_id_sync(con);
+	protect_xid.unlock();
+	return temp;
+}
+
+mutex protect_xwinmap;
+void xcb_unmap_window_sync(xcb_connection_t *con,xcb_window_t win)
+{
+	protect_xwinmap.lock();
+
+	protect_xwinmap.unlock();
+}
+
+
+void xcb_map_window_sync(xcb_connection_t *con,xcb_window_t win)
+{
+	protect_xwinmap.lock();
+
+	protect_xwinmap.unlock();
+}
 
 int testCookie (xcb_void_cookie_t cookie,
                 xcb_connection_t *connection,
@@ -126,6 +153,8 @@ xcb_gc_t getFontGC2 (xcb_connection_t *connection,
 	return (xcb_gc_t)gc;
 }
 
+
+
 void drawButton (xcb_connection_t *connection,
                 xcb_screen_t     *screen,
                 xcb_window_t      window,
@@ -194,5 +223,5 @@ void init_key_actions(configbackend *in)
 
 void set__default_key_actions(configbackend *in)
 {
-	in->set_single_variable("X_exitkey","9"); //esc
+	//in->set_single_variable("X_exitkey","9"); //esc
 }

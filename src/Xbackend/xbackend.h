@@ -30,7 +30,6 @@ private:
 	xcb_intern_atom_cookie_t closecookie;
 	xcb_intern_atom_reply_t* closereply;
 	int32_t numbermonitors=0;
-	bool inputhandling = true;
 	
 	int32_t focused_viewport=0;
 	

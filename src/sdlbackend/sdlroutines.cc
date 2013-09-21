@@ -21,18 +21,18 @@
 #include "sdlroutines.h"
 #include <iostream>
 #include <mutex>
-/**
-#ifdef COMPILED_WITH_X
+
+
 void MoveWindowToScreen (SDL_SysWMinfo* wininf, int32_t screen)
 {
+#ifdef COMPILED_WITH_X
 
-
-	
+#endif
 }
 
 
-#endif
-*/
+
+
 
 static mutex rendsync;
 void SDL_CreateWindowAndRendererSync (SDL_Window** win, SDL_Renderer** rend, SDL_Rect *windowbounds)

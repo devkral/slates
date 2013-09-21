@@ -29,6 +29,8 @@
 
 using namespace std;
 
+
+
 class xhelperclass
 {
 public:
@@ -36,8 +38,9 @@ public:
 };
 
 
-
-
+uint32_t xcb_generate_id_sync(xcb_connection_t *con);
+void xcb_unmap_window_sync(xcb_connection_t *con,xcb_window_t win);
+void xcb_map_window_sync(xcb_connection_t *con,xcb_window_t win);
 
 int testCookie (xcb_void_cookie_t cookie,
                 xcb_connection_t *connection,
@@ -72,10 +75,6 @@ void drawButton (xcb_connection_t *c,
              int16_t           x1,
              int16_t           y1,
              const char       *label);
-
-
-void init_key_actions(configbackend *);
-void set_default_key_actions(configbackend *);
 
 
 #endif //_XROUTINES_H_

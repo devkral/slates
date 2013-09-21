@@ -53,7 +53,7 @@ public:
 	
 	master *get_master();
 
-	int32_t get_viewport_id();
+	int16_t get_viewport_id();
 	int16_t get_slices();
 	int32_t get_last_slate_id();
 

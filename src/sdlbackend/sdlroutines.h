@@ -22,21 +22,30 @@
 #define _SDLROUTINES_H_
 
 #ifdef COMPILED_WITH_X
+#include <xcb/randr.h>
 #include <xcb/xcb.h>
 #endif
 
 
 #include <SDL.h>
+#include <SDL2/SDL_syswm.h> //not included in SDL.h
 #include <SDL2/SDL_image.h>
 #include <string>
+#include <cstdlib>
 
-#include "configbackend.h"
+//#include "configbackend.h"
 
 using namespace std;
 
+
 #ifdef COMPILED_WITH_X
-//void MoveWindowToScreen (SDL_SysWMinfo *wininf, int32_t screen);
+	static xcb_connection_t *X_con=0;
+	//static X_ext_data=0;
+	
 #endif
+
+void MoveWindowToScreen (SDL_SysWMinfo *wininf, int32_t screen);
+
 
 
 

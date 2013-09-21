@@ -3,6 +3,8 @@
 
 #include "lockslate.h"
 
+
+
 lockslate::lockslate(slateareascreen *oldchild, slatearea *parentt, master *parent_mastert) : slateareascreen(parentt,parent_mastert)
 {
 	restore_child=oldchild;

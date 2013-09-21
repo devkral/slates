@@ -50,8 +50,8 @@ public:
 protected:
 
 private:
-	uint32_t *position_values; // = { 200, 300 };
-	uint32_t *size_values;
+	uint32_t *position_values=0; // = { 200, 300 };
+	uint32_t *size_values=0;
 	const char *title="test";
 
 	xcb_gcontext_t black;

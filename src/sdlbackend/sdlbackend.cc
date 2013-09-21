@@ -24,12 +24,18 @@
 
 
 #include "sdlbackend.h"
-#include "configbackend.h"
+//#include "configbackend.h"
 
 #include <iostream>
 #include <cstdlib>
+#include <csignal>
 #include <thread>
 #include <system_error>
+
+/**
+#ifdef COMPILED_WITH_X
+#include <xcb/randr.h>
+#endif*/
 
 using namespace std;
 
@@ -49,12 +55,44 @@ void sdlmaster::inputhandler_function()
 
 viewport *sdlmaster::create_viewport_intern(master *masteridd, int16_t ownidd, void *monitor)
 {
-	return new sdlviewport(masteridd,ownidd);
+	return new sdlviewport(masteridd,ownidd,monitor);
 }
 
 sdlmaster::sdlmaster(){};
 
+void signalcleanup2(int )
+{
+	throw (new cleanup_exception);
+}
+
 void sdlmaster::init (int argc, char* argv[])
+{
+	signal (SIGINT,signalcleanup2);
+	int cindex=1;
+	string testoptions;
+	while (cindex<argc-1) //-1 because cindex must be followed by argument
+	{
+		if (strcmp(argv[cindex],"--backend")==0)
+		{
+			if (argv[cindex+1]!=NULL)
+			{
+				testoptions=argv[cindex+1];
+				break;
+			}
+		}
+		cindex++;
+	}
+	testoptions="X";
+	if (testoptions=="X") 
+		x_init(argc,argv);
+	else	if (testoptions=="wayland")
+		wayland_init(argc,argv);
+	else 
+		simple_init(argc,argv);
+	
+}
+
+void sdlmaster::simple_init(int argc, char* argv[])
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	for (int count=0; count<SDL_GetNumVideoDisplays(); count++) //SDL_GetNumVideoDisplays
@@ -64,9 +102,57 @@ void sdlmaster::init (int argc, char* argv[])
 	inputhandler_function();
 }
 
+#ifdef COMPILED_WITH_X
+
+
+
+
+void sdlmaster::x_init(int argc, char *argv[])
+{
+
+	int numbermonitors=0;
+	/* open connection with the server */
+	if((X_con = xcb_connect(getenv("DISPLAY"), &numbermonitors)) == 0)
+	{
+		cerr << "Cannot get a connection\n";
+		exit(1);
+	}
+
+	
+	//xcb_prefetch_extension_data(X_con, &xcb_randr_id);
+	///xfd = xcb_get_file_descriptor(conn);
+	
+	SDL_Init(SDL_INIT_EVERYTHING);
+	
+	xcb_screen_iterator_t iter = xcb_setup_roots_iterator( xcb_get_setup(X_con) );
+	if (numbermonitors==0) //if running a wm
+		numbermonitors=1;   //for test purposes
+
+	for (int16_t i = 0; i < numbermonitors; ++i) {
+		createviewport(iter.data);
+		xcb_screen_next (&iter);
+    }
+	inputhandler_function();
+}
+#endif
+
+void sdlmaster::wayland_init(int argc, char *argv[])
+{
+
+}
+
+
+
 sdlmaster::~sdlmaster()
 {
 	cout << "Destroy sdlmaster\n";	
+#ifdef COMPILED_WITH_X
+	if (X_con)
+		xcb_disconnect(X_con);
+	
+#endif
+
+	
 	cleanup();
 	SDL_Quit();
 }

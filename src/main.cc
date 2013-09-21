@@ -56,6 +56,8 @@ void help()
 
 int main (int argc, char *argv[])
 {
+	/**slates_config=new configbackend();
+	slates_config->load();*/
 	int sel=DEFAULT_BACKEND;
 	string testoptions="";
 	// options descriptor
@@ -63,11 +65,12 @@ int main (int argc, char *argv[])
 	int cindex=1;
 	while (cindex<argc-1) //-1 because cindex must be followed by argument
 	{
-		if (strcmp(argv[cindex],"--backend")==0)
+		if (strcmp(argv[cindex],"--renderingsystem")==0)
 		{
 			if (argv[cindex+1]!=NULL)
 			{
 				testoptions=argv[cindex+1];
+				break;
 			}
 		}
 		
@@ -75,14 +78,13 @@ int main (int argc, char *argv[])
 	}
 	
 	
-	
 	if (testoptions=="sdl")
 	{
-#ifdef COMPILED_WITH_SDL
+//#ifdef COMPILED_WITH_SDL
 		sel=1;
-#else
+/**#else
 		cerr << "Not compiled with sdl support\n";
-#endif
+#endif*/
 	}
 	if (testoptions=="test")
 	{
@@ -129,7 +131,7 @@ int main (int argc, char *argv[])
 #endif
 		default: std::cerr << "Error: backend doesn't exist\n"; returnvalue=1;
 	}
-
+	//delete slates_config;
 	return returnvalue;
 }
 

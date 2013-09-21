@@ -22,26 +22,39 @@
 
 
 #include <iostream>
-#include <SDL2/SDL_image.h>
+//#include <SDL2/SDL_image.h>
 
 
 
 using namespace std;
-sdlviewport::sdlviewport(master *masteridd, int16_t ownidd) : viewport(masteridd,ownidd)
+sdlviewport::sdlviewport(master *masteridd, int16_t ownidd, void *_monitor) : viewport(masteridd,ownidd)
 {
 	cerr << "Create sdlviewport\n";
+	//monitor=
+
+#ifdef COMPILED_WITH_X
+	if (X_con)
+	{
+		X_screen=_monitor;
+		/**
+		dispbounds.x=0;
+		dispbounds.y=0;
+		dispbounds.w=X_screen->width_in_pixels;
+		dispbounds.h=X_screen->height_in_pixels;*/
+
+	}
+#endif
 	SDL_GetDisplayBounds(get_viewport_id(), &dispbounds);
 	viewportwindow=SDL_CreateWindow("Slates", 0, 0,
-		           dispbounds.w, dispbounds.h,SDL_WINDOW_FULLSCREEN);
+		           dispbounds.w, dispbounds.h,SDL_WINDOW_FULLSCREEN_DESKTOP);
 
-	/**
-	SDL_SysWMinfo *wminfo;
-	SDL_GetWindowWMInfo(viewportwindow, wminfo);
-	if (wminfo->subsystem==SDL_SYSWM_X11)
-	{
-		MoveWindowToScreen (wminfo,(int32_t)get_id());
 
-	}*/
+	//SDL_GetWindowWMInfo(viewportwindow, wminfo);
+	//if (wminfo->subsystem==SDL_SYSWM_X11)
+	//{
+		//MoveWindowToScreen (wminfo,(int32_t)get_viewport_id());
+
+	//}
 	
 	SDL_GetCurrentDisplayMode(get_viewport_id (),&viewdisplaymode);
 	if (hw_accel())
@@ -80,7 +93,7 @@ sdlviewport::sdlviewport(master *masteridd, int16_t ownidd) : viewport(masteridd
 
 sdlviewport::~sdlviewport()
 {
-	
+	//if (X_screen)
 	SDL_DestroyTexture (background_IMG_tex);
 	SDL_FreeSurface (background_IMG);
 	SDL_DestroyRenderer (viewportrender);
@@ -97,9 +110,6 @@ void sdlviewport::set_focused_slate(int32_t slateid)
 
 void sdlviewport::draw_viewwindow()
 {
-
-	//SDL_ShowWindow (viewportwindow);
-	//SDL_SetWindowFullscreen (viewportwindow,SDL_WINDOW_FULLSCREEN);
 	SDL_RenderCopy(viewportrender,background_IMG_tex, 0, 0);
 	SDL_RenderPresent(viewportrender);
 }

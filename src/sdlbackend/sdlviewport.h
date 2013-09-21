@@ -22,11 +22,14 @@
 #include "viewport.h"
 class viewport;
 
+#include "sdlroutines.h"
 #include "sdlslatearea.h"
 class sdlslatearea;
 
 
-
+#ifdef COMPILED_WITH_X
+#include <xcb/xcb.h>
+#endif
 
 
 
@@ -37,7 +40,7 @@ using namespace std;
 class sdlviewport : public viewport
 {
 public:
-	sdlviewport(master *masteridd, int16_t ownidd);
+	sdlviewport(master *masteridd, int16_t ownidd, void *_monitor);
 	~sdlviewport();
 	/**int32_t id_slate_mouse(int16_t x, int16_t y);
 	slate *get_slate_mouse(int16_t x, int16_t y);*/
@@ -50,18 +53,26 @@ public:
 	uint32_t slate_width=-1, slate_height=-1;
 	
 	void draw_viewwindow();
+	void place_window(SDL_Window *in, int16_t x, int16_t y, int16_t w, int16_t h); 
 	
-	SDL_Surface *background_IMG;
-	SDL_Texture *background_IMG_tex;
-	
+	//void *monitor=0;
+
 	SDL_Renderer *viewportrender;
 	SDL_DisplayMode viewdisplaymode;
 	SDL_Rect dispbounds;
+	
 	SDL_Window *viewportwindow=0;
-	//SDL_SysWMinfo *wminfo=0;
+
+#ifdef COMPILED_WITH_X
+	xcb_screen_t *X_screen=0;
+#endif
+	
 protected:
 	
 private:
+	
+	SDL_Surface *background_IMG;
+	SDL_Texture *background_IMG_tex;
 	int32_t focused_slate=0;
 	
 };

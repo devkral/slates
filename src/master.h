@@ -9,7 +9,6 @@ class slateobject;
 //class slate;
 
 #include "configbackend.h"
-
 #include <vector>
 
 

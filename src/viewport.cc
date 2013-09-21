@@ -386,7 +386,7 @@ void viewport::empty_slate_intern(int32_t id)
 	
 }
 
-int32_t viewport::get_viewport_id()
+int16_t viewport::get_viewport_id()
 {
 	return viewportid;
 }

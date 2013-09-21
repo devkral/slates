@@ -36,6 +36,7 @@ class sdlviewport;
 #include <vector>
 
 
+
 using namespace std;
 
 
@@ -44,16 +45,24 @@ class sdlmaster : public master
 {
 public:
 	sdlmaster();
-	void init(int argc, char* argv[]);
 	~sdlmaster();
+	void init(int argc, char* argv[]);
+	void simple_init(int argc, char* argv[]);
+	void x_init(int argc, char *argv[]);
+	void wayland_init(int argc, char *argv[]);
+	
 	void inputhandler_function();
 	bool is_system_mode();
 	int16_t get_focused_viewport_id ();
+	int16_t get_backend ();
 	uint16_t handle_masterevent(void *event);
+
 protected:
 	
 private:
 	viewport *create_viewport_intern(master *masteridd, int16_t ownidd, void *monitor);
+	int16_t focused_viewport=0;
+	
 };
 
 int sdlmain(int argc, char *argv[]);

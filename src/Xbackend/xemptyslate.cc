@@ -31,7 +31,6 @@ using namespace std;
 
 xemptyslate::xemptyslate(slatearea *parentt, master *parent_mastert) : emptyslate(parentt, parent_mastert)
 {
-	std::cout << "Enter xemptyslate\n"; 
    /* schwarzen Grafikkontext erzeugen */
 	defaultcontext = xcb_generate_id(((xmaster*) get_master () )->con);
 	black = xcb_generate_id(((xmaster*) get_master () )->con);
@@ -71,6 +70,7 @@ xemptyslate::xemptyslate(slatearea *parentt, master *parent_mastert) : emptyslat
 
 xemptyslate::~xemptyslate()
 {
+	xcb_unmap_window(((xmaster*)get_master ())->con,window);
 	xcb_void_cookie_t gcCookie = xcb_free_gc (((xmaster *) get_master())->con, defaultcontext);
     testCookie(gcCookie, ((xmaster *) get_master())->con, "can't free gc");
 	free(position_values);
@@ -92,14 +92,16 @@ void xemptyslate::update()
 	position_values_new[0]=get_slatearea ()->get_x()*((xviewport*) get_viewport ())->slate_width_p;
 	position_values_new[1]=get_slatearea ()->get_y()*((xviewport*) get_viewport ())->slate_height_p;
 	xcb_configure_window (((xmaster*)get_master ())->con, window, XCB_CONFIG_WINDOW_X | XCB_CONFIG_WINDOW_Y, position_values_new);
-	free(position_values);
+	if (position_values)
+		free(position_values);
 	position_values=position_values_new;
 		
 	uint32_t *size_values_new=(uint32_t *) calloc(2,sizeof(uint32_t));
 	size_values_new[0]=((xviewport*) get_viewport ())->slate_width_p;
 	size_values_new[1]=((xviewport*) get_viewport ())->slate_height_p;
 	xcb_configure_window (((xmaster*)get_master ())->con, window, XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT, size_values_new);
-	free(size_values);
+	if (size_values)
+		free(size_values);
 	size_values=size_values_new;
 	xcb_flush (((xmaster*)get_master ())-> con);
 
@@ -115,7 +117,7 @@ void xemptyslate::update()
 */
 	
 	
-	cout << position_values[0] << " " << position_values[1] << " size: " << size_values_new[0] << " " << size_values_new[1] << endl;
+	//cout << position_values[0] << " " << position_values[1] << " size: " << size_values_new[0] << " " << size_values_new[1] << endl;
 	//cout << "blub " << size_values[0]/2-strlen (temp) << " " << size_values[1]/2 << endl;
 	//enter real values
     /**xcb_change_property (((xmaster *) get_master())->con,
@@ -159,8 +161,18 @@ void xemptyslate::handle_event(void *event)
                         }
 			}
 			break;
-		case XCB_BUTTON_PRESS:
+		case XCB_BUTTON_RELEASE:{
+			
+			xcb_button_press_event_t * bp= (xcb_button_press_event_t *)event;
+			switch (bp->detail)
+			{
+				case 1:
+					cout << system((char*)"xterm");
+				break;
 			//open menu
+
+			}
+		}
 			break;
 		default:
 			break;

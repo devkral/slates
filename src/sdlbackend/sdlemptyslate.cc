@@ -32,8 +32,8 @@ sdlemptyslate::sdlemptyslate(slatearea *parentt, master *parent_mastert) : empty
 	windowbounds.w=(Uint16)(get_slatearea ()->get_w ()*((sdlviewport *) get_viewport ())->slate_width - ((sdlslatearea* )get_slatearea ())->border);
 	windowbounds.h=(Uint16)(get_slatearea ()->get_h ()*((sdlviewport *) get_viewport ())->slate_height - ((sdlslatearea* )get_slatearea ())->border);
 
-	//SDL_CreateWindowAndRendererSync(&ewindow,&erender,&windowbounds);
-	SDL_CreateRendererSync(((sdlviewport*)get_viewport())->viewportwindow,&erender);
+	SDL_CreateWindowAndRendererSync(&ewindow,&erender,&windowbounds);
+	//SDL_CreateRendererSync(((sdlviewport*)get_viewport())->viewportwindow,&erender);
 
 	if (emptyusecount==0)
 		epicture=IMG_Load("themes/exampleemptyslate2.png");
@@ -43,7 +43,8 @@ sdlemptyslate::sdlemptyslate(slatearea *parentt, master *parent_mastert) : empty
 sdlemptyslate::~sdlemptyslate()
 {
 	emptyusecount--;
-	SDL_DestroyWindowAndRenderer(0,erender);
+	SDL_DestroyWindowAndRenderer(ewindow,erender);
+	//SDL_DestroyWindowAndRenderer(0,erender);
 	SDL_DestroyTexture (emptytex);
 	if (emptyusecount<=0)
 	{
@@ -75,7 +76,8 @@ void sdlemptyslate::update()
 		cerr << "epicture couldn't be loaded\n";
 		return;
 	}
-	/**
+
+	
 	if (!emptytex ||  oldwindowbounds.w!=windowbounds.w || oldwindowbounds.h!=windowbounds.h)
 	{
 		if (emptytex)
@@ -85,25 +87,15 @@ void sdlemptyslate::update()
 	                                                           SDL_TEXTUREACCESS_STREAMING,
 	                                                            windowbounds.w,
 																windowbounds.h);
-	}*/
-	//SDL_Surface *emptysur=SDL_CreateRGBSurface (0,windowbounds.w,windowbounds.h,32,0,0,0,255);
-	/**SDL_LockTexture(emptytex, 0, &emptysur->pixels, &emptysur->pitch);
+	}
+	SDL_Surface *emptysur=SDL_CreateRGBSurface (0,windowbounds.w,windowbounds.h,32,0,0,0,255);
+	SDL_LockTexture(emptytex, 0, &emptysur->pixels, &emptysur->pitch);
 	SDL_BlitSurface(epicture,&windowbounds,emptysur,&emptysur->clip_rect);
 	// paint into surface pixels
 	SDL_UnlockTexture(emptytex);
 	
 	SDL_RenderCopy(erender,emptytex, 0, 0);
-	SDL_RenderPresent(erender);*/
-	SDL_Surface *emptysur=SDL_CreateRGBSurface (0,((sdlviewport*)get_viewport())->dispbounds.w,((sdlviewport*)get_viewport())->dispbounds.h,32,0,0,0,255);
-	SDL_LockTexture(((sdlviewport*)get_viewport())->background_IMG_tex, 0, &emptysur->pixels, &emptysur->pitch);
-	//((SDL_Surface *emptysur=SDL_CreateRGBSurface (0,windowbounds.w,windowbounds.h,32,0,0,0,255);
-	//SDL_LockTexture(((sdlviewport*)get_viewport())->background_IMG_tex, &windowbounds, &emptysur->pixels, &emptysur->pitch);
-	SDL_BlitSurface(epicture,&windowbounds,emptysur,&windowbounds);
-	// paint into surface pixels
-	SDL_UnlockTexture(((sdlviewport*)get_viewport())->background_IMG_tex);
-	((sdlviewport*)get_viewport())->draw_viewwindow ();
-	
-	
+	SDL_RenderPresent(erender);
 	
 	wasinit=true;
 	//renderprot.unlock();
@@ -144,6 +136,7 @@ void sdlemptyslate::handle_event (void *event)
 						{
 							SDL_RenderCopy(erender,emptytex, 0, 0);
 							SDL_RenderPresent(erender);
+							
 						}
 						break;
 				}

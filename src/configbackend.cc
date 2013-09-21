@@ -8,6 +8,8 @@
 #include <cstring>
 
 
+
+
 configbackend::configbackend(string file)
 {
 	filename=file;
@@ -20,7 +22,7 @@ configbackend::configbackend()
 
 configbackend::~configbackend()
 {
-	
+	save();
 }
 
 void configbackend::init()
@@ -28,13 +30,211 @@ void configbackend::init()
 	confrwlock.lock();
 	fstream tempout(filename.c_str(),ios_base::out);
 	tempout.close();
-	
+	confrwlock.unlock();
+}
 
+
+void configbackend::load()
+{
+	confrwlock.lock();
+	config_runtime.clear();
+	string checktemp="";
+	string value_name;
+	vector<string> value_list;
+	
+	size_t delimiter_varval=string::npos;
+	//delimiter_valval=std::npos,
+	//delimiter_comment=std::npos;
+	ifstream loadtemp(filename);
+	loadtemp >> checktemp;
+	while (!loadtemp.eof())
+	{
+/**		delimiter_comment=checktemp.find("#");
+		while (delimiter_comment!=std::npos && checktemp.find("\\#")+1 == delimiter_comment)
+			delimiter_comment=checktemp.find("#",delimiter_comment);
+		if (delimiter_comment!=std::npos)
+			checktemp.erase(delimiter_comment);*/
+
+		
+		while (checktemp.find("\t")!=string::npos)
+				checktemp.erase(checktemp.find("\t"),checktemp.find("\t"));
+		while (checktemp.find(" ")!=string::npos)
+			 if (checktemp.find("\\ ")+1 != checktemp.find(" "))
+				checktemp.erase(checktemp.find(" "),checktemp.find(" "));
+			
+		delimiter_varval=checktemp.find("=");
+		if (delimiter_varval!=string::npos && checktemp.find("\\=")+1 !=delimiter_varval )
+		{
+			while (checktemp.find("\\=") < delimiter_varval)
+				checktemp.erase(checktemp.find("\\="),checktemp.find("\\="));
+			
+
+			value_name=checktemp.substr(0,delimiter_varval-1);
+			if (value_name.empty())
+			{
+				cerr << "Invalid fileformat: \"=\" without valuename\n";
+				goto end_configread;
+			}
+			
+			checktemp.erase(0,delimiter_varval);
+			while (checktemp.find("=")!=string::npos)
+			{
+				if (checktemp.find("=")==checktemp.find("\\=")+1 )
+				{
+					checktemp.erase(checktemp.find("\\="),checktemp.find("\\="));
+				}
+				else
+				{
+					cerr << "Invalid fileformat: an uncommented \"=\" too much\n";
+					goto end_configread;
+				}
+			}
+/**			delimiter_valval=checktemp.find(",");
+			while (delimiter_valval!=std::npos)
+			{
+				if (checktemp.find("\\,")+1 !=delimiter_valval  )
+				{
+					while (checktemp.find("\\,") !=std::npos && checktemp.find("\\,")<delimiter_valval)
+						checktemp.erase(checktemp.find("\\,"),checktemp.find("\\,"));
+
+					config_runtime.insert(value_name,checktemp.substr(0,delimiter_valval));
+			    }
+				delimiter_valval=checktemp.find(",",delimiter_valval);
+			}*/
+			if (!checktemp.empty())
+				config_runtime.insert(std::make_pair(value_name,checktemp));
+		}
+end_configread:
+		checktemp.clear();
+		loadtemp >> checktemp;
+	}
 	
 	confrwlock.unlock();
 }
 
 
+void configbackend::save()
+{
+	confrwlock.lock();
+	string tempstr="";
+	std::unordered_multimap<std::string,std::string>::const_iterator runtime_it=config_runtime.begin();
+	std::pair<std::unordered_multimap<std::string,std::string>::const_iterator,std::unordered_multimap<std::string,std::string>::const_iterator>
+			default_result_it;
+	bool compare_successful=true;
+	ofstream writeconfig_stream(filename,ios_base::trunc);
+	
+	while ( runtime_it!=config_runtime.end())
+	{
+		compare_successful=true;
+		tempstr=(*runtime_it).second;
+		default_result_it=config_default.equal_range((*runtime_it).first);
+		if (default_result_it.first!=config_default.end() && !tempstr.empty())
+		{
+			compare_successful=false;
+			while (default_result_it.first!=default_result_it.second)
+			{
+				if (default_result_it.first->second==tempstr)
+				{
+					compare_successful=true;
+					break;
+				}
+				default_result_it.first++;
+			}
+		}
+
+			
+		if (!compare_successful)
+		{
+			while (tempstr.find (" ")!=string::npos && tempstr.find ("\\ ")+1!=tempstr.find (" "))
+				tempstr.insert(tempstr.find (" "),"\\");
+			while (tempstr.find ("\t")!=string::npos)
+				tempstr.erase(tempstr.find ("\t"),tempstr.find ("\t"));
+			while (tempstr.find ("=")!=string::npos && tempstr.find ("\\=")+1!=tempstr.find ("="))
+				tempstr.insert(tempstr.find ("="),"\\");
+			writeconfig_stream << (*runtime_it).first+"="+tempstr+"\n";
+		}
+		
+		runtime_it++;
+	}
+	writeconfig_stream.close();
+	confrwlock.unlock();
+
+}
+
+vector<string> configbackend::get_variable(string varname)
+{
+		std::pair<std::unordered_multimap<std::string,std::string>::const_iterator,std::unordered_multimap<std::string,std::string>::const_iterator>
+			key_result=config_runtime.equal_range(varname);
+	vector<string> tempvector;
+	string tempstring="";
+	if (key_result.first!=config_runtime.end())
+	{
+		while  (key_result.first!=key_result.second)
+		{
+			tempstring=key_result.first->second;
+			tempvector.push_back(tempstring);
+			key_result.first++;
+		}
+	}
+	key_result=config_default.equal_range(varname);
+	if (key_result.first!=config_default.end())
+	{
+		tempstring=key_result.first->second;
+		tempvector.push_back(tempstring);
+		key_result.first++;
+	}
+	else
+	{
+		cerr << "Variable: " << varname << " couldn't be found in config\nPlease define it at least in default config";
+	}
+	return tempvector;
+}
+
+void configbackend::reset_variable(string varname)
+{
+	config_runtime.erase(varname);
+}
+
+/**
+string configbackend::search_variable(string value)
+{
+	config_runtime.erase(varname);
+}*/
+
+
+void configbackend::set_variable(string varname,vector<string> inobvec, bool shall_append=true)
+{
+	if (!shall_append)
+		config_runtime.erase(varname);
+
+	for (string temp : inobvec)
+		config_runtime.insert(std::make_pair(varname,temp));
+}
+
+void configbackend::set_keybinding(string varname,string keycombination)
+{
+	vector<string> combvect={keycombination};
+	set_variable ("key:"+varname,combvect,false);
+}
+
+string configbackend::get_keybindaction(string input_event)
+{
+	vector<string> vect_results=get_variable ("key:"+input_event);
+	if (vect_results.empty())
+		return "";
+	else
+		return vect_results[0];
+}
+
+
+/**
+uint16_t configbackend::compare_input(void *)
+{
+
+};*/
+
+
+/**
 void reset(parsedob *ob)
 {
 	ob->varpart="";
@@ -201,7 +401,7 @@ void configbackend::set_single_variable(string varname, string varvalue)
 }
 
 
-void configbackend::add_variable(string varname, string varvalue)
+void configbackend::append_variable(string varname, string varvalue)
 {
 	confrwlock.lock();
 	fstream confstr;
@@ -263,4 +463,4 @@ string configbackend::get_variable(string varname)
 	return collect;
 }
 
-
+*/

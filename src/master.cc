@@ -10,7 +10,7 @@ using namespace std;
 bool checkpassword(char *password)
 {
 #ifdef UNIX
-
+//use glibc or pam better glibc
 	cerr << "password not implemented yet\n";
 	return true;
 #elif WINDOWS
@@ -18,6 +18,7 @@ bool checkpassword(char *password)
 	cerr << "password not implemented yet\n";
 	return true;
 #endif
+	return false;
 }
 
 

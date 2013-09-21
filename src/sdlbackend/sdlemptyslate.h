@@ -27,7 +27,7 @@ class emptyslate;
 //#include <mutex>
 
 
-//static SDL_Texture *emptytex=0;
+static SDL_Texture *emptytex=0;
 static SDL_Surface *epicture=0;
 static int32_t emptyusecount=0;
 

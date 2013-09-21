@@ -26,7 +26,7 @@ class sysslate;
 #include "xroutines.h"
 class xhelperclass;
 
-#include "configbackend.h"
+//#include "configbackend.h"
 
 
 class xsysslate: public sysslate,xhelperclass
