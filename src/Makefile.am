@@ -20,33 +20,33 @@ AM_CFLAGS =\
 bin_PROGRAMS = slates
 
 slates_SOURCES = \
-	main.cc \
-	master.cc \
+	main.cpp \
+	master.cpp \
 	master.h \
-	viewport.cc \
+	viewport.cpp \
 	viewport.h \
-	slate.cc \
+	slate.cpp \
 	slate.h \
-	slatearea.cc \
+	slatearea.cpp \
 	slatearea.h  \
-	slateareascreen.cc \
+	slateareascreen.cpp \
 	slateareascreen.h \
-	configbackend.cc \
+	configbackend.cpp \
 	configbackend.h
 
 
 slates_SOURCES += \
-	lockslate.cc \
+	lockslate.cpp \
 	lockslate.h \
-	groupslate.cc \
+	groupslate.cpp \
 	groupslate.h \
-	configslate.cc \
+	configslate.cpp \
 	configslate.h \
-	emptyslate.cc \
+	emptyslate.cpp \
 	emptyslate.h \
-	windowslate.cc \
+	windowslate.cpp \
 	windowslate.h \
-	sysslate.cc \
+	sysslate.cpp \
 	sysslate.h
 
 
@@ -54,15 +54,15 @@ slates_SOURCES += \
 if IS_COMPILED_WITH_TESTBACKEND
 slates_SOURCES += testbackend/testbackend.cc \
 	testbackend/testbackend.h \
-	testbackend/tviewport.cc \
+	testbackend/tviewport.cpp \
 	testbackend/tviewport.h \
-	testbackend/tlockslate.cc \
+	testbackend/tlockslate.cpp \
 	testbackend/tlockslate.h \
-	testbackend/temptyslate.cc \
+	testbackend/temptyslate.cpp \
 	testbackend/temptyslate.h \
-	testbackend/tsysslate.cc \
+	testbackend/tsysslate.cpp \
 	testbackend/tsysslate.h \
-	testbackend/tslatearea.cc \
+	testbackend/tslatearea.cpp \
 	testbackend/tslatearea.h
 endif
 
@@ -70,32 +70,32 @@ endif
 if IS_COMPILED_WITH_SDL
 slates_SOURCES += sdlbackend/sdlbackend.cc \
 	sdlbackend/sdlbackend.h \
-	sdlbackend/sdlroutines.cc \
+	sdlbackend/sdlroutines.cpp \
 	sdlbackend/sdlroutines.h \
-	sdlbackend/sdlviewport.cc \
+	sdlbackend/sdlviewport.cpp \
 	sdlbackend/sdlviewport.h \
-	sdlbackend/sdlemptyslate.cc \
+	sdlbackend/sdlemptyslate.cpp \
 	sdlbackend/sdlemptyslate.h \
-	sdlbackend/sdllockslate.cc \
+	sdlbackend/sdllockslate.cpp \
 	sdlbackend/sdllockslate.h \
-	sdlbackend/sdlslatearea.cc \
+	sdlbackend/sdlslatearea.cpp \
 	sdlbackend/sdlslatearea.h
 endif
 
 if IS_COMPILED_WITH_X
 slates_SOURCES += Xbackend/xbackend.cc \
 	Xbackend/xbackend.h \
-	Xbackend/xroutines.cc \
+	Xbackend/xroutines.cpp \
 	Xbackend/xroutines.h \
-	Xbackend/xviewport.cc \
+	Xbackend/xviewport.cpp \
 	Xbackend/xviewport.h \
-	Xbackend/xlockslate.cc \
+	Xbackend/xlockslate.cpp \
 	Xbackend/xlockslate.h \
-	Xbackend/xemptyslate.cc \
+	Xbackend/xemptyslate.cpp \
 	Xbackend/xemptyslate.h \
-	Xbackend/xsysslate.cc \
+	Xbackend/xsysslate.cpp \
 	Xbackend/xsysslate.h \
-	Xbackend/xslatearea.cc \
+	Xbackend/xslatearea.cpp \
 	Xbackend/xslatearea.h
 endif
 
