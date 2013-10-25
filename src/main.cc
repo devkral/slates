@@ -28,7 +28,7 @@
 #endif
 
 
-#define DEFAULT_BACKEND 1
+#define DEFAULT_BACKEND 3
 
 /**
  * Backends

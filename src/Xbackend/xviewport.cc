@@ -46,7 +46,7 @@ xviewport::xviewport(master *masteridd, int ownidd,xcb_screen_t *s) : viewport(m
  // printf ("  height........: %d\n", screen->height_in_pixels);
 //printf ("  white pixel...: %ld\n", screen->white_pixel);
 //printf ("  black pixel...: %ld\n", screen->black_pixel);
-  printf ("\n");
+  //printf ("\n");
 
 		
   //    uint32_t             mask;

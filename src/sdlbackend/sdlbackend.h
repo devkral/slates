@@ -35,7 +35,9 @@ class sdlviewport;
 #include "SDL.h"
 #include <vector>
 
-
+#ifdef COMPILED_WITH_X
+#include <xcb/xcb.h>
+#endif
 
 using namespace std;
 
@@ -48,9 +50,12 @@ public:
 	~sdlmaster();
 	void init(int argc, char* argv[]);
 	void simple_init(int argc, char* argv[]);
+#ifdef  COMPILED_WITH_X
 	void x_init(int argc, char *argv[]);
+#endif
+#ifdef  COMPILED_WITH_WAYLAND
 	void wayland_init(int argc, char *argv[]);
-	
+#endif
 	void inputhandler_function();
 	bool is_system_mode();
 	int16_t get_focused_viewport_id ();

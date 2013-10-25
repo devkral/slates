@@ -32,10 +32,14 @@
 #include <thread>
 #include <system_error>
 
-/**
+
 #ifdef COMPILED_WITH_X
-#include <xcb/randr.h>
-#endif*/
+//xcb_randr_id works somehow just in C
+//Workaround
+#include <xcb/xcbext.h>
+xcb_extension_t  xcb_randr_id_ = { (char *)"RANDR", 0 };;
+
+#endif
 
 using namespace std;
 
@@ -83,11 +87,17 @@ void sdlmaster::init (int argc, char* argv[])
 		cindex++;
 	}
 	testoptions="X";
+#ifdef  COMPILED_WITH_X
+	cout << "X\n";
 	if (testoptions=="X") 
 		x_init(argc,argv);
-	else	if (testoptions=="wayland")
+	else
+#endif
+#if COMPILED_WITH_WAYLAND
+		if (testoptions=="wayland")
 		wayland_init(argc,argv);
-	else 
+	else
+#endif
 		simple_init(argc,argv);
 	
 }
@@ -106,21 +116,21 @@ void sdlmaster::simple_init(int argc, char* argv[])
 
 
 
-
 void sdlmaster::x_init(int argc, char *argv[])
 {
-
 	int numbermonitors=0;
-	/* open connection with the server */
-	if((X_con = xcb_connect(getenv("DISPLAY"), &numbermonitors)) == 0)
+	const xcb_query_extension_reply_t *qer;
+	/** connect */
+	X_con = xcb_connect(getenv("DISPLAY"), &numbermonitors);
+	if(X_con == 0)
 	{
 		cerr << "Cannot get a connection\n";
 		exit(1);
 	}
 
 	
-	//xcb_prefetch_extension_data(X_con, &xcb_randr_id);
-	///xfd = xcb_get_file_descriptor(conn);
+	xcb_prefetch_extension_data(X_con, &xcb_randr_id_);
+	//int xfd = xcb_get_file_descriptor(X_con);
 	
 	SDL_Init(SDL_INIT_EVERYTHING);
 	
@@ -136,11 +146,12 @@ void sdlmaster::x_init(int argc, char *argv[])
 }
 #endif
 
+#ifdef  COMPILED_WITH_WAYLAND
 void sdlmaster::wayland_init(int argc, char *argv[])
 {
 
 }
-
+#endif
 
 
 sdlmaster::~sdlmaster()

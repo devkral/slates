@@ -5,22 +5,29 @@
 
 
 using namespace std;
+#ifdef UNIX
 
+//use pam or glibc because no root richtgs (needed to access shadow database)
 
+//#include <pwd.h>
+//#include <shadow.h>
+//http://unix.stackexchange.com/questions/21705/how-to-check-password-with-linux
 bool checkpassword(char *password)
 {
-#ifdef UNIX
-//use glibc or pam better glibc
-	cerr << "password not implemented yet\n";
-	return true;
-#elif WINDOWS
+	//passwd pwd = getpwuid(getuid());
+	//spwd shadow_entry;
+	//shadow_entry = getspnam(username);
 
-	cerr << "password not implemented yet\n";
-	return true;
-#endif
-	return false;
 }
+//#elif WINDOWS
 
+#else
+bool checkpassword(char *password)
+{
+	cerr << "password handling not implemented yet\n";
+	return true;
+}
+#endif
 
 master::master()
 {

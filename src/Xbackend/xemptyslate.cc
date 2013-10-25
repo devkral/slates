@@ -167,7 +167,7 @@ void xemptyslate::handle_event(void *event)
 			switch (bp->detail)
 			{
 				case 1:
-					cout << system((char*)"xterm");
+					//cout << "system((char*)xterm)";
 				break;
 			//open menu
 

@@ -175,12 +175,12 @@ void async_create_slates_intern(slate *placeholderpointer)
 	placeholderpointer->init();
 }
 
+//#define _NO_ASYNC_ 
 void viewport::async_create_slates()
 {
-	if (get_isdestroying())
-		return;
-	
+#ifndef _NO_ASYNC_
 	vector<thread> temppool;
+#endif
 	int16_t temp_x, temp_y;
 	while (slate_idcount<slices*slices-slices && slate_idcount<INT16_MAX*INT16_MAX)
 	{
@@ -223,7 +223,7 @@ void viewport::async_create_slates()
 		temppool.pop_back();
 	}
 #endif
-	
+	slateid_prot.unlock();
 }
 
 
@@ -258,7 +258,10 @@ void viewport::async_destroy_slates(int32_t amount)
 		temppool.pop_back();
 	}
 #endif
+	slateid_prot.unlock();
 }
+
+
 
 void viewport::addslice()
 {
@@ -284,6 +287,8 @@ void viewport::addslice()
 	}
 }
 
+
+
 int16_t viewport::removeslice()
 {
 	if (get_isdestroying() || last_slice_filled>0 || nto_last_slice_filled >= (slices-1)+(slices-1)) //just one free slot
@@ -292,7 +297,7 @@ int16_t viewport::removeslice()
 	}
 	if(slateid_prot.try_lock())
 	{
-		async_destroy_slates(slices+slices-1); //=(slices+1)+(slices+1)-1
+		async_destroy_slates(slices+slices-1);
 		slices--;
 		//max_avail_slates=slices*slices;
 		cache_last_diag_point_id=cache_nto_last_diag_point_id;

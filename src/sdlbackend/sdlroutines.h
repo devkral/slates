@@ -22,7 +22,6 @@
 #define _SDLROUTINES_H_
 
 #ifdef COMPILED_WITH_X
-#include <xcb/randr.h>
 #include <xcb/xcb.h>
 #endif
 
