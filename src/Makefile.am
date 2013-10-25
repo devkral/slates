@@ -52,7 +52,7 @@ slates_SOURCES += \
 
 
 if IS_COMPILED_WITH_TESTBACKEND
-slates_SOURCES += testbackend/testbackend.cc \
+slates_SOURCES += testbackend/testbackend.cpp \
 	testbackend/testbackend.h \
 	testbackend/tviewport.cpp \
 	testbackend/tviewport.h \
@@ -68,7 +68,7 @@ endif
 
 
 if IS_COMPILED_WITH_SDL
-slates_SOURCES += sdlbackend/sdlbackend.cc \
+slates_SOURCES += sdlbackend/sdlbackend.cpp \
 	sdlbackend/sdlbackend.h \
 	sdlbackend/sdlroutines.cpp \
 	sdlbackend/sdlroutines.h \
@@ -83,7 +83,7 @@ slates_SOURCES += sdlbackend/sdlbackend.cc \
 endif
 
 if IS_COMPILED_WITH_X
-slates_SOURCES += Xbackend/xbackend.cc \
+slates_SOURCES += Xbackend/xbackend.cpp \
 	Xbackend/xbackend.h \
 	Xbackend/xroutines.cpp \
 	Xbackend/xroutines.h \
